@@ -1,3 +1,10 @@
+//
+//  OnboardingCTAButton.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 struct OnboardingCTAButton: View {

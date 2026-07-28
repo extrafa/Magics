@@ -1,3 +1,10 @@
+//
+//  OBProcessingScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 struct OBProcessingScreen: View {
@@ -72,12 +79,12 @@ struct OBProcessingScreen: View {
         }
         .frame(maxWidth: .infinity)
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.24) {
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(240))
                 appeared = true
-                DispatchQueue.main.asyncAfter(deadline: .now() + 0.35) {
-                    breathing = true
-                }
                 schedulePhaseAdvance()
+                try? await Task.sleep(for: .milliseconds(350))
+                breathing = true
             }
         }
     }

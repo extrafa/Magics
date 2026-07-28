@@ -1,3 +1,10 @@
+//
+//  OBWelcomeScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 struct OBWelcomeScreen: View {
@@ -55,7 +62,10 @@ struct OBWelcomeScreen: View {
             .animation(.easeOut(duration: 0.35).delay(0.65), value: appeared)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { appeared = true }
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(150))
+                appeared = true
+            }
         }
     }
 
