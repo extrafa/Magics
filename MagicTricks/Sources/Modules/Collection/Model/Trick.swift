@@ -15,16 +15,16 @@ enum TrickType {
     case magicGallery
 }
 
-enum TrickDifficulty: CaseIterable, Hashable {
+enum TrickDifficulty: Hashable {
     case easy
     case medium
     case hard
 
     var localizedTitle: String {
         switch self {
-        case .easy: return String(localized: "difficulty.easy")
-        case .medium: return String(localized: "difficulty.medium")
-        case .hard: return String(localized: "difficulty.hard")
+        case .easy: String(localized: "difficulty.easy")
+        case .medium: String(localized: "difficulty.medium")
+        case .hard: String(localized: "difficulty.hard")
         }
     }
 }
@@ -56,7 +56,7 @@ struct Trick: Identifiable, Hashable {
         self.instruction = instruction
     }
 }
-    
+
 struct TrickCollection {
     static let tricks: [Trick] = [
         Trick(

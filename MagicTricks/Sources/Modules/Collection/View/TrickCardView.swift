@@ -8,20 +8,20 @@
 import SwiftUI
 
 struct TrickCardView: View {
-    
+
     let trick: Trick
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
-    
+
     var body: some View {
         VStack(alignment: .leading, spacing: 18) {
             header
-            
+
             buttons
         }
         .padding(22)
         .frame(maxWidth: .infinity, minHeight: 208, alignment: .topLeading)
-        .background(cardBackground)
+        .background { cardBackground }
         .shadow(color: Color.black.opacity(0.06), radius: 18, x: 0, y: 8)
         .overlay(alignment: .topTrailing) {
             TrickDifficultyBadge(difficulty: trick.difficulty)
@@ -29,14 +29,14 @@ struct TrickCardView: View {
                 .padding(.trailing, 16)
         }
     }
-    
+
     private var cardBackground: some View {
         RoundedRectangle(cornerRadius: 22, style: .continuous)
             .fill(Color.grayCard)
-            .overlay(
+            .overlay {
                 RoundedRectangle(cornerRadius: 22, style: .continuous)
                     .stroke(Color.grayBorder, lineWidth: 1)
-            )
+            }
     }
 
     private var header: some View {
@@ -69,8 +69,17 @@ struct TrickCardView: View {
             Spacer(minLength: 8)
         }
     }
-    
+
     private var buttons: some View {
         TrickCardActions(onStartTap: onStartTap, onHowToTap: onHowToTap)
     }
+}
+
+#Preview {
+    TrickCardView(
+        trick: TrickCollection.tricks[0],
+        onStartTap: {},
+        onHowToTap: {}
+    )
+    .padding()
 }
