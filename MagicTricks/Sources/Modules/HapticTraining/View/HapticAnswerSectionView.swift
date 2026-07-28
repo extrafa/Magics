@@ -1,6 +1,12 @@
+//
+//  HapticAnswerSectionView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
 
-// Input area: answer field, submit button, result feedback
 struct HapticAnswerSectionView: View {
 
     let mode: HapticTrainingMode
@@ -19,7 +25,8 @@ struct HapticAnswerSectionView: View {
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(Color.primaryText.opacity(0.58))
 
-            // Input field — keyboard appears automatically after signal, manual tap is blocked
+            // Keyboard appears programmatically after the signal; direct taps are blocked so the
+            // user can't open the keyboard before playing.
             TextField(isAnswerFocused.wrappedValue ? "" : mode.inputPlaceholder, text: $answerText)
                 .font(.system(size: 24, weight: .black, design: .rounded))
                 .foregroundStyle(Color.primaryText)
@@ -38,14 +45,12 @@ struct HapticAnswerSectionView: View {
                     onAnswerChange(newValue)
                 }
 
-            // Feedback label — always occupies space to prevent layout shift
             Text(resultLabel)
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(resultColor)
                 .frame(maxWidth: .infinity, minHeight: 20, alignment: .center)
 
             if mode.usesExplicitSubmit {
-                // Submit button
                 Button(action: onSubmit) {
                     Text(String(localized: "training.answer.submit"))
                         .font(.headline)
@@ -59,8 +64,6 @@ struct HapticAnswerSectionView: View {
             }
         }
     }
-
-    // MARK: - Derived display state
 
     private var answerFieldBackground: Color {
         guard let result else { return Color.primaryText.opacity(0.06) }
