@@ -1,0 +1,104 @@
+//
+//  Trick.swift
+//  Magic Tricks
+//
+//  Created by Ross on 30/11/2025.
+//
+
+import Foundation
+
+enum TrickType {
+    case colorMentalism
+    case mindPattern
+    case calculatorPrediction
+    case timeControl
+    case magicGallery
+}
+
+enum TrickDifficulty: CaseIterable, Hashable {
+    case easy
+    case medium
+    case hard
+
+    var localizedTitle: String {
+        switch self {
+        case .easy: return String(localized: "difficulty.easy")
+        case .medium: return String(localized: "difficulty.medium")
+        case .hard: return String(localized: "difficulty.hard")
+        }
+    }
+}
+
+struct Trick: Identifiable, Hashable {
+    let id: TrickType
+    let title: String
+    let cardTitle: String?
+    let subtitle: String
+    let image: String
+    let difficulty: TrickDifficulty
+    let instruction: Instruction
+
+    init(
+        id: TrickType,
+        title: String,
+        cardTitle: String? = nil,
+        subtitle: String,
+        image: String,
+        difficulty: TrickDifficulty,
+        instruction: Instruction
+    ) {
+        self.id = id
+        self.title = title
+        self.cardTitle = cardTitle
+        self.subtitle = subtitle
+        self.image = image
+        self.difficulty = difficulty
+        self.instruction = instruction
+    }
+}
+    
+struct TrickCollection {
+    static let tricks: [Trick] = [
+        Trick(
+            id: .colorMentalism,
+            title: String(localized: "card.color.title"),
+            cardTitle: String(localized: "card.color.cardTitle"),
+            subtitle: String(localized: "card.color.subtitle"),
+            image: "paintpalette",
+            difficulty: .easy,
+            instruction: .colorMentalism
+        ),
+        Trick(
+            id: .mindPattern,
+            title: String(localized: "card.mindPattern.title"),
+            subtitle: String(localized: "card.mindPattern.subtitle"),
+            image: "pawprint.fill",
+            difficulty: .easy,
+            instruction: .mindPattern
+        ),
+//        Trick(
+//            id: .calculatorPrediction,
+//            title: String(localized: "card.calculatorPrediction.title"),
+//            subtitle: String(localized: "card.calculatorPrediction.subtitle"),
+//            image: "ipad",
+//            difficulty: .medium,
+//            instruction: .calculatorPrediction
+//        ),
+        Trick(
+            id: .timeControl,
+            title: String(localized: "card.time.title"),
+            subtitle: String(localized: "card.time.subtitle"),
+            image: "stopwatch.fill",
+            difficulty: .medium,
+            instruction: .timeControl
+        ),
+        Trick(
+            id: .magicGallery,
+            title: String(localized: "card.magicGallery.title"),
+            subtitle: String(localized: "card.magicGallery.subtitle"),
+            image: "photo.on.rectangle.angled",
+            difficulty: .hard,
+            instruction: .magicGallery
+        )
+    ]
+}

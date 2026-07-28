@@ -1,0 +1,1482 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 77;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0A000100000000000000001B /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000100000000000000001A /* OnboardingState.swift */; };
+		0A000200000000000000001B /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000200000000000000001A /* OnboardingViewModel.swift */; };
+		0A0002000000000000000024 /* TrickGradientCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000023 /* TrickGradientCard.swift */; };
+		0A0002000000000000000026 /* OnboardingCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000025 /* OnboardingCTAButton.swift */; };
+		0A0002000000000000000028 /* AsyncUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000027 /* AsyncUtilities.swift */; };
+		0A000300000000000000001B /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000300000000000000001A /* OnboardingFlowView.swift */; };
+		0A000400000000000000001B /* OnboardingProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000400000000000000001A /* OnboardingProgressBar.swift */; };
+		0A000500000000000000001B /* OBOptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000500000000000000001A /* OBOptionRow.swift */; };
+		0A000600000000000000001B /* OBWelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000600000000000000001A /* OBWelcomeScreen.swift */; };
+		0A000700000000000000001B /* OBGoalScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000700000000000000001A /* OBGoalScreen.swift */; };
+		0A000800000000000000001B /* OBPainPointsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000800000000000000001A /* OBPainPointsScreen.swift */; };
+		0A000900000000000000001B /* OBSocialProofScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000900000000000000001A /* OBSocialProofScreen.swift */; };
+		0A000A00000000000000001B /* OBSolutionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000A00000000000000001A /* OBSolutionScreen.swift */; };
+		0A000C00000000000000001B /* OBProcessingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000C00000000000000001A /* OBProcessingScreen.swift */; };
+		0A00FE000000000000000002 /* StoreProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000001 /* StoreProduct.swift */; };
+		0A00FE000000000000000004 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000003 /* StoreService.swift */; };
+		0A00FE000000000000000006 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000005 /* StoreManager.swift */; };
+		0AEE00000000000000000002 /* MagicGalleryPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000001 /* MagicGalleryPhoto.swift */; };
+		0AEE00000000000000000004 /* MagicGalleryCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000003 /* MagicGalleryCameraView.swift */; };
+		0AEE00000000000000000006 /* HapticTrainingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000005 /* HapticTrainingMode.swift */; };
+		0AEE00000000000000000008 /* HapticTrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000007 /* HapticTrainingView.swift */; };
+		0AEE0000000000000000000A /* CalculatorPredictionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000009 /* CalculatorPredictionEngine.swift */; };
+		0AEE0000000000000000000C /* SheetFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000000B /* SheetFlow.swift */; };
+		0AEE0000000000000000000E /* AppSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000000D /* AppSheetView.swift */; };
+		0AEE00000000000000000011 /* MindPatternInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000010 /* MindPatternInstruction.swift */; };
+		0AEE00000000000000000013 /* TimeControlInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000012 /* TimeControlInstruction.swift */; };
+		0AEE00000000000000000015 /* MagicGalleryInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000014 /* MagicGalleryInstruction.swift */; };
+		0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000016 /* HapticManager+CountSignal.swift */; };
+		0AEE00000000000000000019 /* FloatingMotionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000018 /* FloatingMotionModifier.swift */; };
+		0AFF00000000000000000002 /* InstructionPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000001 /* InstructionPhase.swift */; };
+		0AFF00000000000000000004 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000003 /* AppColors.swift */; };
+		0AFF00000000000000000006 /* PhoneTiltGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */; };
+		0AFF00000000000000000008 /* CalculatorPredictionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000007 /* CalculatorPredictionInstruction.swift */; };
+		280FC5D92FCDA5EA00B347F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */; };
+		28258EC02FF3E31800DE5695 /* OBPreferenceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */; };
+		28258EC12FF3E31800DE5695 /* OBValueDeliveryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */; };
+		28258EC22FF3E31800DE5695 /* OBFeatureSlideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */; };
+		28258EC32FF3E31800DE5695 /* OBPaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */; };
+		282AC7622FCF09E400315861 /* MagicTricksIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 282AC7612FCF09E400315861 /* MagicTricksIcon.icon */; };
+		28335ADD2FA55DCD00DE419B /* ColorMentalismInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28335ADC2FA55DCD00DE419B /* ColorMentalismInstruction.swift */; };
+		2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370A2FAA196500234419 /* TimeControlViewModel.swift */; };
+		2834370D2FAA196500234419 /* TimeControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370C2FAA196500234419 /* TimeControlView.swift */; };
+		28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28404A052FC056FF0062D941 /* TimeControlSignalTransmitter.swift */; };
+		28404A082FC0570B0062D941 /* MindPatternSignalTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28404A072FC0570B0062D941 /* MindPatternSignalTransmitter.swift */; };
+		2860B4AF2FA5363300525B68 /* SettingsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2860B4AD2FA5363300525B68 /* SettingsComponents.swift */; };
+		2860B4B02FA5363300525B68 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2860B4AE2FA5363300525B68 /* SettingsScreen.swift */; };
+		28703B2F2FC6354500EA7B05 /* HapticAnswerSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28703B2E2FC6354500EA7B05 /* HapticAnswerSectionView.swift */; };
+		2875DE942FBA7D8900B9298C /* HapticTrainingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2875DE932FBA7D8900B9298C /* HapticTrainingViewModel.swift */; };
+		287D56232FACD63D00ECCE14 /* MagicGalleryViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56222FACD63D00ECCE14 /* MagicGalleryViewModel.swift */; };
+		287D56272FACD66B00ECCE14 /* MagicGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56262FACD66B00ECCE14 /* MagicGalleryView.swift */; };
+		287D56292FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56282FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift */; };
+		287D562C2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D562B2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift */; };
+		287D562E2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D562D2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift */; };
+		287D56302FCE700000ECCE14 /* MagicGallerySlotCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D562F2FCE700000ECCE14 /* MagicGallerySlotCard.swift */; };
+		287D56322FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56312FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift */; };
+		287D56342FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56332FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift */; };
+		287D56362FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56352FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift */; };
+		287D56382FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56372FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift */; };
+		287D563A2FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56392FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift */; };
+		287D563C2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D563B2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift */; };
+		289123E52FBDCEC80051759C /* HapticModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123E42FBDCEC80051759C /* HapticModels.swift */; };
+		289123ED2FBDCF230051759C /* HapticManager+TimeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123EC2FBDCF230051759C /* HapticManager+TimeControl.swift */; };
+		289123EF2FC880000051759C /* HapticEnginePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123EE2FC880000051759C /* HapticEnginePlayer.swift */; };
+		289123F12FC880000051759C /* HapticScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123F02FC880000051759C /* HapticScheduler.swift */; };
+		289123F32FC880000051759C /* HapticProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123F22FC880000051759C /* HapticProtocols.swift */; };
+		289123F72FC880000051759C /* TimeHapticPatternBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123F62FC880000051759C /* TimeHapticPatternBuilder.swift */; };
+		28960C5B2FABD6D1003268CD /* ExitHintConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5A2FABD6D1003268CD /* ExitHintConfiguration.swift */; };
+		28960C5D2FABD6D2003268CD /* ExitHintViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5C2FABD6D2003268CD /* ExitHintViewModel.swift */; };
+		28960C602FABD7A0003268CD /* ExitHintGestureCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5F2FABD7A0003268CD /* ExitHintGestureCaptureView.swift */; };
+		28960C652FABD939003268CD /* MindPatternTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C642FABD939003268CD /* MindPatternTile.swift */; };
+		28960C692FABD939003268CD /* MindPatternCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C682FABD939003268CD /* MindPatternCardView.swift */; };
+		28960C6B2FABD939003268CD /* MindPatternViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C6A2FABD939003268CD /* MindPatternViewModel.swift */; };
+		28960C6D2FABD939003268CD /* MindPatternView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C6C2FABD939003268CD /* MindPatternView.swift */; };
+		28B6EAA53013DC05001FD5CB /* TrickCardButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */; };
+		28BA97D62FBB389000F30468 /* HapticSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */; };
+		28BA97D82FCE760000F30468 /* HapticSignalSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */; };
+		28BA97DA2FCE760000F30468 /* HapticPreviewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */; };
+		28C0DE022FD0000000C0DE01 /* ColorMentalismViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */; };
+		28C187772FBDE7C9001306EE /* MotionSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187762FBDE7C9001306EE /* MotionSettingsScreen.swift */; };
+		28C187802FCE7300001306EE /* InstructionStepActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1877F2FCE7300001306EE /* InstructionStepActionsView.swift */; };
+		28C187842FCE7300001306EE /* InstructionStepActionPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187832FCE7300001306EE /* InstructionStepActionPresentation.swift */; };
+		28C187862FCE7800001306EE /* InstructionStepRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187852FCE7800001306EE /* InstructionStepRow.swift */; };
+		28C187882FCE7800001306EE /* InstructionPhaseLegend.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187872FCE7800001306EE /* InstructionPhaseLegend.swift */; };
+		28C1878A2FCE7900001306EE /* InstructionPresentedSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187892FCE7900001306EE /* InstructionPresentedSheet.swift */; };
+		28C1878C2FCE7900001306EE /* InstructionActionSheetDestination.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1878B2FCE7900001306EE /* InstructionActionSheetDestination.swift */; };
+		28C1878E2FCE7900001306EE /* InstructionStepsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1878D2FCE7900001306EE /* InstructionStepsSection.swift */; };
+		28C4F25C2FAB7ADA002BB78D /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C4F25B2FAB7ADA002BB78D /* HapticManager.swift */; };
+		28D000012FC7350000AA0001 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D000002FC7350000AA0001 /* AppPreferences.swift */; };
+		28E100012FC9F00000BB0001 /* TrickPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E100002FC9F00000BB0001 /* TrickPalette.swift */; };
+		28E200022FCE720000BB0001 /* TrickButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E200012FCE720000BB0001 /* TrickButtonStyles.swift */; };
+		28E935822FF2BEEC00AEF6EC /* OBFirstScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */; };
+		28F200012FCE500000CC0001 /* MotionSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F200002FCE500000CC0001 /* MotionSettingsSection.swift */; };
+		9100D5882F89343C005B0BC0 /* TrickCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9100D5872F89343C005B0BC0 /* TrickCardView.swift */; };
+		9100D58A2FCE720000B0BC0 /* TrickCardActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9100D5892FCE720000B0BC0 /* TrickCardActions.swift */; };
+		9100D58C2FCE720000B0BC0 /* TrickDifficultyBadge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9100D58B2FCE720000B0BC0 /* TrickDifficultyBadge.swift */; };
+		911502142F873B1800071C0C /* ExitHintView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 911502132F873B1800071C0C /* ExitHintView.swift */; };
+		9122DB932EDD1CCB00277108 /* CollectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9122DB922EDD1CCB00277108 /* CollectionView.swift */; };
+		9122DB952EDD20C300277108 /* Trick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9122DB942EDD20C300277108 /* Trick.swift */; };
+		912B25832F2EA2D800B32AF1 /* CalculatorPredictionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912B25822F2EA2D800B32AF1 /* CalculatorPredictionView.swift */; };
+		912B25852F2EBB5B00B32AF1 /* CalculatorPredictionButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912B25842F2EBB5B00B32AF1 /* CalculatorPredictionButtonView.swift */; };
+		912B25882F2ED96300B32AF1 /* CalculatorPredictionViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912B25872F2ED96300B32AF1 /* CalculatorPredictionViewModel.swift */; };
+		912B258C2F2EDABE00B32AF1 /* CalculatorPrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912B258B2F2EDABE00B32AF1 /* CalculatorPrediction.swift */; };
+		913878222F89732600CA371E /* InstructionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913878212F89732600CA371E /* InstructionModels.swift */; };
+		913878242F89732E00CA371E /* InstructionComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913878232F89732E00CA371E /* InstructionComponents.swift */; };
+		913878262F89733200CA371E /* InstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913878252F89733200CA371E /* InstructionView.swift */; };
+		913AE9A22F54939D0061F75A /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913AE9A12F54939D0061F75A /* AppConfig.swift */; };
+		913FDE042EBED98800B05D99 /* MagicTricksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913FDE012EBED98800B05D99 /* MagicTricksApp.swift */; };
+		913FDE052EBED98800B05D99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 913FDDFF2EBED98800B05D99 /* Assets.xcassets */; };
+		915B2A3E2F120A32002917D7 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 915B2A3D2F120A32002917D7 /* Localizable.xcstrings */; };
+		915CE57C2F9285DA00C5B32A /* InstructionShareFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915CE57B2F9285DA00C5B32A /* InstructionShareFormatter.swift */; };
+		918359822F2719DB0068D5BC /* AppFlowCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918359812F2719DB0068D5BC /* AppFlowCoverView.swift */; };
+		918C35402F16B06800EAF6D9 /* Magics.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 918C353F2F16B06800EAF6D9 /* Magics.storekit */; };
+		918FC1D22F13EB4600621893 /* AppFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FC1D12F13EB4600621893 /* AppFlowCoordinator.swift */; };
+		918FC1D62F1417C300621893 /* TrickRouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FC1D52F1417C300621893 /* TrickRouterView.swift */; };
+		9191CE162F549A7400D5BAE8 /* TrickIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9191CE152F549A7400D5BAE8 /* TrickIcon.swift */; };
+		91A793CF2F0E14B1009CA8A3 /* FullScreenFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */; };
+		91AFB5772F8FDC3C00AAF6B7 /* ColorMentalismView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AFB5762F8FDC3C00AAF6B7 /* ColorMentalismView.swift */; };
+		91AFB57A2F8FDC7E00AAF6B7 /* ColorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AFB5792F8FDC7E00AAF6B7 /* ColorCard.swift */; };
+		91C7F5412FC9D90000A00001 /* HapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5402FC9D90000A00001 /* HapticPatternBuilderTests.swift */; };
+		91C7F5432FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5422FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift */; };
+		91C7F5452FC9EC0000A00001 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */; };
+		91C7F5472FCE7B0000A00001 /* HapticManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */; };
+		92A000012FC7600000A00001 /* CalculatorPredictionEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */; };
+		92A000022FC7600000A00001 /* AppPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000062FC7600000A00001 /* AppPreferencesTests.swift */; };
+		92A000032FC7600000A00001 /* HapticTrainingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */; };
+		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
+		92A000092FC8600000A00001 /* CalculatorPredictionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9191CE222F549D7E00D5BAE8 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 913FDDD72EBED62D00B05D99 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 913FDDDE2EBED62D00B05D99;
+			remoteInfo = Magics;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0A000100000000000000001A /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
+		0A000200000000000000001A /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
+		0A0002000000000000000023 /* TrickGradientCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickGradientCard.swift; sourceTree = "<group>"; };
+		0A0002000000000000000025 /* OnboardingCTAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCTAButton.swift; sourceTree = "<group>"; };
+		0A0002000000000000000027 /* AsyncUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncUtilities.swift; sourceTree = "<group>"; };
+		0A000300000000000000001A /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
+		0A000400000000000000001A /* OnboardingProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressBar.swift; sourceTree = "<group>"; };
+		0A000500000000000000001A /* OBOptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBOptionRow.swift; sourceTree = "<group>"; };
+		0A000600000000000000001A /* OBWelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBWelcomeScreen.swift; sourceTree = "<group>"; };
+		0A000700000000000000001A /* OBGoalScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBGoalScreen.swift; sourceTree = "<group>"; };
+		0A000800000000000000001A /* OBPainPointsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPainPointsScreen.swift; sourceTree = "<group>"; };
+		0A000900000000000000001A /* OBSocialProofScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBSocialProofScreen.swift; sourceTree = "<group>"; };
+		0A000A00000000000000001A /* OBSolutionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBSolutionScreen.swift; sourceTree = "<group>"; };
+		0A000C00000000000000001A /* OBProcessingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBProcessingScreen.swift; sourceTree = "<group>"; };
+		0A00FE000000000000000001 /* StoreProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreProduct.swift; sourceTree = "<group>"; };
+		0A00FE000000000000000003 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
+		0A00FE000000000000000005 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
+		0AEE00000000000000000001 /* MagicGalleryPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryPhoto.swift; sourceTree = "<group>"; };
+		0AEE00000000000000000003 /* MagicGalleryCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCameraView.swift; sourceTree = "<group>"; };
+		0AEE00000000000000000005 /* HapticTrainingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingMode.swift; sourceTree = "<group>"; };
+		0AEE00000000000000000007 /* HapticTrainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingView.swift; sourceTree = "<group>"; };
+		0AEE00000000000000000009 /* CalculatorPredictionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionEngine.swift; sourceTree = "<group>"; };
+		0AEE0000000000000000000B /* SheetFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetFlow.swift; sourceTree = "<group>"; };
+		0AEE0000000000000000000D /* AppSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSheetView.swift; sourceTree = "<group>"; };
+		0AEE00000000000000000010 /* MindPatternInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternInstruction.swift; sourceTree = "<group>"; };
+		0AEE00000000000000000012 /* TimeControlInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlInstruction.swift; sourceTree = "<group>"; };
+		0AEE00000000000000000014 /* MagicGalleryInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryInstruction.swift; sourceTree = "<group>"; };
+		0AEE00000000000000000016 /* HapticManager+CountSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+CountSignal.swift"; sourceTree = "<group>"; };
+		0AEE00000000000000000018 /* FloatingMotionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMotionModifier.swift; sourceTree = "<group>"; };
+		0AFF00000000000000000001 /* InstructionPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionPhase.swift; sourceTree = "<group>"; };
+		0AFF00000000000000000003 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
+		0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTiltGestureManager.swift; sourceTree = "<group>"; };
+		0AFF00000000000000000007 /* CalculatorPredictionInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionInstruction.swift; sourceTree = "<group>"; };
+		280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
+		28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBFeatureSlideScreen.swift; sourceTree = "<group>"; };
+		28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPaywallScreen.swift; sourceTree = "<group>"; };
+		28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPreferenceScreen.swift; sourceTree = "<group>"; };
+		28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBValueDeliveryScreen.swift; sourceTree = "<group>"; };
+		282AC7612FCF09E400315861 /* MagicTricksIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIcon.icon; sourceTree = "<group>"; };
+		28335ADC2FA55DCD00DE419B /* ColorMentalismInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismInstruction.swift; sourceTree = "<group>"; };
+		28335AE22FA5838300DE419B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		2834370A2FAA196500234419 /* TimeControlViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModel.swift; sourceTree = "<group>"; };
+		2834370C2FAA196500234419 /* TimeControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlView.swift; sourceTree = "<group>"; };
+		28404A052FC056FF0062D941 /* TimeControlSignalTransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlSignalTransmitter.swift; sourceTree = "<group>"; };
+		28404A072FC0570B0062D941 /* MindPatternSignalTransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternSignalTransmitter.swift; sourceTree = "<group>"; };
+		2860B4AD2FA5363300525B68 /* SettingsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsComponents.swift; sourceTree = "<group>"; };
+		2860B4AE2FA5363300525B68 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
+		28703B2E2FC6354500EA7B05 /* HapticAnswerSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticAnswerSectionView.swift; sourceTree = "<group>"; };
+		2875DE932FBA7D8900B9298C /* HapticTrainingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingViewModel.swift; sourceTree = "<group>"; };
+		287D56222FACD63D00ECCE14 /* MagicGalleryViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModel.swift; sourceTree = "<group>"; };
+		287D56262FACD66B00ECCE14 /* MagicGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryView.swift; sourceTree = "<group>"; };
+		287D56282FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryPhotoLibrary.swift; sourceTree = "<group>"; };
+		287D562B2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCapturePanel.swift; sourceTree = "<group>"; };
+		287D562D2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryBottomSaveBar.swift; sourceTree = "<group>"; };
+		287D562F2FCE700000ECCE14 /* MagicGallerySlotCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotCard.swift; sourceTree = "<group>"; };
+		287D56312FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotPhotoContent.swift; sourceTree = "<group>"; };
+		287D56332FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotEmptyContent.swift; sourceTree = "<group>"; };
+		287D56352FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCaptureFlow.swift; sourceTree = "<group>"; };
+		287D56372FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicGalleryViewModel+Actions.swift"; sourceTree = "<group>"; };
+		287D56392FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicGalleryViewModel+Presentation.swift"; sourceTree = "<group>"; };
+		287D563B2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotGrid.swift; sourceTree = "<group>"; };
+		289123E42FBDCEC80051759C /* HapticModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticModels.swift; sourceTree = "<group>"; };
+		289123EC2FBDCF230051759C /* HapticManager+TimeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+TimeControl.swift"; sourceTree = "<group>"; };
+		289123EE2FC880000051759C /* HapticEnginePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticEnginePlayer.swift; sourceTree = "<group>"; };
+		289123F02FC880000051759C /* HapticScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduler.swift; sourceTree = "<group>"; };
+		289123F22FC880000051759C /* HapticProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticProtocols.swift; sourceTree = "<group>"; };
+		289123F62FC880000051759C /* TimeHapticPatternBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHapticPatternBuilder.swift; sourceTree = "<group>"; };
+		28960C5A2FABD6D1003268CD /* ExitHintConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintConfiguration.swift; sourceTree = "<group>"; };
+		28960C5C2FABD6D2003268CD /* ExitHintViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintViewModel.swift; sourceTree = "<group>"; };
+		28960C5F2FABD7A0003268CD /* ExitHintGestureCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintGestureCaptureView.swift; sourceTree = "<group>"; };
+		28960C642FABD939003268CD /* MindPatternTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternTile.swift; sourceTree = "<group>"; };
+		28960C682FABD939003268CD /* MindPatternCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternCardView.swift; sourceTree = "<group>"; };
+		28960C6A2FABD939003268CD /* MindPatternViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternViewModel.swift; sourceTree = "<group>"; };
+		28960C6C2FABD939003268CD /* MindPatternView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternView.swift; sourceTree = "<group>"; };
+		28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickCardButtonStyle.swift; sourceTree = "<group>"; };
+		28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingsScreen.swift; sourceTree = "<group>"; };
+		28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSignalSettingsSection.swift; sourceTree = "<group>"; };
+		28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPreviewSection.swift; sourceTree = "<group>"; };
+		28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismViewModel.swift; sourceTree = "<group>"; };
+		28C187762FBDE7C9001306EE /* MotionSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSettingsScreen.swift; sourceTree = "<group>"; };
+		28C1877F2FCE7300001306EE /* InstructionStepActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepActionsView.swift; sourceTree = "<group>"; };
+		28C187832FCE7300001306EE /* InstructionStepActionPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepActionPresentation.swift; sourceTree = "<group>"; };
+		28C187852FCE7800001306EE /* InstructionStepRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepRow.swift; sourceTree = "<group>"; };
+		28C187872FCE7800001306EE /* InstructionPhaseLegend.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionPhaseLegend.swift; sourceTree = "<group>"; };
+		28C187892FCE7900001306EE /* InstructionPresentedSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionPresentedSheet.swift; sourceTree = "<group>"; };
+		28C1878B2FCE7900001306EE /* InstructionActionSheetDestination.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionActionSheetDestination.swift; sourceTree = "<group>"; };
+		28C1878D2FCE7900001306EE /* InstructionStepsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepsSection.swift; sourceTree = "<group>"; };
+		28C4F25B2FAB7ADA002BB78D /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		28D000002FC7350000AA0001 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		28E100002FC9F00000BB0001 /* TrickPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickPalette.swift; sourceTree = "<group>"; };
+		28E200012FCE720000BB0001 /* TrickButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickButtonStyles.swift; sourceTree = "<group>"; };
+		28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBFirstScreen.swift; sourceTree = "<group>"; };
+		28F200002FCE500000CC0001 /* MotionSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSettingsSection.swift; sourceTree = "<group>"; };
+		9100D5872F89343C005B0BC0 /* TrickCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickCardView.swift; sourceTree = "<group>"; };
+		9100D5892FCE720000B0BC0 /* TrickCardActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickCardActions.swift; sourceTree = "<group>"; };
+		9100D58B2FCE720000B0BC0 /* TrickDifficultyBadge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickDifficultyBadge.swift; sourceTree = "<group>"; };
+		911502132F873B1800071C0C /* ExitHintView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintView.swift; sourceTree = "<group>"; };
+		9122DB922EDD1CCB00277108 /* CollectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CollectionView.swift; sourceTree = "<group>"; };
+		9122DB942EDD20C300277108 /* Trick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Trick.swift; sourceTree = "<group>"; };
+		912B25822F2EA2D800B32AF1 /* CalculatorPredictionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionView.swift; sourceTree = "<group>"; };
+		912B25842F2EBB5B00B32AF1 /* CalculatorPredictionButtonView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionButtonView.swift; sourceTree = "<group>"; };
+		912B25872F2ED96300B32AF1 /* CalculatorPredictionViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModel.swift; sourceTree = "<group>"; };
+		912B258B2F2EDABE00B32AF1 /* CalculatorPrediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPrediction.swift; sourceTree = "<group>"; };
+		913878212F89732600CA371E /* InstructionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionModels.swift; sourceTree = "<group>"; };
+		913878232F89732E00CA371E /* InstructionComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionComponents.swift; sourceTree = "<group>"; };
+		913878252F89733200CA371E /* InstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionView.swift; sourceTree = "<group>"; };
+		913AE9A12F54939D0061F75A /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		913FDDDF2EBED62D00B05D99 /* MagicTricks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicTricks.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		913FDDFF2EBED98800B05D99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		913FDE012EBED98800B05D99 /* MagicTricksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicTricksApp.swift; sourceTree = "<group>"; };
+		915B2A3D2F120A32002917D7 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
+		915CE57B2F9285DA00C5B32A /* InstructionShareFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionShareFormatter.swift; sourceTree = "<group>"; };
+		918359812F2719DB0068D5BC /* AppFlowCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoverView.swift; sourceTree = "<group>"; };
+		918C353F2F16B06800EAF6D9 /* Magics.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Magics.storekit; sourceTree = "<group>"; };
+		918FC1D12F13EB4600621893 /* AppFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinator.swift; sourceTree = "<group>"; };
+		918FC1D52F1417C300621893 /* TrickRouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickRouterView.swift; sourceTree = "<group>"; };
+		9191CE152F549A7400D5BAE8 /* TrickIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickIcon.swift; sourceTree = "<group>"; };
+		9191CE1E2F549D7E00D5BAE8 /* MagicTricksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicTricksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenFlow.swift; sourceTree = "<group>"; };
+		91AFB5762F8FDC3C00AAF6B7 /* ColorMentalismView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismView.swift; sourceTree = "<group>"; };
+		91AFB5792F8FDC7E00AAF6B7 /* ColorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCard.swift; sourceTree = "<group>"; };
+		91C7F5402FC9D90000A00001 /* HapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPatternBuilderTests.swift; sourceTree = "<group>"; };
+		91C7F5422FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTiltGestureManagerTests.swift; sourceTree = "<group>"; };
+		91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
+		91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManagerTests.swift; sourceTree = "<group>"; };
+		92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionEngineTests.swift; sourceTree = "<group>"; };
+		92A000062FC7600000A00001 /* AppPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferencesTests.swift; sourceTree = "<group>"; };
+		92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingViewModelTests.swift; sourceTree = "<group>"; };
+		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
+		92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModelTests.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		913FDDDC2EBED62D00B05D99 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9191CE1B2F549D7E00D5BAE8 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0A00FE000000000000000007 /* Store */ = {
+			isa = PBXGroup;
+			children = (
+				0A00FE000000000000000001 /* StoreProduct.swift */,
+				0A00FE000000000000000003 /* StoreService.swift */,
+				0A00FE000000000000000005 /* StoreManager.swift */,
+			);
+			path = Store;
+			sourceTree = "<group>";
+		};
+		0A00FF000000000000000001 /* Onboarding */ = {
+			isa = PBXGroup;
+			children = (
+				0A00FF000000000000000002 /* Model */,
+				0A00FF000000000000000003 /* ViewModel */,
+				0A00FF000000000000000004 /* View */,
+			);
+			path = Onboarding;
+			sourceTree = "<group>";
+		};
+		0A00FF000000000000000002 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0A000100000000000000001A /* OnboardingState.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0A00FF000000000000000003 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0A000200000000000000001A /* OnboardingViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0A00FF000000000000000004 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */,
+				28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */,
+				28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */,
+				28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */,
+				0A000300000000000000001A /* OnboardingFlowView.swift */,
+				0A000400000000000000001A /* OnboardingProgressBar.swift */,
+				0A000500000000000000001A /* OBOptionRow.swift */,
+				0A000600000000000000001A /* OBWelcomeScreen.swift */,
+				0A000700000000000000001A /* OBGoalScreen.swift */,
+				0A000800000000000000001A /* OBPainPointsScreen.swift */,
+				0A000900000000000000001A /* OBSocialProofScreen.swift */,
+				0A000A00000000000000001A /* OBSolutionScreen.swift */,
+				28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */,
+				0A000C00000000000000001A /* OBProcessingScreen.swift */,
+				0A0002000000000000000025 /* OnboardingCTAButton.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0AEE0000000000000000000F /* SheetFlow */ = {
+			isa = PBXGroup;
+			children = (
+				0AEE0000000000000000000B /* SheetFlow.swift */,
+				0AEE0000000000000000000D /* AppSheetView.swift */,
+			);
+			path = SheetFlow;
+			sourceTree = "<group>";
+		};
+		28703B2A2FC633E900EA7B05 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0AEE00000000000000000005 /* HapticTrainingMode.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		2875DE8D2FBA738B00B9298C /* Motion */ = {
+			isa = PBXGroup;
+			children = (
+				0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */,
+			);
+			path = Motion;
+			sourceTree = "<group>";
+		};
+		2875DE902FBA7D6E00B9298C /* HapticTraining */ = {
+			isa = PBXGroup;
+			children = (
+				28703B2A2FC633E900EA7B05 /* Model */,
+				2875DE912FBA7D7600B9298C /* ViewModel */,
+				2875DE922FBA7D7D00B9298C /* View */,
+			);
+			path = HapticTraining;
+			sourceTree = "<group>";
+		};
+		2875DE912FBA7D7600B9298C /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2875DE932FBA7D8900B9298C /* HapticTrainingViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		2875DE922FBA7D7D00B9298C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				28703B2E2FC6354500EA7B05 /* HapticAnswerSectionView.swift */,
+				0AEE00000000000000000007 /* HapticTrainingView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		287D561A2FACD5F500ECCE14 /* MagicGallery */ = {
+			isa = PBXGroup;
+			children = (
+				287D561B2FACD5F500ECCE14 /* Model */,
+				287D562A2FC7470000ECCE14 /* Service */,
+				287D561C2FACD5F500ECCE14 /* View */,
+				287D561D2FACD5F500ECCE14 /* ViewModel */,
+			);
+			path = MagicGallery;
+			sourceTree = "<group>";
+		};
+		287D561B2FACD5F500ECCE14 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0AEE00000000000000000001 /* MagicGalleryPhoto.swift */,
+				0AEE00000000000000000014 /* MagicGalleryInstruction.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		287D561C2FACD5F500ECCE14 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				287D562D2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift */,
+				287D562B2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift */,
+				287D562F2FCE700000ECCE14 /* MagicGallerySlotCard.swift */,
+				287D56332FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift */,
+				287D563B2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift */,
+				287D56312FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift */,
+				287D56262FACD66B00ECCE14 /* MagicGalleryView.swift */,
+				0AEE00000000000000000003 /* MagicGalleryCameraView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		287D561D2FACD5F500ECCE14 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				287D56352FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift */,
+				287D56372FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift */,
+				287D56392FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift */,
+				287D56222FACD63D00ECCE14 /* MagicGalleryViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		287D562A2FC7470000ECCE14 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				287D56282FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		28960C4F2FABC03D003268CD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0AEE00000000000000000012 /* TimeControlInstruction.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		28960C512FABC03D003268CD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2834370C2FAA196500234419 /* TimeControlView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		28960C532FABC03D003268CD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				2834370A2FAA196500234419 /* TimeControlViewModel.swift */,
+				28404A052FC056FF0062D941 /* TimeControlSignalTransmitter.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		28960C542FABC03D003268CD /* TimeControl */ = {
+			isa = PBXGroup;
+			children = (
+				28960C4F2FABC03D003268CD /* Model */,
+				28960C512FABC03D003268CD /* View */,
+				28960C532FABC03D003268CD /* ViewModel */,
+			);
+			path = TimeControl;
+			sourceTree = "<group>";
+		};
+		28960C582FABD6B3003268CD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				28960C5A2FABD6D1003268CD /* ExitHintConfiguration.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		28960C592FABD6B3003268CD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				28960C5C2FABD6D2003268CD /* ExitHintViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		28960C602FABD8F7003268CD /* MindPattern */ = {
+			isa = PBXGroup;
+			children = (
+				28960C612FABD8F7003268CD /* Model */,
+				28960C622FABD8F7003268CD /* View */,
+				28960C632FABD8F7003268CD /* ViewModel */,
+			);
+			path = MindPattern;
+			sourceTree = "<group>";
+		};
+		28960C612FABD8F7003268CD /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				28960C642FABD939003268CD /* MindPatternTile.swift */,
+				0AEE00000000000000000010 /* MindPatternInstruction.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		28960C622FABD8F7003268CD /* View */ = {
+			isa = PBXGroup;
+			children = (
+				28960C682FABD939003268CD /* MindPatternCardView.swift */,
+				28960C6C2FABD939003268CD /* MindPatternView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		28960C632FABD8F7003268CD /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				28960C6A2FABD939003268CD /* MindPatternViewModel.swift */,
+				28404A072FC0570B0062D941 /* MindPatternSignalTransmitter.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		28C0DE012FD0000000C0DE01 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		28C4F25A2FAB7A92002BB78D /* Haptics */ = {
+			isa = PBXGroup;
+			children = (
+				28C4F25B2FAB7ADA002BB78D /* HapticManager.swift */,
+				289123F22FC880000051759C /* HapticProtocols.swift */,
+				289123E42FBDCEC80051759C /* HapticModels.swift */,
+				289123EE2FC880000051759C /* HapticEnginePlayer.swift */,
+				289123F02FC880000051759C /* HapticScheduler.swift */,
+				289123F62FC880000051759C /* TimeHapticPatternBuilder.swift */,
+				289123EC2FBDCF230051759C /* HapticManager+TimeControl.swift */,
+				0AEE00000000000000000016 /* HapticManager+CountSignal.swift */,
+			);
+			path = Haptics;
+			sourceTree = "<group>";
+		};
+		28D000022FC7350000AA0001 /* Preferences */ = {
+			isa = PBXGroup;
+			children = (
+				280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */,
+				28D000002FC7350000AA0001 /* AppPreferences.swift */,
+			);
+			path = Preferences;
+			sourceTree = "<group>";
+		};
+		28E100022FC9F00000BB0001 /* Design */ = {
+			isa = PBXGroup;
+			children = (
+				28E100002FC9F00000BB0001 /* TrickPalette.swift */,
+				0AFF00000000000000000003 /* AppColors.swift */,
+				0AEE00000000000000000018 /* FloatingMotionModifier.swift */,
+			);
+			path = Design;
+			sourceTree = "<group>";
+		};
+		28E200002FCE720000BB0001 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+				28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */,
+				28E200012FCE720000BB0001 /* TrickButtonStyles.swift */,
+				0A0002000000000000000023 /* TrickGradientCard.swift */,
+			);
+			path = Components;
+			sourceTree = "<group>";
+		};
+		911502112F873AFA00071C0C /* ExitHint */ = {
+			isa = PBXGroup;
+			children = (
+				911502122F873B0C00071C0C /* View */,
+				28960C582FABD6B3003268CD /* Model */,
+				28960C592FABD6B3003268CD /* ViewModel */,
+			);
+			path = ExitHint;
+			sourceTree = "<group>";
+		};
+		911502122F873B0C00071C0C /* View */ = {
+			isa = PBXGroup;
+			children = (
+				28960C5F2FABD7A0003268CD /* ExitHintGestureCaptureView.swift */,
+				911502132F873B1800071C0C /* ExitHintView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		912B25802F2EA2BF00B32AF1 /* CalculatorPrediction */ = {
+			isa = PBXGroup;
+			children = (
+				912B25892F2EDA9A00B32AF1 /* Model */,
+				912B25812F2EA2C800B32AF1 /* View */,
+				912B25862F2ED94F00B32AF1 /* ViewModel */,
+			);
+			path = CalculatorPrediction;
+			sourceTree = "<group>";
+		};
+		912B25812F2EA2C800B32AF1 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				912B25822F2EA2D800B32AF1 /* CalculatorPredictionView.swift */,
+				912B25842F2EBB5B00B32AF1 /* CalculatorPredictionButtonView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		912B25862F2ED94F00B32AF1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				912B25872F2ED96300B32AF1 /* CalculatorPredictionViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		912B25892F2EDA9A00B32AF1 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				912B258B2F2EDABE00B32AF1 /* CalculatorPrediction.swift */,
+				0AEE00000000000000000009 /* CalculatorPredictionEngine.swift */,
+				0AFF00000000000000000007 /* CalculatorPredictionInstruction.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		9138781B2F8972F400CA371E /* Instruction */ = {
+			isa = PBXGroup;
+			children = (
+				915CE57A2F92852E00C5B32A /* ShareInstruction */,
+				9138781E2F89730400CA371E /* Model */,
+				9138781D2F8972FF00CA371E /* View */,
+			);
+			path = Instruction;
+			sourceTree = "<group>";
+		};
+		9138781D2F8972FF00CA371E /* View */ = {
+			isa = PBXGroup;
+			children = (
+				913878252F89733200CA371E /* InstructionView.swift */,
+				28C1878B2FCE7900001306EE /* InstructionActionSheetDestination.swift */,
+				913878232F89732E00CA371E /* InstructionComponents.swift */,
+				28C187872FCE7800001306EE /* InstructionPhaseLegend.swift */,
+				28C187892FCE7900001306EE /* InstructionPresentedSheet.swift */,
+				28C187832FCE7300001306EE /* InstructionStepActionPresentation.swift */,
+				28C1877F2FCE7300001306EE /* InstructionStepActionsView.swift */,
+				28C187852FCE7800001306EE /* InstructionStepRow.swift */,
+				28C1878D2FCE7900001306EE /* InstructionStepsSection.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9138781E2F89730400CA371E /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				913878212F89732600CA371E /* InstructionModels.swift */,
+				0AFF00000000000000000001 /* InstructionPhase.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		913FDDD62EBED62D00B05D99 = {
+			isa = PBXGroup;
+			children = (
+				913FDE022EBED98800B05D99 /* MagicTricks */,
+				9191CE282F549D8400D5BAE8 /* MagicTricksTests */,
+				913FDDE02EBED62D00B05D99 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		913FDDE02EBED62D00B05D99 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				913FDDDF2EBED62D00B05D99 /* MagicTricks.app */,
+				9191CE1E2F549D7E00D5BAE8 /* MagicTricksTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		913FDE022EBED98800B05D99 /* MagicTricks */ = {
+			isa = PBXGroup;
+			children = (
+				28335AE22FA5838300DE419B /* Info.plist */,
+				913FDE062EBEDAD000B05D99 /* Sources */,
+			);
+			path = MagicTricks;
+			sourceTree = "<group>";
+		};
+		913FDE062EBEDAD000B05D99 /* Sources */ = {
+			isa = PBXGroup;
+			children = (
+				913FDE072EBEDAD900B05D99 /* Application */,
+				913FDE082EBEDAE500B05D99 /* Modules */,
+				913FDE092EBEDB4000B05D99 /* Services */,
+				91A793CC2F0E147B009CA8A3 /* Shared */,
+				913FDE0B2EBEDB5300B05D99 /* Resources */,
+			);
+			path = Sources;
+			sourceTree = "<group>";
+		};
+		913FDE072EBEDAD900B05D99 /* Application */ = {
+			isa = PBXGroup;
+			children = (
+				913FDE012EBED98800B05D99 /* MagicTricksApp.swift */,
+				913AE9A12F54939D0061F75A /* AppConfig.swift */,
+			);
+			path = Application;
+			sourceTree = "<group>";
+		};
+		913FDE082EBEDAE500B05D99 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				91AFB5742F8FDC2D00AAF6B7 /* ColorMentalism */,
+				28960C602FABD8F7003268CD /* MindPattern */,
+				9138781B2F8972F400CA371E /* Instruction */,
+				911502112F873AFA00071C0C /* ExitHint */,
+				912B25802F2EA2BF00B32AF1 /* CalculatorPrediction */,
+				28960C542FABC03D003268CD /* TimeControl */,
+				918CBC082EE27CEB0004B50D /* Settings */,
+				91D289D92EDCA9F10004406B /* Collection */,
+				287D561A2FACD5F500ECCE14 /* MagicGallery */,
+				2875DE902FBA7D6E00B9298C /* HapticTraining */,
+				0A00FF000000000000000001 /* Onboarding */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		913FDE092EBEDB4000B05D99 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				0A00FE000000000000000007 /* Store */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		913FDE0B2EBEDB5300B05D99 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				913FDDFF2EBED98800B05D99 /* Assets.xcassets */,
+				915B2A3D2F120A32002917D7 /* Localizable.xcstrings */,
+				918C353F2F16B06800EAF6D9 /* Magics.storekit */,
+				282AC7612FCF09E400315861 /* MagicTricksIcon.icon */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
+		915CE57A2F92852E00C5B32A /* ShareInstruction */ = {
+			isa = PBXGroup;
+			children = (
+				915CE57B2F9285DA00C5B32A /* InstructionShareFormatter.swift */,
+			);
+			path = ShareInstruction;
+			sourceTree = "<group>";
+		};
+		918CBC082EE27CEB0004B50D /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+				918CBC092EE27CF30004B50D /* View */,
+			);
+			path = Settings;
+			sourceTree = "<group>";
+		};
+		918CBC092EE27CF30004B50D /* View */ = {
+			isa = PBXGroup;
+			children = (
+				2860B4AD2FA5363300525B68 /* SettingsComponents.swift */,
+				2860B4AE2FA5363300525B68 /* SettingsScreen.swift */,
+				28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */,
+				28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */,
+				28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */,
+				28C187762FBDE7C9001306EE /* MotionSettingsScreen.swift */,
+				28F200002FCE500000CC0001 /* MotionSettingsSection.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9191CE282F549D8400D5BAE8 /* MagicTricksTests */ = {
+			isa = PBXGroup;
+			children = (
+				9191CE2A2F549D9500D5BAE8 /* Services */,
+				9191CE2B2F549D9A00D5BAE8 /* ViewModels */,
+			);
+			path = MagicTricksTests;
+			sourceTree = "<group>";
+		};
+		9191CE2A2F549D9500D5BAE8 /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */,
+				91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */,
+				91C7F5402FC9D90000A00001 /* HapticPatternBuilderTests.swift */,
+				91C7F5422FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift */,
+				91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */,
+				92A000062FC7600000A00001 /* AppPreferencesTests.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		9191CE2B2F549D9A00D5BAE8 /* ViewModels */ = {
+			isa = PBXGroup;
+			children = (
+				92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */,
+				92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */,
+				92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */,
+			);
+			path = ViewModels;
+			sourceTree = "<group>";
+		};
+		919FC1DD2F8E91B3002AE18C /* FullScreenFlow */ = {
+			isa = PBXGroup;
+			children = (
+				91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */,
+				918FC1D52F1417C300621893 /* TrickRouterView.swift */,
+				918359812F2719DB0068D5BC /* AppFlowCoverView.swift */,
+			);
+			path = FullScreenFlow;
+			sourceTree = "<group>";
+		};
+		91A793CC2F0E147B009CA8A3 /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				28E200002FCE720000BB0001 /* Components */,
+				28E100022FC9F00000BB0001 /* Design */,
+				91A793CD2F0E149F009CA8A3 /* Navigation */,
+				28D000022FC7350000AA0001 /* Preferences */,
+				28C4F25A2FAB7A92002BB78D /* Haptics */,
+				0A0002000000000000000027 /* AsyncUtilities.swift */,
+				2875DE8D2FBA738B00B9298C /* Motion */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
+		91A793CD2F0E149F009CA8A3 /* Navigation */ = {
+			isa = PBXGroup;
+			children = (
+				0AEE0000000000000000000F /* SheetFlow */,
+				919FC1DD2F8E91B3002AE18C /* FullScreenFlow */,
+				918FC1D12F13EB4600621893 /* AppFlowCoordinator.swift */,
+			);
+			path = Navigation;
+			sourceTree = "<group>";
+		};
+		91AFB5742F8FDC2D00AAF6B7 /* ColorMentalism */ = {
+			isa = PBXGroup;
+			children = (
+				91AFB5782F8FDC5900AAF6B7 /* Model */,
+				91AFB5752F8FDC3800AAF6B7 /* View */,
+				28C0DE012FD0000000C0DE01 /* ViewModel */,
+			);
+			path = ColorMentalism;
+			sourceTree = "<group>";
+		};
+		91AFB5752F8FDC3800AAF6B7 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				91AFB5762F8FDC3C00AAF6B7 /* ColorMentalismView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		91AFB5782F8FDC5900AAF6B7 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				91AFB5792F8FDC7E00AAF6B7 /* ColorCard.swift */,
+				28335ADC2FA55DCD00DE419B /* ColorMentalismInstruction.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		91D289D92EDCA9F10004406B /* Collection */ = {
+			isa = PBXGroup;
+			children = (
+				91D289DC2EDCAA010004406B /* Model */,
+				91D289DB2EDCA9FD0004406B /* View */,
+			);
+			path = Collection;
+			sourceTree = "<group>";
+		};
+		91D289DB2EDCA9FD0004406B /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9122DB922EDD1CCB00277108 /* CollectionView.swift */,
+				9100D5892FCE720000B0BC0 /* TrickCardActions.swift */,
+				9100D5872F89343C005B0BC0 /* TrickCardView.swift */,
+				9100D58B2FCE720000B0BC0 /* TrickDifficultyBadge.swift */,
+				9191CE152F549A7400D5BAE8 /* TrickIcon.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		91D289DC2EDCAA010004406B /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9122DB942EDD20C300277108 /* Trick.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		913FDDDE2EBED62D00B05D99 /* MagicTricks */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 913FDDEA2EBED62F00B05D99 /* Build configuration list for PBXNativeTarget "MagicTricks" */;
+			buildPhases = (
+				913FDDDB2EBED62D00B05D99 /* Sources */,
+				913FDDDC2EBED62D00B05D99 /* Frameworks */,
+				913FDDDD2EBED62D00B05D99 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = MagicTricks;
+			packageProductDependencies = (
+			);
+			productName = Magics;
+			productReference = 913FDDDF2EBED62D00B05D99 /* MagicTricks.app */;
+			productType = "com.apple.product-type.application";
+		};
+		9191CE1D2F549D7E00D5BAE8 /* MagicTricksTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9191CE242F549D7E00D5BAE8 /* Build configuration list for PBXNativeTarget "MagicTricksTests" */;
+			buildPhases = (
+				9191CE1A2F549D7E00D5BAE8 /* Sources */,
+				9191CE1B2F549D7E00D5BAE8 /* Frameworks */,
+				9191CE1C2F549D7E00D5BAE8 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9191CE232F549D7E00D5BAE8 /* PBXTargetDependency */,
+			);
+			name = MagicTricksTests;
+			packageProductDependencies = (
+			);
+			productName = MagicTricksTests;
+			productReference = 9191CE1E2F549D7E00D5BAE8 /* MagicTricksTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		913FDDD72EBED62D00B05D99 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1640;
+				LastUpgradeCheck = 2660;
+				TargetAttributes = {
+					913FDDDE2EBED62D00B05D99 = {
+						CreatedOnToolsVersion = 16.4;
+					};
+					9191CE1D2F549D7E00D5BAE8 = {
+						CreatedOnToolsVersion = 16.4;
+						TestTargetID = 913FDDDE2EBED62D00B05D99;
+					};
+				};
+			};
+			buildConfigurationList = 913FDDDA2EBED62D00B05D99 /* Build configuration list for PBXProject "MagicTricks" */;
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+				es,
+			);
+			mainGroup = 913FDDD62EBED62D00B05D99;
+			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				91DD6A402F7DB817008626D9 /* XCRemoteSwiftPackageReference "Instructions" */,
+			);
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 913FDDE02EBED62D00B05D99 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				913FDDDE2EBED62D00B05D99 /* MagicTricks */,
+				9191CE1D2F549D7E00D5BAE8 /* MagicTricksTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		913FDDDD2EBED62D00B05D99 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				915B2A3E2F120A32002917D7 /* Localizable.xcstrings in Resources */,
+				282AC7622FCF09E400315861 /* MagicTricksIcon.icon in Resources */,
+				918C35402F16B06800EAF6D9 /* Magics.storekit in Resources */,
+				913FDE052EBED98800B05D99 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9191CE1C2F549D7E00D5BAE8 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		913FDDDB2EBED62D00B05D99 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				28960C692FABD939003268CD /* MindPatternCardView.swift in Sources */,
+				2875DE942FBA7D8900B9298C /* HapticTrainingViewModel.swift in Sources */,
+				9191CE162F549A7400D5BAE8 /* TrickIcon.swift in Sources */,
+				28D000012FC7350000AA0001 /* AppPreferences.swift in Sources */,
+				287D56272FACD66B00ECCE14 /* MagicGalleryView.swift in Sources */,
+				287D562C2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift in Sources */,
+				912B25852F2EBB5B00B32AF1 /* CalculatorPredictionButtonView.swift in Sources */,
+				28960C652FABD939003268CD /* MindPatternTile.swift in Sources */,
+				28C187772FBDE7C9001306EE /* MotionSettingsScreen.swift in Sources */,
+				28F200012FCE500000CC0001 /* MotionSettingsSection.swift in Sources */,
+				28E100012FC9F00000BB0001 /* TrickPalette.swift in Sources */,
+				28E200022FCE720000BB0001 /* TrickButtonStyles.swift in Sources */,
+				289123EF2FC880000051759C /* HapticEnginePlayer.swift in Sources */,
+				289123F12FC880000051759C /* HapticScheduler.swift in Sources */,
+				289123F32FC880000051759C /* HapticProtocols.swift in Sources */,
+				289123F72FC880000051759C /* TimeHapticPatternBuilder.swift in Sources */,
+				28E935822FF2BEEC00AEF6EC /* OBFirstScreen.swift in Sources */,
+				913878262F89733200CA371E /* InstructionView.swift in Sources */,
+				28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */,
+				28960C6B2FABD939003268CD /* MindPatternViewModel.swift in Sources */,
+				28404A082FC0570B0062D941 /* MindPatternSignalTransmitter.swift in Sources */,
+				2834370D2FAA196500234419 /* TimeControlView.swift in Sources */,
+				28335ADD2FA55DCD00DE419B /* ColorMentalismInstruction.swift in Sources */,
+				91A793CF2F0E14B1009CA8A3 /* FullScreenFlow.swift in Sources */,
+				287D56292FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift in Sources */,
+				287D562E2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift in Sources */,
+				287D56342FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift in Sources */,
+				2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */,
+				28960C5D2FABD6D2003268CD /* ExitHintViewModel.swift in Sources */,
+				28960C602FABD7A0003268CD /* ExitHintGestureCaptureView.swift in Sources */,
+				913878242F89732E00CA371E /* InstructionComponents.swift in Sources */,
+				912B25882F2ED96300B32AF1 /* CalculatorPredictionViewModel.swift in Sources */,
+				289123E52FBDCEC80051759C /* HapticModels.swift in Sources */,
+				9122DB952EDD20C300277108 /* Trick.swift in Sources */,
+				918359822F2719DB0068D5BC /* AppFlowCoverView.swift in Sources */,
+				28B6EAA53013DC05001FD5CB /* TrickCardButtonStyle.swift in Sources */,
+				28960C5B2FABD6D1003268CD /* ExitHintConfiguration.swift in Sources */,
+				9122DB932EDD1CCB00277108 /* CollectionView.swift in Sources */,
+				28960C6D2FABD939003268CD /* MindPatternView.swift in Sources */,
+				913AE9A22F54939D0061F75A /* AppConfig.swift in Sources */,
+				915CE57C2F9285DA00C5B32A /* InstructionShareFormatter.swift in Sources */,
+				91AFB57A2F8FDC7E00AAF6B7 /* ColorCard.swift in Sources */,
+				287D56302FCE700000ECCE14 /* MagicGallerySlotCard.swift in Sources */,
+				287D56322FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift in Sources */,
+				9100D58A2FCE720000B0BC0 /* TrickCardActions.swift in Sources */,
+				912B25832F2EA2D800B32AF1 /* CalculatorPredictionView.swift in Sources */,
+				287D56232FACD63D00ECCE14 /* MagicGalleryViewModel.swift in Sources */,
+				287D56382FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift in Sources */,
+				287D563A2FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift in Sources */,
+				287D563C2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift in Sources */,
+				289123ED2FBDCF230051759C /* HapticManager+TimeControl.swift in Sources */,
+				2860B4AF2FA5363300525B68 /* SettingsComponents.swift in Sources */,
+				2860B4B02FA5363300525B68 /* SettingsScreen.swift in Sources */,
+				28C0DE022FD0000000C0DE01 /* ColorMentalismViewModel.swift in Sources */,
+				91AFB5772F8FDC3C00AAF6B7 /* ColorMentalismView.swift in Sources */,
+				28C4F25C2FAB7ADA002BB78D /* HapticManager.swift in Sources */,
+				918FC1D22F13EB4600621893 /* AppFlowCoordinator.swift in Sources */,
+				913878222F89732600CA371E /* InstructionModels.swift in Sources */,
+				911502142F873B1800071C0C /* ExitHintView.swift in Sources */,
+				9100D5882F89343C005B0BC0 /* TrickCardView.swift in Sources */,
+				9100D58C2FCE720000B0BC0 /* TrickDifficultyBadge.swift in Sources */,
+				918FC1D62F1417C300621893 /* TrickRouterView.swift in Sources */,
+				28703B2F2FC6354500EA7B05 /* HapticAnswerSectionView.swift in Sources */,
+				28BA97D62FBB389000F30468 /* HapticSettingsScreen.swift in Sources */,
+				28BA97DA2FCE760000F30468 /* HapticPreviewSection.swift in Sources */,
+				28BA97D82FCE760000F30468 /* HapticSignalSettingsSection.swift in Sources */,
+				28C187802FCE7300001306EE /* InstructionStepActionsView.swift in Sources */,
+				28C187842FCE7300001306EE /* InstructionStepActionPresentation.swift in Sources */,
+				28C187882FCE7800001306EE /* InstructionPhaseLegend.swift in Sources */,
+				28C1878A2FCE7900001306EE /* InstructionPresentedSheet.swift in Sources */,
+				28C1878C2FCE7900001306EE /* InstructionActionSheetDestination.swift in Sources */,
+				28258EC02FF3E31800DE5695 /* OBPreferenceScreen.swift in Sources */,
+				28258EC12FF3E31800DE5695 /* OBValueDeliveryScreen.swift in Sources */,
+				28258EC22FF3E31800DE5695 /* OBFeatureSlideScreen.swift in Sources */,
+				28258EC32FF3E31800DE5695 /* OBPaywallScreen.swift in Sources */,
+				287D56362FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift in Sources */,
+				0A00FE000000000000000002 /* StoreProduct.swift in Sources */,
+				0A00FE000000000000000004 /* StoreService.swift in Sources */,
+				0A00FE000000000000000006 /* StoreManager.swift in Sources */,
+				280FC5D92FCDA5EA00B347F5 /* SettingsStore.swift in Sources */,
+				912B258C2F2EDABE00B32AF1 /* CalculatorPrediction.swift in Sources */,
+				913FDE042EBED98800B05D99 /* MagicTricksApp.swift in Sources */,
+				28C187862FCE7800001306EE /* InstructionStepRow.swift in Sources */,
+				28C1878E2FCE7900001306EE /* InstructionStepsSection.swift in Sources */,
+				0A000100000000000000001B /* OnboardingState.swift in Sources */,
+				0A000200000000000000001B /* OnboardingViewModel.swift in Sources */,
+				0A0002000000000000000024 /* TrickGradientCard.swift in Sources */,
+				0A0002000000000000000026 /* OnboardingCTAButton.swift in Sources */,
+				0A0002000000000000000028 /* AsyncUtilities.swift in Sources */,
+				0A000300000000000000001B /* OnboardingFlowView.swift in Sources */,
+				0A000400000000000000001B /* OnboardingProgressBar.swift in Sources */,
+				0A000500000000000000001B /* OBOptionRow.swift in Sources */,
+				0A000600000000000000001B /* OBWelcomeScreen.swift in Sources */,
+				0A000700000000000000001B /* OBGoalScreen.swift in Sources */,
+				0A000800000000000000001B /* OBPainPointsScreen.swift in Sources */,
+				0A000900000000000000001B /* OBSocialProofScreen.swift in Sources */,
+				0A000A00000000000000001B /* OBSolutionScreen.swift in Sources */,
+				0A000C00000000000000001B /* OBProcessingScreen.swift in Sources */,
+				0AFF00000000000000000002 /* InstructionPhase.swift in Sources */,
+				0AEE00000000000000000002 /* MagicGalleryPhoto.swift in Sources */,
+				0AEE00000000000000000004 /* MagicGalleryCameraView.swift in Sources */,
+				0AEE00000000000000000006 /* HapticTrainingMode.swift in Sources */,
+				0AEE00000000000000000008 /* HapticTrainingView.swift in Sources */,
+				0AEE0000000000000000000A /* CalculatorPredictionEngine.swift in Sources */,
+				0AEE0000000000000000000C /* SheetFlow.swift in Sources */,
+				0AEE0000000000000000000E /* AppSheetView.swift in Sources */,
+				0AEE00000000000000000011 /* MindPatternInstruction.swift in Sources */,
+				0AEE00000000000000000013 /* TimeControlInstruction.swift in Sources */,
+				0AEE00000000000000000015 /* MagicGalleryInstruction.swift in Sources */,
+				0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */,
+				0AEE00000000000000000019 /* FloatingMotionModifier.swift in Sources */,
+				0AFF00000000000000000004 /* AppColors.swift in Sources */,
+				0AFF00000000000000000006 /* PhoneTiltGestureManager.swift in Sources */,
+				0AFF00000000000000000008 /* CalculatorPredictionInstruction.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		9191CE1A2F549D7E00D5BAE8 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92A000012FC7600000A00001 /* CalculatorPredictionEngineTests.swift in Sources */,
+				91C7F5412FC9D90000A00001 /* HapticPatternBuilderTests.swift in Sources */,
+				91C7F5472FCE7B0000A00001 /* HapticManagerTests.swift in Sources */,
+				91C7F5432FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift in Sources */,
+				91C7F5452FC9EC0000A00001 /* SettingsStoreTests.swift in Sources */,
+				92A000022FC7600000A00001 /* AppPreferencesTests.swift in Sources */,
+				92A000032FC7600000A00001 /* HapticTrainingViewModelTests.swift in Sources */,
+				92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */,
+				92A000092FC8600000A00001 /* CalculatorPredictionViewModelTests.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9191CE232F549D7E00D5BAE8 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 913FDDDE2EBED62D00B05D99 /* MagicTricks */;
+			targetProxy = 9191CE222F549D7E00D5BAE8 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		913FDDE82EBED62F00B05D99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				DEVELOPMENT_TEAM = VUS888QPJB;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		913FDDE92EBED62F00B05D99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++20";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				DEVELOPMENT_TEAM = VUS888QPJB;
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu17;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				STRING_CATALOG_GENERATE_SYMBOLS = YES;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		913FDDEB2EBED62F00B05D99 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = MagicTricksIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VUS888QPJB;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MagicTricks/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Magic Tricks";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Magic Tricks uses the camera to capture numbered photos for Impossible Gallery.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Magic Tricks saves the selected reveal photo to your gallery for the final trick reveal.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.svoego.magic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Magic - distribution";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		913FDDEC2EBED62F00B05D99 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = MagicTricksIcon;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VUS888QPJB;
+				ENABLE_PREVIEWS = YES;
+				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = MagicTricks/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "Magic Tricks";
+				INFOPLIST_KEY_NSCameraUsageDescription = "Magic Tricks uses the camera to capture numbered photos for Impossible Gallery.";
+				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Magic Tricks saves the selected reveal photo to your gallery for the final trick reveal.";
+				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
+				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UIStatusBarHidden = NO;
+				INFOPLIST_KEY_UIStatusBarStyle = "";
+				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
+				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = net.svoego.magic;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Magic - distribution";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
+				SWIFT_EMIT_LOC_STRINGS = YES;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+		9191CE252F549D7E00D5BAE8 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Ross.MagicTricksTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MagicTricks.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MagicTricks";
+			};
+			name = Debug;
+		};
+		9191CE262F549D7E00D5BAE8 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Manual;
+				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = Ross.MagicTricksTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/MagicTricks.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/MagicTricks";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		913FDDDA2EBED62D00B05D99 /* Build configuration list for PBXProject "MagicTricks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				913FDDE82EBED62F00B05D99 /* Debug */,
+				913FDDE92EBED62F00B05D99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		913FDDEA2EBED62F00B05D99 /* Build configuration list for PBXNativeTarget "MagicTricks" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				913FDDEB2EBED62F00B05D99 /* Debug */,
+				913FDDEC2EBED62F00B05D99 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9191CE242F549D7E00D5BAE8 /* Build configuration list for PBXNativeTarget "MagicTricksTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9191CE252F549D7E00D5BAE8 /* Debug */,
+				9191CE262F549D7E00D5BAE8 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		91DD6A402F7DB817008626D9 /* XCRemoteSwiftPackageReference "Instructions" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/ephread/Instructions";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.3.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+	};
+	rootObject = 913FDDD72EBED62D00B05D99 /* Project object */;
+}

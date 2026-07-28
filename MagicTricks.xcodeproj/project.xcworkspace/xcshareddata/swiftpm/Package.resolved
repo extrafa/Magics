@@ -1,0 +1,15 @@
+{
+  "originHash" : "6762714353a7254f6efcf38dc9777d86f913806bb514785c075680391be83da6",
+  "pins" : [
+    {
+      "identity" : "instructions",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/ephread/Instructions",
+      "state" : {
+        "revision" : "54f50ec058a118107178f641f7475db353080c6d",
+        "version" : "2.3.0"
+      }
+    }
+  ],
+  "version" : 3
+}
