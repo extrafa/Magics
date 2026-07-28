@@ -1,3 +1,10 @@
+//
+//  MotionSettingsScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 01/06/2026.
+//
+
 import SwiftUI
 
 struct MotionSettingsScreen: View {
