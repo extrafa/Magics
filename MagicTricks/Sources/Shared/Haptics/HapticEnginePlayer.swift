@@ -1,8 +1,19 @@
+//
+//  HapticEnginePlayer.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import CoreHaptics
 import Foundation
 
 @MainActor
 final class HapticEnginePlayer {
+    private enum HapticPlaybackError: Error {
+        case engineUnavailable
+    }
+
     private var engine: CHHapticEngine?
     private var supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
 
@@ -77,7 +88,3 @@ final class HapticEnginePlayer {
 }
 
 extension HapticEnginePlayer: HapticEnginePlaying {}
-
-enum HapticPlaybackError: Error {
-    case engineUnavailable
-}
