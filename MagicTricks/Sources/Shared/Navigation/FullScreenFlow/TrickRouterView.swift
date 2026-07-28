@@ -10,7 +10,7 @@ import SwiftUI
 struct TrickRouterView: View {
 
     let trick: Trick
-    
+
     var body: some View {
         switch trick.id {
         case .calculatorPrediction:
