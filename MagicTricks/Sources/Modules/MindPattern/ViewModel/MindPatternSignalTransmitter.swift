@@ -39,19 +39,12 @@ final class MindPatternSignalTransmitter: MindPatternSignalTransmitting {
         let usesTrigger = preferences.isSecretGestureEnabled
 
         for (index, animal) in animals.enumerated() {
-            if index > 0 {
-                if usesTrigger {
-                    guard await waitSeconds(animalDelay) else { return }
-                    guard await gestureManager.waitForScreenDownGesture() else { return }
-                } else {
-                    guard await waitSeconds(animalDelay) else { return }
-                }
+            if usesTrigger {
+                if index > 0 { guard await waitSeconds(animalDelay) else { return } }
+                guard await gestureManager.waitForScreenDownGesture() else { return }
             } else {
-                if usesTrigger {
-                    guard await gestureManager.waitForScreenDownGesture() else { return }
-                } else {
-                    guard await waitSeconds(firstSignalDelay) else { return }
-                }
+                let delay = index == 0 ? firstSignalDelay : animalDelay
+                guard await waitSeconds(delay) else { return }
             }
 
             await playSignal(count: animal.signalCount)
@@ -76,5 +69,4 @@ final class MindPatternSignalTransmitter: MindPatternSignalTransmitting {
             }
         }
     }
-
 }

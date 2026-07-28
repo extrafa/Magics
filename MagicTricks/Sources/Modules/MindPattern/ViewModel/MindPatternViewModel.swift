@@ -9,7 +9,7 @@ import Foundation
 
 @MainActor
 final class MindPatternViewModel: ObservableObject {
-    
+
     private enum TapOutcome {
         case accepted
         case readyToTransmit([MindPatternAnimal])
@@ -79,6 +79,7 @@ final class MindPatternViewModel: ObservableObject {
     }
 
     private func animateTap(for animal: MindPatternAnimal) {
+        guard activeTapAnimal != animal else { return }
         tapAnimationTask?.cancel()
         activeTapAnimal = animal
         tapAnimationTask = Task { [weak self] in

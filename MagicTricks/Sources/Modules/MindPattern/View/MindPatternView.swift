@@ -11,6 +11,7 @@ struct MindPatternView: View {
 
     @StateObject private var viewModel = MindPatternViewModel()
     @State private var isVisible = true
+    @State private var pressedAnimal: MindPatternAnimal?
 
     private let columns = [
         GridItem(.flexible(), spacing: 12),
@@ -42,9 +43,13 @@ struct MindPatternView: View {
                             duration: 4.4 + Double(tile.animal.signalCount) * 0.18
                         )
                         .gesture(
-                            // fires on touch down, not finger up — card responds instantly on press
                             DragGesture(minimumDistance: 0)
-                                .onChanged { _ in viewModel.handleTap(on: tile) }
+                                .onChanged { _ in
+                                    guard pressedAnimal != tile.animal else { return }
+                                    pressedAnimal = tile.animal
+                                    viewModel.handleTap(on: tile)
+                                }
+                                .onEnded { _ in pressedAnimal = nil }
                         )
                     }
                 }
@@ -57,6 +62,7 @@ struct MindPatternView: View {
         }
         .onDisappear {
             viewModel.cancelTasks()
+            pressedAnimal = nil
         }
     }
 
