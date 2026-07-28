@@ -1,3 +1,10 @@
+//
+//  MagicGalleryCapturePanel.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
 
 struct MagicGalleryCapturePanel: View {
@@ -13,14 +20,14 @@ struct MagicGalleryCapturePanel: View {
             captureButton
         }
         .padding(18)
-        .background(
+        .background {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
                 .fill(Color.grayCard)
                 .overlay {
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
                         .stroke(Color.grayBorder, lineWidth: 1)
                 }
-        )
+        }
     }
 
     private var standardSetControl: some View {
@@ -48,7 +55,7 @@ struct MagicGalleryCapturePanel: View {
 
             Toggle("", isOn: Binding(
                 get: { usesStandardSet },
-                set: { onToggleStandardSet($0) }
+                set: onToggleStandardSet
             ))
             .labelsHidden()
             .tint(.indigo)

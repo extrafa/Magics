@@ -1,3 +1,10 @@
+//
+//  MagicGalleryPhoto.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import UIKit
 
 enum MagicGalleryPhotoSource: Equatable {

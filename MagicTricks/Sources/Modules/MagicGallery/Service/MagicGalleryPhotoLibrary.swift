@@ -1,3 +1,10 @@
+//
+//  MagicGalleryPhotoLibrary.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import UIKit
 
 @MainActor
@@ -109,6 +116,8 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
 
 @MainActor
 final class MagicGallerySystemPhotoSaver: NSObject, MagicGalleryPhotoSaving {
+    // Stored at object level because UIImageWriteToSavedPhotosAlbum fires its callback
+    // after the async function returns — a local continuation would already be gone by then
     private var continuation: CheckedContinuation<Void, Error>?
 
     func saveToGallery(_ image: UIImage) async throws {

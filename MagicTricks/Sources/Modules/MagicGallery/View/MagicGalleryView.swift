@@ -1,3 +1,10 @@
+//
+//  MagicGalleryView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
 
 struct MagicGalleryView: View {
@@ -23,7 +30,7 @@ struct MagicGalleryView: View {
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button(action: { dismiss() }) {
+                    Button { dismiss() } label: {
                         Image(systemName: "xmark")
                             .fontWeight(.semibold)
                     }
@@ -51,10 +58,10 @@ struct MagicGalleryView: View {
     private var capturePanel: some View {
         MagicGalleryCapturePanel(
             usesStandardSet: vm.usesStandardSet,
-            onToggleStandardSet: { vm.setStandardSet($0) },
+            onToggleStandardSet: vm.setStandardSet,
             captureButtonTitle: vm.captureButtonTitle,
             canAddMorePhotos: vm.canAddMorePhotos,
-            onCapture: { vm.startSequentialCapture() }
+            onCapture: vm.startSequentialCapture
         )
     }
 
