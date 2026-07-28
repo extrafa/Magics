@@ -68,13 +68,13 @@ private struct InstructionInfoCard: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(
+        .background {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
                 .fill(Color.primaryText.opacity(fillOpacity))
-                .overlay(
+                .overlay {
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
                         .stroke(Color.primaryText.opacity(strokeOpacity), lineWidth: 1)
-                )
-        )
+                }
+        }
     }
 }
