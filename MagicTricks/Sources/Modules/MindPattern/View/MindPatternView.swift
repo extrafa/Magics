@@ -42,6 +42,7 @@ struct MindPatternView: View {
                             duration: 4.4 + Double(tile.animal.signalCount) * 0.18
                         )
                         .gesture(
+                            // fires on touch down, not finger up — card responds instantly on press
                             DragGesture(minimumDistance: 0)
                                 .onChanged { _ in viewModel.handleTap(on: tile) }
                         )
@@ -61,7 +62,7 @@ struct MindPatternView: View {
 
     private var orderBar: some View {
         HStack(spacing: 8) {
-            ForEach(0..<6, id: \.self) { index in
+            ForEach(0..<viewModel.tiles.count, id: \.self) { index in
                 if index < viewModel.spectatorSelection.count {
                     filledSlot(index: index, animal: viewModel.spectatorSelection[index])
                 } else {

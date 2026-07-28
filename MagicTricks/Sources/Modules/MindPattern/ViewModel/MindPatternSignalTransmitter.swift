@@ -1,3 +1,10 @@
+//
+//  MindPatternSignalTransmitter.swift
+//  Magic Tricks
+//
+//  Created by Ross on 17/04/2026.
+//
+
 import Foundation
 
 @MainActor
