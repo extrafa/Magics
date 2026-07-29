@@ -24,10 +24,8 @@ struct InstructionStepRow: View {
 
     private var phaseColor: Color {
         switch step.phase {
-        case .preparation:
-            return .blue
-        case .demonstration:
-            return .green
+        case .preparation: .blue
+        case .demonstration: .green
         }
     }
 
@@ -84,5 +82,20 @@ struct InstructionStepRow: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+#Preview {
+    ScrollView {
+        InstructionStepRow(
+            number: 1,
+            step: InstructionStep(
+                title: "Познакомьтесь с вибрациями",
+                description: "Потренируйтесь различать сигналы вибрации.",
+                phase: .preparation,
+                actions: [.hapticTraining]
+            )
+        )
+        .padding()
     }
 }

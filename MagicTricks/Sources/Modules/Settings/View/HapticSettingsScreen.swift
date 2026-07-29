@@ -1,3 +1,10 @@
+//
+//  HapticSettingsScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 24/04/2026.
+//
+
 import SwiftUI
 
 struct HapticSettingsScreen: View {

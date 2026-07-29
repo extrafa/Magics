@@ -157,7 +157,7 @@ final class MagicGalleryViewModelTests: XCTestCase {
         photoLibrary: MockMagicGalleryPhotoLibrary? = nil,
         photoSaver: MockMagicGalleryPhotoSaver? = nil,
         storedPhotos: [MagicGalleryPhoto] = [],
-        usesStandardSet: Bool = true
+        usesStandardSet: Bool = false
     ) -> MagicGalleryViewModel {
         let haptics = haptics ?? MockNotificationHaptics()
         let photoLibrary = photoLibrary ?? MockMagicGalleryPhotoLibrary()

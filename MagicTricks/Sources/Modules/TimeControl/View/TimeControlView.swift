@@ -8,7 +8,6 @@
 import SwiftUI
 
 struct TimeControlView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var viewModel = TimeControlViewModel()
     @State private var isVisible = true
@@ -48,9 +47,7 @@ struct TimeControlView: View {
 
     private var controls: some View {
         HStack {
-            Button {
-                viewModel.reset()
-            } label: {
+            Button(action: viewModel.reset) {
                 controlCircle(
                     title: String(localized: "timeControl.reset"),
                     fill: Color.white.opacity(0.12),
@@ -62,9 +59,7 @@ struct TimeControlView: View {
 
             Spacer()
 
-            Button {
-                viewModel.handlePrimaryAction()
-            } label: {
+            Button(action: viewModel.handlePrimaryAction) {
                 controlCircle(
                     title: viewModel.isRunning ? String(localized: "timeControl.stop") : String(localized: "timeControl.start"),
                     fill: viewModel.isRunning ? Color.red.opacity(0.22) : Color.green.opacity(0.22),
@@ -90,4 +85,8 @@ struct TimeControlView: View {
                 .foregroundStyle(titleColor)
         }
     }
+}
+
+#Preview {
+    TimeControlView()
 }

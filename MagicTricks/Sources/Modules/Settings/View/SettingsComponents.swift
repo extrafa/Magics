@@ -137,13 +137,13 @@ struct SettingsStepper: View {
 
 extension View {
     func settingsCard() -> some View {
-        self.background(
+        self.background {
             RoundedRectangle(cornerRadius: 20, style: .continuous)
                 .fill(Color.grayCard)
                 .overlay {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .stroke(Color.grayBorder, lineWidth: 1)
                 }
-        )
+        }
     }
 }

@@ -1,3 +1,10 @@
+//
+//  HapticTrainingViewModel.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import Foundation
 
 @MainActor
@@ -8,16 +15,12 @@ final class HapticTrainingViewModel: ObservableObject {
         case incorrect(expected: Int)
     }
 
-    // MARK: - Published state
-
     @Published private(set) var targetValue: Int
     @Published private(set) var result: GuessResult?
     @Published private(set) var correctCount = 0
     @Published private(set) var attemptCount = 0
     @Published private(set) var isPlaying = false
     @Published private(set) var hasPlayed = false
-
-    // MARK: - Private
 
     private let mode: HapticTrainingMode
     private let options: [Int]
@@ -35,8 +38,6 @@ final class HapticTrainingViewModel: ObservableObject {
         self.countHaptics = countHaptics ?? HapticManager.shared
         self.timeHaptics = timeHaptics ?? HapticManager.shared
     }
-
-    // MARK: - Round lifecycle
 
     func startNewRound() {
         targetValue = options.randomElement() ?? 0
@@ -56,7 +57,6 @@ final class HapticTrainingViewModel: ObservableObject {
         }
     }
 
-    // Plays the haptic signal for the current target value.
     // Bridges the callback-based HapticManager API into async/await.
     func playSignal() async {
         guard !isPlaying else { return }

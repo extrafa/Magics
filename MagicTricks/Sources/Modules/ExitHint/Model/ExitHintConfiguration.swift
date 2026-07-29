@@ -1,5 +1,10 @@
-import CoreGraphics
-import Foundation
+//
+//  ExitHintConfiguration.swift
+//  Magic Tricks
+//
+//  Created by Ross on 09/04/2026.
+//
+
 import SwiftUI
 
 @MainActor
@@ -23,34 +28,25 @@ enum ExitHintStyle {
 
     var strokeColor: Color {
         switch self {
-        case .normal:
-            return Color.primaryText.opacity(0.36)
-        case .specialWhite:
-            return Color.defaultText.opacity(0.36)
-        case .specialBlack:
-            return Color.black.opacity(0.55)
+        case .normal: Color.primaryText.opacity(0.36)
+        case .specialWhite: Color.defaultText.opacity(0.36)
+        case .specialBlack: Color.black.opacity(0.55)
         }
     }
 
     var fillColor: Color {
         switch self {
-        case .normal:
-            return Color.primaryText.opacity(0.04)
-        case .specialWhite:
-            return Color.defaultText.opacity(0.04)
-        case .specialBlack:
-            return Color.black.opacity(0.06)
+        case .normal: Color.primaryText.opacity(0.04)
+        case .specialWhite: Color.defaultText.opacity(0.04)
+        case .specialBlack: Color.black.opacity(0.06)
         }
     }
 
     var textColor: Color {
         switch self {
-        case .normal:
-            return Color.primaryText.opacity(0.62)
-        case .specialWhite:
-            return Color.defaultText.opacity(0.62)
-        case .specialBlack:
-            return Color.black.opacity(0.62)
+        case .normal: Color.primaryText.opacity(0.62)
+        case .specialWhite: Color.defaultText.opacity(0.62)
+        case .specialBlack: Color.black.opacity(0.62)
         }
     }
 

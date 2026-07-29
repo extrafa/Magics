@@ -1,3 +1,10 @@
+//
+//  ExitHintView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 09/04/2026.
+//
+
 import SwiftUI
 
 struct ExitHintView: View {
@@ -24,10 +31,19 @@ struct ExitHintView: View {
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .exitHintLongPressEnabled(onExit: dismiss.callAsFunction)
-        .sheet(isPresented: $viewModel.isConfirmSheetPresented) {
-            confirmationSheet
-                .presentationDetents([.height(248)])
-                .presentationDragIndicator(.visible)
+        .alert(
+            String(localized: "exitHint.confirm.title"),
+            isPresented: $viewModel.isConfirmAlertPresented
+        ) {
+            Button(String(localized: "exitHint.showAgain"), role: .cancel) { }
+            Button(String(localized: "common.gotIt")) {
+                viewModel.confirmHintDismiss {
+                    isVisible = false
+                    dismiss()
+                }
+            }
+        } message: {
+            Text(String(localized: "exitHint.confirm.description"))
         }
         .onAppear {
             viewModel.configurePresentation(isVisible: isVisible, isHintVisible: $isVisible)
@@ -41,7 +57,7 @@ struct ExitHintView: View {
             }
             syncGestureState()
         }
-        .onChange(of: viewModel.isConfirmSheetPresented) { _, _ in
+        .onChange(of: viewModel.isConfirmAlertPresented) { _, _ in
             syncGestureState()
         }
         .onDisappear {
@@ -65,10 +81,10 @@ struct ExitHintView: View {
                     style.strokeColor,
                     style: StrokeStyle(lineWidth: 1.4, dash: [7, 5])
                 )
-                .background(
+                .background {
                     RoundedRectangle(cornerRadius: 20, style: .continuous)
                         .fill(style.fillColor)
-                )
+                }
                 .overlay {
                     VStack(spacing: 0) {
                         Spacer(minLength: 18)
@@ -106,45 +122,7 @@ struct ExitHintView: View {
                 .allowsHitTesting(false)
         }
     }
-
-    private var confirmationSheet: some View {
-        VStack(spacing: 16) {
-            Capsule()
-                .fill(Color.secondary.opacity(0.18))
-                .frame(width: 42, height: 5)
-                .padding(.top, 8)
-                .opacity(0)
-
-            Text(String(localized: "exitHint.confirm.title"))
-                .font(.system(size: 19, weight: .semibold, design: .rounded))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 24)
-
-            Text(String(localized: "exitHint.confirm.description"))
-                .font(.system(size: 14, weight: .medium, design: .rounded))
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 28)
-
-            HStack(spacing: 12) {
-                Button(String(localized: "exitHint.showAgain")) {
-                    viewModel.cancelConfirmation()
-                }
-                .buttonStyle(.bordered)
-
-                Button(String(localized: "common.gotIt")) {
-                    viewModel.confirmHintDismiss {
-                        isVisible = false
-                        dismiss()
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-            }
-            .tint(.blue)
-            .padding(.bottom, 12)
-        }
-    }
-
+    
     private func syncGestureState() {
         ExitHintGestureState.shared.isTrainingActive = isVisible && viewModel.shouldBlockInteraction
         ExitHintGestureState.shared.onTrainingHold = {

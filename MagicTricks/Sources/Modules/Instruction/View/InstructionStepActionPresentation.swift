@@ -1,3 +1,10 @@
+//
+//  InstructionStepActionPresentation.swift
+//  Magic Tricks
+//
+//  Created by Ross on 02/06/2026.
+//
+
 import Foundation
 
 struct InstructionStepActionPresentation {

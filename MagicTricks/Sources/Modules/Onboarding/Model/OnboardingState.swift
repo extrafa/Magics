@@ -1,8 +1,14 @@
+//
+//  OnboardingState.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import Foundation
 
-enum OnboardingGoal: CaseIterable, Identifiable, Hashable {
+enum OnboardingGoal: CaseIterable, Hashable {
     case parties, dates, work, family, everywhere
-    var id: Self { self }
 
     var emoji: String {
         switch self {

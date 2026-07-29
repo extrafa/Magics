@@ -16,7 +16,6 @@ enum TrickPalette {
 
     enum Collection {
         static let colorSense = Color("collectionColorSense")
-        static let mindPattern = Color("collectionMindPattern")
         static let calculatorPrediction = Color("collectionCalculatorPrediction")
         static let timeControl = Color("collectionTimeControl")
         static let magicGallery = Color("collectionMagicGallery")
@@ -29,21 +28,12 @@ enum TrickPalette {
         static let yellow = Color("colorSenseYellow")
     }
 
-    enum MindPattern {
-        static let red = Color("difficultyHard")
-        static let blue = Color("mindPatternBlue")
-        static let green = Color("mindPatternGreen")
-        static let orange = Color("mindPatternOrange")
-        static let purple = Color("mindPatternPurple")
-        static let cyan = Color("mindPatternCyan")
-    }
 }
 
 extension TrickType {
     var collectionColor: Color {
         switch self {
         case .colorMentalism: TrickPalette.Collection.colorSense
-        case .mindPattern: TrickPalette.Collection.mindPattern
         case .calculatorPrediction: TrickPalette.Collection.calculatorPrediction
         case .timeControl: TrickPalette.Collection.timeControl
         case .magicGallery: TrickPalette.Collection.magicGallery

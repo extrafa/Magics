@@ -1,12 +1,19 @@
-import Foundation
+//
+//  StoreManager.swift
+//  Magic Tricks
+//
+//  Created by Ross on 11/06/2026.
+//
 
-enum StoreProducts {
-    static let lifetime = "magic_lifetime"
-    static let all = [lifetime]
-}
+import Foundation
 
 @MainActor
 final class StoreManager: ObservableObject {
+
+    private enum StoreProducts {
+        static let lifetime = "magic_lifetime"
+        static let all = [lifetime]
+    }
 
     @Published private(set) var products: [StoreProduct] = []
     @Published private(set) var hasProAccess: Bool = false

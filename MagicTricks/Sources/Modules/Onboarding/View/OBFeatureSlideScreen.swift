@@ -1,3 +1,10 @@
+//
+//  OBFeatureSlideScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 // MARK: - Feature type
@@ -83,7 +90,10 @@ struct OBFeatureSlideScreen: View {
             .animation(.easeOut(duration: 0.3).delay(0.38), value: appeared)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.24) { appeared = true }
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(240))
+                appeared = true
+            }
         }
     }
 
@@ -133,8 +143,6 @@ private struct TricksPreviewVisual: View {
 }
 
 // MARK: - Visual: Vibrations
-// Three concentric rings expanding outward — the phone as the silent conductor.
-// Rings use decreasing line weights for depth. Center uses the phone icon.
 
 private struct VibrationsVisual: View {
     var body: some View {

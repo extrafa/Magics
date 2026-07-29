@@ -52,14 +52,12 @@ struct InstructionView: View {
 
 private extension InstructionView {
     var headerSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(instruction.title)
-                .font(.system(size: 32, weight: .bold, design: .rounded))
-                .foregroundStyle(.primaryText)
-                .multilineTextAlignment(.leading)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(.top)
+        Text(instruction.title)
+            .font(.system(size: 32, weight: .bold, design: .rounded))
+            .foregroundStyle(.primaryText)
+            .multilineTextAlignment(.leading)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.top)
     }
 
     var effectSection: some View {
@@ -83,7 +81,7 @@ private extension InstructionView {
 }
 
 #Preview {
-    NavigationView {
+    NavigationStack {
         InstructionView(instruction: .calculatorPrediction)
     }
 }

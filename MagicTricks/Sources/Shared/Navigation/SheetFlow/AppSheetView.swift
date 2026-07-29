@@ -1,3 +1,10 @@
+//
+//  AppSheetView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 11/01/2026.
+//
+
 import SwiftUI
 
 struct AppSheetView: View {

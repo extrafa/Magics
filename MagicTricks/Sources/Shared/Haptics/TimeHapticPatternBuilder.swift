@@ -1,3 +1,10 @@
+//
+//  TimeHapticPatternBuilder.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import CoreHaptics
 import Foundation
 

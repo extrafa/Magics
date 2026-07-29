@@ -1,3 +1,10 @@
+//
+//  MagicGalleryCaptureFlow.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import Foundation
 
 struct MagicGalleryCaptureFlow {
@@ -43,3 +50,4 @@ struct MagicGalleryCaptureFlow {
         return MagicGalleryCaptureSession(number: pendingNumber)
     }
 }
+

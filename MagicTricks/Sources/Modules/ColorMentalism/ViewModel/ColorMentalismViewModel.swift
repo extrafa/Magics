@@ -40,6 +40,7 @@ final class ColorMentalismViewModel: ObservableObject {
     func cancel() {
         tapAnimationTask?.cancel()
         playSignalTask?.cancel()
+        activeTapCardID = nil
         canTap = true
     }
 
@@ -59,6 +60,7 @@ final class ColorMentalismViewModel: ObservableObject {
         canTap = false
         playSignalTask?.cancel()
         playSignalTask = Task { [weak self] in
+            // delay so the haptic isn't felt right after tap — spectator shouldn't notice it start
             try? await Task.sleep(for: .seconds(1))
             guard !Task.isCancelled, let self else { return }
             haptics.playColorCode(type.vibrations) { [weak self] in

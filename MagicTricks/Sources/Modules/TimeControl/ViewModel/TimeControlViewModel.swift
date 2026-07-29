@@ -90,13 +90,13 @@ final class TimeControlViewModel: ObservableObject {
         timerTask = Task { [weak self] in
             guard let self else { return }
             while !Task.isCancelled {
-                await self.tick()
-                try? await Task.sleep(nanoseconds: 10_000_000)
+                self.tick()
+                try? await Task.sleep(for: .milliseconds(10))
             }
         }
     }
 
-    private func tick() async {
+    private func tick() {
         guard isRunning, let startDate else { return }
         displayedElapsed = accumulatedElapsed + Date().timeIntervalSince(startDate)
     }

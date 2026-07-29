@@ -1,3 +1,10 @@
+//
+//  InstructionStepActionsView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 02/06/2026.
+//
+
 import SwiftUI
 
 struct InstructionStepActionsView: View {

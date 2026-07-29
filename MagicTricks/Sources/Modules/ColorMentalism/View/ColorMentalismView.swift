@@ -27,17 +27,11 @@ struct ColorMentalismView: View {
 
             LazyVGrid(columns: columns, spacing: 14) {
                 ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
-                    let motion = floatingMotionSettings(for: index)
-
                     cardView(card)
                         .rotationEffect(.degrees(card.rotation))
-                        .floatingMotion(
-                            phase: motion.phase,
-                            travel: motion.travel,
-                            rotation: motion.rotation,
-                            duration: motion.duration
-                        )
+                        .modifier(floatingMotionSettings(for: index))
                         .gesture(
+                            // fires on touch down, not finger up — card responds instantly on press
                             DragGesture(minimumDistance: 0)
                                 .onChanged { _ in viewModel.handleTap(on: card) }
                         )

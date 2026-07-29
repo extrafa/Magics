@@ -1,3 +1,10 @@
+//
+//  TrickCardActions.swift
+//  Magic Tricks
+//
+//  Created by Ross on 10/04/2026.
+//
+
 import SwiftUI
 
 struct TrickCardActions: View {
@@ -22,7 +29,7 @@ struct TrickCardActions: View {
                     .padding(.horizontal)
                     .frame(maxWidth: .infinity)
                     .frame(height: 52)
-                    .contentShape(RoundedRectangle(cornerRadius: 16))
+                    .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
             .buttonStyle(PrimaryTrickButtonStyle(color: .button))
         }

@@ -92,9 +92,7 @@ private extension SettingsScreen {
 
                 SettingsDivider()
 
-                Button {
-                    requestReview()
-                } label: {
+                Button { requestReview() } label: {
                     SettingsActionRow(
                         icon: "star",
                         title: String(localized: "settings.rateUs")

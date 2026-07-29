@@ -1,3 +1,10 @@
+//
+//  OBPaywallScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 struct OBPaywallScreen: View {
@@ -34,7 +41,10 @@ struct OBPaywallScreen: View {
                 .padding(.bottom, 48)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.24) { appeared = true }
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(240))
+                appeared = true
+            }
         }
         .onChange(of: store.hasProAccess) {
             if store.hasProAccess { onDismiss() }

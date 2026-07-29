@@ -1,3 +1,10 @@
+//
+//  OBGoalScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 struct OBGoalScreen: View {
@@ -56,7 +63,10 @@ struct OBGoalScreen: View {
                 .animation(.easeOut(duration: 0.35).delay(0.5), value: appeared)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.24) { appeared = true }
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(240))
+                appeared = true
+            }
         }
     }
 

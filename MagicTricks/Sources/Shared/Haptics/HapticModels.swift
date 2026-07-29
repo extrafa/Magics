@@ -1,9 +1,11 @@
-import Foundation
+//
+//  HapticModels.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
 
-enum HapticBeat {
-    case short
-    case long
-}
+import Foundation
 
 enum HapticTiming {
     static let initialDelay: TimeInterval = 0
