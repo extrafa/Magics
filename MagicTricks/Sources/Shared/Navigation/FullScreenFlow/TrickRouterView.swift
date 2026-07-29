@@ -21,6 +21,8 @@ struct TrickRouterView: View {
             MagicGalleryView()
         case .timeControl:
             TimeControlView()
+        case .geoMentalism:
+            EmptyView()
         }
     }
 }

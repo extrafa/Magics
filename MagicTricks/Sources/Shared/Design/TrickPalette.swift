@@ -19,6 +19,7 @@ enum TrickPalette {
         static let calculatorPrediction = Color("collectionCalculatorPrediction")
         static let timeControl = Color("collectionTimeControl")
         static let magicGallery = Color("collectionMagicGallery")
+        static let geoMentalism = Color("collectionGeoMentalism")
     }
 
     enum ColorSense {
@@ -37,6 +38,7 @@ extension TrickType {
         case .calculatorPrediction: TrickPalette.Collection.calculatorPrediction
         case .timeControl: TrickPalette.Collection.timeControl
         case .magicGallery: TrickPalette.Collection.magicGallery
+        case .geoMentalism: TrickPalette.Collection.geoMentalism
         }
     }
 }
