@@ -14,7 +14,6 @@ struct OBWelcomeScreen: View {
 
     private let topRow: [(String, Color)] = [
         ("paintpalette",             TrickPalette.Collection.colorSense),
-        ("pawprint.fill",            TrickPalette.Collection.mindPattern),
         ("ipad",                     TrickPalette.Collection.calculatorPrediction),
     ]
 

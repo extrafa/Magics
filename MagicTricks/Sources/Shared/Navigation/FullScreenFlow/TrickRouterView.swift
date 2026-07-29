@@ -17,8 +17,6 @@ struct TrickRouterView: View {
             CalculatorPredictionView()
         case .colorMentalism:
             ColorMentalismView()
-        case .mindPattern:
-            MindPatternView()
         case .magicGallery:
             MagicGalleryView()
         case .timeControl:

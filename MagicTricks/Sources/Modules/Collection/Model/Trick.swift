@@ -9,7 +9,6 @@ import Foundation
 
 enum TrickType {
     case colorMentalism
-    case mindPattern
     case calculatorPrediction
     case timeControl
     case magicGallery
@@ -69,21 +68,13 @@ struct TrickCollection {
             instruction: .colorMentalism
         ),
         Trick(
-            id: .mindPattern,
-            title: String(localized: "card.mindPattern.title"),
-            subtitle: String(localized: "card.mindPattern.subtitle"),
-            image: "pawprint.fill",
-            difficulty: .easy,
-            instruction: .mindPattern
+            id: .calculatorPrediction,
+            title: String(localized: "card.calculatorPrediction.title"),
+            subtitle: String(localized: "card.calculatorPrediction.subtitle"),
+            image: "ipad",
+            difficulty: .medium,
+            instruction: .calculatorPrediction
         ),
-//        Trick(
-//            id: .calculatorPrediction,
-//            title: String(localized: "card.calculatorPrediction.title"),
-//            subtitle: String(localized: "card.calculatorPrediction.subtitle"),
-//            image: "ipad",
-//            difficulty: .medium,
-//            instruction: .calculatorPrediction
-//        ),
         Trick(
             id: .timeControl,
             title: String(localized: "card.time.title"),

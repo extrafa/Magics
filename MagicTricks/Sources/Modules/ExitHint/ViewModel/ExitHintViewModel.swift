@@ -10,7 +10,7 @@ import SwiftUI
 @MainActor
 final class ExitHintViewModel: ObservableObject {
     @Published var hintOpacity = 1.0
-    @Published var isConfirmSheetPresented = false
+    @Published var isConfirmAlertPresented = false
 
     private var autoFadeTask: Task<Void, Never>?
     private var flashTask: Task<Void, Never>?
@@ -26,24 +26,20 @@ final class ExitHintViewModel: ObservableObject {
     }
 
     var shouldBlockInteraction: Bool {
-        !didLearnExitHint && !isConfirmSheetPresented
+        !didLearnExitHint && !isConfirmAlertPresented
     }
 
     func presentConfirmation() {
         guard !didLearnExitHint else { return }
-        isConfirmSheetPresented = true
+        isConfirmAlertPresented = true
     }
 
     func confirmHintDismiss(onConfirmExit: @escaping () -> Void) {
         didLearnExitHint = true
-        isConfirmSheetPresented = false
+        isConfirmAlertPresented = false
         withAnimation(.easeOut(duration: 0.22)) {
             onConfirmExit()
         }
-    }
-
-    func cancelConfirmation() {
-        isConfirmSheetPresented = false
     }
 
     func configurePresentation(isVisible: Bool, isHintVisible: Binding<Bool>) {

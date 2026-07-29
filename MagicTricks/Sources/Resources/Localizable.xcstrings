@@ -58,7 +58,6 @@
       }
     },
     "card.calculatorPrediction.subtitle" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -75,7 +74,6 @@
       }
     },
     "card.calculatorPrediction.title" : {
-      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {

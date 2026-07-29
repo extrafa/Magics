@@ -31,7 +31,6 @@
 		0AEE0000000000000000000A /* CalculatorPredictionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000009 /* CalculatorPredictionEngine.swift */; };
 		0AEE0000000000000000000C /* SheetFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000000B /* SheetFlow.swift */; };
 		0AEE0000000000000000000E /* AppSheetView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000000D /* AppSheetView.swift */; };
-		0AEE00000000000000000011 /* MindPatternInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000010 /* MindPatternInstruction.swift */; };
 		0AEE00000000000000000013 /* TimeControlInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000012 /* TimeControlInstruction.swift */; };
 		0AEE00000000000000000015 /* MagicGalleryInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000014 /* MagicGalleryInstruction.swift */; };
 		0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000016 /* HapticManager+CountSignal.swift */; };
@@ -50,7 +49,6 @@
 		2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370A2FAA196500234419 /* TimeControlViewModel.swift */; };
 		2834370D2FAA196500234419 /* TimeControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370C2FAA196500234419 /* TimeControlView.swift */; };
 		28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28404A052FC056FF0062D941 /* TimeControlSignalTransmitter.swift */; };
-		28404A082FC0570B0062D941 /* MindPatternSignalTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28404A072FC0570B0062D941 /* MindPatternSignalTransmitter.swift */; };
 		2860B4AF2FA5363300525B68 /* SettingsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2860B4AD2FA5363300525B68 /* SettingsComponents.swift */; };
 		2860B4B02FA5363300525B68 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2860B4AE2FA5363300525B68 /* SettingsScreen.swift */; };
 		28703B2F2FC6354500EA7B05 /* HapticAnswerSectionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28703B2E2FC6354500EA7B05 /* HapticAnswerSectionView.swift */; };
@@ -76,10 +74,6 @@
 		28960C5B2FABD6D1003268CD /* ExitHintConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5A2FABD6D1003268CD /* ExitHintConfiguration.swift */; };
 		28960C5D2FABD6D2003268CD /* ExitHintViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5C2FABD6D2003268CD /* ExitHintViewModel.swift */; };
 		28960C602FABD7A0003268CD /* ExitHintGestureCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5F2FABD7A0003268CD /* ExitHintGestureCaptureView.swift */; };
-		28960C652FABD939003268CD /* MindPatternTile.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C642FABD939003268CD /* MindPatternTile.swift */; };
-		28960C692FABD939003268CD /* MindPatternCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C682FABD939003268CD /* MindPatternCardView.swift */; };
-		28960C6B2FABD939003268CD /* MindPatternViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C6A2FABD939003268CD /* MindPatternViewModel.swift */; };
-		28960C6D2FABD939003268CD /* MindPatternView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C6C2FABD939003268CD /* MindPatternView.swift */; };
 		28B6EAA53013DC05001FD5CB /* TrickCardButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */; };
 		28BA97D62FBB389000F30468 /* HapticSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */; };
 		28BA97D82FCE760000F30468 /* HapticSignalSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */; };
@@ -171,7 +165,6 @@
 		0AEE00000000000000000009 /* CalculatorPredictionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionEngine.swift; sourceTree = "<group>"; };
 		0AEE0000000000000000000B /* SheetFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SheetFlow.swift; sourceTree = "<group>"; };
 		0AEE0000000000000000000D /* AppSheetView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppSheetView.swift; sourceTree = "<group>"; };
-		0AEE00000000000000000010 /* MindPatternInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternInstruction.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000012 /* TimeControlInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlInstruction.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000014 /* MagicGalleryInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryInstruction.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000016 /* HapticManager+CountSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+CountSignal.swift"; sourceTree = "<group>"; };
@@ -191,7 +184,6 @@
 		2834370A2FAA196500234419 /* TimeControlViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModel.swift; sourceTree = "<group>"; };
 		2834370C2FAA196500234419 /* TimeControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlView.swift; sourceTree = "<group>"; };
 		28404A052FC056FF0062D941 /* TimeControlSignalTransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlSignalTransmitter.swift; sourceTree = "<group>"; };
-		28404A072FC0570B0062D941 /* MindPatternSignalTransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternSignalTransmitter.swift; sourceTree = "<group>"; };
 		2860B4AD2FA5363300525B68 /* SettingsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsComponents.swift; sourceTree = "<group>"; };
 		2860B4AE2FA5363300525B68 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
 		28703B2E2FC6354500EA7B05 /* HapticAnswerSectionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticAnswerSectionView.swift; sourceTree = "<group>"; };
@@ -217,10 +209,6 @@
 		28960C5A2FABD6D1003268CD /* ExitHintConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintConfiguration.swift; sourceTree = "<group>"; };
 		28960C5C2FABD6D2003268CD /* ExitHintViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintViewModel.swift; sourceTree = "<group>"; };
 		28960C5F2FABD7A0003268CD /* ExitHintGestureCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintGestureCaptureView.swift; sourceTree = "<group>"; };
-		28960C642FABD939003268CD /* MindPatternTile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternTile.swift; sourceTree = "<group>"; };
-		28960C682FABD939003268CD /* MindPatternCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternCardView.swift; sourceTree = "<group>"; };
-		28960C6A2FABD939003268CD /* MindPatternViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternViewModel.swift; sourceTree = "<group>"; };
-		28960C6C2FABD939003268CD /* MindPatternView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindPatternView.swift; sourceTree = "<group>"; };
 		28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickCardButtonStyle.swift; sourceTree = "<group>"; };
 		28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingsScreen.swift; sourceTree = "<group>"; };
 		28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSignalSettingsSection.swift; sourceTree = "<group>"; };
@@ -512,43 +500,6 @@
 			path = ViewModel;
 			sourceTree = "<group>";
 		};
-		28960C602FABD8F7003268CD /* MindPattern */ = {
-			isa = PBXGroup;
-			children = (
-				28960C612FABD8F7003268CD /* Model */,
-				28960C622FABD8F7003268CD /* View */,
-				28960C632FABD8F7003268CD /* ViewModel */,
-			);
-			path = MindPattern;
-			sourceTree = "<group>";
-		};
-		28960C612FABD8F7003268CD /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				28960C642FABD939003268CD /* MindPatternTile.swift */,
-				0AEE00000000000000000010 /* MindPatternInstruction.swift */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
-		28960C622FABD8F7003268CD /* View */ = {
-			isa = PBXGroup;
-			children = (
-				28960C682FABD939003268CD /* MindPatternCardView.swift */,
-				28960C6C2FABD939003268CD /* MindPatternView.swift */,
-			);
-			path = View;
-			sourceTree = "<group>";
-		};
-		28960C632FABD8F7003268CD /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				28960C6A2FABD939003268CD /* MindPatternViewModel.swift */,
-				28404A072FC0570B0062D941 /* MindPatternSignalTransmitter.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
 		28C0DE012FD0000000C0DE01 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
@@ -744,7 +695,6 @@
 			isa = PBXGroup;
 			children = (
 				91AFB5742F8FDC2D00AAF6B7 /* ColorMentalism */,
-				28960C602FABD8F7003268CD /* MindPattern */,
 				9138781B2F8972F400CA371E /* Instruction */,
 				911502112F873AFA00071C0C /* ExitHint */,
 				912B25802F2EA2BF00B32AF1 /* CalculatorPrediction */,
@@ -1040,14 +990,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				28960C692FABD939003268CD /* MindPatternCardView.swift in Sources */,
 				2875DE942FBA7D8900B9298C /* HapticTrainingViewModel.swift in Sources */,
 				9191CE162F549A7400D5BAE8 /* TrickIcon.swift in Sources */,
 				28D000012FC7350000AA0001 /* AppPreferences.swift in Sources */,
 				287D56272FACD66B00ECCE14 /* MagicGalleryView.swift in Sources */,
 				287D562C2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift in Sources */,
 				912B25852F2EBB5B00B32AF1 /* CalculatorPredictionButtonView.swift in Sources */,
-				28960C652FABD939003268CD /* MindPatternTile.swift in Sources */,
 				28C187772FBDE7C9001306EE /* MotionSettingsScreen.swift in Sources */,
 				28F200012FCE500000CC0001 /* MotionSettingsSection.swift in Sources */,
 				28E100012FC9F00000BB0001 /* TrickPalette.swift in Sources */,
@@ -1059,8 +1007,6 @@
 				28E935822FF2BEEC00AEF6EC /* OBFirstScreen.swift in Sources */,
 				913878262F89733200CA371E /* InstructionView.swift in Sources */,
 				28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */,
-				28960C6B2FABD939003268CD /* MindPatternViewModel.swift in Sources */,
-				28404A082FC0570B0062D941 /* MindPatternSignalTransmitter.swift in Sources */,
 				2834370D2FAA196500234419 /* TimeControlView.swift in Sources */,
 				28335ADD2FA55DCD00DE419B /* ColorMentalismInstruction.swift in Sources */,
 				91A793CF2F0E14B1009CA8A3 /* FullScreenFlow.swift in Sources */,
@@ -1078,7 +1024,6 @@
 				28B6EAA53013DC05001FD5CB /* TrickCardButtonStyle.swift in Sources */,
 				28960C5B2FABD6D1003268CD /* ExitHintConfiguration.swift in Sources */,
 				9122DB932EDD1CCB00277108 /* CollectionView.swift in Sources */,
-				28960C6D2FABD939003268CD /* MindPatternView.swift in Sources */,
 				913AE9A22F54939D0061F75A /* AppConfig.swift in Sources */,
 				915CE57C2F9285DA00C5B32A /* InstructionShareFormatter.swift in Sources */,
 				91AFB57A2F8FDC7E00AAF6B7 /* ColorCard.swift in Sources */,
@@ -1146,7 +1091,6 @@
 				0AEE0000000000000000000A /* CalculatorPredictionEngine.swift in Sources */,
 				0AEE0000000000000000000C /* SheetFlow.swift in Sources */,
 				0AEE0000000000000000000E /* AppSheetView.swift in Sources */,
-				0AEE00000000000000000011 /* MindPatternInstruction.swift in Sources */,
 				0AEE00000000000000000013 /* TimeControlInstruction.swift in Sources */,
 				0AEE00000000000000000015 /* MagicGalleryInstruction.swift in Sources */,
 				0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */,
