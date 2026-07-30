@@ -8,34 +8,49 @@
 import SwiftUI
 
 struct GeoMentalismView: View {
-    @Environment(\.dismiss) private var dismiss
     @State private var isVisible = true
+
+    // System status bar height from UIKit — unaffected by NavigationStack's safe area
+    private var statusBarHeight: CGFloat {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows.first(where: { $0.isKeyWindow })?.safeAreaInsets.top ?? 59
+    }
+
     var body: some View {
-        ZStack {
-            Color.background.ignoresSafeArea()
-            
-            List {
-                ForEach(GeoMentalismCities.all, id: \.self) { city in
-                    NavigationLink(value: city) {
-                        Text(city)
-                            .font(.system(size: 17, weight: .medium, design: .rounded))
-                            .foregroundStyle(Color.primaryText)
-                            .padding(.vertical, 4)
+        NavigationStack {
+            ZStack {
+                Color.background.ignoresSafeArea()
+
+                List {
+                    ForEach(GeoMentalismCities.all, id: \.self) { city in
+                        NavigationLink(value: city) {
+                            Text(city)
+                                .font(.system(size: 17, weight: .medium, design: .rounded))
+                                .foregroundStyle(Color.primaryText)
+                                .padding(.vertical, 4)
+                        }
+                        .listRowBackground(Color.background)
+                        .listRowSeparatorTint(Color.grayBorder)
                     }
-                    .listRowBackground(Color.background)
-                    .listRowSeparatorTint(Color.grayBorder)
                 }
+                .listStyle(.plain)
+                .scrollContentBackground(.hidden)
+                .navigationDestination(for: String.self) { city in
+                    GeoMentalismCitiesView(city: city)
+                }
+
+                // ExitHintView is inside NavigationStack's ZStack so its
+                // safe area = statusBar + navBar combined. ignoresSafeArea(edges: .top)
+                // sends it to y=0; padding(.top, statusBarHeight) pulls it back
+                // to exactly below the status bar — matching all other tricks.
+                ExitHintView(isVisible: $isVisible)
+                    .padding(.top, statusBarHeight)
+                    .ignoresSafeArea(edges: .top)
             }
-            .listStyle(.plain)
-            .scrollContentBackground(.hidden)
-            .navigationDestination(for: String.self) { city in
-                GeoMentalismCitiesView(city: city)
-            }
-            
-            ExitHintView(isVisible: $isVisible)
+            .navigationTitle(String(localized: "geo.list.title"))
+            .navigationBarTitleDisplayMode(.large)
         }
-        .navigationTitle(String(localized: "geo.list.title"))
-        .navigationBarTitleDisplayMode(.large)
     }
 }
 
@@ -52,15 +67,16 @@ struct GeoMentalismCitiesView: View {
         ZStack(alignment: .bottom) {
             Color.background.ignoresSafeArea()
 
-            ScrollView(showsIndicators: false) {
+            VStack(spacing: 0) {
                 LazyVGrid(columns: columns, spacing: 12) {
                     ForEach(viewModel.displayedCities, id: \.self) { city in
                         CityCapsule(city: city)
                     }
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 16)
-                .padding(.bottom, 120)
+                .padding(.top, 24)
+
+                Spacer()
             }
 
             shuffleButton
@@ -71,14 +87,18 @@ struct GeoMentalismCitiesView: View {
     }
 
     private var shuffleButton: some View {
-        Button(action: viewModel.shuffleList) {
+        Button {
+            withAnimation(.easeInOut) {
+                viewModel.shuffleList()
+            }
+        } label: {
             HStack(spacing: 8) {
                 Image(systemName: "shuffle")
                     .fontWeight(.semibold)
                 Text(String(localized: "geo.shuffle"))
                     .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
-            .foregroundStyle(.white)
+            .foregroundStyle(.secondaryText)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
             .background {
