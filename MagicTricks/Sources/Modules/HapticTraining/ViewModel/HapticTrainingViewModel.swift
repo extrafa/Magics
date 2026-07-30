@@ -25,18 +25,15 @@ final class HapticTrainingViewModel: ObservableObject {
     private let mode: HapticTrainingMode
     private let options: [Int]
     private let countHaptics: CountHapticPlaying
-    private let timeHaptics: TimeHapticPlaying
 
     init(
         mode: HapticTrainingMode = .digits,
-        countHaptics: CountHapticPlaying? = nil,
-        timeHaptics: TimeHapticPlaying? = nil
+        countHaptics: CountHapticPlaying? = nil
     ) {
         self.mode = mode
         self.options = Array(mode.range)
         self.targetValue = options.randomElement() ?? mode.range.lowerBound
         self.countHaptics = countHaptics ?? HapticManager.shared
-        self.timeHaptics = timeHaptics ?? HapticManager.shared
     }
 
     func startNewRound() {
@@ -64,12 +61,7 @@ final class HapticTrainingViewModel: ObservableObject {
         hasPlayed = true
 
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-            switch mode.signalStyle {
-            case .count:
-                countHaptics.playTrainingDigit(targetValue) { continuation.resume() }
-            case .timeValue:
-                timeHaptics.playTimeValue(targetValue, initialDelay: 0, usesGrouping: true) { continuation.resume() }
-            }
+            countHaptics.playTrainingDigit(targetValue) { continuation.resume() }
         }
 
         isPlaying = false

@@ -50,18 +50,7 @@ struct HapticAnswerSectionView: View {
                 .foregroundStyle(resultColor)
                 .frame(maxWidth: .infinity, minHeight: 20, alignment: .center)
 
-            if mode.usesExplicitSubmit {
-                Button(action: onSubmit) {
-                    Text(String(localized: "training.answer.submit"))
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 46)
-                        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                }
-                .buttonStyle(PrimaryTrickButtonStyle(color: .button))
-                .disabled(!canSubmitAnswer)
-                .opacity(canSubmitAnswer ? 1 : 0.42)
-            }
+
         }
     }
 

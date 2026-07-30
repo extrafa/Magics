@@ -16,9 +16,7 @@ struct Instruction: Equatable, Hashable {
 
 enum InstructionStepAction: Hashable {
     case hapticTraining
-    case hapticNumberTraining
     case hapticSettings
-    case motionSettings
 }
 
 struct InstructionStep: Identifiable, Hashable {

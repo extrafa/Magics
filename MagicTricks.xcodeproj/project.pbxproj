@@ -84,7 +84,6 @@
 		28BA97D82FCE760000F30468 /* HapticSignalSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */; };
 		28BA97DA2FCE760000F30468 /* HapticPreviewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */; };
 		28C0DE022FD0000000C0DE01 /* ColorMentalismViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */; };
-		28C187772FBDE7C9001306EE /* MotionSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187762FBDE7C9001306EE /* MotionSettingsScreen.swift */; };
 		28C187802FCE7300001306EE /* InstructionStepActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1877F2FCE7300001306EE /* InstructionStepActionsView.swift */; };
 		28C187842FCE7300001306EE /* InstructionStepActionPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187832FCE7300001306EE /* InstructionStepActionPresentation.swift */; };
 		28C187862FCE7800001306EE /* InstructionStepRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187852FCE7800001306EE /* InstructionStepRow.swift */; };
@@ -224,7 +223,6 @@
 		28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSignalSettingsSection.swift; sourceTree = "<group>"; };
 		28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPreviewSection.swift; sourceTree = "<group>"; };
 		28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismViewModel.swift; sourceTree = "<group>"; };
-		28C187762FBDE7C9001306EE /* MotionSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSettingsScreen.swift; sourceTree = "<group>"; };
 		28C1877F2FCE7300001306EE /* InstructionStepActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepActionsView.swift; sourceTree = "<group>"; };
 		28C187832FCE7300001306EE /* InstructionStepActionPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepActionPresentation.swift; sourceTree = "<group>"; };
 		28C187852FCE7800001306EE /* InstructionStepRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepRow.swift; sourceTree = "<group>"; };
@@ -798,7 +796,6 @@
 				28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */,
 				28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */,
 				28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */,
-				28C187762FBDE7C9001306EE /* MotionSettingsScreen.swift */,
 				28F200002FCE500000CC0001 /* MotionSettingsSection.swift */,
 			);
 			path = View;
@@ -1044,7 +1041,6 @@
 				287D56272FACD66B00ECCE14 /* MagicGalleryView.swift in Sources */,
 				287D562C2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift in Sources */,
 				912B25852F2EBB5B00B32AF1 /* CalculatorPredictionButtonView.swift in Sources */,
-				28C187772FBDE7C9001306EE /* MotionSettingsScreen.swift in Sources */,
 				28F200012FCE500000CC0001 /* MotionSettingsSection.swift in Sources */,
 				28E100012FC9F00000BB0001 /* TrickPalette.swift in Sources */,
 				28E200022FCE720000BB0001 /* TrickButtonStyles.swift in Sources */,

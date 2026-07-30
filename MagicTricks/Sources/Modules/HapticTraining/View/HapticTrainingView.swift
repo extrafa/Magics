@@ -122,14 +122,14 @@ struct HapticTrainingView: View {
     }
 
     private func submitAnswerIfNeeded(from value: String) {
-        let maxDigits = mode.usesExplicitSubmit ? 2 : 1
+        let maxDigits = 1
         let filtered = String(value.filter(\.isNumber).prefix(maxDigits))
         if answerText != filtered {
             answerText = filtered
             return
         }
         guard viewModel.hasPlayed, viewModel.result == nil else { return }
-        if !mode.usesExplicitSubmit, let number = Int(filtered) {
+        if let number = Int(filtered) {
             viewModel.submitGuess(number)
         }
     }

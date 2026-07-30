@@ -17,7 +17,7 @@ extension Instruction {
                 title: String(localized: "instruction.time.step1.title"),
                 description: String(localized: "instruction.time.step1.description"),
                 phase: .preparation,
-                actions: [.hapticNumberTraining]
+                actions: [.hapticTraining]
             ),
             InstructionStep(
                 title: String(localized: "instruction.time.step2.title"),
@@ -38,7 +38,7 @@ extension Instruction {
                 title: String(localized: "instruction.time.step5.title"),
                 description: String(localized: "instruction.time.step5.description"),
                 phase: .demonstration,
-                actions: [.motionSettings]
+                actions: [.hapticSettings]
             ),
             InstructionStep(
                 title: String(localized: "instruction.time.step6.title"),

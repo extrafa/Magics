@@ -9,8 +9,7 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step1.title"),
                 description: String(localized: "instruction.calculatorPrediction.step1.description"),
-                phase: .preparation,
-                actions: [.hapticSettings]
+                phase: .preparation
             ),
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step2.title"),

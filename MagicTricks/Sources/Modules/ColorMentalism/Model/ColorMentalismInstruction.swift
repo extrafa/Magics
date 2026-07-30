@@ -17,7 +17,7 @@ extension Instruction {
                 title: String(localized: "instruction.color.step1.title"),
                 description: String(localized: "instruction.color.step1.description"),
                 phase: .preparation,
-                actions: [.hapticTraining]
+                actions: [.hapticTraining, .hapticSettings]
             ),
             InstructionStep(
                 title: String(localized: "instruction.color.step2.title"),
