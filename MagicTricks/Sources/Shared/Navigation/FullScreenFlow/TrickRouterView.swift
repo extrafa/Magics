@@ -22,7 +22,7 @@ struct TrickRouterView: View {
         case .timeControl:
             TimeControlView()
         case .geoMentalism:
-            EmptyView()
+            GeoMentalismView()
         }
     }
 }
