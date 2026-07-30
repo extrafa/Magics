@@ -138,6 +138,54 @@
         }
       }
     },
+    "card.geo.cardTitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geo\nMentalism"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geo\nMentalismo"
+          }
+        }
+      }
+    },
+    "card.geo.subtitle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name the city a spectator picks from a list you’ve never seen."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombra la ciudad que elige un espectador de una lista que nunca has visto."
+          }
+        }
+      }
+    },
+    "card.geo.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geo Mentalism"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geo Mentalismo"
+          }
+        }
+      }
+    },
     "card.magicGallery.subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -661,6 +709,38 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pruébalo: mantén presionado"
+          }
+        }
+      }
+    },
+    "geo.list.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cities"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ciudades"
+          }
+        }
+      }
+    },
+    "geo.shuffle" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Shuffle"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mezclar"
           }
         }
       }
@@ -1341,6 +1421,246 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sentido del Color"
+          }
+        }
+      }
+    },
+    "instruction.geo.effect" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The spectator thinks of any city and types it into your phone. You show them a list of 10 cities — their city is in it. After one glance, you name exactly the city they chose."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El espectador piensa en cualquier ciudad y la escribe en tu teléfono. Le muestras una lista de 10 ciudades — la suya está incluida. Con un solo vistazo, nombras exactamente la ciudad que eligió."
+          }
+        }
+      }
+    },
+    "instruction.geo.secret" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The app places 9 cities starting with one type of letter and 1 city — the spectator’s — starting with the other type. You find the odd one out."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "La app coloca 9 ciudades que empiezan con un tipo de letra y 1 ciudad — la del espectador — que empieza con el otro tipo. Tú encuentras la diferente."
+          }
+        }
+      }
+    },
+    "instruction.geo.step1.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Letters split into two types: straight (A, E, F, H, I, K, L, M, N, T, V, W, X, Y, Z) and curved (B, C, D, G, J, O, P, Q, R, S, U). The spectator’s city is always the only one in the list from a different type than the other nine."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Las letras se dividen en dos tipos: rectas (A, E, F, H, I, K, L, M, N, T, V, W, X, Y, Z) y curvas (B, C, D, G, J, O, P, Q, R, S, U). La ciudad del espectador es siempre la única de la lista de un tipo diferente al de las otras nueve."
+          }
+        }
+      }
+    },
+    "instruction.geo.step1.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Learn the rule"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Aprende la regla"
+          }
+        }
+      }
+    },
+    "instruction.geo.step2.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Say: “Think of any city in the world — big or small, famous or not.”"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Di: “Piensa en cualquier ciudad del mundo — grande o pequeña, famosa o no.”"
+          }
+        }
+      }
+    },
+    "instruction.geo.step2.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explain the trick"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Explica el truco"
+          }
+        }
+      }
+    },
+    "instruction.geo.step3.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Look away and ask the spectator to type their city into the phone. Then start the trick."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Mira hacia otro lado y pide al espectador que escriba su ciudad en el teléfono. Luego inicia el truco."
+          }
+        }
+      }
+    },
+    "instruction.geo.step3.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Get the city"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Obtén la ciudad"
+          }
+        }
+      }
+    },
+    "instruction.geo.step4.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Hand them the phone. Ask them to find their city in the list and confirm it’s there."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Entrégales el teléfono. Pídeles que encuentren su ciudad en la lista y confirmen que está ahí."
+          }
+        }
+      }
+    },
+    "instruction.geo.step4.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Show the list"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Muestra la lista"
+          }
+        }
+      }
+    },
+    "instruction.geo.step5.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Take the phone. Check the first letter of each city. One will be the only city from a different letter type — that is their city."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toma el teléfono. Fíjate en la primera letra de cada ciudad. Una será la única de un tipo diferente al resto — esa es su ciudad."
+          }
+        }
+      }
+    },
+    "instruction.geo.step5.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Find the odd one out"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Encuentra la diferente"
+          }
+        }
+      }
+    },
+    "instruction.geo.step6.description" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pause, as if concentrating. Then name the city."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Haz una pausa, como si te estuvieras concentrando. Luego nombra la ciudad."
+          }
+        }
+      }
+    },
+    "instruction.geo.step6.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name the city"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nombra la ciudad"
+          }
+        }
+      }
+    },
+    "instruction.geo.title" : {
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geo Mentalism"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Geo Mentalismo"
           }
         }
       }

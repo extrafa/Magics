@@ -12,6 +12,7 @@ enum TrickType {
     case calculatorPrediction
     case timeControl
     case magicGallery
+    case geoMentalism
 }
 
 enum TrickDifficulty: Hashable {
@@ -58,6 +59,15 @@ struct Trick: Identifiable, Hashable {
 
 struct TrickCollection {
     static let tricks: [Trick] = [
+        Trick(
+            id: .geoMentalism,
+            title: String(localized: "card.geo.title"),
+            cardTitle: String(localized: "card.geo.cardTitle"),
+            subtitle: String(localized: "card.geo.subtitle"),
+            image: "globe.europe.africa.fill",
+            difficulty: .easy,
+            instruction: .geoMentalism
+        ),
         Trick(
             id: .colorMentalism,
             title: String(localized: "card.color.title"),
