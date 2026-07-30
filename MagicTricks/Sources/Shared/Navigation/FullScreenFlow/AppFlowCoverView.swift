@@ -19,8 +19,23 @@ struct AppFlowCoverView: View {
                 TrickRouterView(trick: trick)
             }
         case .paywall:
-            OBPaywallScreen(onDismiss: { dismiss() })
-                .background(Color.background)
+            ZStack(alignment: .topTrailing) {
+                OBPaywallScreen(onDismiss: { dismiss() })
+                    .background(Color.background)
+
+                Button(action: { dismiss() }) {
+                    Image(systemName: "xmark")
+                        .font(.system(size: 13, weight: .semibold))
+                        .foregroundStyle(.secondary)
+                        .frame(width: 30, height: 30)
+                        .background(Circle().fill(Color.grayCard))
+                        .overlay {
+                            Circle().stroke(Color.grayBorder, lineWidth: 1)
+                        }
+                }
+                .padding(.top, 56)
+                .padding(.trailing, 20)
+            }
         }
     }
 }

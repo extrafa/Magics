@@ -15,35 +15,36 @@ struct TrickCardView: View {
     let onHowToTap: () -> Void
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            header
+        ZStack(alignment: .topTrailing) {
+            cardBody
+                .grayscale(isLocked ? 1.0 : 0)
+                .opacity(isLocked ? 0.52 : 1.0)
+                .animation(.easeInOut(duration: 0.2), value: isLocked)
 
-            buttons
-        }
-        .padding(22)
-        .frame(maxWidth: .infinity, minHeight: 208, alignment: .topLeading)
-        .background { cardBackground }
-        .shadow(color: Color.black.opacity(0.06), radius: 18, x: 0, y: 8)
-        .overlay(alignment: .topTrailing) {
-            if isLocked {
-                proBadge
-                    .padding(.top, 16)
-                    .padding(.trailing, 16)
-            } else {
-                TrickDifficultyBadge(difficulty: trick.difficulty)
-                    .padding(.top, 16)
-                    .padding(.trailing, 16)
-            }
+            badge
+                .padding(.top, 16)
+                .padding(.trailing, 16)
         }
     }
 
-    private var cardBackground: some View {
-        RoundedRectangle(cornerRadius: 22, style: .continuous)
-            .fill(Color.grayCard)
-            .overlay {
-                RoundedRectangle(cornerRadius: 22, style: .continuous)
-                    .stroke(Color.grayBorder, lineWidth: 1)
-            }
+    // MARK: Card
+
+    private var cardBody: some View {
+        VStack(alignment: .leading, spacing: 18) {
+            header
+            TrickCardActions(onStartTap: onStartTap, onHowToTap: onHowToTap)
+        }
+        .padding(22)
+        .frame(maxWidth: .infinity, minHeight: 208, alignment: .topLeading)
+        .background {
+            RoundedRectangle(cornerRadius: 22, style: .continuous)
+                .fill(Color.grayCard)
+                .overlay {
+                    RoundedRectangle(cornerRadius: 22, style: .continuous)
+                        .stroke(Color.grayBorder, lineWidth: 1)
+                }
+        }
+        .shadow(color: Color.black.opacity(isLocked ? 0.03 : 0.06), radius: 18, x: 0, y: 8)
     }
 
     private var header: some View {
@@ -77,8 +78,15 @@ struct TrickCardView: View {
         }
     }
 
-    private var buttons: some View {
-        TrickCardActions(onStartTap: onStartTap, onHowToTap: onHowToTap)
+    // MARK: Badge
+
+    @ViewBuilder
+    private var badge: some View {
+        if isLocked {
+            proBadge
+        } else {
+            TrickDifficultyBadge(difficulty: trick.difficulty)
+        }
     }
 
     private var proBadge: some View {
