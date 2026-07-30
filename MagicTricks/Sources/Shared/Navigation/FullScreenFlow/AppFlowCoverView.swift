@@ -10,13 +10,17 @@ import SwiftUI
 struct AppFlowCoverView: View {
 
     let activeFlow: FullScreenFlow
+    @Environment(\.dismiss) private var dismiss
 
     var body: some View {
-        NavigationStack {
-            switch activeFlow {
-            case .trick(let trick):
+        switch activeFlow {
+        case .trick(let trick):
+            NavigationStack {
                 TrickRouterView(trick: trick)
             }
+        case .paywall:
+            OBPaywallScreen(onDismiss: { dismiss() })
+                .background(Color.background)
         }
     }
 }

@@ -13,6 +13,14 @@ enum TrickType {
     case timeControl
     case magicGallery
     case geoMentalism
+
+    /// GeoMentalism is the free preview trick; all others require a Pro subscription.
+    var requiresPro: Bool {
+        switch self {
+        case .geoMentalism: false
+        default: true
+        }
+    }
 }
 
 enum TrickDifficulty: Hashable {

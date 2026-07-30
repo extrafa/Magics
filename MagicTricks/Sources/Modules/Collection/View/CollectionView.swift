@@ -10,6 +10,7 @@ import SwiftUI
 struct CollectionView: View {
 
     @EnvironmentObject private var flow: AppFlowCoordinator
+    @EnvironmentObject private var store: StoreManager
 
     var body: some View {
         NavigationStack {
@@ -19,13 +20,23 @@ struct CollectionView: View {
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         ForEach(TrickCollection.tricks) { trick in
+                            let isLocked = trick.id.requiresPro && !store.hasProAccess
                             TrickCardView(
                                 trick: trick,
+                                isLocked: isLocked,
                                 onStartTap: {
-                                    flow.open(trick: trick)
+                                    if isLocked {
+                                        flow.openPaywall()
+                                    } else {
+                                        flow.open(trick: trick)
+                                    }
                                 },
                                 onHowToTap: {
-                                    flow.open(instruction: trick.instruction)
+                                    if isLocked {
+                                        flow.openPaywall()
+                                    } else {
+                                        flow.open(instruction: trick.instruction)
+                                    }
                                 }
                             )
                         }
@@ -50,9 +61,11 @@ struct CollectionView: View {
         .sheet(item: $flow.activeSheet) { activeSheet in
             AppSheetView(activeSheet: activeSheet)
                 .presentationDragIndicator(.visible)
+                .environmentObject(store)
         }
         .fullScreenCover(item: $flow.activeFlow) { activeFlow in
             AppFlowCoverView(activeFlow: activeFlow)
+                .environmentObject(store)
         }
     }
 }
@@ -61,4 +74,5 @@ struct CollectionView: View {
     CollectionView()
         .environmentObject(AppFlowCoordinator())
         .environmentObject(SettingsStore())
+        .environmentObject(StoreManager())
 }

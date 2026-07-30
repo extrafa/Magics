@@ -10,6 +10,7 @@ import SwiftUI
 struct TrickCardView: View {
 
     let trick: Trick
+    let isLocked: Bool
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
 
@@ -24,9 +25,15 @@ struct TrickCardView: View {
         .background { cardBackground }
         .shadow(color: Color.black.opacity(0.06), radius: 18, x: 0, y: 8)
         .overlay(alignment: .topTrailing) {
-            TrickDifficultyBadge(difficulty: trick.difficulty)
-                .padding(.top, 16)
-                .padding(.trailing, 16)
+            if isLocked {
+                proBadge
+                    .padding(.top, 16)
+                    .padding(.trailing, 16)
+            } else {
+                TrickDifficultyBadge(difficulty: trick.difficulty)
+                    .padding(.top, 16)
+                    .padding(.trailing, 16)
+            }
         }
     }
 
@@ -73,13 +80,40 @@ struct TrickCardView: View {
     private var buttons: some View {
         TrickCardActions(onStartTap: onStartTap, onHowToTap: onHowToTap)
     }
+
+    private var proBadge: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "lock.fill")
+                .font(.system(size: 9, weight: .bold))
+            Text("PRO")
+                .font(.system(size: 11, weight: .bold, design: .rounded))
+                .tracking(0.4)
+        }
+        .foregroundStyle(Color.orange)
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(Capsule(style: .continuous).fill(Color.orange.opacity(0.14)))
+        .overlay {
+            Capsule(style: .continuous)
+                .stroke(Color.orange.opacity(0.42), lineWidth: 1.2)
+        }
+    }
 }
 
 #Preview {
-    TrickCardView(
-        trick: TrickCollection.tricks[0],
-        onStartTap: {},
-        onHowToTap: {}
-    )
+    VStack(spacing: 16) {
+        TrickCardView(
+            trick: TrickCollection.tricks[0],
+            isLocked: false,
+            onStartTap: {},
+            onHowToTap: {}
+        )
+        TrickCardView(
+            trick: TrickCollection.tricks[1],
+            isLocked: true,
+            onStartTap: {},
+            onHowToTap: {}
+        )
+    }
     .padding()
 }
