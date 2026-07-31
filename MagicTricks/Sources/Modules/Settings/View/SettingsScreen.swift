@@ -72,26 +72,8 @@ private extension SettingsScreen {
     var appSection: some View {
         SettingsSection(title: String(localized: "settings.section.app")) {
             VStack(spacing: 0) {
-                if let appShareURL = store.appShareURL {
-                    ShareLink(item: appShareURL) {
-                        SettingsActionRow(
-                            icon: "square.and.arrow.up",
-                            title: String(localized: "settings.shareApp")
-                        )
-                    }
-                    .buttonStyle(.plain)
-                } else {
-                    ShareLink(item: store.appShareText) {
-                        SettingsActionRow(
-                            icon: "square.and.arrow.up",
-                            title: String(localized: "settings.shareApp")
-                        )
-                    }
-                    .buttonStyle(.plain)
-                }
-
+                shareButton
                 SettingsDivider()
-
                 Button { requestReview() } label: {
                     SettingsActionRow(
                         icon: "star",
@@ -102,6 +84,19 @@ private extension SettingsScreen {
             }
             .padding(.horizontal, 18)
             .settingsCard()
+        }
+    }
+
+    @ViewBuilder
+    var shareButton: some View {
+        let label = SettingsActionRow(
+            icon: "square.and.arrow.up",
+            title: String(localized: "settings.shareApp")
+        )
+        if let url = store.appShareURL {
+            ShareLink(item: url) { label }.buttonStyle(.plain)
+        } else {
+            ShareLink(item: store.appShareText) { label }.buttonStyle(.plain)
         }
     }
 }

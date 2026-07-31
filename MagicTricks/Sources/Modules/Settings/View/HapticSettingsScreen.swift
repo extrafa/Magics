@@ -34,8 +34,8 @@ struct HapticSettingsScreen: View {
                         isWaitingForGesture: isWaitingForGesture,
                         action: playPreview
                     )
-                    MotionSettingsSection(settings: settings, copy: .haptics)
-                    resetButton
+                    MotionSettingsSection(settings: settings)
+                    SettingsResetButton(action: resetDefaults)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 28)
@@ -46,10 +46,6 @@ struct HapticSettingsScreen: View {
         .navigationTitle(String(localized: "settings.haptics.title"))
         .navigationBarTitleDisplayMode(.inline)
         .fontDesign(.rounded)
-    }
-
-    private var resetButton: some View {
-        SettingsResetButton(action: resetDefaults)
     }
 
     private func playPreview() {
