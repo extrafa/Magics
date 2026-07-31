@@ -12,8 +12,7 @@ enum SheetFlow: Identifiable, Equatable {
 
     var id: String {
         switch self {
-        case .instruction(let instruction):
-            return "instruction_\(instruction.title)"
+        case .instruction(let instruction): return "instruction_\(instruction.title)"
         }
     }
 }

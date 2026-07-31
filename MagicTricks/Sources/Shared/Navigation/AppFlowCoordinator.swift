@@ -20,4 +20,8 @@ final class AppFlowCoordinator: ObservableObject {
     func open(instruction: Instruction) {
         activeSheet = .instruction(instruction: instruction)
     }
+
+    func openPaywall() {
+        activeFlow = .paywall
+    }
 }

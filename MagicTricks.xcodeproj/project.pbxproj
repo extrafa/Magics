@@ -10,6 +10,7 @@
 		0A000100000000000000001B /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000100000000000000001A /* OnboardingState.swift */; };
 		0A000200000000000000001B /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000200000000000000001A /* OnboardingViewModel.swift */; };
 		0A0002000000000000000024 /* TrickGradientCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000023 /* TrickGradientCard.swift */; };
+		0A000200000000000000002A /* WatermarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000029 /* WatermarkView.swift */; };
 		0A0002000000000000000026 /* OnboardingCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000025 /* OnboardingCTAButton.swift */; };
 		0A0002000000000000000028 /* AsyncUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000027 /* AsyncUtilities.swift */; };
 		0A000300000000000000001B /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000300000000000000001A /* OnboardingFlowView.swift */; };
@@ -148,6 +149,7 @@
 		0A000100000000000000001A /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
 		0A000200000000000000001A /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		0A0002000000000000000023 /* TrickGradientCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickGradientCard.swift; sourceTree = "<group>"; };
+		0A0002000000000000000029 /* WatermarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatermarkView.swift; sourceTree = "<group>"; };
 		0A0002000000000000000025 /* OnboardingCTAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCTAButton.swift; sourceTree = "<group>"; };
 		0A0002000000000000000027 /* AsyncUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncUtilities.swift; sourceTree = "<group>"; };
 		0A000300000000000000001A /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
@@ -591,6 +593,7 @@
 				28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */,
 				28E200012FCE720000BB0001 /* TrickButtonStyles.swift */,
 				0A0002000000000000000023 /* TrickGradientCard.swift */,
+				0A0002000000000000000029 /* WatermarkView.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1119,6 +1122,7 @@
 				0A000100000000000000001B /* OnboardingState.swift in Sources */,
 				0A000200000000000000001B /* OnboardingViewModel.swift in Sources */,
 				0A0002000000000000000024 /* TrickGradientCard.swift in Sources */,
+				0A000200000000000000002A /* WatermarkView.swift in Sources */,
 				0A0002000000000000000026 /* OnboardingCTAButton.swift in Sources */,
 				0A0002000000000000000028 /* AsyncUtilities.swift in Sources */,
 				0A000300000000000000001B /* OnboardingFlowView.swift in Sources */,

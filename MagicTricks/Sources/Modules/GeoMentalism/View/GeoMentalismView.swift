@@ -8,9 +8,8 @@
 import SwiftUI
 
 struct GeoMentalismView: View {
-    @State private var isVisible = true
+    @State var isVisible = true
 
-    // System status bar height from UIKit — unaffected by NavigationStack's safe area
     private var statusBarHeight: CGFloat {
         UIApplication.shared.connectedScenes
             .compactMap { $0 as? UIWindowScene }
@@ -37,13 +36,9 @@ struct GeoMentalismView: View {
                 .listStyle(.plain)
                 .scrollContentBackground(.hidden)
                 .navigationDestination(for: String.self) { city in
-                    GeoMentalismCitiesView(city: city)
+                    GeoMentalismCitiesView(city: city, isVisible: $isVisible)
                 }
 
-                // ExitHintView is inside NavigationStack's ZStack so its
-                // safe area = statusBar + navBar combined. ignoresSafeArea(edges: .top)
-                // sends it to y=0; padding(.top, statusBarHeight) pulls it back
-                // to exactly below the status bar — matching all other tricks.
                 ExitHintView(isVisible: $isVisible)
                     .padding(.top, statusBarHeight)
                     .ignoresSafeArea(edges: .top)
@@ -57,6 +52,7 @@ struct GeoMentalismView: View {
 struct GeoMentalismCitiesView: View {
     @StateObject private var viewModel = GeoMentalismViewModel()
     let city: String
+    @Binding var isVisible: Bool
 
     private let columns = [
         GridItem(.flexible()),
@@ -81,7 +77,13 @@ struct GeoMentalismCitiesView: View {
 
             shuffleButton
         }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                WatermarkView()
+            }
+        }
         .onAppear {
+            isVisible = false
             viewModel.generateList(for: city)
         }
     }
