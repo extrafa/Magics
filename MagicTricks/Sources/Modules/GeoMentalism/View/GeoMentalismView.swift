@@ -63,6 +63,12 @@ struct GeoMentalismCitiesView: View {
         GridItem(.flexible())
     ]
 
+    private var statusBarHeight: CGFloat {
+        UIApplication.shared.connectedScenes
+            .compactMap { $0 as? UIWindowScene }
+            .first?.windows.first(where: { $0.isKeyWindow })?.safeAreaInsets.top ?? 59
+    }
+
     var body: some View {
         ZStack(alignment: .bottom) {
             Color.background.ignoresSafeArea()
@@ -78,6 +84,10 @@ struct GeoMentalismCitiesView: View {
 
                 Spacer()
             }
+
+            WatermarkView()
+                .padding(.top, statusBarHeight)
+                .ignoresSafeArea(edges: .top)
 
             shuffleButton
         }
