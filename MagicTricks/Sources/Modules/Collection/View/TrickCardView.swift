@@ -20,6 +20,13 @@ struct TrickCardView: View {
                 .grayscale(isLocked ? 1.0 : 0)
                 .opacity(isLocked ? 0.52 : 1.0)
                 .animation(.easeInOut(duration: 0.2), value: isLocked)
+                .overlay {
+                    if isLocked {
+                        Color.clear
+                            .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                            .onTapGesture { onStartTap() }
+                    }
+                }
 
             badge
                 .padding(.top, 16)
