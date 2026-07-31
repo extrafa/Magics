@@ -29,9 +29,6 @@ struct AppFlowCoverView: View {
                         .foregroundStyle(.secondary)
                         .frame(width: 30, height: 30)
                         .background(Circle().fill(Color.grayCard))
-                        .overlay {
-                            Circle().stroke(Color.grayBorder, lineWidth: 1)
-                        }
                 }
                 .padding(.top, 56)
                 .padding(.trailing, 20)
