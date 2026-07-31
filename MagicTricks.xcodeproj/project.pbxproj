@@ -42,6 +42,7 @@
 		0AFF00000000000000000006 /* PhoneTiltGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */; };
 		0AFF00000000000000000008 /* CalculatorPredictionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000007 /* CalculatorPredictionInstruction.swift */; };
 		2806231C301A8495003F0C44 /* GeoMentalismView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806231B301A8495003F0C44 /* GeoMentalismView.swift */; };
+		28062326301A8E06003F0C44 /* GeoMentalismCitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */; };
 		28062320301A87BC003F0C44 /* GeoMentalismCities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806231F301A87BC003F0C44 /* GeoMentalismCities.swift */; };
 		28062323301A8966003F0C44 /* GeoMentalismViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062322301A8966003F0C44 /* GeoMentalismViewModel.swift */; };
 		28062325301A8E06003F0C44 /* CityCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062324301A8E06003F0C44 /* CityCapsule.swift */; };
@@ -181,6 +182,7 @@
 		0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTiltGestureManager.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000007 /* CalculatorPredictionInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionInstruction.swift; sourceTree = "<group>"; };
 		2806231B301A8495003F0C44 /* GeoMentalismView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismView.swift; sourceTree = "<group>"; };
+		28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCitiesView.swift; sourceTree = "<group>"; };
 		2806231F301A87BC003F0C44 /* GeoMentalismCities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCities.swift; sourceTree = "<group>"; };
 		28062322301A8966003F0C44 /* GeoMentalismViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismViewModel.swift; sourceTree = "<group>"; };
 		28062324301A8E06003F0C44 /* CityCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCapsule.swift; sourceTree = "<group>"; };
@@ -384,6 +386,7 @@
 			isa = PBXGroup;
 			children = (
 				2806231B301A8495003F0C44 /* GeoMentalismView.swift */,
+				28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */,
 				28062324301A8E06003F0C44 /* CityCapsule.swift */,
 			);
 			path = View;
@@ -1039,6 +1042,7 @@
 			files = (
 				2875DE942FBA7D8900B9298C /* HapticTrainingViewModel.swift in Sources */,
 				2806231C301A8495003F0C44 /* GeoMentalismView.swift in Sources */,
+				28062326301A8E06003F0C44 /* GeoMentalismCitiesView.swift in Sources */,
 				9191CE162F549A7400D5BAE8 /* TrickIcon.swift in Sources */,
 				28D000012FC7350000AA0001 /* AppPreferences.swift in Sources */,
 				287D56272FACD66B00ECCE14 /* MagicGalleryView.swift in Sources */,
