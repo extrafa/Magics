@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GeoMentalismView: View {
-    @State var isVisible = true
+    @State private var isVisible = true
 
     private var statusBarHeight: CGFloat {
         UIApplication.shared.connectedScenes
@@ -85,6 +85,10 @@ struct GeoMentalismCitiesView: View {
         .onAppear {
             isVisible = false
             viewModel.generateList(for: city)
+        }
+        .onDisappear {
+            // Reset so ExitHint re-evaluates when user returns to the list
+            isVisible = true
         }
     }
 
