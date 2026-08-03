@@ -46,11 +46,11 @@ struct OnboardingFlowView: View {
         case 1:
             OBGoalScreen(selectedGoal: $viewModel.selectedGoal, onContinue: viewModel.advance)
         case 2:
-            OBFeatureSlideScreen(feature: .noProps, pageIndex: 0, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .noProps, goal: viewModel.selectedGoal, pageIndex: 0, onContinue: viewModel.advance)
         case 3:
-            OBFeatureSlideScreen(feature: .instructions, pageIndex: 1, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .instructions, goal: nil, pageIndex: 1, onContinue: viewModel.advance)
         case 4:
-            OBFeatureSlideScreen(feature: .vibrations, pageIndex: 2, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .vibrations, goal: nil, pageIndex: 2, onContinue: viewModel.advance)
         case 5:
             OBProcessingScreen(phases: viewModel.loadingPhases, onComplete: viewModel.advance)
         case 6:

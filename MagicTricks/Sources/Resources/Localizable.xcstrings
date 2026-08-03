@@ -4910,6 +4910,91 @@
           }
         }
       }
+    },
+    "onboarding.feature.noprops.subtitle.parties": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Ten people, drinks in hand. One trick turns you into the most memorable person in the room."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Diez personas, copas en mano. Un truco te convierte en la persona más memorable de la sala."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.dates": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Just the two of you, a quiet table. One trick and the night becomes a story."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Solo vosotros dos, una mesa tranquila. Un truco y la noche se convierte en una historia."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.work": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Colleagues, clients, a networking event. Tricks that break the ice and leave a real impression."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Compañeros, clientes, un evento de networking. Trucos que rompen el hielo y dejan una impresión real."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.family": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Parents, kids, grandma at the table. One trick and you are the best part of the evening."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Padres, niños, la abuela en la mesa. Un truco y eres lo mejor de la noche."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.everywhere": {
+      "extractionState": "manual",
+      "localizations": {
+        "en": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "From a first date to a family dinner, always a trick that fits."
+          }
+        },
+        "es": {
+          "stringUnit": {
+            "state": "translated",
+            "value": "Desde una primera cita hasta una cena familiar, siempre hay un truco que encaja."
+          }
+        }
+      }
     }
   },
   "version": "1.1"
