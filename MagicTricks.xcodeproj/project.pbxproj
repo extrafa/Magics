@@ -359,6 +359,7 @@
 			isa = PBXGroup;
 			children = (
 				0A6E00000000000000000002 /* Model */,
+				28062321301A8956003F0C44 /* ViewModel */,
 				2806231A301A8481003F0C44 /* View */,
 			);
 			path = GeoMentalism;
@@ -752,7 +753,6 @@
 				91D289D92EDCA9F10004406B /* Collection */,
 				287D561A2FACD5F500ECCE14 /* MagicGallery */,
 				0A6E00000000000000000001 /* GeoMentalism */,
-				28062321301A8956003F0C44 /* ViewModel */,
 				2875DE902FBA7D6E00B9298C /* HapticTraining */,
 				0A00FF000000000000000001 /* Onboarding */,
 			);

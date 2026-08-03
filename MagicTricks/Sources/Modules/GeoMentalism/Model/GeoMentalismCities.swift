@@ -38,7 +38,5 @@ enum GeoMentalismCities {
         "Salvador", "San Francisco", "Sao Paolo", "Seoul"
     ]
 
-    static var all: [String] {
-        (straight + curved).sorted()
-    }
+    static let all: [String] = (straight + curved).sorted()
 }

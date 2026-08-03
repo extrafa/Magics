@@ -74,3 +74,11 @@ struct GeoMentalismCitiesView: View {
         .padding(.bottom, 32)
     }
 }
+
+#Preview {
+    @Previewable @State var isVisible = false
+    NavigationStack {
+        GeoMentalismCitiesView(city: "Barcelona", isVisible: $isVisible)
+    }
+    .environmentObject(StoreManager())
+}
