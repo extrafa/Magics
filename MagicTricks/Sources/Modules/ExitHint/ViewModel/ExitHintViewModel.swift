@@ -50,14 +50,28 @@ final class ExitHintViewModel: ObservableObject {
 
         autoFadeTask = Task {
             try? await Task.sleep(for: .seconds(2))
+            guard !Task.isCancelled else { return }
+
             withAnimation(.easeOut(duration: 2.2)) {
                 self.hintOpacity = 0.18
             }
 
             try? await Task.sleep(for: .milliseconds(2200))
+            guard !Task.isCancelled else { return }
+
+            // Fade to 0 within ExitHintView's own hierarchy — avoids triggering an
+            // animation transaction on the parent view (which would merge with any
+            // repeatForever animations on sibling views and cause a visual jerk).
             withAnimation(.easeOut(duration: 0.8)) {
-                isHintVisible.wrappedValue = false
+                self.hintOpacity = 0
             }
+
+            try? await Task.sleep(for: .milliseconds(800))
+            guard !Task.isCancelled else { return }
+
+            // Already at opacity 0 — set binding without animation so the parent
+            // doesn't receive an animated transaction.
+            isHintVisible.wrappedValue = false
         }
     }
 
