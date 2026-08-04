@@ -10,6 +10,11 @@ final class PhoneTiltGestureManager {
     private let preferences: MotionPreferenceManaging
     private var monitoringTask: Task<Void, Never>?
 
+    // Stored on the actor so the CoreMotion callback (background queue)
+    // can safely write via Task { @MainActor }.
+    private var screenDownSince: Date?
+    private var pendingCompletion: (@MainActor (Bool) -> Void)?
+
     // MARK: Init
 
     init(preferences: MotionPreferenceManaging = AppPreferences.shared) {
@@ -41,6 +46,8 @@ final class PhoneTiltGestureManager {
         motionManager.stopDeviceMotionUpdates()
         monitoringTask?.cancel()
         monitoringTask = nil
+        screenDownSince = nil
+        pendingCompletion = nil
     }
 
     // MARK: Private
@@ -52,25 +59,47 @@ final class PhoneTiltGestureManager {
             return
         }
 
+        pendingCompletion = completion
+        screenDownSince = nil
         let holdDuration = preferences.screenDownHoldDuration
-        var screenDownSince: Date?
+
+        // Use a dedicated background queue. OperationQueue.main is NOT the
+        // Swift @MainActor executor in iOS 18+, so accessing @MainActor-isolated
+        // state from a .main callback causes an actor isolation violation.
+        // Instead, use a background queue and hop back to @MainActor explicitly.
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        queue.qualityOfService = .userInteractive
 
         motionManager.deviceMotionUpdateInterval = 0.05
-        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] motion, _ in
-            guard let self, let motion else { return }
-
-            // Gravity.z < -0.85 means the screen is facing roughly downward
-            let isScreenDown = motion.gravity.z < -0.85
-
-            if isScreenDown {
-                if screenDownSince == nil { screenDownSince = Date() }
-                if let since = screenDownSince, Date().timeIntervalSince(since) >= holdDuration {
-                    self.stopMonitoring()
-                    completion(true)
-                }
-            } else {
-                screenDownSince = nil
+        motionManager.startDeviceMotionUpdates(to: queue) { [weak self] motion, _ in
+            guard let motion else { return }
+            let gravityZ = motion.gravity.z
+            Task { @MainActor [weak self] in
+                self?.handleMotionUpdate(gravityZ: gravityZ, holdDuration: holdDuration)
             }
+        }
+    }
+
+    private func handleMotionUpdate(gravityZ: Double, holdDuration: TimeInterval) {
+        // Guard early if stopMonitoring was already called
+        guard pendingCompletion != nil else { return }
+
+        // Device z-axis points out of the screen toward the user.
+        // Face up  → z-axis points to ceiling, gravity is -z → gravity.z ≈ -1
+        // Face down → z-axis points to floor,   gravity is +z → gravity.z ≈ +1
+        let isScreenDown = gravityZ > 0.85
+
+        if isScreenDown {
+            if screenDownSince == nil { screenDownSince = Date() }
+            if let since = screenDownSince, Date().timeIntervalSince(since) >= holdDuration {
+                // Capture before stopMonitoring nils it
+                let handler = pendingCompletion
+                stopMonitoring()
+                handler?(true)
+            }
+        } else {
+            screenDownSince = nil
         }
     }
 }
