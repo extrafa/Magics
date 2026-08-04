@@ -10,9 +10,9 @@
 		0A000100000000000000001B /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000100000000000000001A /* OnboardingState.swift */; };
 		0A000200000000000000001B /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000200000000000000001A /* OnboardingViewModel.swift */; };
 		0A0002000000000000000024 /* TrickGradientCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000023 /* TrickGradientCard.swift */; };
-		0A000200000000000000002A /* WatermarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000029 /* WatermarkView.swift */; };
 		0A0002000000000000000026 /* OnboardingCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000025 /* OnboardingCTAButton.swift */; };
 		0A0002000000000000000028 /* AsyncUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000027 /* AsyncUtilities.swift */; };
+		0A000200000000000000002A /* WatermarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000029 /* WatermarkView.swift */; };
 		0A000300000000000000001B /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000300000000000000001A /* OnboardingFlowView.swift */; };
 		0A000400000000000000001B /* OnboardingProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000400000000000000001A /* OnboardingProgressBar.swift */; };
 		0A000500000000000000001B /* OBOptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000500000000000000001A /* OBOptionRow.swift */; };
@@ -42,10 +42,10 @@
 		0AFF00000000000000000006 /* PhoneTiltGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */; };
 		0AFF00000000000000000008 /* CalculatorPredictionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000007 /* CalculatorPredictionInstruction.swift */; };
 		2806231C301A8495003F0C44 /* GeoMentalismView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806231B301A8495003F0C44 /* GeoMentalismView.swift */; };
-		28062326301A8E06003F0C44 /* GeoMentalismCitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */; };
 		28062320301A87BC003F0C44 /* GeoMentalismCities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806231F301A87BC003F0C44 /* GeoMentalismCities.swift */; };
 		28062323301A8966003F0C44 /* GeoMentalismViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062322301A8966003F0C44 /* GeoMentalismViewModel.swift */; };
 		28062325301A8E06003F0C44 /* CityCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062324301A8E06003F0C44 /* CityCapsule.swift */; };
+		28062326301A8E06003F0C44 /* GeoMentalismCitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */; };
 		280FC5D92FCDA5EA00B347F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */; };
 		28258EC02FF3E31800DE5695 /* OBPreferenceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */; };
 		28258EC12FF3E31800DE5695 /* OBValueDeliveryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */; };
@@ -150,9 +150,9 @@
 		0A000100000000000000001A /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
 		0A000200000000000000001A /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		0A0002000000000000000023 /* TrickGradientCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickGradientCard.swift; sourceTree = "<group>"; };
-		0A0002000000000000000029 /* WatermarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatermarkView.swift; sourceTree = "<group>"; };
 		0A0002000000000000000025 /* OnboardingCTAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCTAButton.swift; sourceTree = "<group>"; };
 		0A0002000000000000000027 /* AsyncUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncUtilities.swift; sourceTree = "<group>"; };
+		0A0002000000000000000029 /* WatermarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatermarkView.swift; sourceTree = "<group>"; };
 		0A000300000000000000001A /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 		0A000400000000000000001A /* OnboardingProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressBar.swift; sourceTree = "<group>"; };
 		0A000500000000000000001A /* OBOptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBOptionRow.swift; sourceTree = "<group>"; };
@@ -182,10 +182,10 @@
 		0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTiltGestureManager.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000007 /* CalculatorPredictionInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionInstruction.swift; sourceTree = "<group>"; };
 		2806231B301A8495003F0C44 /* GeoMentalismView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismView.swift; sourceTree = "<group>"; };
-		28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCitiesView.swift; sourceTree = "<group>"; };
 		2806231F301A87BC003F0C44 /* GeoMentalismCities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCities.swift; sourceTree = "<group>"; };
 		28062322301A8966003F0C44 /* GeoMentalismViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismViewModel.swift; sourceTree = "<group>"; };
 		28062324301A8E06003F0C44 /* CityCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCapsule.swift; sourceTree = "<group>"; };
+		28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCitiesView.swift; sourceTree = "<group>"; };
 		280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBFeatureSlideScreen.swift; sourceTree = "<group>"; };
 		28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPaywallScreen.swift; sourceTree = "<group>"; };
@@ -1316,15 +1316,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = MagicTricksIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VUS888QPJB;
+				DEVELOPMENT_TEAM = LC4B2V6XMC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MagicTricks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Magic Tricks";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Magic Tricks uses the camera to capture numbered photos for Impossible Gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Magic Tricks saves the selected reveal photo to your gallery for the final trick reveal.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1338,11 +1337,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.svoego.magic;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = ProstoRostik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Magic - distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1358,15 +1356,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = MagicTricksIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VUS888QPJB;
+				DEVELOPMENT_TEAM = LC4B2V6XMC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MagicTricks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Magic Tricks";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Magic Tricks uses the camera to capture numbered photos for Impossible Gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Magic Tricks saves the selected reveal photo to your gallery for the final trick reveal.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1380,11 +1377,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.svoego.magic;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = ProstoRostik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Magic - distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

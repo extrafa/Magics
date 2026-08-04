@@ -78,7 +78,8 @@ struct MagicGalleryView: View {
     private var bottomSaveButton: some View {
         MagicGalleryBottomSaveBar(
             saveButtonTitle: vm.saveButtonTitle,
-            canSave: vm.selectedPhoto != nil,
+            hasPhoto: vm.selectedPhoto != nil,
+            isSaving: vm.isSaving,
             onSave: {
                 Task {
                     await vm.saveSelectedPhotoToGallery()

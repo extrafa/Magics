@@ -9,12 +9,15 @@ import SwiftUI
 
 struct MagicGalleryBottomSaveBar: View {
     let saveButtonTitle: String
-    let canSave: Bool
+    let hasPhoto: Bool
+    let isSaving: Bool
     let onSave: () -> Void
+
+    private var canSave: Bool { hasPhoto && !isSaving }
 
     var body: some View {
         VStack(spacing: 10) {
-            if !canSave {
+            if !hasPhoto {
                 Text(String(localized: "magicGallery.selectPhotoFirst"))
                     .font(.caption)
                     .foregroundStyle(Color.primaryText.opacity(0.55))

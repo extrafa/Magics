@@ -14,6 +14,7 @@ final class MagicGalleryViewModel: ObservableObject {
     @Published var selectedPhotoNumber: Int?
     @Published var activeCaptureSession: MagicGalleryCaptureSession?
     @Published var alertMessage: String?
+    @Published var isSaving = false
     @Published private(set) var usesStandardSet: Bool
 
     let photoLibrary: MagicGalleryPhotoLibraryManaging

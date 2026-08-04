@@ -68,9 +68,19 @@ extension MagicGalleryViewModel {
     }
 
     func saveSelectedPhotoToGallery() async {
+        guard !isSaving else { return }
         guard let image = selectedPhoto?.image else {
             alertMessage = String(localized: "magicGallery.selectPhotoFirst")
             return
+        }
+
+        isSaving = true
+        defer {
+            Task { @MainActor in
+                // Short cooldown prevents save spam and repeated haptics
+                try? await Task.sleep(for: .milliseconds(800))
+                isSaving = false
+            }
         }
 
         do {
