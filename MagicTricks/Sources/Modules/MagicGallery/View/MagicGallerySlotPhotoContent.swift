@@ -11,30 +11,16 @@ struct MagicGallerySlotPhotoContent: View {
     let photo: MagicGalleryPhoto
 
     var body: some View {
-        Group {
-            if photo.isLandscape {
-                landscapeImage
-            } else {
-                portraitImage
+        // Color.clear fills the proposed size and always reports that size as its
+        // own layout bounds — scaledToFill()'s large intrinsic width never escapes.
+        // The image lives in an overlay (doesn't affect layout) and is clipped to
+        // the same bounds as the clear color, which equals the card's frame.
+        Color.clear
+            .overlay {
+                Image(uiImage: photo.image)
+                    .resizable()
+                    .scaledToFill()
+                    .clipped()
             }
-        }
-    }
-
-    private var landscapeImage: some View {
-        Image(uiImage: photo.image)
-            .resizable()
-            .scaledToFit()
-            .frame(height: 184)
-            .frame(maxWidth: .infinity)
-            .padding(8)
-    }
-
-    private var portraitImage: some View {
-        Image(uiImage: photo.image)
-            .resizable()
-            .scaledToFill()
-            .frame(height: 184)
-            .frame(maxWidth: .infinity)
-            .clipped()
     }
 }

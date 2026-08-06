@@ -13,8 +13,8 @@ protocol MagicGalleryPhotoLibraryManaging {
 
     func loadCustomPhotos() throws -> [MagicGalleryPhoto]
     func standardPhoto(for number: Int) -> MagicGalleryPhoto?
-    func saveCustomPhoto(_ image: UIImage, for number: Int) throws -> MagicGalleryPhoto
-    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) throws
+    func saveCustomPhoto(_ image: UIImage, for number: Int) async throws -> MagicGalleryPhoto
+    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) async throws
 }
 
 @MainActor
@@ -66,23 +66,32 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         return MagicGalleryPhoto(number: number, image: image, fileName: assetName, source: .standard)
     }
 
-    func saveCustomPhoto(_ image: UIImage, for number: Int) throws -> MagicGalleryPhoto {
+    func saveCustomPhoto(_ image: UIImage, for number: Int) async throws -> MagicGalleryPhoto {
         try ensureStorageDirectoryExists()
 
         let fileName = "\(number).jpg"
         let url = try storageDirectoryURL().appendingPathComponent(fileName)
 
-        guard let data = image.jpegData(compressionQuality: 0.92) else {
-            throw MagicGalleryPhotoLibraryError.imageEncodingFailed
-        }
+        // JPEG encoding and disk write on a background thread — both are slow
+        // for high-resolution camera images (12 MP+) and block the main thread
+        // for 1–2 s if run synchronously.
+        try await Task.detached(priority: .userInitiated) {
+            guard let data = image.jpegData(compressionQuality: 0.92) else {
+                throw MagicGalleryPhotoLibraryError.imageEncodingFailed
+            }
+            try data.write(to: url, options: .atomic)
+        }.value
 
-        try data.write(to: url, options: .atomic)
         return MagicGalleryPhoto(number: number, image: image, fileName: fileName, source: .custom)
     }
 
-    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) throws {
+    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) async throws {
         guard photo.isCustom else { return }
-        try fileManager.removeItem(at: storageDirectoryURL().appendingPathComponent(photo.fileName))
+        let url = try storageDirectoryURL().appendingPathComponent(photo.fileName)
+        // File removal off the main thread.
+        try await Task.detached(priority: .utility) {
+            try FileManager.default.removeItem(at: url)
+        }.value
     }
 
     private func storageDirectoryURL() throws -> URL {

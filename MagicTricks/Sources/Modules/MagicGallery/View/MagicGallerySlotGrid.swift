@@ -8,6 +8,11 @@
 import SwiftUI
 
 struct MagicGallerySlotGrid: View {
+    // customPhotos is an Equatable value — SwiftUI uses it to detect changes and
+    // invalidate the grid body. Without it, SwiftUI compares only closure params
+    // (which are pointer-identical across renders) and skips re-render, leaving
+    // the last custom photo visible after deletion.
+    let customPhotos: [MagicGalleryPhoto]
     let usesStandardSet: Bool
     let selectedPhotoNumber: Int?
     let photoProvider: (Int) -> MagicGalleryPhoto?

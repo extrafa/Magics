@@ -15,42 +15,46 @@ struct MagicGallerySlotCard: View {
     let onDelete: () -> Void
 
     var body: some View {
-        Button(action: onTap) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color.grayCard)
+        // Delete button sits in a ZStack OUTSIDE the card's tap Button so that
+        // tapping trash never triggers onTap. Nested buttons in SwiftUI can fire
+        // both actions; keeping them at the same ZStack level avoids this.
+        ZStack(alignment: .topTrailing) {
+            Button(action: onTap) {
+                ZStack {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .fill(Color.grayCard)
 
-                if let photo {
-                    MagicGallerySlotPhotoContent(photo: photo)
-                } else {
-                    MagicGallerySlotEmptyContent()
+                    if let photo {
+                        MagicGallerySlotPhotoContent(photo: photo)
+                    } else {
+                        MagicGallerySlotEmptyContent()
+                    }
+                }
+                .frame(height: 184)
+                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+                .overlay {
+                    RoundedRectangle(cornerRadius: 20, style: .continuous)
+                        .strokeBorder(
+                            isSelected ? Color.button : Color.primaryText.opacity(0.08),
+                            lineWidth: isSelected ? 3 : 1
+                        )
+                }
+                .overlay(alignment: .topLeading) {
+                    numberBadge
+                        .padding(10)
+                }
+                .overlay(alignment: .bottomLeading) {
+                    if let photo {
+                        statusBadge(for: photo)
+                    }
                 }
             }
-            .frame(height: 184)
-            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-            .overlay {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .strokeBorder(
-                        isSelected ? Color.button : Color.primaryText.opacity(0.08),
-                        lineWidth: isSelected ? 3 : 1
-                    )
-            }
-            .overlay(alignment: .topLeading) {
-                numberBadge
-                    .padding(10)
-            }
-            .overlay(alignment: .topTrailing) {
-                if let photo, photo.isCustom {
-                    deleteButton
-                }
-            }
-            .overlay(alignment: .bottomLeading) {
-                if let photo {
-                    statusBadge(for: photo)
-                }
+            .buttonStyle(.plain)
+
+            if let photo, photo.isCustom {
+                deleteButton
             }
         }
-        .buttonStyle(.plain)
     }
 
     private var numberBadge: some View {

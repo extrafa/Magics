@@ -64,7 +64,7 @@ struct MagicGalleryCapturePanel: View {
 
     private var captureButton: some View {
         Button(action: onCapture) {
-            Label(captureButtonTitle, systemImage: "camera.fill")
+            Label(captureButtonTitle, systemImage: "photo.badge.plus")
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 15)

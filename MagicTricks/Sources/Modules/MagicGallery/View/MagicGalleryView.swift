@@ -11,6 +11,9 @@ struct MagicGalleryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var vm = MagicGalleryViewModel()
 
+    @State private var captureSource: UIImagePickerController.SourceType = .camera
+    @State private var showSourceDialog = false
+
     var body: some View {
         NavigationStack {
             ZStack {
@@ -37,11 +40,26 @@ struct MagicGalleryView: View {
                 }
             }
         }
+        // Source selection dialog — shown before opening the picker.
+        .confirmationDialog("", isPresented: $showSourceDialog) {
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                Button("Camera") {
+                    captureSource = .camera
+                    vm.startSequentialCapture()
+                }
+            }
+            Button("Photo Library") {
+                captureSource = .photoLibrary
+                vm.startSequentialCapture()
+            }
+            Button("Cancel", role: .cancel) {}
+        }
         .fullScreenCover(item: $vm.activeCaptureSession, onDismiss: {
             vm.presentPendingCaptureIfNeeded()
         }) { session in
             MagicGalleryCameraView(
                 number: session.number,
+                sourceType: captureSource,
                 onCaptured: { vm.handleCapturedImage($0, for: session.number) },
                 onCancel: vm.handleCaptureCancelled
             )
@@ -61,12 +79,13 @@ struct MagicGalleryView: View {
             onToggleStandardSet: vm.setStandardSet,
             captureButtonTitle: vm.captureButtonTitle,
             canAddMorePhotos: vm.canAddMorePhotos,
-            onCapture: vm.startSequentialCapture
+            onCapture: { showSourceDialog = true }
         )
     }
 
     private var slotGrid: some View {
         MagicGallerySlotGrid(
+            customPhotos: vm.customPhotos,
             usesStandardSet: vm.usesStandardSet,
             selectedPhotoNumber: vm.selectedPhoto?.number,
             photoProvider: vm.photo(for:),

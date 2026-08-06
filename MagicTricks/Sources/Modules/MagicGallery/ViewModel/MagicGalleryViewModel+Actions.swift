@@ -35,35 +35,43 @@ extension MagicGalleryViewModel {
     }
 
     func handleCapturedImage(_ image: UIImage, for number: Int) {
-        do {
-            let photo = try photoLibrary.saveCustomPhoto(image, for: number)
-            upsert(photo)
-            selectedPhotoNumber = photo.number
-        } catch {
-            alertMessage = String(localized: "magicGallery.error.savePhotoFailed")
-            captureFlow.failCapture()
-            activeCaptureSession = nil
-            return
-        }
+        // Compute the next sequential slot before the async save mutates customPhotos.
+        // Treat `number` as already taken so sequential capture advances correctly.
+        let takenNumbers = Set(customPhotos.map(\.number)).union([number])
+        let nextNumber = (1...photoLibrary.maxPhotos).first { !takenNumbers.contains($0) }
 
-        captureFlow.completeCapture(nextAvailableNumber: nextAvailableNumber)
+        // Dismiss the capture UI immediately — don't make the performer wait while
+        // JPEG encoding + disk write happen (can be 1–2 s for 12 MP camera images).
+        captureFlow.completeCapture(nextAvailableNumber: nextNumber)
         activeCaptureSession = nil
+
+        Task {
+            do {
+                let photo = try await photoLibrary.saveCustomPhoto(image, for: number)
+                upsert(photo)
+                selectedPhotoNumber = photo.number
+            } catch {
+                alertMessage = String(localized: "magicGallery.error.savePhotoFailed")
+            }
+        }
     }
 
     func deletePhoto(_ photo: MagicGalleryPhoto) {
         guard photo.isCustom else { return }
 
-        do {
-            try photoLibrary.deleteCustomPhoto(photo)
-        } catch {
-            alertMessage = String(localized: "magicGallery.error.deletePhotoFailed")
-            return
-        }
-
+        // Remove from the UI immediately — the performer shouldn't see a freeze
+        // while the file I/O runs.
         removeCustomPhoto(number: photo.number)
-
         if selectedPhotoNumber == photo.number {
             selectedPhotoNumber = nil
+        }
+
+        Task {
+            do {
+                try await photoLibrary.deleteCustomPhoto(photo)
+            } catch {
+                alertMessage = String(localized: "magicGallery.error.deletePhotoFailed")
+            }
         }
     }
 
