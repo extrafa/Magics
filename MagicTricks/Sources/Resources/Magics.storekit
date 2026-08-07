@@ -86,71 +86,7 @@
     ]
   },
   "subscriptionGroups" : [
-    {
-      "id" : "AB00A9DA",
-      "localizations" : [
 
-      ],
-      "name" : "Test",
-      "subscriptions" : [
-        {
-          "adHocOffers" : [
-
-          ],
-          "codeOffers" : [
-
-          ],
-          "displayPrice" : "1.99",
-          "familyShareable" : true,
-          "groupNumber" : 1,
-          "internalID" : "5CAF1005",
-          "introductoryOffer" : null,
-          "localizations" : [
-            {
-              "description" : "",
-              "displayName" : "",
-              "locale" : "en_US"
-            }
-          ],
-          "productID" : "pro_access",
-          "recurringSubscriptionPeriod" : "P1M",
-          "referenceName" : "Monthly",
-          "subscriptionGroupID" : "AB00A9DA",
-          "type" : "RecurringSubscription",
-          "winbackOffers" : [
-
-          ]
-        },
-        {
-          "adHocOffers" : [
-
-          ],
-          "codeOffers" : [
-
-          ],
-          "displayPrice" : "14.99",
-          "familyShareable" : true,
-          "groupNumber" : 1,
-          "internalID" : "218E2317",
-          "introductoryOffer" : null,
-          "localizations" : [
-            {
-              "description" : "",
-              "displayName" : "",
-              "locale" : "en_US"
-            }
-          ],
-          "productID" : "pro_access2",
-          "recurringSubscriptionPeriod" : "P1Y",
-          "referenceName" : "Yearly",
-          "subscriptionGroupID" : "AB00A9DA",
-          "type" : "RecurringSubscription",
-          "winbackOffers" : [
-
-          ]
-        }
-      ]
-    }
   ],
   "version" : {
     "major" : 4,
