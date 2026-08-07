@@ -40,7 +40,6 @@ struct MagicGalleryView: View {
                 }
             }
         }
-        // Source selection dialog — shown before opening the picker.
         .confirmationDialog("", isPresented: $showSourceDialog) {
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
                 Button("Camera") {

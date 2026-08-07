@@ -8,10 +8,6 @@
 import SwiftUI
 
 struct MagicGallerySlotGrid: View {
-    // customPhotos is an Equatable value — SwiftUI uses it to detect changes and
-    // invalidate the grid body. Without it, SwiftUI compares only closure params
-    // (which are pointer-identical across renders) and skips re-render, leaving
-    // the last custom photo visible after deletion.
     let customPhotos: [MagicGalleryPhoto]
     let usesStandardSet: Bool
     let selectedPhotoNumber: Int?
@@ -19,13 +15,13 @@ struct MagicGallerySlotGrid: View {
     let onSlotTap: (Int) -> Void
     let onDelete: (MagicGalleryPhoto) -> Void
 
-    private let columns = [
+    private static let columns = [
         GridItem(.flexible(), spacing: 12),
         GridItem(.flexible(), spacing: 12)
     ]
 
     var body: some View {
-        LazyVGrid(columns: columns, spacing: 12) {
+        LazyVGrid(columns: Self.columns, spacing: 12) {
             ForEach(1...10, id: \.self) { number in
                 MagicGallerySlotCard(
                     number: number,

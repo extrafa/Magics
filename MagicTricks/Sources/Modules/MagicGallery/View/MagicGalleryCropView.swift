@@ -62,7 +62,6 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
 
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        // Only build the UI once — safe area insets are available here.
         guard !didLayout else { return }
         didLayout = true
         setupScrollView()
@@ -74,8 +73,8 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
 
     private var cropFrame: CGRect {
         let side = view.bounds.width - framePadding * 2
-        let topClear = view.safeAreaInsets.top + 66      // below cancel button
-        let bottomClear = view.bounds.height - view.safeAreaInsets.bottom - 84  // above confirm button
+        let topClear = view.safeAreaInsets.top + 66
+        let bottomClear = view.bounds.height - view.safeAreaInsets.bottom - 84
         let centerY = (topClear + bottomClear) / 2
         let y = max(centerY - side / 2, topClear)
         return CGRect(x: framePadding, y: y, width: side, height: side)
@@ -87,8 +86,6 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
         let rect = cropFrame
         let imgSize = normalizedImage.size
 
-        // Scale the imageView so it fills the entire crop square at zoom 1.0.
-        // This becomes minimumZoomScale = 1.0, so the user can only zoom in, not out.
         let fillScale = max(rect.width / imgSize.width, rect.height / imgSize.height)
         let imageViewSize = CGSize(width: imgSize.width * fillScale, height: imgSize.height * fillScale)
 
@@ -110,7 +107,6 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
         scrollView.addSubview(imageView)
         view.addSubview(scrollView)
 
-        // Center the image in the crop frame on load.
         let offsetX = max((imageViewSize.width - rect.width) / 2, 0)
         let offsetY = max((imageViewSize.height - rect.height) / 2, 0)
         scrollView.setContentOffset(CGPoint(x: offsetX, y: offsetY), animated: false)
@@ -127,7 +123,6 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
     }
 
     private func setupButtons() {
-        // Cancel — top leading, pill-shaped icon button
         let cancelSymbol = UIImage.SymbolConfiguration(pointSize: 14, weight: .semibold)
         let cancelButton = UIButton(type: .system)
         cancelButton.setImage(UIImage(systemName: "xmark", withConfiguration: cancelSymbol), for: .normal)
@@ -139,7 +134,6 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
         cancelButton.addTarget(self, action: #selector(handleCancel), for: .touchUpInside)
         view.addSubview(cancelButton)
 
-        // Confirm — bottom, full-width pill button
         let confirmButton = UIButton(type: .system)
         confirmButton.setTitle("Use Photo", for: .normal)
         confirmButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
@@ -176,8 +170,6 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
         let offset = scrollView.contentOffset
         let visibleSize = scrollView.bounds.size
 
-        // Divide offset by zoomScale to convert from scroll-view coordinates
-        // into the imageView's natural (unzoomed) coordinate space.
         let visibleInView = CGRect(
             x: offset.x / zoomScale,
             y: offset.y / zoomScale,
@@ -185,11 +177,6 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
             height: visibleSize.height / zoomScale
         )
 
-        // Use cgImage.width (pixels) not size.width (points) for the pixel ratio —
-        // they differ when UIGraphicsImageRenderer bakes in a non-1.0 scale factor.
-        // Use imageView.bounds.width (not frame.width): UIScrollView zoom applies a
-        // CGAffineTransform so frame.width = bounds.width * zoomScale; using frame
-        // would divide by zoomScale twice, producing the wrong crop region.
         guard let cgImg = normalizedImage.cgImage else { return normalizedImage }
         let pixelRatio = CGFloat(cgImg.width) / imageView.bounds.width
         let pixelRect = CGRect(
@@ -222,7 +209,6 @@ private final class CropOverlayView: UIView {
         self.cornerRadius = cornerRadius
         super.init(frame: frame)
         backgroundColor = .clear
-        // Force hardware rendering so the blend-mode cutout draws correctly.
         isOpaque = false
     }
 
@@ -231,15 +217,12 @@ private final class CropOverlayView: UIView {
     override func draw(_ rect: CGRect) {
         guard let ctx = UIGraphicsGetCurrentContext() else { return }
 
-        // Dim everything outside the crop window.
         UIColor.black.withAlphaComponent(0.60).setFill()
         UIRectFill(rect)
 
-        // Cut the crop window out of the dimming layer.
         ctx.setBlendMode(.clear)
         UIBezierPath(roundedRect: cropRect, cornerRadius: cornerRadius).fill()
 
-        // Subtle white border around the crop window.
         ctx.setBlendMode(.normal)
         UIColor.white.withAlphaComponent(0.50).setStroke()
         let border = UIBezierPath(
@@ -254,13 +237,8 @@ private final class CropOverlayView: UIView {
 // MARK: - UIImage helper
 
 private extension UIImage {
-    /// Returns a copy of the image with the orientation baked in (always .up).
-    /// Required before cropping CGImage, which ignores UIImage.imageOrientation.
     func bakingOrientation() -> UIImage {
         guard imageOrientation != .up else { return self }
-        // Force scale = 1.0 so the output cgImage pixel dimensions equal size.
-        // Default scale (UIScreen.main.scale) would make cgImage 2–3x larger than
-        // size, which breaks the pixel-ratio math in extractCrop.
         let format = UIGraphicsImageRendererFormat()
         format.scale = 1.0
         let renderer = UIGraphicsImageRenderer(size: size, format: format)

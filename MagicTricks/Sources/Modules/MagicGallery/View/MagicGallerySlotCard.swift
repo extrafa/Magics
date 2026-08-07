@@ -15,9 +15,6 @@ struct MagicGallerySlotCard: View {
     let onDelete: () -> Void
 
     var body: some View {
-        // Delete button sits in a ZStack OUTSIDE the card's tap Button so that
-        // tapping trash never triggers onTap. Nested buttons in SwiftUI can fire
-        // both actions; keeping them at the same ZStack level avoids this.
         ZStack(alignment: .topTrailing) {
             Button(action: onTap) {
                 ZStack {

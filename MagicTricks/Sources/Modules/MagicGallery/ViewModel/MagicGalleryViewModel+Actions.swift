@@ -35,13 +35,9 @@ extension MagicGalleryViewModel {
     }
 
     func handleCapturedImage(_ image: UIImage, for number: Int) {
-        // Compute the next sequential slot before the async save mutates customPhotos.
-        // Treat `number` as already taken so sequential capture advances correctly.
         let takenNumbers = Set(customPhotos.map(\.number)).union([number])
         let nextNumber = (1...photoLibrary.maxPhotos).first { !takenNumbers.contains($0) }
 
-        // Dismiss the capture UI immediately — don't make the performer wait while
-        // JPEG encoding + disk write happen (can be 1–2 s for 12 MP camera images).
         captureFlow.completeCapture(nextAvailableNumber: nextNumber)
         activeCaptureSession = nil
 
@@ -59,8 +55,6 @@ extension MagicGalleryViewModel {
     func deletePhoto(_ photo: MagicGalleryPhoto) {
         guard photo.isCustom else { return }
 
-        // Remove from the UI immediately — the performer shouldn't see a freeze
-        // while the file I/O runs.
         removeCustomPhoto(number: photo.number)
         if selectedPhotoNumber == photo.number {
             selectedPhotoNumber = nil
@@ -85,7 +79,6 @@ extension MagicGalleryViewModel {
         isSaving = true
         defer {
             Task { @MainActor in
-                // Short cooldown prevents save spam and repeated haptics
                 try? await Task.sleep(for: .milliseconds(800))
                 isSaving = false
             }

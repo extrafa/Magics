@@ -8,9 +8,6 @@
 import SwiftUI
 import UIKit
 
-/// Full-screen flow for adding a custom photo.
-/// Step 1: UIImagePickerController (camera or library).
-/// Step 2: MagicGalleryCropView — user adjusts framing before confirming.
 struct MagicGalleryCameraView: View {
     let number: Int
     let sourceType: UIImagePickerController.SourceType
@@ -24,7 +21,6 @@ struct MagicGalleryCameraView: View {
             MagicGalleryCropView(
                 image: pendingImage,
                 onConfirm: onCaptured,
-                // "Back" from crop returns to the picker so the user can try a different photo.
                 onCancel: { self.pendingImage = nil }
             )
         } else {
@@ -51,7 +47,7 @@ private struct MagicGalleryPickerRepresentable: UIViewControllerRepresentable {
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
         picker.sourceType = sourceType
-        picker.allowsEditing = false   // We handle crop ourselves in MagicGalleryCropView.
+        picker.allowsEditing = false
         picker.delegate = context.coordinator
         return picker
     }

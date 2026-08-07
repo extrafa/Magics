@@ -72,9 +72,6 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         let fileName = "\(number).jpg"
         let url = try storageDirectoryURL().appendingPathComponent(fileName)
 
-        // JPEG encoding and disk write on a background thread — both are slow
-        // for high-resolution camera images (12 MP+) and block the main thread
-        // for 1–2 s if run synchronously.
         try await Task.detached(priority: .userInitiated) {
             guard let data = image.jpegData(compressionQuality: 0.92) else {
                 throw MagicGalleryPhotoLibraryError.imageEncodingFailed
@@ -88,7 +85,6 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     func deleteCustomPhoto(_ photo: MagicGalleryPhoto) async throws {
         guard photo.isCustom else { return }
         let url = try storageDirectoryURL().appendingPathComponent(photo.fileName)
-        // File removal off the main thread.
         try await Task.detached(priority: .utility) {
             try FileManager.default.removeItem(at: url)
         }.value
@@ -125,8 +121,6 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
 
 @MainActor
 final class MagicGallerySystemPhotoSaver: NSObject, MagicGalleryPhotoSaving {
-    // Stored at object level because UIImageWriteToSavedPhotosAlbum fires its callback
-    // after the async function returns — a local continuation would already be gone by then
     private var continuation: CheckedContinuation<Void, Error>?
 
     func saveToGallery(_ image: UIImage) async throws {
