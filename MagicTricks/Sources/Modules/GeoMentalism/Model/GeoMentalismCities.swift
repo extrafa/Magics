@@ -35,7 +35,7 @@ enum GeoMentalismCities {
         "Brighton", "Bristol", "Calcutta",
         "Chicago", "Delhi", "Osaka",
         "Paris", "Rio de Janeiro", "Rome", "Rotterdam",
-        "Salvador", "San Francisco", "Sao Paolo", "Seoul"
+        "Salvador", "San Francisco", "São Paulo", "Seoul"
     ]
 
     static let all: [String] = (straight + curved).sorted()

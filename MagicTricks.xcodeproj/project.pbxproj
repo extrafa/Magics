@@ -28,7 +28,6 @@
 		0A6E00000000000000000004 /* GeoMentalismInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E00000000000000000003 /* GeoMentalismInstruction.swift */; };
 		0AEE00000000000000000002 /* MagicGalleryPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000001 /* MagicGalleryPhoto.swift */; };
 		0AEE00000000000000000004 /* MagicGalleryCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000003 /* MagicGalleryCameraView.swift */; };
-		0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000001A /* MagicGalleryCropView.swift */; };
 		0AEE00000000000000000006 /* HapticTrainingMode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000005 /* HapticTrainingMode.swift */; };
 		0AEE00000000000000000008 /* HapticTrainingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000007 /* HapticTrainingView.swift */; };
 		0AEE0000000000000000000A /* CalculatorPredictionEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000009 /* CalculatorPredictionEngine.swift */; };
@@ -38,6 +37,7 @@
 		0AEE00000000000000000015 /* MagicGalleryInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000014 /* MagicGalleryInstruction.swift */; };
 		0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000016 /* HapticManager+CountSignal.swift */; };
 		0AEE00000000000000000019 /* FloatingMotionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000018 /* FloatingMotionModifier.swift */; };
+		0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000001A /* MagicGalleryCropView.swift */; };
 		0AFF00000000000000000002 /* InstructionPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000001 /* InstructionPhase.swift */; };
 		0AFF00000000000000000004 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000003 /* AppColors.swift */; };
 		0AFF00000000000000000006 /* PhoneTiltGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */; };
@@ -169,7 +169,6 @@
 		0A6E00000000000000000003 /* GeoMentalismInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismInstruction.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000001 /* MagicGalleryPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryPhoto.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000003 /* MagicGalleryCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCameraView.swift; sourceTree = "<group>"; };
-		0AEE0000000000000000001A /* MagicGalleryCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCropView.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000005 /* HapticTrainingMode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingMode.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000007 /* HapticTrainingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingView.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000009 /* CalculatorPredictionEngine.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionEngine.swift; sourceTree = "<group>"; };
@@ -179,6 +178,7 @@
 		0AEE00000000000000000014 /* MagicGalleryInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryInstruction.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000016 /* HapticManager+CountSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+CountSignal.swift"; sourceTree = "<group>"; };
 		0AEE00000000000000000018 /* FloatingMotionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMotionModifier.swift; sourceTree = "<group>"; };
+		0AEE0000000000000000001A /* MagicGalleryCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCropView.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000001 /* InstructionPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionPhase.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000003 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTiltGestureManager.swift; sourceTree = "<group>"; };
@@ -747,6 +747,7 @@
 		913FDE082EBEDAE500B05D99 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				0A6E00000000000000000001 /* GeoMentalism */,
 				91AFB5742F8FDC2D00AAF6B7 /* ColorSense */,
 				9138781B2F8972F400CA371E /* Instruction */,
 				911502112F873AFA00071C0C /* ExitHint */,
@@ -755,7 +756,6 @@
 				918CBC082EE27CEB0004B50D /* Settings */,
 				91D289D92EDCA9F10004406B /* Collection */,
 				287D561A2FACD5F500ECCE14 /* MagicGallery */,
-				0A6E00000000000000000001 /* GeoMentalism */,
 				2875DE902FBA7D6E00B9298C /* HapticTraining */,
 				0A00FF000000000000000001 /* Onboarding */,
 			);
