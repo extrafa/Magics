@@ -8,8 +8,8 @@
 import Foundation
 
 enum LetterType {
-    case straight // A E F H I K L M N T V W X Y Z
-    case curved   // B C D G J O P Q R S U
+    case straight
+    case curved
 
     private static let straightLetters: Set<Character> =
         ["A","E","F","H","I","K","L","M","N","T","V","W","X","Y","Z"]

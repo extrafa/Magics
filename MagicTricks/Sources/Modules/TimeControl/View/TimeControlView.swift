@@ -74,10 +74,7 @@ struct TimeControlView: View {
         ZStack {
             Circle()
                 .fill(fill)
-                .frame(width: 84, height: 84)
-
-            Circle()
-                .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                .overlay { Circle().stroke(Color.white.opacity(0.08), lineWidth: 1) }
                 .frame(width: 84, height: 84)
 
             Text(title)

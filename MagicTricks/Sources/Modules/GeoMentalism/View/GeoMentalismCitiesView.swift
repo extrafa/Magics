@@ -41,8 +41,6 @@ struct GeoMentalismCitiesView: View {
             }
         }
         .onAppear {
-            // Force-close the hint immediately — it shouldn't animate while the
-            // performer is in the city detail view, and should stay closed on return.
             isVisible = false
             viewModel.generateList(for: city)
         }

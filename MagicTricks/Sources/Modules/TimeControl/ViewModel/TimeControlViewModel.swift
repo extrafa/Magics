@@ -19,7 +19,7 @@ final class TimeControlViewModel: ObservableObject {
     private var startDate: Date?
     private var timerTask: Task<Void, Never>?
     private var transmissionTask: Task<Void, Never>?
-    private var transmissionPhase: TimeControlTransmissionPhase?
+    @Published private var transmissionPhase: TimeControlTransmissionPhase?
 
     init(
         signalTransmitter: TimeControlSignalTransmitting? = nil,

@@ -8,17 +8,6 @@ enum CalculatorExpressionError: Error {
     case evaluationFailed
 }
 
-// Recursive descent parser for infix arithmetic expressions.
-//
-// Grammar:
-//   expr   = term   (('+' | '-') term)*
-//   term   = factor (('*' | '/' | '%') factor)*
-//   factor = ('+' | '-') factor | number
-//
-// Operator precedence is encoded in the grammar: * / % bind tighter than + -.
-// % between two numbers means modulo (e.g. 10%3 = 1).
-// Trailing % is handled by the ViewModel before calling evaluate.
-
 final class CalculatorPredictionEngine: CalculatorExpressionEvaluating {
 
     func evaluate(_ expression: String) throws -> Double {
@@ -83,7 +72,6 @@ private struct Parser {
 
     mutating func advance() { pos += 1 }
 
-    // expr = term (('+' | '-') term)*
     mutating func parseExpr() throws -> Double {
         var lhs = try parseTerm()
         while let t = current, t == .plus || t == .minus {
@@ -94,7 +82,6 @@ private struct Parser {
         return lhs
     }
 
-    // term = factor (('*' | '/' | '%') factor)*
     mutating func parseTerm() throws -> Double {
         var lhs = try parseFactor()
         while let t = current, t == .multiply || t == .divide || t == .modulo {
@@ -116,14 +103,12 @@ private struct Parser {
         return lhs
     }
 
-    // factor = ('+' | '-') factor | number
     mutating func parseFactor() throws -> Double {
         switch current {
         case .minus:
             advance()
             return try -parseFactor()
         case .plus:
-            // unary plus — handles edge cases like "+3" or expressions starting after operator replacement
             advance()
             return try parseFactor()
         case .number(let value):
