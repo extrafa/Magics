@@ -14,9 +14,7 @@ struct CalculatorPredictionButtonView: View {
     let action: () -> Void
 
     var body: some View {
-        Button {
-            action()
-        } label: {
+        Button(action: action) {
             ZStack {
                 if label == "delete.left" {
                     Image(systemName: "delete.left")

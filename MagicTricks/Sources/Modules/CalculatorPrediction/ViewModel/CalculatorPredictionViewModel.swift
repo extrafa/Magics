@@ -116,9 +116,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
             let result = try expressionEvaluator.evaluate(display)
             let formatted = formatResult(result)
             display = formatted.replacingOccurrences(of: ".", with: ",")
-        } catch {
-            return
-        }
+        } catch { }
     }
     
     private func formatResult(_ value: Double) -> String {
