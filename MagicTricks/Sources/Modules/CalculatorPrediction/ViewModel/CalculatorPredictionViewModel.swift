@@ -97,10 +97,23 @@ final class CalculatorPredictionViewModel: ObservableObject {
         }
         
         guard let last = display.last else { return }
-        
-        if String(last) != "%" && operators.contains(String(last)) {
+
+        // Trailing comma means the decimal isn't complete — parser can't evaluate "5."
+        if last == "," { return }
+
+        // Trailing % means percentage: "5*2%" → evaluate "5*2/100"
+        // Any other trailing operator blocks calculation
+        let lastStr = String(last)
+        if lastStr == "%" {
+            let base = String(display.dropLast())
+            guard !base.isEmpty else { return }
+            do {
+                let result = try expressionEvaluator.evaluate(base + "/100")
+                display = formatResult(result).replacingOccurrences(of: ".", with: ",")
+            } catch { }
             return
         }
+        if operators.contains(lastStr) { return }
         
         do {
             let result = try expressionEvaluator.evaluate(display)
@@ -112,11 +125,16 @@ final class CalculatorPredictionViewModel: ObservableObject {
     }
     
     private func formatResult(_ value: Double) -> String {
+        guard value.isFinite else { return "Error" }
         if value.truncatingRemainder(dividingBy: 1) == 0 {
-            return String(Int(value))
-        } else {
-            return String(value)
+            // Int(exactly:) returns nil for fractional values AND for values outside Int range,
+            // so it's safe — unlike Int(value) which crashes on overflow (e.g. 1e20)
+            if let whole = Int(exactly: value) {
+                return String(whole)
+            }
+            return String(format: "%.0f", value)
         }
+        return String(value)
     }
     
     private func showSecretResult() {
