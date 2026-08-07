@@ -12,12 +12,11 @@ struct ColorSenseView: View {
     @StateObject private var viewModel: ColorSenseViewModel
     @State private var isVisible = true
 
-    private let columns = [
+    private static let columns = [
         GridItem(.flexible(), spacing: 14),
         GridItem(.flexible(), spacing: 14)
     ]
 
-    // Heights and rotations are purely visual — they live here, not in the model.
     private struct CardLayout {
         let height: CGFloat
         let rotation: Double
@@ -42,14 +41,13 @@ struct ColorSenseView: View {
         ZStack {
             Color.background.ignoresSafeArea()
 
-            LazyVGrid(columns: columns, spacing: 14) {
+            LazyVGrid(columns: Self.columns, spacing: 14) {
                 ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
                     let layout = Self.layouts[index]
                     cardView(card, layout: layout)
                         .rotationEffect(.degrees(layout.rotation))
                         .modifier(floatingMotionSettings(for: index))
                         .gesture(
-                            // fires on touch down, not finger up — card responds instantly on press
                             DragGesture(minimumDistance: 0)
                                 .onChanged { _ in viewModel.handleTap(on: card) }
                         )
