@@ -1,5 +1,5 @@
 //
-//  ColorMentalismView.swift
+//  ColorSenseView.swift
 //  Magic Tricks
 //
 //  Created by Ross on 05/04/2026.
@@ -7,9 +7,9 @@
 
 import SwiftUI
 
-struct ColorMentalismView: View {
+struct ColorSenseView: View {
 
-    @StateObject private var viewModel: ColorMentalismViewModel
+    @StateObject private var viewModel: ColorSenseViewModel
     @State private var isVisible = true
 
     private let columns = [
@@ -17,8 +17,25 @@ struct ColorMentalismView: View {
         GridItem(.flexible(), spacing: 14)
     ]
 
+    // Heights and rotations are purely visual — they live here, not in the model.
+    private struct CardLayout {
+        let height: CGFloat
+        let rotation: Double
+    }
+
+    private static let layouts: [CardLayout] = [
+        .init(height: 150, rotation: -2),
+        .init(height: 180, rotation:  2),
+        .init(height: 165, rotation: -1),
+        .init(height: 175, rotation:  1),
+        .init(height: 145, rotation: -2),
+        .init(height: 190, rotation:  2),
+        .init(height: 160, rotation:  1),
+        .init(height: 180, rotation: -1),
+    ]
+
     init(haptics: CountHapticPlaying? = nil) {
-        _viewModel = StateObject(wrappedValue: ColorMentalismViewModel(haptics: haptics ?? HapticManager.shared))
+        _viewModel = StateObject(wrappedValue: ColorSenseViewModel(haptics: haptics ?? HapticManager.shared))
     }
 
     var body: some View {
@@ -27,8 +44,9 @@ struct ColorMentalismView: View {
 
             LazyVGrid(columns: columns, spacing: 14) {
                 ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
-                    cardView(card)
-                        .rotationEffect(.degrees(card.rotation))
+                    let layout = Self.layouts[index]
+                    cardView(card, layout: layout)
+                        .rotationEffect(.degrees(layout.rotation))
                         .modifier(floatingMotionSettings(for: index))
                         .gesture(
                             // fires on touch down, not finger up — card responds instantly on press
@@ -46,10 +64,10 @@ struct ColorMentalismView: View {
         }
     }
 
-    private func cardView(_ card: ColorCard) -> some View {
+    private func cardView(_ card: ColorCard, layout: CardLayout) -> some View {
         TrickGradientCard(
             color: card.colorType.color,
-            height: card.height,
+            height: layout.height,
             isPressed: viewModel.activeTapCardID == card.id
         ) {
             VStack(alignment: .leading, spacing: 10) {
@@ -62,7 +80,7 @@ struct ColorMentalismView: View {
             .frame(maxWidth: .infinity, alignment: .leading)
         }
     }
-    
+
     private func floatingMotionSettings(for index: Int) -> FloatingMotionModifier {
         FloatingMotionModifier(
             phase: Double(index) * 0.18,
@@ -73,6 +91,17 @@ struct ColorMentalismView: View {
     }
 }
 
+private extension ColorCardType {
+    var color: Color {
+        switch self {
+        case .red:    TrickPalette.ColorSense.red
+        case .blue:   TrickPalette.ColorSense.blue
+        case .green:  TrickPalette.ColorSense.green
+        case .yellow: TrickPalette.ColorSense.yellow
+        }
+    }
+}
+
 #Preview {
-    ColorMentalismView()
+    ColorSenseView()
 }

@@ -15,8 +15,8 @@ struct TrickRouterView: View {
         switch trick.id {
         case .calculatorPrediction:
             CalculatorPredictionView()
-        case .colorMentalism:
-            ColorMentalismView()
+        case .colorSense:
+            ColorSenseView()
         case .magicGallery:
             MagicGalleryView()
         case .timeControl:

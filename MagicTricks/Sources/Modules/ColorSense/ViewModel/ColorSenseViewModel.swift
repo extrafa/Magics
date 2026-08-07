@@ -1,5 +1,5 @@
 //
-//  ColorMentalismViewModel.swift
+//  ColorSenseViewModel.swift
 //  Magic Tricks
 //
 //  Created by Ross on 05/06/2026.
@@ -8,19 +8,19 @@
 import Foundation
 
 @MainActor
-final class ColorMentalismViewModel: ObservableObject {
+final class ColorSenseViewModel: ObservableObject {
     @Published private(set) var canTap = true
     @Published private(set) var activeTapCardID: UUID?
 
     let cards: [ColorCard] = [
-        .init(colorType: .red,    title: String(localized: "colorMentalism.card.tap"),     height: 150, rotation: -2),
-        .init(colorType: .yellow, title: String(localized: "colorMentalism.card.trust"),   height: 180, rotation:  2),
-        .init(colorType: .green,  title: String(localized: "colorMentalism.card.pickOne"), height: 165, rotation: -1),
-        .init(colorType: .blue,   title: String(localized: "colorMentalism.card.goOn"),    height: 175, rotation:  1),
-        .init(colorType: .yellow, title: String(localized: "colorMentalism.card.choose"),  height: 145, rotation: -2),
-        .init(colorType: .green,  title: String(localized: "colorMentalism.card.feelIt"),  height: 190, rotation:  2),
-        .init(colorType: .red,    title: String(localized: "colorMentalism.card.notice"),  height: 160, rotation:  1),
-        .init(colorType: .blue,   title: String(localized: "colorMentalism.card.tap"),     height: 180, rotation: -1)
+        .init(colorType: .red,    title: String(localized: "colorMentalism.card.tap")),
+        .init(colorType: .yellow, title: String(localized: "colorMentalism.card.trust")),
+        .init(colorType: .green,  title: String(localized: "colorMentalism.card.pickOne")),
+        .init(colorType: .blue,   title: String(localized: "colorMentalism.card.goOn")),
+        .init(colorType: .yellow, title: String(localized: "colorMentalism.card.choose")),
+        .init(colorType: .green,  title: String(localized: "colorMentalism.card.feelIt")),
+        .init(colorType: .red,    title: String(localized: "colorMentalism.card.notice")),
+        .init(colorType: .blue,   title: String(localized: "colorMentalism.card.tap")),
     ]
 
     private let haptics: CountHapticPlaying

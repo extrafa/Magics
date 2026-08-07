@@ -5,14 +5,12 @@
 //  Created by Ross on 05/04/2026.
 //
 
-import SwiftUI
+import Foundation
 
 struct ColorCard: Identifiable {
     let id = UUID()
     let colorType: ColorCardType
     let title: String
-    let height: CGFloat
-    let rotation: Double
 }
 
 enum ColorCardType {
@@ -20,16 +18,7 @@ enum ColorCardType {
     case blue
     case green
     case yellow
-    
-    var color: Color {
-        switch self {
-        case .red: TrickPalette.ColorSense.red
-        case .blue: TrickPalette.ColorSense.blue
-        case .green: TrickPalette.ColorSense.green
-        case .yellow: TrickPalette.ColorSense.yellow
-        }
-    }
-    
+
     var vibrations: Int {
         switch self {
         case .red: 1

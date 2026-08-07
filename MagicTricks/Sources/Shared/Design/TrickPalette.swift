@@ -34,7 +34,7 @@ enum TrickPalette {
 extension TrickType {
     var collectionColor: Color {
         switch self {
-        case .colorMentalism: TrickPalette.Collection.colorSense
+        case .colorSense: TrickPalette.Collection.colorSense
         case .calculatorPrediction: TrickPalette.Collection.calculatorPrediction
         case .timeControl: TrickPalette.Collection.timeControl
         case .magicGallery: TrickPalette.Collection.magicGallery

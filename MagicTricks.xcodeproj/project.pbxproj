@@ -53,7 +53,7 @@
 		28258EC22FF3E31800DE5695 /* OBFeatureSlideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */; };
 		28258EC32FF3E31800DE5695 /* OBPaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */; };
 		282AC7622FCF09E400315861 /* MagicTricksIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 282AC7612FCF09E400315861 /* MagicTricksIcon.icon */; };
-		28335ADD2FA55DCD00DE419B /* ColorMentalismInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28335ADC2FA55DCD00DE419B /* ColorMentalismInstruction.swift */; };
+		28335ADD2FA55DCD00DE419B /* ColorSenseInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */; };
 		2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370A2FAA196500234419 /* TimeControlViewModel.swift */; };
 		2834370D2FAA196500234419 /* TimeControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370C2FAA196500234419 /* TimeControlView.swift */; };
 		28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28404A052FC056FF0062D941 /* TimeControlSignalTransmitter.swift */; };
@@ -86,7 +86,7 @@
 		28BA97D62FBB389000F30468 /* HapticSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */; };
 		28BA97D82FCE760000F30468 /* HapticSignalSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */; };
 		28BA97DA2FCE760000F30468 /* HapticPreviewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */; };
-		28C0DE022FD0000000C0DE01 /* ColorMentalismViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */; };
+		28C0DE022FD0000000C0DE01 /* ColorSenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0DE002FD0000000C0DE01 /* ColorSenseViewModel.swift */; };
 		28C187802FCE7300001306EE /* InstructionStepActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1877F2FCE7300001306EE /* InstructionStepActionsView.swift */; };
 		28C187842FCE7300001306EE /* InstructionStepActionPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187832FCE7300001306EE /* InstructionStepActionPresentation.swift */; };
 		28C187862FCE7800001306EE /* InstructionStepRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187852FCE7800001306EE /* InstructionStepRow.swift */; };
@@ -124,7 +124,7 @@
 		918FC1D62F1417C300621893 /* TrickRouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FC1D52F1417C300621893 /* TrickRouterView.swift */; };
 		9191CE162F549A7400D5BAE8 /* TrickIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9191CE152F549A7400D5BAE8 /* TrickIcon.swift */; };
 		91A793CF2F0E14B1009CA8A3 /* FullScreenFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */; };
-		91AFB5772F8FDC3C00AAF6B7 /* ColorMentalismView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AFB5762F8FDC3C00AAF6B7 /* ColorMentalismView.swift */; };
+		91AFB5772F8FDC3C00AAF6B7 /* ColorSenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AFB5762F8FDC3C00AAF6B7 /* ColorSenseView.swift */; };
 		91AFB57A2F8FDC7E00AAF6B7 /* ColorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AFB5792F8FDC7E00AAF6B7 /* ColorCard.swift */; };
 		91C7F5412FC9D90000A00001 /* HapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5402FC9D90000A00001 /* HapticPatternBuilderTests.swift */; };
 		91C7F5432FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5422FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift */; };
@@ -194,7 +194,7 @@
 		28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPreferenceScreen.swift; sourceTree = "<group>"; };
 		28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBValueDeliveryScreen.swift; sourceTree = "<group>"; };
 		282AC7612FCF09E400315861 /* MagicTricksIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIcon.icon; sourceTree = "<group>"; };
-		28335ADC2FA55DCD00DE419B /* ColorMentalismInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismInstruction.swift; sourceTree = "<group>"; };
+		28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseInstruction.swift; sourceTree = "<group>"; };
 		28335AE22FA5838300DE419B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2834370A2FAA196500234419 /* TimeControlViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModel.swift; sourceTree = "<group>"; };
 		2834370C2FAA196500234419 /* TimeControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlView.swift; sourceTree = "<group>"; };
@@ -228,7 +228,7 @@
 		28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingsScreen.swift; sourceTree = "<group>"; };
 		28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSignalSettingsSection.swift; sourceTree = "<group>"; };
 		28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPreviewSection.swift; sourceTree = "<group>"; };
-		28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismViewModel.swift; sourceTree = "<group>"; };
+		28C0DE002FD0000000C0DE01 /* ColorSenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseViewModel.swift; sourceTree = "<group>"; };
 		28C1877F2FCE7300001306EE /* InstructionStepActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepActionsView.swift; sourceTree = "<group>"; };
 		28C187832FCE7300001306EE /* InstructionStepActionPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepActionPresentation.swift; sourceTree = "<group>"; };
 		28C187852FCE7800001306EE /* InstructionStepRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepRow.swift; sourceTree = "<group>"; };
@@ -268,7 +268,7 @@
 		9191CE152F549A7400D5BAE8 /* TrickIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickIcon.swift; sourceTree = "<group>"; };
 		9191CE1E2F549D7E00D5BAE8 /* MagicTricksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicTricksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenFlow.swift; sourceTree = "<group>"; };
-		91AFB5762F8FDC3C00AAF6B7 /* ColorMentalismView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismView.swift; sourceTree = "<group>"; };
+		91AFB5762F8FDC3C00AAF6B7 /* ColorSenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseView.swift; sourceTree = "<group>"; };
 		91AFB5792F8FDC7E00AAF6B7 /* ColorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCard.swift; sourceTree = "<group>"; };
 		91C7F5402FC9D90000A00001 /* HapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		91C7F5422FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTiltGestureManagerTests.swift; sourceTree = "<group>"; };
@@ -555,7 +555,7 @@
 		28C0DE012FD0000000C0DE01 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */,
+				28C0DE002FD0000000C0DE01 /* ColorSenseViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -747,7 +747,7 @@
 		913FDE082EBEDAE500B05D99 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				91AFB5742F8FDC2D00AAF6B7 /* ColorMentalism */,
+				91AFB5742F8FDC2D00AAF6B7 /* ColorSense */,
 				9138781B2F8972F400CA371E /* Instruction */,
 				911502112F873AFA00071C0C /* ExitHint */,
 				912B25802F2EA2BF00B32AF1 /* CalculatorPrediction */,
@@ -876,20 +876,20 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
-		91AFB5742F8FDC2D00AAF6B7 /* ColorMentalism */ = {
+		91AFB5742F8FDC2D00AAF6B7 /* ColorSense */ = {
 			isa = PBXGroup;
 			children = (
 				91AFB5782F8FDC5900AAF6B7 /* Model */,
 				91AFB5752F8FDC3800AAF6B7 /* View */,
 				28C0DE012FD0000000C0DE01 /* ViewModel */,
 			);
-			path = ColorMentalism;
+			path = ColorSense;
 			sourceTree = "<group>";
 		};
 		91AFB5752F8FDC3800AAF6B7 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				91AFB5762F8FDC3C00AAF6B7 /* ColorMentalismView.swift */,
+				91AFB5762F8FDC3C00AAF6B7 /* ColorSenseView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -898,7 +898,7 @@
 			isa = PBXGroup;
 			children = (
 				91AFB5792F8FDC7E00AAF6B7 /* ColorCard.swift */,
-				28335ADC2FA55DCD00DE419B /* ColorMentalismInstruction.swift */,
+				28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1062,7 +1062,7 @@
 				913878262F89733200CA371E /* InstructionView.swift in Sources */,
 				28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */,
 				2834370D2FAA196500234419 /* TimeControlView.swift in Sources */,
-				28335ADD2FA55DCD00DE419B /* ColorMentalismInstruction.swift in Sources */,
+				28335ADD2FA55DCD00DE419B /* ColorSenseInstruction.swift in Sources */,
 				91A793CF2F0E14B1009CA8A3 /* FullScreenFlow.swift in Sources */,
 				287D56292FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift in Sources */,
 				287D562E2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift in Sources */,
@@ -1093,8 +1093,8 @@
 				289123ED2FBDCF230051759C /* HapticManager+TimeControl.swift in Sources */,
 				2860B4AF2FA5363300525B68 /* SettingsComponents.swift in Sources */,
 				2860B4B02FA5363300525B68 /* SettingsScreen.swift in Sources */,
-				28C0DE022FD0000000C0DE01 /* ColorMentalismViewModel.swift in Sources */,
-				91AFB5772F8FDC3C00AAF6B7 /* ColorMentalismView.swift in Sources */,
+				28C0DE022FD0000000C0DE01 /* ColorSenseViewModel.swift in Sources */,
+				91AFB5772F8FDC3C00AAF6B7 /* ColorSenseView.swift in Sources */,
 				28C4F25C2FAB7ADA002BB78D /* HapticManager.swift in Sources */,
 				918FC1D22F13EB4600621893 /* AppFlowCoordinator.swift in Sources */,
 				913878222F89732600CA371E /* InstructionModels.swift in Sources */,
