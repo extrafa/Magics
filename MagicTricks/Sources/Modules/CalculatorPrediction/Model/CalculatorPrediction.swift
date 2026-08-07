@@ -5,7 +5,7 @@
 //  Created by Ross on 31/01/2026.
 //
 
-import SwiftUI
+import Foundation
 
 struct CalculatorPrediction {
     static let buttons: [CalculatorPredictionButton] = [
@@ -38,14 +38,4 @@ enum CalculatorPredictionButton: String {
     case zero = "0"
     case decimal = ","
     case equal = "="
-    
-    var buttonColor: Color {
-        switch self {
-        case .divide, .multiple, .subtract, .add, .equal:
-            return Color(#colorLiteral(red: 1, green: 0.5713006854, blue: 0.005122783594, alpha: 1))
-        case .delete, .clear, .percent: return Color(#colorLiteral(red: 0.3568627536, green: 0.3568627536, blue: 0.3568627536, alpha: 1))
-        default:
-            return Color(#colorLiteral(red: 0.1882353127, green: 0.1882353127, blue: 0.1882353127, alpha: 1))
-        }
-    }
 }

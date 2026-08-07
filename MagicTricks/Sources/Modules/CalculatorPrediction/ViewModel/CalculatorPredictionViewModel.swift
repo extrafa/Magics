@@ -98,7 +98,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
         
         guard let last = display.last else { return }
         
-        if operators.filter({ $0 != "%" }).contains(String(last)) {
+        if String(last) != "%" && operators.contains(String(last)) {
             return
         }
         
@@ -132,9 +132,9 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
             for _ in 0..<2 {
                 isSaveBlinkVisible = true
-                try? await Task.sleep(nanoseconds: 140_000_000)
+                try? await Task.sleep(for: .milliseconds(140))
                 isSaveBlinkVisible = false
-                try? await Task.sleep(nanoseconds: 140_000_000)
+                try? await Task.sleep(for: .milliseconds(140))
             }
         }
     }
