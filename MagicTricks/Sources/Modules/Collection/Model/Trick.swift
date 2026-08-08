@@ -8,13 +8,12 @@
 import Foundation
 
 enum TrickType {
-    case colorMentalism
+    case colorSense
     case calculatorPrediction
     case timeControl
     case magicGallery
     case geoMentalism
 
-    /// GeoMentalism is the free preview trick; all others require a Pro subscription.
     var requiresPro: Bool {
         switch self {
         case .geoMentalism: false
@@ -77,13 +76,13 @@ struct TrickCollection {
             instruction: .geoMentalism
         ),
         Trick(
-            id: .colorMentalism,
+            id: .colorSense,
             title: String(localized: "card.color.title"),
             cardTitle: String(localized: "card.color.cardTitle"),
             subtitle: String(localized: "card.color.subtitle"),
             image: "paintpalette",
             difficulty: .easy,
-            instruction: .colorMentalism
+            instruction: .colorSense
         ),
         Trick(
             id: .calculatorPrediction,

@@ -200,14 +200,14 @@ private final class MockMagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManagi
         MagicGalleryPhoto(number: number, image: MagicGalleryViewModelTests.image(), fileName: "\(number).jpg", source: .standard)
     }
 
-    func saveCustomPhoto(_ image: UIImage, for number: Int) throws -> MagicGalleryPhoto {
+    func saveCustomPhoto(_ image: UIImage, for number: Int) async throws -> MagicGalleryPhoto {
         savedNumbers.append(number)
         let photo = MagicGalleryPhoto(number: number, image: image, fileName: "\(number).jpg", source: .custom)
         storedPhotos.append(photo)
         return photo
     }
 
-    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) throws {
+    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) async throws {
         deletedNumbers.append(photo.number)
         if shouldFailDelete {
             throw MockMagicGalleryError.requestedFailure

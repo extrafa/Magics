@@ -46,12 +46,7 @@ extension HapticManager {
     ) {
         generator.prepare()
         guard count > 0 else {
-            scheduler.scheduleImpact(using: generator, after: initialDelay, intensity: 1.0)
-            scheduler.scheduleCompletion(
-                initialDelay: initialDelay,
-                signalDuration: HapticPreferences.longDuration,
-                completion: completion
-            )
+            playZeroBuzz(initialDelay: initialDelay, generator: generator, completion: completion)
             return
         }
         scheduler.scheduleImpactSequence(
@@ -73,12 +68,7 @@ extension HapticManager {
     ) {
         generator.prepare()
         guard count > 0 else {
-            scheduler.scheduleImpact(using: generator, after: initialDelay, intensity: 1.0)
-            scheduler.scheduleCompletion(
-                initialDelay: initialDelay,
-                signalDuration: HapticPreferences.longDuration,
-                completion: completion
-            )
+            playZeroBuzz(initialDelay: initialDelay, generator: generator, completion: completion)
             return
         }
 
@@ -104,5 +94,33 @@ extension HapticManager {
             time += Double(groupCount - 1) * pulseGap + HapticPreferences.groupedGroupGap
             remaining -= groupCount
         }
+    }
+
+    // MARK: - Zero buzz
+
+    private func playZeroBuzz(
+        initialDelay: TimeInterval,
+        generator: UIImpactFeedbackGenerator,
+        completion: (() -> Void)?
+    ) {
+        // 0 is a long continuous buzz, not a transient tap
+        let event = CHHapticEvent(
+            eventType: .hapticContinuous,
+            parameters: [
+                CHHapticEventParameter(parameterID: .hapticIntensity, value: 1),
+                CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.35)
+            ],
+            relativeTime: initialDelay,
+            duration: HapticPreferences.longDuration
+        )
+        enginePlayer.playEvents([event]) {
+            // Fallback if CoreHaptics unavailable
+            self.scheduler.scheduleImpact(using: generator, after: initialDelay, intensity: 1.0)
+        }
+        scheduler.scheduleCompletion(
+            initialDelay: initialDelay,
+            signalDuration: HapticPreferences.longDuration,
+            completion: completion
+        )
     }
 }

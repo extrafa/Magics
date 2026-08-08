@@ -8,7 +8,7 @@
 import Foundation
 
 extension Instruction {
-    static let colorMentalism = Instruction(
+    static let colorSense = Instruction(
         title: String(localized: "instruction.color.title"),
         effect: String(localized: "instruction.color.effect"),
         secret: String(localized: "instruction.color.secret"),

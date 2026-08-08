@@ -97,26 +97,37 @@ final class CalculatorPredictionViewModel: ObservableObject {
         }
         
         guard let last = display.last else { return }
-        
-        if operators.filter({ $0 != "%" }).contains(String(last)) {
+
+        if last == "," { return }
+
+        let lastStr = String(last)
+        if lastStr == "%" {
+            let base = String(display.dropLast())
+            guard !base.isEmpty else { return }
+            do {
+                let result = try expressionEvaluator.evaluate(base + "/100")
+                display = formatResult(result).replacingOccurrences(of: ".", with: ",")
+            } catch { }
             return
         }
+        if operators.contains(lastStr) { return }
         
         do {
             let result = try expressionEvaluator.evaluate(display)
             let formatted = formatResult(result)
             display = formatted.replacingOccurrences(of: ".", with: ",")
-        } catch {
-            return
-        }
+        } catch { }
     }
     
     private func formatResult(_ value: Double) -> String {
+        guard value.isFinite else { return "Error" }
         if value.truncatingRemainder(dividingBy: 1) == 0 {
-            return String(Int(value))
-        } else {
-            return String(value)
+            if let whole = Int(exactly: value) {
+                return String(whole)
+            }
+            return String(format: "%.0f", value)
         }
+        return String(value)
     }
     
     private func showSecretResult() {
@@ -132,9 +143,9 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
             for _ in 0..<2 {
                 isSaveBlinkVisible = true
-                try? await Task.sleep(nanoseconds: 140_000_000)
+                try? await Task.sleep(for: .milliseconds(140))
                 isSaveBlinkVisible = false
-                try? await Task.sleep(nanoseconds: 140_000_000)
+                try? await Task.sleep(for: .milliseconds(140))
             }
         }
     }

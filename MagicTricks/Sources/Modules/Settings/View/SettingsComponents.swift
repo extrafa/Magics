@@ -93,7 +93,7 @@ struct SettingsStepper: View {
     @Binding var value: Double
     let range: ClosedRange<Double>
     let step: Double
-    let format: String  // e.g. "%.2fx" or "%.2fs"
+    let format: String
 
     var body: some View {
         HStack(spacing: 0) {

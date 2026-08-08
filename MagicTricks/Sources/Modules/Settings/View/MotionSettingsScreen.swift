@@ -16,11 +16,8 @@ struct MotionSettingsScreen: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
-                    MotionSettingsSection(
-                        settings: settings,
-                        copy: .motion,
-                        resetAction: settings.resetMotionSettings
-                    )
+                    MotionSettingsSection(settings: settings)
+                    SettingsResetButton(action: settings.resetMotionSettings)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 28)

@@ -10,9 +10,9 @@
 		0A000100000000000000001B /* OnboardingState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000100000000000000001A /* OnboardingState.swift */; };
 		0A000200000000000000001B /* OnboardingViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000200000000000000001A /* OnboardingViewModel.swift */; };
 		0A0002000000000000000024 /* TrickGradientCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000023 /* TrickGradientCard.swift */; };
-		0A000200000000000000002A /* WatermarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000029 /* WatermarkView.swift */; };
 		0A0002000000000000000026 /* OnboardingCTAButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000025 /* OnboardingCTAButton.swift */; };
 		0A0002000000000000000028 /* AsyncUtilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000027 /* AsyncUtilities.swift */; };
+		0A000200000000000000002A /* WatermarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A0002000000000000000029 /* WatermarkView.swift */; };
 		0A000300000000000000001B /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000300000000000000001A /* OnboardingFlowView.swift */; };
 		0A000400000000000000001B /* OnboardingProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000400000000000000001A /* OnboardingProgressBar.swift */; };
 		0A000500000000000000001B /* OBOptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000500000000000000001A /* OBOptionRow.swift */; };
@@ -37,22 +37,23 @@
 		0AEE00000000000000000015 /* MagicGalleryInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000014 /* MagicGalleryInstruction.swift */; };
 		0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000016 /* HapticManager+CountSignal.swift */; };
 		0AEE00000000000000000019 /* FloatingMotionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000018 /* FloatingMotionModifier.swift */; };
+		0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000001A /* MagicGalleryCropView.swift */; };
 		0AFF00000000000000000002 /* InstructionPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000001 /* InstructionPhase.swift */; };
 		0AFF00000000000000000004 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000003 /* AppColors.swift */; };
 		0AFF00000000000000000006 /* PhoneTiltGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */; };
 		0AFF00000000000000000008 /* CalculatorPredictionInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000007 /* CalculatorPredictionInstruction.swift */; };
 		2806231C301A8495003F0C44 /* GeoMentalismView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806231B301A8495003F0C44 /* GeoMentalismView.swift */; };
-		28062326301A8E06003F0C44 /* GeoMentalismCitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */; };
 		28062320301A87BC003F0C44 /* GeoMentalismCities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806231F301A87BC003F0C44 /* GeoMentalismCities.swift */; };
 		28062323301A8966003F0C44 /* GeoMentalismViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062322301A8966003F0C44 /* GeoMentalismViewModel.swift */; };
 		28062325301A8E06003F0C44 /* CityCapsule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062324301A8E06003F0C44 /* CityCapsule.swift */; };
+		28062326301A8E06003F0C44 /* GeoMentalismCitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */; };
 		280FC5D92FCDA5EA00B347F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */; };
 		28258EC02FF3E31800DE5695 /* OBPreferenceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */; };
 		28258EC12FF3E31800DE5695 /* OBValueDeliveryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */; };
 		28258EC22FF3E31800DE5695 /* OBFeatureSlideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */; };
 		28258EC32FF3E31800DE5695 /* OBPaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */; };
 		282AC7622FCF09E400315861 /* MagicTricksIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 282AC7612FCF09E400315861 /* MagicTricksIcon.icon */; };
-		28335ADD2FA55DCD00DE419B /* ColorMentalismInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28335ADC2FA55DCD00DE419B /* ColorMentalismInstruction.swift */; };
+		28335ADD2FA55DCD00DE419B /* ColorSenseInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */; };
 		2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370A2FAA196500234419 /* TimeControlViewModel.swift */; };
 		2834370D2FAA196500234419 /* TimeControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370C2FAA196500234419 /* TimeControlView.swift */; };
 		28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28404A052FC056FF0062D941 /* TimeControlSignalTransmitter.swift */; };
@@ -85,7 +86,7 @@
 		28BA97D62FBB389000F30468 /* HapticSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */; };
 		28BA97D82FCE760000F30468 /* HapticSignalSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */; };
 		28BA97DA2FCE760000F30468 /* HapticPreviewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */; };
-		28C0DE022FD0000000C0DE01 /* ColorMentalismViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */; };
+		28C0DE022FD0000000C0DE01 /* ColorSenseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C0DE002FD0000000C0DE01 /* ColorSenseViewModel.swift */; };
 		28C187802FCE7300001306EE /* InstructionStepActionsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1877F2FCE7300001306EE /* InstructionStepActionsView.swift */; };
 		28C187842FCE7300001306EE /* InstructionStepActionPresentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187832FCE7300001306EE /* InstructionStepActionPresentation.swift */; };
 		28C187862FCE7800001306EE /* InstructionStepRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C187852FCE7800001306EE /* InstructionStepRow.swift */; };
@@ -123,7 +124,7 @@
 		918FC1D62F1417C300621893 /* TrickRouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FC1D52F1417C300621893 /* TrickRouterView.swift */; };
 		9191CE162F549A7400D5BAE8 /* TrickIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9191CE152F549A7400D5BAE8 /* TrickIcon.swift */; };
 		91A793CF2F0E14B1009CA8A3 /* FullScreenFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */; };
-		91AFB5772F8FDC3C00AAF6B7 /* ColorMentalismView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AFB5762F8FDC3C00AAF6B7 /* ColorMentalismView.swift */; };
+		91AFB5772F8FDC3C00AAF6B7 /* ColorSenseView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AFB5762F8FDC3C00AAF6B7 /* ColorSenseView.swift */; };
 		91AFB57A2F8FDC7E00AAF6B7 /* ColorCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91AFB5792F8FDC7E00AAF6B7 /* ColorCard.swift */; };
 		91C7F5412FC9D90000A00001 /* HapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5402FC9D90000A00001 /* HapticPatternBuilderTests.swift */; };
 		91C7F5432FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5422FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift */; };
@@ -150,9 +151,9 @@
 		0A000100000000000000001A /* OnboardingState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingState.swift; sourceTree = "<group>"; };
 		0A000200000000000000001A /* OnboardingViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModel.swift; sourceTree = "<group>"; };
 		0A0002000000000000000023 /* TrickGradientCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickGradientCard.swift; sourceTree = "<group>"; };
-		0A0002000000000000000029 /* WatermarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatermarkView.swift; sourceTree = "<group>"; };
 		0A0002000000000000000025 /* OnboardingCTAButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingCTAButton.swift; sourceTree = "<group>"; };
 		0A0002000000000000000027 /* AsyncUtilities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AsyncUtilities.swift; sourceTree = "<group>"; };
+		0A0002000000000000000029 /* WatermarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WatermarkView.swift; sourceTree = "<group>"; };
 		0A000300000000000000001A /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 		0A000400000000000000001A /* OnboardingProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressBar.swift; sourceTree = "<group>"; };
 		0A000500000000000000001A /* OBOptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBOptionRow.swift; sourceTree = "<group>"; };
@@ -177,22 +178,23 @@
 		0AEE00000000000000000014 /* MagicGalleryInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryInstruction.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000016 /* HapticManager+CountSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+CountSignal.swift"; sourceTree = "<group>"; };
 		0AEE00000000000000000018 /* FloatingMotionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMotionModifier.swift; sourceTree = "<group>"; };
+		0AEE0000000000000000001A /* MagicGalleryCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCropView.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000001 /* InstructionPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionPhase.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000003 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTiltGestureManager.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000007 /* CalculatorPredictionInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionInstruction.swift; sourceTree = "<group>"; };
 		2806231B301A8495003F0C44 /* GeoMentalismView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismView.swift; sourceTree = "<group>"; };
-		28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCitiesView.swift; sourceTree = "<group>"; };
 		2806231F301A87BC003F0C44 /* GeoMentalismCities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCities.swift; sourceTree = "<group>"; };
 		28062322301A8966003F0C44 /* GeoMentalismViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismViewModel.swift; sourceTree = "<group>"; };
 		28062324301A8E06003F0C44 /* CityCapsule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CityCapsule.swift; sourceTree = "<group>"; };
+		28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCitiesView.swift; sourceTree = "<group>"; };
 		280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBFeatureSlideScreen.swift; sourceTree = "<group>"; };
 		28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPaywallScreen.swift; sourceTree = "<group>"; };
 		28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPreferenceScreen.swift; sourceTree = "<group>"; };
 		28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBValueDeliveryScreen.swift; sourceTree = "<group>"; };
 		282AC7612FCF09E400315861 /* MagicTricksIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIcon.icon; sourceTree = "<group>"; };
-		28335ADC2FA55DCD00DE419B /* ColorMentalismInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismInstruction.swift; sourceTree = "<group>"; };
+		28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseInstruction.swift; sourceTree = "<group>"; };
 		28335AE22FA5838300DE419B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2834370A2FAA196500234419 /* TimeControlViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModel.swift; sourceTree = "<group>"; };
 		2834370C2FAA196500234419 /* TimeControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlView.swift; sourceTree = "<group>"; };
@@ -226,7 +228,7 @@
 		28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingsScreen.swift; sourceTree = "<group>"; };
 		28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSignalSettingsSection.swift; sourceTree = "<group>"; };
 		28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPreviewSection.swift; sourceTree = "<group>"; };
-		28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismViewModel.swift; sourceTree = "<group>"; };
+		28C0DE002FD0000000C0DE01 /* ColorSenseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseViewModel.swift; sourceTree = "<group>"; };
 		28C1877F2FCE7300001306EE /* InstructionStepActionsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepActionsView.swift; sourceTree = "<group>"; };
 		28C187832FCE7300001306EE /* InstructionStepActionPresentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepActionPresentation.swift; sourceTree = "<group>"; };
 		28C187852FCE7800001306EE /* InstructionStepRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepRow.swift; sourceTree = "<group>"; };
@@ -266,7 +268,7 @@
 		9191CE152F549A7400D5BAE8 /* TrickIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickIcon.swift; sourceTree = "<group>"; };
 		9191CE1E2F549D7E00D5BAE8 /* MagicTricksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicTricksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FullScreenFlow.swift; sourceTree = "<group>"; };
-		91AFB5762F8FDC3C00AAF6B7 /* ColorMentalismView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorMentalismView.swift; sourceTree = "<group>"; };
+		91AFB5762F8FDC3C00AAF6B7 /* ColorSenseView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseView.swift; sourceTree = "<group>"; };
 		91AFB5792F8FDC7E00AAF6B7 /* ColorCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorCard.swift; sourceTree = "<group>"; };
 		91C7F5402FC9D90000A00001 /* HapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		91C7F5422FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTiltGestureManagerTests.swift; sourceTree = "<group>"; };
@@ -359,6 +361,7 @@
 			isa = PBXGroup;
 			children = (
 				0A6E00000000000000000002 /* Model */,
+				28062321301A8956003F0C44 /* ViewModel */,
 				2806231A301A8481003F0C44 /* View */,
 			);
 			path = GeoMentalism;
@@ -474,6 +477,7 @@
 				287D56312FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift */,
 				287D56262FACD66B00ECCE14 /* MagicGalleryView.swift */,
 				0AEE00000000000000000003 /* MagicGalleryCameraView.swift */,
+				0AEE0000000000000000001A /* MagicGalleryCropView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -551,7 +555,7 @@
 		28C0DE012FD0000000C0DE01 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				28C0DE002FD0000000C0DE01 /* ColorMentalismViewModel.swift */,
+				28C0DE002FD0000000C0DE01 /* ColorSenseViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -743,16 +747,15 @@
 		913FDE082EBEDAE500B05D99 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				91AFB5742F8FDC2D00AAF6B7 /* ColorMentalism */,
-				9138781B2F8972F400CA371E /* Instruction */,
-				911502112F873AFA00071C0C /* ExitHint */,
+				0A6E00000000000000000001 /* GeoMentalism */,
+				91AFB5742F8FDC2D00AAF6B7 /* ColorSense */,
 				912B25802F2EA2BF00B32AF1 /* CalculatorPrediction */,
 				28960C542FABC03D003268CD /* TimeControl */,
+				287D561A2FACD5F500ECCE14 /* MagicGallery */,
+				9138781B2F8972F400CA371E /* Instruction */,
+				911502112F873AFA00071C0C /* ExitHint */,
 				918CBC082EE27CEB0004B50D /* Settings */,
 				91D289D92EDCA9F10004406B /* Collection */,
-				287D561A2FACD5F500ECCE14 /* MagicGallery */,
-				0A6E00000000000000000001 /* GeoMentalism */,
-				28062321301A8956003F0C44 /* ViewModel */,
 				2875DE902FBA7D6E00B9298C /* HapticTraining */,
 				0A00FF000000000000000001 /* Onboarding */,
 			);
@@ -873,20 +876,20 @@
 			path = Navigation;
 			sourceTree = "<group>";
 		};
-		91AFB5742F8FDC2D00AAF6B7 /* ColorMentalism */ = {
+		91AFB5742F8FDC2D00AAF6B7 /* ColorSense */ = {
 			isa = PBXGroup;
 			children = (
 				91AFB5782F8FDC5900AAF6B7 /* Model */,
 				91AFB5752F8FDC3800AAF6B7 /* View */,
 				28C0DE012FD0000000C0DE01 /* ViewModel */,
 			);
-			path = ColorMentalism;
+			path = ColorSense;
 			sourceTree = "<group>";
 		};
 		91AFB5752F8FDC3800AAF6B7 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				91AFB5762F8FDC3C00AAF6B7 /* ColorMentalismView.swift */,
+				91AFB5762F8FDC3C00AAF6B7 /* ColorSenseView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -895,7 +898,7 @@
 			isa = PBXGroup;
 			children = (
 				91AFB5792F8FDC7E00AAF6B7 /* ColorCard.swift */,
-				28335ADC2FA55DCD00DE419B /* ColorMentalismInstruction.swift */,
+				28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1059,7 +1062,7 @@
 				913878262F89733200CA371E /* InstructionView.swift in Sources */,
 				28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */,
 				2834370D2FAA196500234419 /* TimeControlView.swift in Sources */,
-				28335ADD2FA55DCD00DE419B /* ColorMentalismInstruction.swift in Sources */,
+				28335ADD2FA55DCD00DE419B /* ColorSenseInstruction.swift in Sources */,
 				91A793CF2F0E14B1009CA8A3 /* FullScreenFlow.swift in Sources */,
 				287D56292FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift in Sources */,
 				287D562E2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift in Sources */,
@@ -1090,8 +1093,8 @@
 				289123ED2FBDCF230051759C /* HapticManager+TimeControl.swift in Sources */,
 				2860B4AF2FA5363300525B68 /* SettingsComponents.swift in Sources */,
 				2860B4B02FA5363300525B68 /* SettingsScreen.swift in Sources */,
-				28C0DE022FD0000000C0DE01 /* ColorMentalismViewModel.swift in Sources */,
-				91AFB5772F8FDC3C00AAF6B7 /* ColorMentalismView.swift in Sources */,
+				28C0DE022FD0000000C0DE01 /* ColorSenseViewModel.swift in Sources */,
+				91AFB5772F8FDC3C00AAF6B7 /* ColorSenseView.swift in Sources */,
 				28C4F25C2FAB7ADA002BB78D /* HapticManager.swift in Sources */,
 				918FC1D22F13EB4600621893 /* AppFlowCoordinator.swift in Sources */,
 				913878222F89732600CA371E /* InstructionModels.swift in Sources */,
@@ -1141,6 +1144,7 @@
 				0AFF00000000000000000002 /* InstructionPhase.swift in Sources */,
 				0AEE00000000000000000002 /* MagicGalleryPhoto.swift in Sources */,
 				0AEE00000000000000000004 /* MagicGalleryCameraView.swift in Sources */,
+				0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */,
 				0AEE00000000000000000006 /* HapticTrainingMode.swift in Sources */,
 				0AEE00000000000000000008 /* HapticTrainingView.swift in Sources */,
 				0AEE0000000000000000000A /* CalculatorPredictionEngine.swift in Sources */,
@@ -1316,15 +1320,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = MagicTricksIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VUS888QPJB;
+				DEVELOPMENT_TEAM = LC4B2V6XMC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MagicTricks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Magic Tricks";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Magic Tricks uses the camera to capture numbered photos for Impossible Gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Magic Tricks saves the selected reveal photo to your gallery for the final trick reveal.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1338,11 +1341,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.svoego.magic;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = ProstoRostik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Magic - distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;
@@ -1358,15 +1360,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = MagicTricksIcon;
 				CODE_SIGN_IDENTITY = "Apple Development";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				"DEVELOPMENT_TEAM[sdk=iphoneos*]" = VUS888QPJB;
+				DEVELOPMENT_TEAM = LC4B2V6XMC;
 				ENABLE_PREVIEWS = YES;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = MagicTricks/Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Magic Tricks";
+				INFOPLIST_KEY_ITSAppUsesNonExemptEncryption = NO;
 				INFOPLIST_KEY_NSCameraUsageDescription = "Magic Tricks uses the camera to capture numbered photos for Impossible Gallery.";
 				INFOPLIST_KEY_NSPhotoLibraryAddUsageDescription = "Magic Tricks saves the selected reveal photo to your gallery for the final trick reveal.";
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
@@ -1380,11 +1381,10 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = net.svoego.magic;
+				MARKETING_VERSION = 1.1;
+				PRODUCT_BUNDLE_IDENTIFIER = ProstoRostik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				"PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*]" = "Magic - distribution";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SUPPORTS_MAC_DESIGNED_FOR_IPHONE_IPAD = NO;

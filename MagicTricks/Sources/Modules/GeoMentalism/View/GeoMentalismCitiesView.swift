@@ -44,10 +44,6 @@ struct GeoMentalismCitiesView: View {
             isVisible = false
             viewModel.generateList(for: city)
         }
-        .onDisappear {
-            // Reset so ExitHint re-evaluates when user returns to the list
-            isVisible = true
-        }
     }
 
     private var shuffleButton: some View {
@@ -73,4 +69,12 @@ struct GeoMentalismCitiesView: View {
         .padding(.horizontal, 20)
         .padding(.bottom, 32)
     }
+}
+
+#Preview {
+    @Previewable @State var isVisible = false
+    NavigationStack {
+        GeoMentalismCitiesView(city: "Barcelona", isVisible: $isVisible)
+    }
+    .environmentObject(StoreManager())
 }

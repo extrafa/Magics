@@ -22,11 +22,19 @@ enum OBFeatureType {
         }
     }
 
-    var subtitle: String {
+    func subtitle(for goal: OnboardingGoal?) -> String {
         switch self {
         case .instructions: String(localized: "onboarding.feature.instructions.subtitle")
-        case .noProps:      String(localized: "onboarding.feature.noprops.subtitle")
         case .vibrations:   String(localized: "onboarding.feature.vibrations.subtitle")
+        case .noProps:
+            switch goal {
+            case .parties:    String(localized: "onboarding.feature.noprops.subtitle.parties")
+            case .dates:      String(localized: "onboarding.feature.noprops.subtitle.dates")
+            case .work:       String(localized: "onboarding.feature.noprops.subtitle.work")
+            case .family:     String(localized: "onboarding.feature.noprops.subtitle.family")
+            case .everywhere: String(localized: "onboarding.feature.noprops.subtitle.everywhere")
+            case nil:         String(localized: "onboarding.feature.noprops.subtitle")
+            }
         }
     }
 }
@@ -35,6 +43,7 @@ enum OBFeatureType {
 
 struct OBFeatureSlideScreen: View {
     let feature: OBFeatureType
+    let goal: OnboardingGoal?
     let pageIndex: Int
     let onContinue: () -> Void
 
@@ -63,7 +72,7 @@ struct OBFeatureSlideScreen: View {
                     .offset(y: appeared ? 0 : 12)
                     .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.18), value: appeared)
 
-                Text(feature.subtitle)
+                Text(feature.subtitle(for: goal))
                     .font(.system(size: 16, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)

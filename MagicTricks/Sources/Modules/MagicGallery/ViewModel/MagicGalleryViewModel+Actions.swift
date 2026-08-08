@@ -35,42 +35,53 @@ extension MagicGalleryViewModel {
     }
 
     func handleCapturedImage(_ image: UIImage, for number: Int) {
-        do {
-            let photo = try photoLibrary.saveCustomPhoto(image, for: number)
-            upsert(photo)
-            selectedPhotoNumber = photo.number
-        } catch {
-            alertMessage = String(localized: "magicGallery.error.savePhotoFailed")
-            captureFlow.failCapture()
-            activeCaptureSession = nil
-            return
-        }
+        let takenNumbers = Set(customPhotos.map(\.number)).union([number])
+        let nextNumber = (1...photoLibrary.maxPhotos).first { !takenNumbers.contains($0) }
 
-        captureFlow.completeCapture(nextAvailableNumber: nextAvailableNumber)
+        captureFlow.completeCapture(nextAvailableNumber: nextNumber)
         activeCaptureSession = nil
+
+        Task {
+            do {
+                let photo = try await photoLibrary.saveCustomPhoto(image, for: number)
+                upsert(photo)
+                selectedPhotoNumber = photo.number
+            } catch {
+                alertMessage = String(localized: "magicGallery.error.savePhotoFailed")
+            }
+        }
     }
 
     func deletePhoto(_ photo: MagicGalleryPhoto) {
         guard photo.isCustom else { return }
 
-        do {
-            try photoLibrary.deleteCustomPhoto(photo)
-        } catch {
-            alertMessage = String(localized: "magicGallery.error.deletePhotoFailed")
-            return
-        }
-
         removeCustomPhoto(number: photo.number)
-
         if selectedPhotoNumber == photo.number {
             selectedPhotoNumber = nil
+        }
+
+        Task {
+            do {
+                try await photoLibrary.deleteCustomPhoto(photo)
+            } catch {
+                alertMessage = String(localized: "magicGallery.error.deletePhotoFailed")
+            }
         }
     }
 
     func saveSelectedPhotoToGallery() async {
+        guard !isSaving else { return }
         guard let image = selectedPhoto?.image else {
             alertMessage = String(localized: "magicGallery.selectPhotoFirst")
             return
+        }
+
+        isSaving = true
+        defer {
+            Task { @MainActor in
+                try? await Task.sleep(for: .milliseconds(800))
+                isSaving = false
+            }
         }
 
         do {
