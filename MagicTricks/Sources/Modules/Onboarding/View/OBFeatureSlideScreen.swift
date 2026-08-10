@@ -55,12 +55,9 @@ enum OBFeatureType {
 struct OBFeatureSlideScreen: View {
     let feature: OBFeatureType
     let goals: Set<OnboardingGoal>
-    let pageIndex: Int
     let onContinue: () -> Void
 
     @State private var appeared = false
-
-    private let totalPages = 3
 
     var body: some View {
         VStack(spacing: 0) {
@@ -93,11 +90,6 @@ struct OBFeatureSlideScreen: View {
                     .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.25), value: appeared)
             }
 
-            pageDots
-                .padding(.top, 28)
-                .opacity(appeared ? 1 : 0)
-                .animation(.easeOut(duration: 0.3).delay(0.32), value: appeared)
-
             Spacer().frame(height: 24)
 
             OnboardingCTAButton(
@@ -113,17 +105,6 @@ struct OBFeatureSlideScreen: View {
             Task { @MainActor in
                 try? await Task.sleep(for: .milliseconds(240))
                 appeared = true
-            }
-        }
-    }
-
-    private var pageDots: some View {
-        HStack(spacing: 6) {
-            ForEach(0..<totalPages, id: \.self) { i in
-                Capsule()
-                    .fill(i == pageIndex ? Color.primaryText : Color.primaryText.opacity(0.2))
-                    .frame(width: i == pageIndex ? 20 : 6, height: 6)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: pageIndex)
             }
         }
     }

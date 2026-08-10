@@ -23,6 +23,15 @@ struct OnboardingFlowView: View {
                 .id(viewModel.step)
                 .transition(.opacity)
         }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            OnboardingProgressBar(step: min(viewModel.step, 4), total: 4)
+                .padding(.horizontal, 24)
+                .padding(.top, 14)
+                .padding(.bottom, 10)
+                .background(Color.background)
+                .opacity(viewModel.step >= 1 && viewModel.step <= 4 ? 1 : 0)
+                .animation(.easeOut(duration: 0.3), value: viewModel.step)
+        }
         .offset(y: isDismissing ? 900 : 0)
         .fontDesign(.rounded)
         .animation(.spring(response: 0.35, dampingFraction: 0.82), value: isDismissing)
@@ -46,11 +55,11 @@ struct OnboardingFlowView: View {
         case 1:
             OBGoalScreen(selectedGoals: $viewModel.selectedGoals, onContinue: viewModel.advance)
         case 2:
-            OBFeatureSlideScreen(feature: .noProps, goals: viewModel.selectedGoals, pageIndex: 0, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .noProps, goals: viewModel.selectedGoals, onContinue: viewModel.advance)
         case 3:
-            OBFeatureSlideScreen(feature: .instructions, goals: [], pageIndex: 1, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .instructions, goals: [], onContinue: viewModel.advance)
         case 4:
-            OBFeatureSlideScreen(feature: .vibrations, goals: [], pageIndex: 2, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .vibrations, goals: [], onContinue: viewModel.advance)
         case 5:
             OBProcessingScreen(phases: viewModel.loadingPhases, onComplete: viewModel.advance)
         case 6:
