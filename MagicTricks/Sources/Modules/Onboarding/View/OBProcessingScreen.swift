@@ -46,6 +46,7 @@ struct OBProcessingScreen: View {
                     .padding(.horizontal, 32)
                     .id(isDone ? -1 : phaseIndex)
                     .transition(.opacity)
+                    .frame(minHeight: 44, alignment: .top)
                     .opacity(appeared ? 1 : 0)
                     .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.25), value: appeared)
             }
@@ -112,7 +113,7 @@ struct OBProcessingScreen: View {
                 Capsule()
                     .fill(Color.primaryText)
                     .frame(width: geo.size.width * progress, height: 4)
-                    .animation(.easeInOut(duration: 0.7), value: progress)
+                    .animation(.easeInOut(duration: 1.2), value: progress)
             }
         }
         .frame(height: 4)
@@ -122,18 +123,17 @@ struct OBProcessingScreen: View {
     private func schedulePhaseAdvance() {
         Task { @MainActor in
             let total = CGFloat(phases.count + 1)
+            withAnimation(.easeInOut(duration: 1.8)) { progress = 1.0 / total }
 
             for i in 1..<phases.count {
-                try? await Task.sleep(for: .milliseconds(1100))
+                try? await Task.sleep(for: .milliseconds(2200))
                 withAnimation(.easeInOut(duration: 0.4)) { phaseIndex = i }
-                withAnimation(.easeInOut(duration: 0.7)) { progress = CGFloat(i) / total }
+                withAnimation(.easeInOut(duration: 1.2)) { progress = CGFloat(i + 1) / total }
             }
-            try? await Task.sleep(for: .milliseconds(1100))
-            withAnimation(.easeInOut(duration: 0.7)) { progress = CGFloat(phases.count) / total }
-            try? await Task.sleep(for: .milliseconds(300))
+            try? await Task.sleep(for: .milliseconds(2200))
             withAnimation(.spring(response: 0.45, dampingFraction: 0.65)) { isDone = true }
-            withAnimation(.easeInOut(duration: 0.7)) { progress = 1.0 }
-            try? await Task.sleep(for: .milliseconds(600))
+            withAnimation(.easeInOut(duration: 1.2)) { progress = 1.0 }
+            try? await Task.sleep(for: .milliseconds(800))
             withAnimation(.easeOut(duration: 0.35)) { isButtonVisible = true }
         }
     }

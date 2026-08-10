@@ -3391,17 +3391,6 @@
         }
       }
     },
-    "onboarding.feature.noprops.subtitle.parties.dates.work.family" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "From a first date to a family dinner, always a trick that fits."
-          }
-        }
-      }
-    },
     "onboarding.feature.noprops.subtitle.parties.family" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3901,13 +3890,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing the first trick…"
+            "value" : "Finding the right tricks for you…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando tu primer truco…"
+            "value" : "Buscando los trucos correctos para ti…"
           }
         }
       }
@@ -3918,13 +3907,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setting up tricks for the next date…"
+            "value" : "Finding tricks they will still talk about the next day…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando trucos para tu próxima cita…"
+            "value" : "Buscando trucos que recordarán al día siguiente…"
           }
         }
       }
@@ -3935,7 +3924,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setting up tricks for dinner and family moments…"
+            "value" : "Finding tricks for your closest people…"
           }
         }
       }
@@ -3946,7 +3935,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing tricks for work and dates…"
+            "value" : "Finding tricks that make the right impression…"
           }
         }
       }
@@ -3957,7 +3946,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Getting tricks ready for every moment that matters…"
+            "value" : "Finding tricks for dates, work, and family time…"
           }
         }
       }
@@ -3968,13 +3957,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Getting the tricks ready…"
+            "value" : "Making sure no one around you stays unimpressed…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando tus trucos…"
+            "value" : "Asegurándonos de que nadie a tu alrededor quede sin sorprender…"
           }
         }
       }
@@ -3985,13 +3974,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setting up tricks for family moments…"
+            "value" : "Finding tricks that wow kids and adults the same…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando trucos para la familia…"
+            "value" : "Buscando trucos que sorprenden a niños y adultos por igual…"
           }
         }
       }
@@ -4002,13 +3991,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Getting the party tricks ready…"
+            "value" : "Finding tricks that make you the best part of the night…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando tus trucos para fiestas…"
+            "value" : "Buscando trucos que te hagan la mejor parte de la noche…"
           }
         }
       }
@@ -4019,7 +4008,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setting up tricks for nights out…"
+            "value" : "Finding tricks that work for parties and dates…"
           }
         }
       }
@@ -4030,7 +4019,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setting up tricks for parties, dates, and family…"
+            "value" : "Finding tricks for every night that counts…"
           }
         }
       }
@@ -4041,18 +4030,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setting up tricks for parties, dates, and work…"
-          }
-        }
-      }
-    },
-    "onboarding.processing.phase1.parties.dates.work.family" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Getting the tricks ready…"
+            "value" : "Finding tricks that work in any room…"
           }
         }
       }
@@ -4063,7 +4041,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setting up tricks for parties and family…"
+            "value" : "Finding tricks for every party and family night…"
           }
         }
       }
@@ -4074,7 +4052,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing tricks for events and parties…"
+            "value" : "Finding tricks that work for any crowd…"
           }
         }
       }
@@ -4085,7 +4063,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Getting tricks ready for every night out…"
+            "value" : "Finding tricks that fit every part of your life…"
           }
         }
       }
@@ -4096,13 +4074,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing tricks for the office…"
+            "value" : "Finding tricks that make people see you in a new way…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando trucos para la oficina…"
+            "value" : "Buscando trucos que hacen que la gente te vea diferente…"
           }
         }
       }
@@ -4113,7 +4091,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing tricks for work and family…"
+            "value" : "Finding tricks for every person in your life…"
           }
         }
       }
@@ -4124,13 +4102,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Picking tricks that need no setup…"
+            "value" : "Keeping only the tricks that always get a reaction…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadiendo los últimos detalles…"
+            "value" : "Quedándonos solo con los trucos que siempre sorprenden…"
           }
         }
       }
@@ -4243,13 +4221,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Almost ready…"
+            "value" : "Almost ready. Your plan is made just for you…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Casi listo…"
+            "value" : "Casi listo. Tu plan es único para ti…"
           }
         }
       }

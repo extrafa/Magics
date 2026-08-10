@@ -31,7 +31,7 @@ enum OBFeatureType {
     }
 
     private func noPropsSubtitle(for goals: Set<OnboardingGoal>) -> String {
-        if goals.contains(.everywhere) || goals == Set([.parties, .dates, .work, .family]) { return String(localized: "onboarding.feature.noprops.subtitle.everywhere") }
+        if goals.contains(.everywhere) { return String(localized: "onboarding.feature.noprops.subtitle.everywhere") }
         if goals == Set([.parties])                              { return String(localized: "onboarding.feature.noprops.subtitle.parties") }
         if goals == Set([.dates])                                { return String(localized: "onboarding.feature.noprops.subtitle.dates") }
         if goals == Set([.work])                                 { return String(localized: "onboarding.feature.noprops.subtitle.work") }

@@ -34,11 +34,12 @@ final class OnboardingViewModel: ObservableObject {
         [
             loadingPhase1,
             String(localized: "onboarding.processing.phase2"),
+            String(localized: "onboarding.processing.phase3"),
         ]
     }
 
     private var loadingPhase1: String {
-        if selectedGoals.contains(.everywhere) || selectedGoals == Set([.parties, .dates, .work, .family]) { return String(localized: "onboarding.processing.phase1.everywhere") }
+        if selectedGoals.contains(.everywhere) { return String(localized: "onboarding.processing.phase1.everywhere") }
         if selectedGoals == Set([.parties])                              { return String(localized: "onboarding.processing.phase1.parties") }
         if selectedGoals == Set([.dates])                                { return String(localized: "onboarding.processing.phase1.dates") }
         if selectedGoals == Set([.work])                                 { return String(localized: "onboarding.processing.phase1.work") }
