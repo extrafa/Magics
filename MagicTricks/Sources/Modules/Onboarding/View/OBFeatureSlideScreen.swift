@@ -22,20 +22,31 @@ enum OBFeatureType {
         }
     }
 
-    func subtitle(for goal: OnboardingGoal?) -> String {
+    func subtitle(for goals: Set<OnboardingGoal>) -> String {
         switch self {
-        case .instructions: String(localized: "onboarding.feature.instructions.subtitle")
-        case .vibrations:   String(localized: "onboarding.feature.vibrations.subtitle")
-        case .noProps:
-            switch goal {
-            case .parties:    String(localized: "onboarding.feature.noprops.subtitle.parties")
-            case .dates:      String(localized: "onboarding.feature.noprops.subtitle.dates")
-            case .work:       String(localized: "onboarding.feature.noprops.subtitle.work")
-            case .family:     String(localized: "onboarding.feature.noprops.subtitle.family")
-            case .everywhere: String(localized: "onboarding.feature.noprops.subtitle.everywhere")
-            case nil:         String(localized: "onboarding.feature.noprops.subtitle")
-            }
+        case .instructions: return String(localized: "onboarding.feature.instructions.subtitle")
+        case .vibrations:   return String(localized: "onboarding.feature.vibrations.subtitle")
+        case .noProps:      return noPropsSubtitle(for: goals)
         }
+    }
+
+    private func noPropsSubtitle(for goals: Set<OnboardingGoal>) -> String {
+        if goals.contains(.everywhere) || goals == Set([.parties, .dates, .work, .family]) { return String(localized: "onboarding.feature.noprops.subtitle.everywhere") }
+        if goals == Set([.parties])                              { return String(localized: "onboarding.feature.noprops.subtitle.parties") }
+        if goals == Set([.dates])                                { return String(localized: "onboarding.feature.noprops.subtitle.dates") }
+        if goals == Set([.work])                                 { return String(localized: "onboarding.feature.noprops.subtitle.work") }
+        if goals == Set([.family])                               { return String(localized: "onboarding.feature.noprops.subtitle.family") }
+        if goals == Set([.parties, .dates])                      { return String(localized: "onboarding.feature.noprops.subtitle.parties.dates") }
+        if goals == Set([.parties, .work])                       { return String(localized: "onboarding.feature.noprops.subtitle.parties.work") }
+        if goals == Set([.parties, .family])                     { return String(localized: "onboarding.feature.noprops.subtitle.parties.family") }
+        if goals == Set([.dates, .work])                         { return String(localized: "onboarding.feature.noprops.subtitle.dates.work") }
+        if goals == Set([.dates, .family])                       { return String(localized: "onboarding.feature.noprops.subtitle.dates.family") }
+        if goals == Set([.work, .family])                        { return String(localized: "onboarding.feature.noprops.subtitle.work.family") }
+        if goals == Set([.parties, .dates, .work])               { return String(localized: "onboarding.feature.noprops.subtitle.parties.dates.work") }
+        if goals == Set([.parties, .dates, .family])             { return String(localized: "onboarding.feature.noprops.subtitle.parties.dates.family") }
+        if goals == Set([.parties, .work, .family])              { return String(localized: "onboarding.feature.noprops.subtitle.parties.work.family") }
+        if goals == Set([.dates, .work, .family])                { return String(localized: "onboarding.feature.noprops.subtitle.dates.work.family") }
+        return String(localized: "onboarding.feature.noprops.subtitle")
     }
 }
 
@@ -43,7 +54,7 @@ enum OBFeatureType {
 
 struct OBFeatureSlideScreen: View {
     let feature: OBFeatureType
-    let goal: OnboardingGoal?
+    let goals: Set<OnboardingGoal>
     let pageIndex: Int
     let onContinue: () -> Void
 
@@ -72,7 +83,7 @@ struct OBFeatureSlideScreen: View {
                     .offset(y: appeared ? 0 : 12)
                     .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.18), value: appeared)
 
-                Text(feature.subtitle(for: goal))
+                Text(feature.subtitle(for: goals))
                     .font(.system(size: 16, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)

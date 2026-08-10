@@ -8,10 +8,14 @@
 import SwiftUI
 
 struct OBGoalScreen: View {
-    @Binding var selectedGoal: OnboardingGoal?
+    @Binding var selectedGoals: Set<OnboardingGoal>
     let onContinue: () -> Void
 
     @State private var appeared = false
+
+    private var isEverywhereActive: Bool {
+        selectedGoals.contains(.everywhere)
+    }
 
     var body: some View {
         VStack(spacing: 0) {
@@ -34,14 +38,19 @@ struct OBGoalScreen: View {
                         .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.14), value: appeared)
 
                     ForEach(Array(OnboardingGoal.allCases.enumerated()), id: \.element) { i, goal in
+                        let isSelected = goal == .everywhere
+                            ? isEverywhereActive
+                            : !isEverywhereActive && selectedGoals.contains(goal)
+
                         OBOptionRow(
                             emoji: goal.emoji,
                             title: goal.localizedTitle,
-                            isSelected: selectedGoal == goal,
-                            isMultiSelect: false
+                            isSelected: isSelected
                         )
+                        .opacity(isEverywhereActive && goal != .everywhere ? 0.42 : 1.0)
+                        .animation(.easeOut(duration: 0.22), value: isEverywhereActive)
                         .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
-                        .onTapGesture { selectedGoal = goal }
+                        .onTapGesture { handleTap(goal) }
                         .padding(.bottom, 8)
                         .opacity(appeared ? 1 : 0)
                         .offset(y: appeared ? 0 : 12)
@@ -70,10 +79,29 @@ struct OBGoalScreen: View {
         }
     }
 
+    private func handleTap(_ goal: OnboardingGoal) {
+        withAnimation(.easeOut(duration: 0.2)) {
+            if goal == .everywhere {
+                selectedGoals = isEverywhereActive ? [] : Set(OnboardingGoal.allCases)
+            } else if isEverywhereActive {
+                selectedGoals.remove(goal)
+                selectedGoals.remove(.everywhere)
+            } else if selectedGoals.contains(goal) {
+                selectedGoals.remove(goal)
+            } else {
+                selectedGoals.insert(goal)
+                let allFour: Set<OnboardingGoal> = [.parties, .dates, .work, .family]
+                if selectedGoals.isSuperset(of: allFour) {
+                    selectedGoals = Set(OnboardingGoal.allCases)
+                }
+            }
+        }
+    }
+
     private var ctaButton: some View {
         OnboardingCTAButton(
             title: String(localized: "onboarding.cta.continue"),
-            isEnabled: selectedGoal != nil,
+            isEnabled: !selectedGoals.isEmpty,
             action: onContinue
         )
     }
