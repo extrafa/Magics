@@ -58,6 +58,13 @@ struct CollectionView: View {
                 }
             }
         }
+        .overlay(alignment: .topLeading) {
+            if !store.hasProAccess {
+                ProUpgradeButton(action: flow.openPaywall)
+                    .padding(.leading, 20)
+                    .padding(.top, 4)
+            }
+        }
         .sheet(item: $flow.activeSheet) { activeSheet in
             AppSheetView(activeSheet: activeSheet)
                 .presentationDragIndicator(.visible)
@@ -66,6 +73,59 @@ struct CollectionView: View {
         .fullScreenCover(item: $flow.activeFlow) { activeFlow in
             AppFlowCoverView(activeFlow: activeFlow)
                 .environmentObject(store)
+        }
+    }
+}
+
+// MARK: - ProUpgradeButton
+
+private struct ProUpgradeButton: View {
+    let action: () -> Void
+    @State private var shimmer = false
+
+    var body: some View {
+        Button(action: action) {
+            Text("Get Pro")
+                .font(.system(size: 15, weight: .bold, design: .rounded))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 9)
+                .background { capsule }
+        }
+        .task { await shimmerLoop() }
+    }
+
+    private var capsule: some View {
+        Capsule()
+            .fill(LinearGradient(
+                colors: [Color(red: 1.0, green: 0.58, blue: 0.08), Color(red: 1.0, green: 0.28, blue: 0.42)],
+                startPoint: .topLeading,
+                endPoint: .bottomTrailing
+            ))
+            .overlay(shimmerLayer)
+    }
+
+    private var shimmerLayer: some View {
+        GeometryReader { geo in
+            LinearGradient(
+                colors: [.clear, .white.opacity(0.38), .clear],
+                startPoint: .leading,
+                endPoint: .trailing
+            )
+            .frame(width: geo.size.width * 0.5)
+            .offset(x: shimmer ? geo.size.width * 1.2 : -geo.size.width * 0.5)
+        }
+        .clipShape(Capsule())
+        .blendMode(.screen)
+        .allowsHitTesting(false)
+    }
+
+    private func shimmerLoop() async {
+        while !Task.isCancelled {
+            try? await Task.sleep(for: .seconds(2.5))
+            withAnimation(.easeInOut(duration: 0.75)) { shimmer = true }
+            try? await Task.sleep(for: .milliseconds(950))
+            shimmer = false
         }
     }
 }
