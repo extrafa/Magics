@@ -33,7 +33,7 @@ struct CollectionView: View {
                                     if isLocked {
                                         flow.openPaywall()
                                     } else {
-                                        flow.open(trick: trick)
+                                        flow.openStartFlow(for: trick)
                                     }
                                 },
                                 onHowToTap: {
@@ -80,6 +80,7 @@ struct CollectionView: View {
             AppSheetView(activeSheet: activeSheet)
                 .presentationDragIndicator(.visible)
                 .environmentObject(store)
+                .environmentObject(flow)
         }
         .fullScreenCover(item: $flow.activeFlow) { activeFlow in
             AppFlowCoverView(activeFlow: activeFlow)
