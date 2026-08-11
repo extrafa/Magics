@@ -49,8 +49,6 @@ struct HapticAnswerSectionView: View {
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(resultColor)
                 .frame(maxWidth: .infinity, minHeight: 20, alignment: .center)
-
-
         }
     }
 
