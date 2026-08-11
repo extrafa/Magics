@@ -43,6 +43,12 @@ struct GeoMentalismCitiesView: View {
         .onAppear {
             isVisible = false
             viewModel.generateList(for: city)
+            Task {
+                try? await Task.sleep(for: .milliseconds(550))
+                withAnimation(.easeInOut) {
+                    viewModel.shuffleList()
+                }
+            }
         }
     }
 
