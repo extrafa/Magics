@@ -6,13 +6,11 @@
 //
 
 import SwiftUI
-import StoreKit
 
 struct SettingsScreen: View {
 
     @EnvironmentObject private var store: SettingsStore
     @EnvironmentObject private var storeManager: StoreManager
-    @Environment(\.requestReview) private var requestReview
 
     var body: some View {
         ZStack {
@@ -105,14 +103,6 @@ private extension SettingsScreen {
         SettingsSection(title: String(localized: "settings.section.app")) {
             VStack(spacing: 0) {
                 shareButton
-                SettingsDivider()
-                Button { requestReview() } label: {
-                    SettingsActionRow(
-                        icon: "star",
-                        title: String(localized: "settings.rateUs")
-                    )
-                }
-                .buttonStyle(.plain)
             }
             .padding(.horizontal, 18)
             .settingsCard()

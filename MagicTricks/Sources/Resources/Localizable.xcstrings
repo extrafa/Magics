@@ -2320,13 +2320,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Learn magic with Magic Tricks"
+            "value" : "Learn magic with Magic Tricks: Trickly"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Aprende magia con Magic Tricks"
+            "value" : "Aprende magia con Magic Tricks: Trickly"
           }
         }
       }
@@ -2337,13 +2337,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Made with Magic Tricks"
+            "value" : "Made with Magic Tricks: Trickly"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hecho con Magic Tricks"
+            "value" : "Hecho con Magic Tricks: Trickly"
           }
         }
       }
