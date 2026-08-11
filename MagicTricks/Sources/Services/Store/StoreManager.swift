@@ -16,7 +16,12 @@ final class StoreManager: ObservableObject {
     }
 
     @Published private(set) var products: [StoreProduct] = []
-    @Published private(set) var hasProAccess: Bool = false
+    @Published private var _hasStoreAccess: Bool = false
+    @Published var isProOverride: Bool {
+        didSet { UserDefaults.standard.set(isProOverride, forKey: "dev.proOverride") }
+    }
+
+    var hasProAccess: Bool { _hasStoreAccess || isProOverride }
 
     private let productIDs: [String]
     private let service: StoreServicing
@@ -31,6 +36,7 @@ final class StoreManager: ObservableObject {
     ) {
         self.productIDs = productIDs
         self.service = service
+        self.isProOverride = UserDefaults.standard.bool(forKey: "dev.proOverride")
     }
 
     deinit {
@@ -71,18 +77,14 @@ final class StoreManager: ObservableObject {
             if result == .success {
                 await refreshAccess()
             }
-        } catch {
-            // Purchase failed — user can retry
-        }
+        } catch { }
     }
 
     func restore() async {
         do {
             try await service.sync()
             await refreshAccess()
-        } catch {
-            // Restore failed — user can retry
-        }
+        } catch { }
     }
 
     // MARK: Private
@@ -90,9 +92,7 @@ final class StoreManager: ObservableObject {
     private func loadProducts() async {
         do {
             products = try await service.loadProducts(for: productIDs)
-        } catch {
-            // Products unavailable — paywall will show disabled state
-        }
+        } catch { }
     }
 
     private func refreshAccess() async {
@@ -102,7 +102,7 @@ final class StoreManager: ObservableObject {
                 found = true
             }
         }
-        hasProAccess = found
+        _hasStoreAccess = found
     }
 
     private func listenForTransactions() async {

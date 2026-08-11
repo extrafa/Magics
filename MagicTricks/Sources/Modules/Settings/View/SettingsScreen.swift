@@ -11,6 +11,7 @@ import StoreKit
 struct SettingsScreen: View {
 
     @EnvironmentObject private var store: SettingsStore
+    @EnvironmentObject private var storeManager: StoreManager
     @Environment(\.requestReview) private var requestReview
 
     var body: some View {
@@ -22,6 +23,9 @@ struct SettingsScreen: View {
                 VStack(alignment: .leading, spacing: 34) {
                     vibrationsSection
                     appSection
+                    if showsTestFlightSection {
+                        testFlightSection
+                    }
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 28)
@@ -36,6 +40,34 @@ struct SettingsScreen: View {
 }
 
 private extension SettingsScreen {
+
+    var showsTestFlightSection: Bool {
+        #if DEBUG
+        true
+        #else
+        Bundle.main.appStoreReceiptURL?.path.contains("sandboxReceipt") ?? false
+        #endif
+    }
+
+    var testFlightSection: some View {
+        SettingsSection(title: "TestFlight") {
+            Toggle(isOn: $storeManager.isProOverride) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text("Pro Access Override")
+                        .font(.system(size: 17, weight: .bold, design: .rounded))
+                        .foregroundStyle(.primaryText)
+
+                    Text("Unlocks all tricks.")
+                        .font(.system(size: 13, weight: .medium, design: .rounded))
+                        .foregroundStyle(Color.primaryText.opacity(0.58))
+                        .fixedSize(horizontal: false, vertical: true)
+                }
+            }
+            .tint(.orange)
+            .padding(18)
+            .settingsCard()
+        }
+    }
 
     var vibrationsSection: some View {
         SettingsSection(title: String(localized: "settings.section.vibrations")) {
@@ -105,5 +137,6 @@ private extension SettingsScreen {
     NavigationStack {
         SettingsScreen()
             .environmentObject(SettingsStore())
+            .environmentObject(StoreManager())
     }
 }

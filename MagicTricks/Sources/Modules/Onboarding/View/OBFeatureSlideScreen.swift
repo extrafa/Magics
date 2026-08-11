@@ -22,20 +22,31 @@ enum OBFeatureType {
         }
     }
 
-    func subtitle(for goal: OnboardingGoal?) -> String {
+    func subtitle(for goals: Set<OnboardingGoal>) -> String {
         switch self {
-        case .instructions: String(localized: "onboarding.feature.instructions.subtitle")
-        case .vibrations:   String(localized: "onboarding.feature.vibrations.subtitle")
-        case .noProps:
-            switch goal {
-            case .parties:    String(localized: "onboarding.feature.noprops.subtitle.parties")
-            case .dates:      String(localized: "onboarding.feature.noprops.subtitle.dates")
-            case .work:       String(localized: "onboarding.feature.noprops.subtitle.work")
-            case .family:     String(localized: "onboarding.feature.noprops.subtitle.family")
-            case .everywhere: String(localized: "onboarding.feature.noprops.subtitle.everywhere")
-            case nil:         String(localized: "onboarding.feature.noprops.subtitle")
-            }
+        case .instructions: return String(localized: "onboarding.feature.instructions.subtitle")
+        case .vibrations:   return String(localized: "onboarding.feature.vibrations.subtitle")
+        case .noProps:      return noPropsSubtitle(for: goals)
         }
+    }
+
+    private func noPropsSubtitle(for goals: Set<OnboardingGoal>) -> String {
+        if goals.contains(.everywhere) { return String(localized: "onboarding.feature.noprops.subtitle.everywhere") }
+        if goals == Set([.parties])                              { return String(localized: "onboarding.feature.noprops.subtitle.parties") }
+        if goals == Set([.dates])                                { return String(localized: "onboarding.feature.noprops.subtitle.dates") }
+        if goals == Set([.work])                                 { return String(localized: "onboarding.feature.noprops.subtitle.work") }
+        if goals == Set([.family])                               { return String(localized: "onboarding.feature.noprops.subtitle.family") }
+        if goals == Set([.parties, .dates])                      { return String(localized: "onboarding.feature.noprops.subtitle.parties.dates") }
+        if goals == Set([.parties, .work])                       { return String(localized: "onboarding.feature.noprops.subtitle.parties.work") }
+        if goals == Set([.parties, .family])                     { return String(localized: "onboarding.feature.noprops.subtitle.parties.family") }
+        if goals == Set([.dates, .work])                         { return String(localized: "onboarding.feature.noprops.subtitle.dates.work") }
+        if goals == Set([.dates, .family])                       { return String(localized: "onboarding.feature.noprops.subtitle.dates.family") }
+        if goals == Set([.work, .family])                        { return String(localized: "onboarding.feature.noprops.subtitle.work.family") }
+        if goals == Set([.parties, .dates, .work])               { return String(localized: "onboarding.feature.noprops.subtitle.parties.dates.work") }
+        if goals == Set([.parties, .dates, .family])             { return String(localized: "onboarding.feature.noprops.subtitle.parties.dates.family") }
+        if goals == Set([.parties, .work, .family])              { return String(localized: "onboarding.feature.noprops.subtitle.parties.work.family") }
+        if goals == Set([.dates, .work, .family])                { return String(localized: "onboarding.feature.noprops.subtitle.dates.work.family") }
+        return String(localized: "onboarding.feature.noprops.subtitle")
     }
 }
 
@@ -43,13 +54,10 @@ enum OBFeatureType {
 
 struct OBFeatureSlideScreen: View {
     let feature: OBFeatureType
-    let goal: OnboardingGoal?
-    let pageIndex: Int
+    let goals: Set<OnboardingGoal>
     let onContinue: () -> Void
 
     @State private var appeared = false
-
-    private let totalPages = 3
 
     var body: some View {
         VStack(spacing: 0) {
@@ -72,7 +80,7 @@ struct OBFeatureSlideScreen: View {
                     .offset(y: appeared ? 0 : 12)
                     .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.18), value: appeared)
 
-                Text(feature.subtitle(for: goal))
+                Text(feature.subtitle(for: goals))
                     .font(.system(size: 16, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -81,11 +89,6 @@ struct OBFeatureSlideScreen: View {
                     .offset(y: appeared ? 0 : 8)
                     .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.25), value: appeared)
             }
-
-            pageDots
-                .padding(.top, 28)
-                .opacity(appeared ? 1 : 0)
-                .animation(.easeOut(duration: 0.3).delay(0.32), value: appeared)
 
             Spacer().frame(height: 24)
 
@@ -102,17 +105,6 @@ struct OBFeatureSlideScreen: View {
             Task { @MainActor in
                 try? await Task.sleep(for: .milliseconds(240))
                 appeared = true
-            }
-        }
-    }
-
-    private var pageDots: some View {
-        HStack(spacing: 6) {
-            ForEach(0..<totalPages, id: \.self) { i in
-                Capsule()
-                    .fill(i == pageIndex ? Color.primaryText : Color.primaryText.opacity(0.2))
-                    .frame(width: i == pageIndex ? 20 : 6, height: 6)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: pageIndex)
             }
         }
     }

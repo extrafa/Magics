@@ -3274,6 +3274,39 @@
         }
       }
     },
+    "onboarding.feature.noprops.subtitle.dates.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Two at a dinner table or the whole family. One trick and you are the one they all talk about."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.dates.work" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A quiet restaurant or a work event. One trick and everyone there will remember you."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.dates.work.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A dinner for two, family time, or a work event. One trick that always makes people smile."
+          }
+        }
+      }
+    },
     "onboarding.feature.noprops.subtitle.everywhere" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3325,6 +3358,72 @@
         }
       }
     },
+    "onboarding.feature.noprops.subtitle.parties.dates" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A house party or a first date. One trick and no one will forget that night."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.parties.dates.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A first date, a house party, or the whole family. There is always a trick that works."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.parties.dates.work" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A party, a date, or a work event. One trick and you will be the person they all remember."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.parties.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Twenty friends or the whole family. One trick and everyone talks about you after."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.parties.work" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A work event or a weekend party. One trick and you are the person everyone remembers."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.parties.work.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A work event, a house party, or family time. There is always a trick that works for everyone."
+          }
+        }
+      }
+    },
     "onboarding.feature.noprops.subtitle.work" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3338,6 +3437,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Compañeros, clientes, un evento de networking. Trucos que rompen el hielo y dejan una impresión real."
+          }
+        }
+      }
+    },
+    "onboarding.feature.noprops.subtitle.work.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "A work lunch or Sunday dinner. One trick and everyone at the table will remember you."
           }
         }
       }
@@ -3432,13 +3542,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When do you want to impress people?"
+            "value" : "Where do you want to impress people?"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "¿Cuándo quieres impresionar a la gente?"
+            "value" : "¿Dónde quieres impresionar a la gente?"
           }
         }
       }
@@ -3466,13 +3576,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pick the one that fits best."
+            "value" : "Pick all that apply."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "needs_review",
-            "value" : "Elige el que más te encaje."
+            "value" : "Elige todo lo que aplique."
           }
         }
       }
@@ -3630,46 +3740,112 @@
         }
       }
     },
-    "onboarding.paywall.benefit1" : {
+    "onboarding.paywall.benefit.colorSense" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All tricks, available right away"
+            "value" : "Color Sense"
           }
         }
       }
     },
-    "onboarding.paywall.benefit2" : {
+    "onboarding.paywall.benefit.colorSense.detail" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Step-by-step guides for every trick"
+            "value" : "Name the color. Without looking."
           }
         }
       }
     },
-    "onboarding.paywall.benefit3" : {
+    "onboarding.paywall.benefit.calculatorPrediction" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Works with just a phone. No cards, no props."
+            "value" : "Calculator Prediction"
           }
         }
       }
     },
-    "onboarding.paywall.benefit4" : {
+    "onboarding.paywall.benefit.calculatorPrediction.detail" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No watermark during performances"
+            "value" : "Know the answer before they press equals."
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.timeControl" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Control"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.timeControl.detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name the exact time they stop."
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.magicGallery" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Magic Gallery"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.magicGallery.detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Their choice appears in your photos."
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.noWatermark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No watermark"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.noWatermark.detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No watermark during performances."
           }
         }
       }
@@ -3680,7 +3856,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Subscribe"
+            "value" : "Unlock Now"
           }
         }
       }
@@ -3696,6 +3872,39 @@
         }
       }
     },
+    "onboarding.paywall.onetime" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pay once · Keep forever"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.privacy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.rating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loved by magicians"
+          }
+        }
+      }
+    },
     "onboarding.paywall.restore" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3703,6 +3912,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restore"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.terms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Use"
           }
         }
       }
@@ -3724,7 +3944,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "One payment. Every trick. Forever."
+            "value" : "1 trick free. 4 more, one payment."
           }
         }
       }
@@ -3780,13 +4000,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing the first trick…"
+            "value" : "Finding the right tricks for you…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando tu primer truco…"
+            "value" : "Buscando los trucos correctos para ti…"
           }
         }
       }
@@ -3797,13 +4017,46 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setting up tricks for the next date…"
+            "value" : "Finding tricks they will still talk about the next day…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando trucos para tu próxima cita…"
+            "value" : "Buscando trucos que recordarán al día siguiente…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.dates.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks for your closest people…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.dates.work" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks that make the right impression…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.dates.work.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks for dates, work, and family time…"
           }
         }
       }
@@ -3814,13 +4067,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Getting the tricks ready…"
+            "value" : "Making sure no one around you stays unimpressed…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando tus trucos…"
+            "value" : "Asegurándonos de que nadie a tu alrededor quede sin sorprender…"
           }
         }
       }
@@ -3831,13 +4084,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Setting up tricks for family moments…"
+            "value" : "Finding tricks that wow kids and adults the same…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando trucos para la familia…"
+            "value" : "Buscando trucos que sorprenden a niños y adultos por igual…"
           }
         }
       }
@@ -3848,13 +4101,79 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Getting the party tricks ready…"
+            "value" : "Finding tricks that make you the best part of the night…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando tus trucos para fiestas…"
+            "value" : "Buscando trucos que te hagan la mejor parte de la noche…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.parties.dates" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks that work for parties and dates…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.parties.dates.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks for every night that counts…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.parties.dates.work" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks that work in any room…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.parties.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks for every party and family night…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.parties.work" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks that work for any crowd…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.parties.work.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks that fit every part of your life…"
           }
         }
       }
@@ -3865,13 +4184,24 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparing tricks for the office…"
+            "value" : "Finding tricks that make people see you in a new way…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Preparando trucos para la oficina…"
+            "value" : "Buscando trucos que hacen que la gente te vea diferente…"
+          }
+        }
+      }
+    },
+    "onboarding.processing.phase1.work.family" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Finding tricks for every person in your life…"
           }
         }
       }
@@ -3882,13 +4212,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Picking tricks that need no setup…"
+            "value" : "Keeping only the tricks that always get a reaction…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Añadiendo los últimos detalles…"
+            "value" : "Quedándonos solo con los trucos que siempre sorprenden…"
           }
         }
       }
@@ -4001,13 +4331,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Almost ready…"
+            "value" : "Almost ready. Your plan is made just for you…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Casi listo…"
+            "value" : "Casi listo. Tu plan es único para ti…"
           }
         }
       }
@@ -4375,6 +4705,10 @@
     },
     "PRO" : {
       "comment" : "A badge that indicates a trick is a premium one.",
+      "isCommentAutoGenerated" : true
+    },
+    "Pro Access Override" : {
+      "comment" : "A toggle that allows users to bypass in-app purchases for Pro access.",
       "isCommentAutoGenerated" : true
     },
     "settings.faceDown" : {
@@ -5026,6 +5360,10 @@
           }
         }
       }
+    },
+    "Unlocks all tricks." : {
+      "comment" : "A description of the Pro access override.",
+      "isCommentAutoGenerated" : true
     }
   },
   "version" : "1.1"

@@ -23,6 +23,19 @@ struct OnboardingFlowView: View {
                 .id(viewModel.step)
                 .transition(.opacity)
         }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            Group {
+                if viewModel.step >= 1 && viewModel.step <= 4 {
+                    OnboardingProgressBar(step: viewModel.step, total: 4)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 14)
+                        .padding(.bottom, 10)
+                        .background(Color.background)
+                        .transition(.opacity)
+                }
+            }
+            .animation(.easeOut(duration: 0.3), value: viewModel.step)
+        }
         .offset(y: isDismissing ? 900 : 0)
         .fontDesign(.rounded)
         .animation(.spring(response: 0.35, dampingFraction: 0.82), value: isDismissing)
@@ -44,13 +57,13 @@ struct OnboardingFlowView: View {
         case 0:
             OBWelcomeScreen(onContinue: viewModel.advance)
         case 1:
-            OBGoalScreen(selectedGoal: $viewModel.selectedGoal, onContinue: viewModel.advance)
+            OBGoalScreen(selectedGoals: $viewModel.selectedGoals, onContinue: viewModel.advance)
         case 2:
-            OBFeatureSlideScreen(feature: .noProps, goal: viewModel.selectedGoal, pageIndex: 0, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .noProps, goals: viewModel.selectedGoals, onContinue: viewModel.advance)
         case 3:
-            OBFeatureSlideScreen(feature: .instructions, goal: nil, pageIndex: 1, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .instructions, goals: [], onContinue: viewModel.advance)
         case 4:
-            OBFeatureSlideScreen(feature: .vibrations, goal: nil, pageIndex: 2, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .vibrations, goals: [], onContinue: viewModel.advance)
         case 5:
             OBProcessingScreen(phases: viewModel.loadingPhases, onComplete: viewModel.advance)
         case 6:
