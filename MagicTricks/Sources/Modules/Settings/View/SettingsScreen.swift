@@ -73,11 +73,11 @@ private extension SettingsScreen {
         SettingsSection(title: String(localized: "settings.section.vibrations")) {
             VStack(spacing: 0) {
                 NavigationLink {
-                    HapticTrainingView()
+                    HapticSettingsScreen()
                 } label: {
                     SettingsActionRow(
-                        icon: "dot.radiowaves.left.and.right",
-                        title: String(localized: "settings.vibrationTrainer"),
+                        icon: "waveform.path.ecg",
+                        title: String(localized: "settings.vibrationSettings"),
                         showsChevron: true
                     )
                 }
@@ -86,11 +86,11 @@ private extension SettingsScreen {
                 SettingsDivider()
 
                 NavigationLink {
-                    HapticSettingsScreen()
+                    HapticTrainingView()
                 } label: {
                     SettingsActionRow(
-                        icon: "waveform.path.ecg",
-                        title: String(localized: "settings.vibrationSettings"),
+                        icon: "dot.radiowaves.left.and.right",
+                        title: String(localized: "settings.vibrationTrainer"),
                         showsChevron: true
                     )
                 }

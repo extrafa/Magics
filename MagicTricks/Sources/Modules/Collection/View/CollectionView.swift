@@ -7,13 +7,18 @@
 
 import SwiftUI
 
+private enum CollectionRoute: Hashable {
+    case settings
+}
+
 struct CollectionView: View {
 
     @EnvironmentObject private var flow: AppFlowCoordinator
     @EnvironmentObject private var store: StoreManager
+    @State private var navigationPath = NavigationPath()
 
     var body: some View {
-        NavigationStack {
+        NavigationStack(path: $navigationPath) {
             ZStack {
                 Color.background.ignoresSafeArea()
 
@@ -50,11 +55,14 @@ struct CollectionView: View {
             .fontDesign(.rounded)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        SettingsScreen()
-                    } label: {
+                    Button { navigationPath.append(CollectionRoute.settings) } label: {
                         Image(systemName: "gearshape")
                     }
+                }
+            }
+            .navigationDestination(for: CollectionRoute.self) { route in
+                switch route {
+                case .settings: SettingsScreen()
                 }
             }
         }
@@ -63,6 +71,9 @@ struct CollectionView: View {
                 ProUpgradeButton(action: flow.openPaywall)
                     .padding(.leading, 20)
                     .padding(.top, 4)
+                    .opacity(navigationPath.isEmpty ? 1 : 0)
+                    .scaleEffect(navigationPath.isEmpty ? 1 : 0.85, anchor: .leading)
+                    .animation(.spring(duration: 0.35, bounce: 0.2), value: navigationPath.isEmpty)
             }
         }
         .sheet(item: $flow.activeSheet) { activeSheet in
