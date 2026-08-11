@@ -3740,46 +3740,112 @@
         }
       }
     },
-    "onboarding.paywall.benefit1" : {
+    "onboarding.paywall.benefit.colorSense" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "All tricks, available right away"
+            "value" : "Color Sense"
           }
         }
       }
     },
-    "onboarding.paywall.benefit2" : {
+    "onboarding.paywall.benefit.colorSense.detail" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Step-by-step guides for every trick"
+            "value" : "Name the color. Without looking."
           }
         }
       }
     },
-    "onboarding.paywall.benefit3" : {
+    "onboarding.paywall.benefit.calculatorPrediction" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Works with just a phone. No cards, no props."
+            "value" : "Calculator Prediction"
           }
         }
       }
     },
-    "onboarding.paywall.benefit4" : {
+    "onboarding.paywall.benefit.calculatorPrediction.detail" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No watermark during performances"
+            "value" : "Know the answer before they press equals."
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.timeControl" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time Control"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.timeControl.detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Name the exact time they stop."
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.magicGallery" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Magic Gallery"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.magicGallery.detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Their choice appears in your photos."
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.noWatermark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No watermark"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.noWatermark.detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No watermark during performances."
           }
         }
       }
@@ -3790,7 +3856,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Subscribe"
+            "value" : "Unlock Now"
           }
         }
       }
@@ -3806,6 +3872,39 @@
         }
       }
     },
+    "onboarding.paywall.onetime" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pay once · Keep forever"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.privacy" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Privacy Policy"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.rating" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Loved by magicians"
+          }
+        }
+      }
+    },
     "onboarding.paywall.restore" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3813,6 +3912,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Restore"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.terms" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Terms of Use"
           }
         }
       }
@@ -3834,7 +3944,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "One payment. Every trick. Forever."
+            "value" : "1 trick free. 4 more, one payment."
           }
         }
       }

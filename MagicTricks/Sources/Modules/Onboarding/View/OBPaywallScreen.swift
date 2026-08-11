@@ -13,32 +13,42 @@ struct OBPaywallScreen: View {
     @EnvironmentObject private var store: StoreManager
     @State private var appeared = false
 
-    private let benefits: [LocalizedStringKey] = [
-        "onboarding.paywall.benefit1",
-        "onboarding.paywall.benefit2",
-        "onboarding.paywall.benefit3",
-        "onboarding.paywall.benefit4",
+    private struct Benefit {
+        let icon: String
+        let color: Color
+        let title: String
+        let detail: String
+    }
+
+    private let benefits: [Benefit] = [
+        Benefit(icon: "photo.on.rectangle.angled", color: TrickPalette.Collection.magicGallery,         title: String(localized: "onboarding.paywall.benefit.magicGallery"),         detail: String(localized: "onboarding.paywall.benefit.magicGallery.detail")),
+        Benefit(icon: "ipad",                      color: TrickPalette.Collection.calculatorPrediction, title: String(localized: "onboarding.paywall.benefit.calculatorPrediction"), detail: String(localized: "onboarding.paywall.benefit.calculatorPrediction.detail")),
+        Benefit(icon: "paintpalette",              color: TrickPalette.Collection.colorSense,           title: String(localized: "onboarding.paywall.benefit.colorSense"),           detail: String(localized: "onboarding.paywall.benefit.colorSense.detail")),
+        Benefit(icon: "stopwatch.fill",            color: TrickPalette.Collection.timeControl,          title: String(localized: "onboarding.paywall.benefit.timeControl"),          detail: String(localized: "onboarding.paywall.benefit.timeControl.detail")),
+        Benefit(icon: "sparkles",                  color: Color("collectionMindPattern"),               title: String(localized: "onboarding.paywall.benefit.noWatermark"),         detail: String(localized: "onboarding.paywall.benefit.noWatermark.detail")),
     ]
 
     var body: some View {
         VStack(spacing: 0) {
+            closeButton
+
             Spacer()
 
             heroIcon
-                .padding(.bottom, 20)
+                .padding(.bottom, 16)
 
             titleBlock
-                .padding(.horizontal, 32)
-                .padding(.bottom, 28)
+                .padding(.horizontal, 24)
+                .padding(.bottom, 24)
                 .padding(.top, 4)
 
             benefitsList
-                .padding(.horizontal, 36)
+                .padding(.horizontal, 24)
 
             Spacer()
 
             bottomBlock
-                .padding(.bottom, 48)
+                .padding(.bottom, 40)
         }
         .onAppear {
             Task { @MainActor in
@@ -50,6 +60,25 @@ struct OBPaywallScreen: View {
             if store.hasProAccess { onDismiss() }
         }
         .fontDesign(.rounded)
+    }
+
+    // MARK: Close
+
+    private var closeButton: some View {
+        HStack {
+            Spacer()
+            Button(action: onDismiss) {
+                Image(systemName: "xmark")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(.secondary)
+                    .frame(width: 28, height: 28)
+                    .background(Circle().fill(Color.primary.opacity(0.08)))
+            }
+        }
+        .padding(.horizontal, 20)
+        .padding(.top, 12)
+        .opacity(appeared ? 1 : 0)
+        .animation(.easeOut(duration: 0.2).delay(0.5), value: appeared)
     }
 
     // MARK: Hero
@@ -95,19 +124,29 @@ struct OBPaywallScreen: View {
     private var benefitsList: some View {
         VStack(alignment: .leading, spacing: 14) {
             ForEach(benefits.indices, id: \.self) { i in
-                HStack(spacing: 12) {
-                    Image(systemName: "checkmark.circle.fill")
-                        .font(.system(size: 18, weight: .semibold))
-                        .foregroundStyle(.primaryText)
-
-                    Text(benefits[i])
-                        .font(.system(size: 16, weight: .medium, design: .rounded))
-                        .foregroundStyle(.primaryText)
+                let benefit = benefits[i]
+                HStack(spacing: 14) {
+                    ZStack {
+                        RoundedRectangle(cornerRadius: 10)
+                            .fill(benefit.color.opacity(0.13))
+                            .frame(width: 42, height: 42)
+                        Image(systemName: benefit.icon)
+                            .font(.system(size: 18, weight: .semibold))
+                            .foregroundStyle(benefit.color)
+                    }
+                    VStack(alignment: .leading, spacing: 2) {
+                        Text(benefit.title)
+                            .font(.system(size: 15, weight: .semibold, design: .rounded))
+                            .foregroundStyle(.primaryText)
+                        Text(benefit.detail)
+                            .font(.system(size: 13, weight: .regular, design: .rounded))
+                            .foregroundStyle(.secondary)
+                    }
                 }
                 .opacity(appeared ? 1 : 0)
                 .offset(y: appeared ? 0 : 10)
                 .animation(
-                    .spring(response: 0.55, dampingFraction: 0.82).delay(0.34 + Double(i) * 0.08),
+                    .spring(response: 0.55, dampingFraction: 0.82).delay(0.34 + Double(i) * 0.07),
                     value: appeared
                 )
             }
@@ -128,40 +167,58 @@ struct OBPaywallScreen: View {
             )
             .padding(.horizontal, 24)
 
-            HStack(spacing: 20) {
-                Button(action: onDismiss) {
-                    Text(String(localized: "onboarding.paywall.skip"))
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary)
-                        .padding(.vertical, 8)
-                }
-
-                Button(action: { Task { await store.restore() } }) {
-                    Text(String(localized: "onboarding.paywall.restore"))
-                        .font(.system(size: 14, weight: .medium, design: .rounded))
-                        .foregroundStyle(.secondary)
-                        .padding(.vertical, 8)
-                }
+            Button(action: { Task { await store.restore() } }) {
+                Text(String(localized: "onboarding.paywall.restore"))
+                    .font(.system(size: 14, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .padding(.vertical, 8)
             }
+
+            HStack(spacing: 16) {
+                Link(String(localized: "onboarding.paywall.terms"), destination: AppConfig.termsOfUseURL)
+                Text("·")
+                Link(String(localized: "onboarding.paywall.privacy"), destination: AppConfig.privacyPolicyURL)
+            }
+            .font(.system(size: 11, weight: .regular, design: .rounded))
+            .foregroundStyle(.tertiary)
         }
         .opacity(appeared ? 1 : 0)
         .offset(y: appeared ? 0 : 16)
         .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.58 + Double(benefits.count - 1) * 0.08), value: appeared)
     }
 
+    // MARK: Price
+
     @ViewBuilder
     private var priceLabel: some View {
         if let price = store.products.first?.displayPrice {
-            HStack(alignment: .firstTextBaseline, spacing: 6) {
-                Text(price)
-                    .font(.system(size: 26, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primaryText)
+            VStack(spacing: 6) {
+                purchaseBadge
 
-                Text(String(localized: "onboarding.paywall.period"))
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
+                HStack(alignment: .firstTextBaseline, spacing: 6) {
+                    Text(price)
+                        .font(.system(size: 26, weight: .bold, design: .rounded))
+                        .foregroundStyle(.primaryText)
+
+                    Text(String(localized: "onboarding.paywall.period"))
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
             }
         }
+    }
+
+    private var purchaseBadge: some View {
+        HStack(spacing: 5) {
+            Image(systemName: "checkmark.seal.fill")
+                .font(.system(size: 11))
+            Text(String(localized: "onboarding.paywall.onetime"))
+                .font(.system(size: 12, weight: .semibold, design: .rounded))
+        }
+        .foregroundStyle(Color("collectionMindPattern"))
+        .padding(.horizontal, 12)
+        .padding(.vertical, 6)
+        .background(Capsule().fill(Color("collectionMindPattern").opacity(0.12)))
     }
 }
 

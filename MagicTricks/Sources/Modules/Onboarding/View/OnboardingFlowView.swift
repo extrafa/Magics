@@ -24,13 +24,17 @@ struct OnboardingFlowView: View {
                 .transition(.opacity)
         }
         .safeAreaInset(edge: .top, spacing: 0) {
-            OnboardingProgressBar(step: min(viewModel.step, 4), total: 4)
-                .padding(.horizontal, 24)
-                .padding(.top, 14)
-                .padding(.bottom, 10)
-                .background(Color.background)
-                .opacity(viewModel.step >= 1 && viewModel.step <= 4 ? 1 : 0)
-                .animation(.easeOut(duration: 0.3), value: viewModel.step)
+            Group {
+                if viewModel.step >= 1 && viewModel.step <= 4 {
+                    OnboardingProgressBar(step: viewModel.step, total: 4)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 14)
+                        .padding(.bottom, 10)
+                        .background(Color.background)
+                        .transition(.opacity)
+                }
+            }
+            .animation(.easeOut(duration: 0.3), value: viewModel.step)
         }
         .offset(y: isDismissing ? 900 : 0)
         .fontDesign(.rounded)
