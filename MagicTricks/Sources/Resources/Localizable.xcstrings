@@ -1442,13 +1442,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The spectator picks a city and taps it. A list of 10 cities appears. You ask them to read the cities out loud in any order. Then you name the exact city they chose."
+            "value" : "You give your phone to a person. He sees a list of cities and taps any one he wants. A new screen opens with 10 cities. His city is one of them. You ask him to read all 10 cities out loud, in any order. Then you say the city he picked."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El espectador elige una ciudad y la toca. Aparece una lista de 10 ciudades. Les pides que lean las ciudades en voz alta en cualquier orden. Luego nombras exactamente la ciudad que eligieron."
+            "value" : "Le das tu teléfono al espectador. Ve una lista de ciudades, elige cualquiera y la toca. Aparece una nueva pantalla con 10 ciudades, incluyendo la que eligió. Le pides que lea las 10 ciudades en voz alta, en cualquier orden. Luego nombras exactamente la ciudad que eligió."
           }
         }
       }
@@ -1458,13 +1458,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Some letters are made of straight lines only. Others have at least one curve. On screen, 9 cities start with one kind of letter and 1 city starts with the other. That 1 is the spectator's city."
+            "value" : "Some letters can be drawn with straight lines only. Others need at least one curve. After he picks a city, the screen shows 9 cities that start with one type of letter and 1 city that starts with the other. That 1 city is the one he picked."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Algunas letras están hechas solo de líneas rectas. Otras tienen al menos una curva. En la pantalla, 9 ciudades empiezan con un tipo de letra y 1 empieza con el otro. Esa 1 es la ciudad del espectador."
+            "value" : "Algunas letras se pueden dibujar solo con líneas rectas. Otras necesitan al menos una curva. Cuando elige una ciudad, en la pantalla aparecen 9 ciudades que empiezan con un tipo de letra y 1 ciudad que empieza con el otro. Esa ciudad es la que eligió."
           }
         }
       }
@@ -1474,13 +1474,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Look at a letter and ask: can I draw this with only straight lines? If yes, it is a straight letter. If it needs even one curve, it is a curved letter. Straight: A E F H I K L M N T V W X Y Z. Curved: B C D G J O P Q R S U. You do not need to memorize both groups. Just look at the first letter of each city and ask: does it have any curves?"
+            "value" : "Look at a letter and ask yourself: can I draw this letter with straight lines only? If yes, it is a \"straight\" letter. If it needs at least one curve, it is a \"curved\" letter.\n\n\"Straight\": A E F H I K L M N T V W X Y Z\n\"Curved\": B C D G J O P Q R S U\n\nYou do not need to remember both groups. Just look at the first letter of the city and ask: does it have any curves?"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mira una letra y pregúntate: ¿puedo dibujarla solo con líneas rectas? Si es así, es recta. Si necesita aunque sea una curva, es curva. Rectas: A E F H I K L M N T V W X Y Z. Curvas: B C D G J O P Q R S U. No necesitas memorizar los dos grupos. Solo mira la primera letra de cada ciudad y pregunta: ¿tiene alguna curva?"
+            "value" : "Mira una letra y pregúntate: ¿puedo dibujarla solo con líneas rectas? Si es así, es una letra \"recta\". Si necesita al menos una curva, es una letra \"curva\".\n\n\"Rectas\": A E F H I K L M N T V W X Y Z\n\"Curvas\": B C D G J O P Q R S U\n\nNo necesitas recordar los dos grupos. Solo mira la primera letra de la ciudad y pregunta: ¿tiene alguna curva?"
           }
         }
       }
@@ -1506,13 +1506,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open GeoMentalism and hand the phone to the spectator. Ask them to pick any city and tap it."
+            "value" : "Press \"Start\" on the \"Geo Mentalism\" trick. A list of cities will appear on the screen. Give the phone to the person. Ask him to pick any city and tap it."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abre GeoMentalism y entrégale el teléfono al espectador. Pídele que elija la ciudad que quiera y la toque."
+            "value" : "Pulsa Iniciar en el truco Geo Mentalism. En la pantalla aparecerá una lista de ciudades. Dale el teléfono a la persona. Pídele que elija cualquier ciudad y la toque."
           }
         }
       }
@@ -1538,13 +1538,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "They tap their city. A new list of 10 cities appears on screen."
+            "value" : "After he taps a city, a new screen opens with 10 cities. Tell him that 9 of them are random and 1 is the city he picked."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tocan su ciudad. Aparece una nueva lista de 10 ciudades en pantalla."
+            "value" : "Después de que toca una ciudad, se abre una nueva pantalla con 10 ciudades. Dile que 9 son al azar y 1 es la ciudad que eligió."
           }
         }
       }
@@ -1570,13 +1570,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask them to read all 10 cities out loud. They can also tap the shuffle button to mix up the order first."
+            "value" : "Ask him to read all 10 cities out loud. He can press the \"Shuffle\" button to mix up the order."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pídeles que lean las 10 ciudades en voz alta. También pueden tocar el botón de mezclar para cambiar el orden primero."
+            "value" : "Pídele que lea las 10 ciudades en voz alta. Puede pulsar el botón \"Mezclar\" para cambiar el orden primero."
           }
         }
       }
@@ -1602,13 +1602,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Listen as they read. Each city starts with a letter. Nine of them are the same kind. One is different. That one is the spectator's city."
+            "value" : "Listen carefully while he reads. Each city starts with a letter. Nine of them will be the same type. One will be different. That one is the city he picked."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escucha mientras leen. Cada ciudad empieza con una letra. Nueve son del mismo tipo. Una es diferente. Esa es la ciudad del espectador."
+            "value" : "Escucha con atención mientras lee. Cada ciudad empieza con una letra. Nueve serán del mismo tipo. Una será diferente. Esa es la ciudad que eligió."
           }
         }
       }
@@ -1618,7 +1618,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Find their city"
+            "value" : "Find his city"
           }
         },
         "es" : {
@@ -1634,13 +1634,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pause for a moment. Then say the city name."
+            "value" : "When he is done reading, pause for a moment. Then say the city he picked."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Haz una pausa. Luego di el nombre de la ciudad."
+            "value" : "Cuando termine de leer, haz una pausa. Luego di la ciudad que eligió."
           }
         }
       }
