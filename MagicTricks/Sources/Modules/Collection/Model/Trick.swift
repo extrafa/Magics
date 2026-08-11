@@ -72,7 +72,7 @@ struct TrickCollection {
             cardTitle: String(localized: "card.geo.cardTitle"),
             subtitle: String(localized: "card.geo.subtitle"),
             image: "globe.europe.africa.fill",
-            difficulty: .easy,
+            difficulty: .medium,
             instruction: .geoMentalism
         ),
         Trick(
