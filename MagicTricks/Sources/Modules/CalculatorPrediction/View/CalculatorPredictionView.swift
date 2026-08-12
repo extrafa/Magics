@@ -10,7 +10,7 @@ import SwiftUI
 struct CalculatorPredictionView: View {
     
     @StateObject private var vm = CalculatorPredictionViewModel()
-    @State private var isVisible = true
+    @State private var isVisible = AppPreferences.shared.isExitHintEnabled
 
     private static let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 4)
 

@@ -19,6 +19,7 @@ struct SettingsScreen: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 34) {
+                    exitHintSection
                     vibrationsSection
                     appSection
                     if showsTestFlightSection {
@@ -49,19 +50,58 @@ private extension SettingsScreen {
 
     var testFlightSection: some View {
         SettingsSection(title: "TestFlight") {
-            Toggle(isOn: $storeManager.isProOverride) {
+            VStack(spacing: 0) {
+                Toggle(isOn: $storeManager.isProOverride) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Pro Access Override")
+                            .font(.system(size: 17, weight: .bold, design: .rounded))
+                            .foregroundStyle(.primaryText)
+
+                        Text("Unlocks all tricks.")
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .foregroundStyle(Color.primaryText.opacity(0.58))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .tint(.orange)
+                .padding(18)
+
+                SettingsDivider()
+
+                Toggle(isOn: $storeManager.isWatermarkHidden) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Hide Watermark")
+                            .font(.system(size: 17, weight: .bold, design: .rounded))
+                            .foregroundStyle(.primaryText)
+
+                        Text("Hides the free trial banner.")
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .foregroundStyle(Color.primaryText.opacity(0.58))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .tint(.orange)
+                .padding(18)
+            }
+            .settingsCard()
+        }
+    }
+
+    var exitHintSection: some View {
+        SettingsSection(title: String(localized: "settings.exitHint.section")) {
+            Toggle(isOn: $store.isExitHintEnabled) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Pro Access Override")
+                    Text(String(localized: "settings.exitHint"))
                         .font(.system(size: 17, weight: .bold, design: .rounded))
                         .foregroundStyle(.primaryText)
 
-                    Text("Unlocks all tricks.")
+                    Text(String(localized: "settings.exitHint.description"))
                         .font(.system(size: 13, weight: .medium, design: .rounded))
                         .foregroundStyle(Color.primaryText.opacity(0.58))
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .tint(.orange)
+            .tint(TrickPalette.Collection.timeControl)
             .padding(18)
             .settingsCard()
         }

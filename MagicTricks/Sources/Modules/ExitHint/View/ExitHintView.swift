@@ -47,6 +47,14 @@ struct ExitHintView: View {
         } message: {
             Text(String(localized: "exitHint.confirm.description"))
         }
+        .alert(
+            String(localized: "exitHint.swipe.title"),
+            isPresented: $viewModel.isSwipeAlertPresented
+        ) {
+            Button(String(localized: "common.gotIt")) { }
+        } message: {
+            Text(String(localized: "exitHint.swipe.description"))
+        }
         .onAppear {
             viewModel.configurePresentation(isVisible: isVisible, isHintVisible: $isVisible)
             syncGestureState()
@@ -62,12 +70,16 @@ struct ExitHintView: View {
         .onChange(of: viewModel.isConfirmAlertPresented) { _, _ in
             syncGestureState()
         }
+        .onChange(of: viewModel.isSwipeAlertPresented) { _, _ in
+            syncGestureState()
+        }
         .onDisappear {
             ExitHintGestureState.shared.isTrainingActive = false
             ExitHintGestureState.shared.onTrainingHold = nil
             ExitHintGestureState.shared.onOutsideTap = nil
             ExitHintGestureState.shared.onHoldStarted = nil
             ExitHintGestureState.shared.onHoldCancelled = nil
+            ExitHintGestureState.shared.onSwipe = nil
         }
     }
 
@@ -123,7 +135,7 @@ struct ExitHintView: View {
                 .allowsHitTesting(false)
         }
     }
-    
+
     private func syncGestureState() {
         ExitHintGestureState.shared.isTrainingActive = isVisible && viewModel.shouldBlockInteraction
         ExitHintGestureState.shared.onTrainingHold = {
@@ -137,6 +149,9 @@ struct ExitHintView: View {
         }
         ExitHintGestureState.shared.onHoldCancelled = {
             viewModel.holdCancelled()
+        }
+        ExitHintGestureState.shared.onSwipe = {
+            viewModel.presentSwipeAlert()
         }
     }
 }

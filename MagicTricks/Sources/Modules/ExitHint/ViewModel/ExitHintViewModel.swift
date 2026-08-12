@@ -13,6 +13,7 @@ final class ExitHintViewModel: ObservableObject {
     @Published var holdScale: CGFloat = 1.0
     @Published var flashBrightness: Double = 0.0
     @Published var isConfirmAlertPresented = false
+    @Published var isSwipeAlertPresented = false
 
     private var autoFadeTask: Task<Void, Never>?
     private var flashTask: Task<Void, Never>?
@@ -28,12 +29,17 @@ final class ExitHintViewModel: ObservableObject {
     }
 
     var shouldBlockInteraction: Bool {
-        !didLearnExitHint && !isConfirmAlertPresented
+        !didLearnExitHint && !isConfirmAlertPresented && !isSwipeAlertPresented
     }
 
     func presentConfirmation() {
         guard !didLearnExitHint else { return }
         isConfirmAlertPresented = true
+    }
+
+    func presentSwipeAlert() {
+        guard !didLearnExitHint else { return }
+        isSwipeAlertPresented = true
     }
 
     func confirmHintDismiss(onConfirmExit: @escaping () -> Void) {

@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GeoMentalismView: View {
-    @State private var isVisible = true
+    @State private var isVisible = AppPreferences.shared.isExitHintEnabled
 
     private var statusBarHeight: CGFloat {
         UIApplication.shared.connectedScenes

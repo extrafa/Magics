@@ -13,7 +13,7 @@ struct WatermarkView: View {
     @State private var isDismissed = false
 
     var body: some View {
-        if !store.hasProAccess && !isDismissed {
+        if !store.hasProAccess && !isDismissed && !store.isWatermarkHidden {
             HStack(spacing: 0) {
                 Button { showPaywall = true } label: {
                     HStack(spacing: 6) {

@@ -10,7 +10,7 @@ import SwiftUI
 struct TimeControlView: View {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var viewModel = TimeControlViewModel()
-    @State private var isVisible = true
+    @State private var isVisible = AppPreferences.shared.isExitHintEnabled
 
     var body: some View {
         ZStack {

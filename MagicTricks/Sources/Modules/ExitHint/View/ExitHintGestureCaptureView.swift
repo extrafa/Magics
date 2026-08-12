@@ -46,8 +46,12 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
         private var longPressRecognizer: UILongPressGestureRecognizer?
         private var touchTracker: TouchTrackingRecognizer?
         private var tapRecognizer: UITapGestureRecognizer?
+        private var panRecognizer: UIPanGestureRecognizer?
         private var didTriggerExit = false
         private var isHoldActive = false
+        private var panStartedInRect = false
+        private var didTriggerSwipe = false
+        private var touchStartTime: Date?
 
         init(onExit: @escaping () -> Void) {
             self.onExit = onExit
@@ -56,7 +60,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
         func installRecognizerIfNeeded(on window: UIWindow) {
             guard installedWindow !== window else { return }
 
-            [longPressRecognizer, touchTracker, tapRecognizer].forEach { recognizer in
+            [longPressRecognizer, touchTracker, tapRecognizer, panRecognizer].forEach { recognizer in
                 if let r = recognizer, let w = installedWindow {
                     w.removeGestureRecognizer(r)
                 }
@@ -77,6 +81,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
                 guard let self else { return }
                 guard ExitHintGestureState.shared.globalRect.contains(location) else { return }
                 self.isHoldActive = true
+                self.touchStartTime = Date()
                 ExitHintGestureState.shared.onHoldStarted?()
             }
 
@@ -104,10 +109,18 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             tap.delegate = self
             window.addGestureRecognizer(tap)
 
+            let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+            pan.minimumNumberOfTouches = 1
+            pan.maximumNumberOfTouches = 1
+            pan.cancelsTouchesInView = false
+            pan.delegate = self
+            window.addGestureRecognizer(pan)
+
             installedWindow = window
             longPressRecognizer = longPress
             touchTracker = tracker
             tapRecognizer = tap
+            panRecognizer = pan
         }
 
         @objc private func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
@@ -115,7 +128,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             case .began:
                 let location = recognizer.location(in: recognizer.view)
                 let expandedRect = ExitHintGestureState.shared.globalRect.insetBy(dx: -20, dy: -20)
-                guard expandedRect.contains(location), !didTriggerExit else {
+                guard expandedRect.contains(location), !didTriggerExit, !didTriggerSwipe else {
                     return
                 }
                 didTriggerExit = true
@@ -126,6 +139,34 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
                 }
             case .ended, .cancelled, .failed:
                 didTriggerExit = false
+            default:
+                break
+            }
+        }
+
+        @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
+            switch recognizer.state {
+            case .began:
+                let location = recognizer.location(in: recognizer.view)
+                let translation = recognizer.translation(in: recognizer.view)
+                let startLocation = CGPoint(
+                    x: location.x - translation.x,
+                    y: location.y - translation.y
+                )
+                panStartedInRect = ExitHintGestureState.shared.globalRect.contains(startLocation)
+                didTriggerSwipe = false
+            case .changed:
+                guard panStartedInRect, !didTriggerSwipe, !didTriggerExit,
+                      ExitHintGestureState.shared.isTrainingActive else { return }
+                if let start = touchStartTime, Date().timeIntervalSince(start) > 0.5 { return }
+                let velocity = recognizer.velocity(in: recognizer.view)
+                let speed = hypot(velocity.x, velocity.y)
+                guard speed > 400 else { return }
+                didTriggerSwipe = true
+                ExitHintGestureState.shared.onSwipe?()
+            case .ended, .cancelled, .failed:
+                panStartedInRect = false
+                didTriggerSwipe = false
             default:
                 break
             }

@@ -47,6 +47,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         static let secretGestureEnabled = "secretGestureEnabled"
         static let screenDownHoldDuration = "screenDownHoldDuration"
         static let didLearnExitHint = "didLearnExitHint"
+        static let isExitHintEnabled = "isExitHintEnabled"
         static let usesStandardMagicGallerySet = "ImpossibleGalleryUsesStandardSet"
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
     }
@@ -56,6 +57,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         static let hapticGroupByThreeEnabled = false
         static let secretGestureEnabled = false
         static let screenDownHoldDuration = 0.30
+        static let isExitHintEnabled = true
         static let usesStandardMagicGallerySet = true
     }
 
@@ -111,6 +113,16 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         nonmutating set { store.set(newValue, forKey: Key.didLearnExitHint) }
     }
 
+    var isExitHintEnabled: Bool {
+        get {
+            guard store.object(forKey: Key.isExitHintEnabled) != nil else {
+                return Default.isExitHintEnabled
+            }
+            return store.bool(forKey: Key.isExitHintEnabled)
+        }
+        nonmutating set { store.set(newValue, forKey: Key.isExitHintEnabled) }
+    }
+
     var hasCompletedOnboarding: Bool {
         get { store.bool(forKey: Key.hasCompletedOnboarding) }
         nonmutating set { store.set(newValue, forKey: Key.hasCompletedOnboarding) }
@@ -134,6 +146,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     func resetMotionSettings() {
         store.set(Default.secretGestureEnabled, forKey: Key.secretGestureEnabled)
         store.set(Default.screenDownHoldDuration, forKey: Key.screenDownHoldDuration)
+        store.set(Default.isExitHintEnabled, forKey: Key.isExitHintEnabled)
     }
 
     private func clampedDouble(

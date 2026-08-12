@@ -25,6 +25,10 @@ final class SettingsStore: ObservableObject {
         didSet { preferences.screenDownHoldDuration = screenDownHoldDuration }
     }
 
+    @Published var isExitHintEnabled: Bool {
+        didSet { preferences.isExitHintEnabled = isExitHintEnabled }
+    }
+
     private let preferences: AppPreferences
 
     var appShareURL: URL? {
@@ -41,6 +45,7 @@ final class SettingsStore: ObservableObject {
         self.isHapticGroupByThreeEnabled = preferences.isHapticGroupByThreeEnabled
         self.isSecretGestureEnabled = preferences.isSecretGestureEnabled
         self.screenDownHoldDuration = preferences.screenDownHoldDuration
+        self.isExitHintEnabled = preferences.isExitHintEnabled
     }
 
     func resetHapticSettings() {
@@ -53,5 +58,6 @@ final class SettingsStore: ObservableObject {
         preferences.resetMotionSettings()
         isSecretGestureEnabled = AppPreferences.Default.secretGestureEnabled
         screenDownHoldDuration = AppPreferences.Default.screenDownHoldDuration
+        isExitHintEnabled = AppPreferences.Default.isExitHintEnabled
     }
 }
