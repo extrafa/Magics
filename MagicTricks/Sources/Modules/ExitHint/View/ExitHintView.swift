@@ -25,6 +25,8 @@ struct ExitHintView: View {
                 exitHitArea
                 hintOverlay
                     .opacity(isVisible ? viewModel.hintOpacity : 0)
+                    .scaleEffect(viewModel.holdScale)
+                    .brightness(viewModel.flashBrightness)
             }
             .padding(.top, 10)
             .padding(.leading, 12)
@@ -64,6 +66,8 @@ struct ExitHintView: View {
             ExitHintGestureState.shared.isTrainingActive = false
             ExitHintGestureState.shared.onTrainingHold = nil
             ExitHintGestureState.shared.onOutsideTap = nil
+            ExitHintGestureState.shared.onHoldStarted = nil
+            ExitHintGestureState.shared.onHoldCancelled = nil
         }
     }
 
@@ -127,6 +131,12 @@ struct ExitHintView: View {
         }
         ExitHintGestureState.shared.onOutsideTap = {
             viewModel.flashHint()
+        }
+        ExitHintGestureState.shared.onHoldStarted = {
+            viewModel.holdStarted()
+        }
+        ExitHintGestureState.shared.onHoldCancelled = {
+            viewModel.holdCancelled()
         }
     }
 }

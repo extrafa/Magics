@@ -14,6 +14,8 @@ final class ExitHintGestureState {
     var isTrainingActive = false
     var onTrainingHold: (() -> Void)?
     var onOutsideTap: (() -> Void)?
+    var onHoldStarted: (() -> Void)?
+    var onHoldCancelled: (() -> Void)?
 }
 
 enum ExitHintZone {

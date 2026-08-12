@@ -10,6 +10,8 @@ import SwiftUI
 @MainActor
 final class ExitHintViewModel: ObservableObject {
     @Published var hintOpacity = 1.0
+    @Published var holdScale: CGFloat = 1.0
+    @Published var flashBrightness: Double = 0.0
     @Published var isConfirmAlertPresented = false
 
     private var autoFadeTask: Task<Void, Never>?
@@ -79,15 +81,28 @@ final class ExitHintViewModel: ObservableObject {
         flashTask?.cancel()
         flashTask = Task {
             for _ in 0..<2 {
-                withAnimation(.easeOut(duration: 0.14)) {
-                    self.hintOpacity = 0.62
+                withAnimation(.easeOut(duration: 0.07)) {
+                    self.flashBrightness = 0.30
                 }
-                try? await Task.sleep(for: .milliseconds(140))
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    self.hintOpacity = 1
+                try? await Task.sleep(for: .milliseconds(90))
+                withAnimation(.easeIn(duration: 0.16)) {
+                    self.flashBrightness = 0.0
                 }
-                try? await Task.sleep(for: .milliseconds(120))
+                try? await Task.sleep(for: .milliseconds(200))
             }
+        }
+    }
+
+    func holdStarted() {
+        cancelAutoFade()
+        withAnimation(.easeInOut(duration: ExitHintZone.minimumPressDuration * 1.4)) {
+            holdScale = 0.90
+        }
+    }
+
+    func holdCancelled() {
+        withAnimation(.spring(response: 0.38, dampingFraction: 0.55)) {
+            holdScale = 1.0
         }
     }
 
