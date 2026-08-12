@@ -56,13 +56,11 @@ final class HapticScheduler {
         generator.prepare()
 
         for index in 0..<count {
+            let isLast = index == count - 1
             schedule(after: initialDelay + Double(index) * interval) {
                 generator.impactOccurred()
-                generator.prepare()
-
-                if index == count - 1 {
-                    completion?()
-                }
+                if !isLast { generator.prepare() }
+                if isLast { completion?() }
             }
         }
     }

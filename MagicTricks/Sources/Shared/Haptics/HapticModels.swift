@@ -9,7 +9,7 @@ import Foundation
 
 enum HapticTiming {
     static let initialDelay: TimeInterval = 0
-    static let pulseGap: TimeInterval = 0.36
+    static let pulseGap: TimeInterval = 0.32
     static let digitGap: TimeInterval = 1.15
     static let sectionGap: TimeInterval = 3.0
     static let shortDuration: TimeInterval = 0.08
@@ -33,15 +33,32 @@ enum HapticPreferences {
         AppPreferences.shared.isHapticGroupByThreeEnabled
     }
 
-    static var pulseGap: TimeInterval { max(scaled(HapticTiming.pulseGap), 0.2) }
+    static var pulseGap: TimeInterval { max(scaled(HapticTiming.pulseGap), 0.07) }
     static var digitGap: TimeInterval { max(scaled(HapticTiming.digitGap), 1.15) }
     static var sectionGap: TimeInterval { HapticTiming.sectionGap }
     static var shortDuration: TimeInterval { scaled(HapticTiming.shortDuration) }
     static var longDuration: TimeInterval { max(scaled(HapticTiming.longDuration), 0.42) }
     static var completionPadding: TimeInterval { HapticTiming.completionPadding }
-    static var groupedPulseGap: TimeInterval { max(scaled(0.19), 0.12) }
-    static var groupedRemainderPulseGap: TimeInterval { max(scaled(0.28), 0.18) }
-    static var groupedGroupGap: TimeInterval { max(scaled(0.68), 0.52) }
+    static var groupedPulseGap: TimeInterval { groupTiming.pulseGap }
+    static var groupedRemainderPulseGap: TimeInterval { groupTiming.remainderPulseGap }
+    static var groupedGroupGap: TimeInterval { groupTiming.groupGap }
+
+    // Per-speed group timing. Ratio groupGap/pulseGap is held at ~3.7:1 across
+    // all speeds — the brain reliably detects a boundary at 3.5x the within-group
+    // interval. Gaps much longer than ~1s break the pattern thread; shorter than
+    // 2.5x the pulse gap and the boundary disappears.
+    private static var groupTiming: (pulseGap: TimeInterval, remainderPulseGap: TimeInterval, groupGap: TimeInterval) {
+        let s = speedMultiplier
+        if s >= 2.25 {
+            return (pulseGap: 0.10, remainderPulseGap: 0.14, groupGap: 0.36)
+        } else if s >= 1.75 {
+            return (pulseGap: 0.115, remainderPulseGap: 0.15, groupGap: 0.40)
+        } else if s >= 1.25 {
+            return (pulseGap: 0.13, remainderPulseGap: 0.17, groupGap: 0.46)
+        } else {
+            return (pulseGap: 0.15, remainderPulseGap: 0.19, groupGap: 0.53)
+        }
+    }
     static var groupedDigitGap: TimeInterval { digitGap }
 
     static func reset() {

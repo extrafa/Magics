@@ -44,7 +44,6 @@ extension HapticManager {
         generator: UIImpactFeedbackGenerator,
         completion: (() -> Void)? = nil
     ) {
-        generator.prepare()
         guard count > 0 else {
             playZeroBuzz(initialDelay: initialDelay, generator: generator, completion: completion)
             return
@@ -66,7 +65,6 @@ extension HapticManager {
         generator: UIImpactFeedbackGenerator,
         completion: (() -> Void)? = nil
     ) {
-        generator.prepare()
         guard count > 0 else {
             playZeroBuzz(initialDelay: initialDelay, generator: generator, completion: completion)
             return
@@ -76,12 +74,19 @@ extension HapticManager {
         var time = initialDelay
         var remaining = count
 
+        var isFirstGroup = true
+
         while remaining > 0 {
             let groupCount = min(chunkSize, remaining)
             let isLastGroup = remaining == groupCount
             let pulseGap = groupCount < chunkSize
                 ? HapticPreferences.groupedRemainderPulseGap
                 : HapticPreferences.groupedPulseGap
+
+            if !isFirstGroup {
+                let prepareTime = max(time - 0.1, 0)
+                scheduler.schedule(after: prepareTime) { generator.prepare() }
+            }
 
             scheduler.scheduleImpactSequence(
                 count: groupCount,
@@ -93,6 +98,7 @@ extension HapticManager {
 
             time += Double(groupCount - 1) * pulseGap + HapticPreferences.groupedGroupGap
             remaining -= groupCount
+            isFirstGroup = false
         }
     }
 

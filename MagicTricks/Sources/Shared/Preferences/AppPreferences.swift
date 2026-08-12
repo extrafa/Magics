@@ -52,7 +52,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     }
 
     enum Default {
-        static let hapticSpeedMultiplier = 1.0
+        static let hapticSpeedMultiplier = 1.5
         static let hapticGroupByThreeEnabled = false
         static let secretGestureEnabled = false
         static let screenDownHoldDuration = 0.30
@@ -60,7 +60,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     }
 
     enum Range {
-        static let hapticSpeedMultiplier = 0.7...2.0
+        static let hapticSpeedMultiplier = 1.0...2.5
         static let screenDownHoldDuration = 0.10...1.50
     }
 

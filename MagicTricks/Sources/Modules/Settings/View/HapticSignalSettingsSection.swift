@@ -22,8 +22,8 @@ struct HapticSignalSettingsSection: View {
             SettingsStepper(
                 value: $settings.hapticSpeedMultiplier,
                 range: AppPreferences.Range.hapticSpeedMultiplier,
-                step: 0.10,
-                format: "%.2fx"
+                step: 0.5,
+                format: "%.1fx"
             )
             .padding(18)
             .settingsCard()

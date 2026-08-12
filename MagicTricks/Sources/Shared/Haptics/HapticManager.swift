@@ -40,7 +40,11 @@ final class HapticManager {
     }
 
     func playTrainingDigit(_ digit: Int, completion: (() -> Void)? = nil) {
-        playCountSignal(digit, generator: heavyImpactGenerator, completion: completion)
+        if HapticPreferences.isGroupByThreeEnabled {
+            playGroupedCountSignal(digit, generator: heavyImpactGenerator, completion: completion)
+        } else {
+            playCountSignal(digit, generator: heavyImpactGenerator, completion: completion)
+        }
     }
 
     func playDigitSignal(_ digit: Int, initialDelay: TimeInterval = HapticTiming.initialDelay, completion: (() -> Void)? = nil) {

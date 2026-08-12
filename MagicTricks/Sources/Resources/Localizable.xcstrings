@@ -4836,13 +4836,13 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Time between the trigger and when vibrations begin."
+            "value": "How long to hold face-down before vibrations start."
           }
         },
         "es": {
           "stringUnit": {
             "state": "translated",
-            "value": "Tiempo entre el disparador y el inicio de las vibraciones."
+            "value": "Cuánto tiempo mantener boca abajo antes de que comiencen las vibraciones."
           }
         }
       }
@@ -4921,7 +4921,7 @@
         "en": {
           "stringUnit": {
             "state": "translated",
-            "value": "Hold Duration"
+            "value": "Hold to Activate"
           }
         },
         "es": {
