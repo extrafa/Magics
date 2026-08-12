@@ -81,10 +81,7 @@ struct ExitHintView: View {
                     style.strokeColor,
                     style: StrokeStyle(lineWidth: 1.4, dash: [7, 5])
                 )
-                .background {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(style.fillColor)
-                }
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .overlay {
                     VStack(spacing: 0) {
                         Spacer(minLength: 18)
