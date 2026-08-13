@@ -1243,7 +1243,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The spectator taps any colored card on the screen. You then name the exact color they chose."
+            "value" : "You hold the phone with the screen facing him. He taps any colored card. Then you name the exact color he picked."
           }
         },
         "es" : {
@@ -1260,7 +1260,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The phone sends you the color of the card the spectator tapped, using vibrations."
+            "value" : "Each color has a number. After he taps, the phone vibrates that number of times. You count the pulses and match them to a color."
           }
         },
         "es" : {
@@ -1277,7 +1277,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Memorize the code: Red = 1 pulse, Green = 2, Blue = 3, Yellow = 4. Practice feeling them right here — tap the button."
+            "value" : "Each color has a pulse count. Red is 1. Green is 2. Blue is 3. Yellow is 4. Practice feeling them with the button below."
           }
         },
         "es" : {
@@ -1311,7 +1311,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Say: \"I will try to name the color you pick without looking at the screen.\""
+            "value" : "Say to him: \"I will try to name the color you pick without looking at the screen.\""
           }
         },
         "es" : {
@@ -1328,7 +1328,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Explain the trick"
+            "value" : "Set the scene"
           }
         },
         "es" : {
@@ -1345,7 +1345,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Start the trick and hold the phone with the screen facing the spectator. Hold it so you can feel the vibrations."
+            "value" : "Start the trick. Hold the phone with the screen facing him. Make sure your fingers can feel the vibrations."
           }
         },
         "es" : {
@@ -1362,7 +1362,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Take the phone"
+            "value" : "Hold the phone"
           }
         },
         "es" : {
@@ -1379,7 +1379,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Look away and ask the spectator to tap any card."
+            "value" : "Look away. Ask him to tap any card on the screen."
           }
         },
         "es" : {
@@ -1396,7 +1396,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Let them choose"
+            "value" : "Let him choose"
           }
         },
         "es" : {
@@ -1413,7 +1413,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Count the pulses and find the color."
+            "value" : "The phone will vibrate. Count the pulses. Match the number to the color."
           }
         },
         "es" : {
@@ -1447,7 +1447,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask the spectator to touch your palm, pause for a moment — then name the color."
+            "value" : "Ask him to touch your palm. Pause for a moment. Then say the color."
           }
         },
         "es" : {
@@ -5630,9 +5630,6 @@
           }
         }
       }
-    },
-    "Tip" : {
-
     },
     "training.answer.correct" : {
       "extractionState" : "manual",
