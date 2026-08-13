@@ -87,6 +87,7 @@ struct TrickCollection {
         Trick(
             id: .calculatorPrediction,
             title: String(localized: "card.calculatorPrediction.title"),
+            cardTitle: String(localized: "card.calculatorPrediction.cardTitle"),
             subtitle: String(localized: "card.calculatorPrediction.subtitle"),
             image: "ipad",
             difficulty: .medium,

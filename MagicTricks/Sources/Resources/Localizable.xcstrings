@@ -89,6 +89,23 @@
         }
       }
     },
+    "card.calculatorPrediction.cardTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Calculator\nPrediction"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Prediccion\nCalculadora"
+          }
+        }
+      }
+    },
     "card.calculatorPrediction.title" : {
       "localizations" : {
         "en" : {
