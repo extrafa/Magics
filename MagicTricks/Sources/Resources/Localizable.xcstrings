@@ -954,7 +954,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Before the trick starts, you write a number on paper or in your phone notes. The spectator says random three-digit numbers and you multiply them on your phone. The result matches your prediction."
+            "value" : "Before the trick, you write a number and put it away. He gives you two random numbers. You multiply them on the calculator. The result matches your number."
           }
         },
         "es" : {
@@ -971,7 +971,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You save a number inside the calculator before the trick starts. Whatever numbers the spectator says — the result will always be your number."
+            "value" : "You save a number inside the calculator before the trick starts. Whatever numbers he gives you, the result will always be your number."
           }
         },
         "es" : {
@@ -988,7 +988,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the trick and enter any 5-digit number. Then hold the AC button until the screen flashes. The number is now saved."
+            "value" : "Open the trick and enter any 5-digit number. Then press and hold AC for 2 seconds. The screen blinks. The number is now saved."
           }
         },
         "es" : {
@@ -1022,7 +1022,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Write the same number on paper or in your phone notes. Fold the paper or put the phone away so the spectator knows a prediction exists, but cannot see the number."
+            "value" : "Write the same number on paper or in your notes. Put it away so he knows a prediction exists, but cannot see the number."
           }
         },
         "es" : {
@@ -1056,7 +1056,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "After saving, pressing equals will show your number. After that, the calculator works as normal."
+            "value" : "The next time you press equals, the calculator shows your saved number. After that, it works as normal."
           }
         },
         "es" : {
@@ -1090,7 +1090,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask the spectator to say two random three-digit numbers. Each number must be 300 or less. A bigger number will give a 6-digit result, which cannot match your 5-digit prediction."
+            "value" : "Ask him to give you two random three-digit numbers. Each number must be 300 or less. A bigger number gives a 6-digit result, which will not match your 5-digit prediction."
           }
         },
         "es" : {
@@ -1124,7 +1124,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "If the spectator says a round number (200, 300) or a number with the same digits (111, 222), say: \"Let's try something more random.\""
+            "value" : "If he says a round number like 200 or 300, or a repeated number like 111 or 222, say: \"Let's try something more random.\""
           }
         },
         "es" : {
@@ -1158,7 +1158,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Enter the first number, the multiplication sign, then the second number. Press equals."
+            "value" : "Type the first number. Press \"×\". Type the second number. Press \"=\"."
           }
         },
         "es" : {
