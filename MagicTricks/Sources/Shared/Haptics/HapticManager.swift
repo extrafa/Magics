@@ -12,8 +12,12 @@ import UIKit
 final class HapticManager {
     static let shared = HapticManager()
 
-    let mediumImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
-    let heavyImpactGenerator = UIImpactFeedbackGenerator(style: .heavy)
+    var mediumImpactGenerator: UIImpactFeedbackGenerator {
+        UIImpactFeedbackGenerator(style: HapticPreferences.intensity.feedbackStyle)
+    }
+    var heavyImpactGenerator: UIImpactFeedbackGenerator {
+        UIImpactFeedbackGenerator(style: HapticPreferences.intensity.feedbackStyle)
+    }
     private let notificationGenerator = UINotificationFeedbackGenerator()
     let enginePlayer: HapticEnginePlaying
     let scheduler: HapticScheduling

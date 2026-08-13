@@ -6,6 +6,31 @@
 //
 
 import Foundation
+import UIKit
+
+enum HapticIntensity: Equatable, Hashable {
+    case light
+    case medium
+    case heavy
+
+    static let allCases: [HapticIntensity] = [.light, .medium, .heavy]
+
+    var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle {
+        switch self {
+        case .light: .light
+        case .medium: .medium
+        case .heavy: .heavy
+        }
+    }
+
+    var localizedTitle: String {
+        switch self {
+        case .light: String(localized: "settings.haptics.intensity.weak")
+        case .medium: String(localized: "settings.haptics.intensity.medium")
+        case .heavy: String(localized: "settings.haptics.intensity.strong")
+        }
+    }
+}
 
 enum HapticTiming {
     static let initialDelay: TimeInterval = 0
@@ -31,6 +56,10 @@ enum HapticPreferences {
 
     static var isGroupByThreeEnabled: Bool {
         AppPreferences.shared.isHapticGroupByThreeEnabled
+    }
+
+    static var intensity: HapticIntensity {
+        AppPreferences.shared.hapticIntensity
     }
 
     static var pulseGap: TimeInterval { max(scaled(HapticTiming.pulseGap), 0.07) }

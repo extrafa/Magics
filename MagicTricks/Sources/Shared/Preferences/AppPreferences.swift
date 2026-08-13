@@ -44,6 +44,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     enum Key {
         static let hapticSpeedMultiplier = "hapticSpeedMultiplier"
         static let hapticGroupByThreeEnabled = "hapticGroupByThreeEnabled"
+        static let hapticIntensity = "hapticIntensity"
         static let secretGestureEnabled = "secretGestureEnabled"
         static let screenDownHoldDuration = "screenDownHoldDuration"
         static let didLearnExitHint = "didLearnExitHint"
@@ -55,6 +56,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     enum Default {
         static let hapticSpeedMultiplier = 1.5
         static let hapticGroupByThreeEnabled = false
+        static let hapticIntensity = HapticIntensity.heavy
         static let secretGestureEnabled = false
         static let screenDownHoldDuration = 0.30
         static let isExitHintEnabled = true
@@ -85,6 +87,28 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     var isHapticGroupByThreeEnabled: Bool {
         get { store.bool(forKey: Key.hapticGroupByThreeEnabled) }
         nonmutating set { store.set(newValue, forKey: Key.hapticGroupByThreeEnabled) }
+    }
+
+    var hapticIntensity: HapticIntensity {
+        get {
+            guard store.object(forKey: Key.hapticIntensity) != nil else {
+                return Default.hapticIntensity
+            }
+            switch Int(store.double(forKey: Key.hapticIntensity)) {
+            case 0: return .light
+            case 2: return .heavy
+            default: return .medium
+            }
+        }
+        nonmutating set {
+            let raw: Double
+            switch newValue {
+            case .light: raw = 0
+            case .medium: raw = 1
+            case .heavy: raw = 2
+            }
+            store.set(raw, forKey: Key.hapticIntensity)
+        }
     }
 
     var isSecretGestureEnabled: Bool {
@@ -141,6 +165,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     func resetHapticSettings() {
         store.set(Default.hapticSpeedMultiplier, forKey: Key.hapticSpeedMultiplier)
         store.set(Default.hapticGroupByThreeEnabled, forKey: Key.hapticGroupByThreeEnabled)
+        store.set(2.0, forKey: Key.hapticIntensity)
     }
 
     func resetMotionSettings() {
