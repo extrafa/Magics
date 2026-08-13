@@ -29,13 +29,13 @@ struct HapticSettingsScreen: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
                     HapticSignalSettingsSection(settings: settings)
+                    MotionSettingsSection(settings: settings)
                     HapticPreviewSection(
                         testNumber: testNumber,
                         isTesting: isTesting,
                         isWaitingForGesture: isWaitingForGesture,
                         action: playPreview
                     )
-                    MotionSettingsSection(settings: settings)
                     SettingsResetButton(action: resetDefaults)
                 }
                 .padding(.horizontal, 20)
