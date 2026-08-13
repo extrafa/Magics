@@ -4797,7 +4797,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exit Hint"
+            "value" : "Show Exit Tip"
           }
         }
       }
@@ -4808,7 +4808,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show the exit area hint when entering a trick."
+            "value" : "Show how to close a trick when you open it."
           }
         }
       }
@@ -4819,7 +4819,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Exit Hint"
+            "value" : "Exit Tip"
           }
         }
       }
