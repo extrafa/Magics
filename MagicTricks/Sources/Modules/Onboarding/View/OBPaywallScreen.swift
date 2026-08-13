@@ -45,9 +45,8 @@ struct OBPaywallScreen: View {
             benefitsList
                 .padding(.horizontal, 24)
 
-            Spacer()
-
             bottomBlock
+                .padding(.top, 28)
                 .padding(.bottom, 40)
         }
         .onAppear {
