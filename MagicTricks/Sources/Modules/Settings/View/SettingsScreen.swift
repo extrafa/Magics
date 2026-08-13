@@ -22,6 +22,7 @@ struct SettingsScreen: View {
                     exitHintSection
                     vibrationsSection
                     appSection
+                    HapticHelpSection()
                     if showsTestFlightSection {
                         testFlightSection
                     }

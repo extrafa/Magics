@@ -73,6 +73,8 @@
 		287D56382FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56372FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift */; };
 		287D563A2FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56392FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift */; };
 		287D563C2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D563B2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift */; };
+		287D7905302DEBD8009E75EE /* MotionSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D7904302DEBD8009E75EE /* MotionSettingsScreen.swift */; };
+		287D7906302DEBD8009E75EE /* HapticHelpSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D7903302DEBD8009E75EE /* HapticHelpSection.swift */; };
 		289123E52FBDCEC80051759C /* HapticModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123E42FBDCEC80051759C /* HapticModels.swift */; };
 		289123ED2FBDCF230051759C /* HapticManager+TimeControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123EC2FBDCF230051759C /* HapticManager+TimeControl.swift */; };
 		289123EF2FC880000051759C /* HapticEnginePlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123EE2FC880000051759C /* HapticEnginePlayer.swift */; };
@@ -215,6 +217,8 @@
 		287D56372FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicGalleryViewModel+Actions.swift"; sourceTree = "<group>"; };
 		287D56392FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicGalleryViewModel+Presentation.swift"; sourceTree = "<group>"; };
 		287D563B2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotGrid.swift; sourceTree = "<group>"; };
+		287D7903302DEBD8009E75EE /* HapticHelpSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticHelpSection.swift; sourceTree = "<group>"; };
+		287D7904302DEBD8009E75EE /* MotionSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSettingsScreen.swift; sourceTree = "<group>"; };
 		289123E42FBDCEC80051759C /* HapticModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticModels.swift; sourceTree = "<group>"; };
 		289123EC2FBDCF230051759C /* HapticManager+TimeControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+TimeControl.swift"; sourceTree = "<group>"; };
 		289123EE2FC880000051759C /* HapticEnginePlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticEnginePlayer.swift; sourceTree = "<group>"; };
@@ -800,6 +804,8 @@
 		918CBC092EE27CF30004B50D /* View */ = {
 			isa = PBXGroup;
 			children = (
+				287D7903302DEBD8009E75EE /* HapticHelpSection.swift */,
+				287D7904302DEBD8009E75EE /* MotionSettingsScreen.swift */,
 				2860B4AD2FA5363300525B68 /* SettingsComponents.swift */,
 				2860B4AE2FA5363300525B68 /* SettingsScreen.swift */,
 				28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */,
@@ -1072,6 +1078,8 @@
 				28960C602FABD7A0003268CD /* ExitHintGestureCaptureView.swift in Sources */,
 				913878242F89732E00CA371E /* InstructionComponents.swift in Sources */,
 				912B25882F2ED96300B32AF1 /* CalculatorPredictionViewModel.swift in Sources */,
+				287D7905302DEBD8009E75EE /* MotionSettingsScreen.swift in Sources */,
+				287D7906302DEBD8009E75EE /* HapticHelpSection.swift in Sources */,
 				289123E52FBDCEC80051759C /* HapticModels.swift in Sources */,
 				9122DB952EDD20C300277108 /* Trick.swift in Sources */,
 				918359822F2719DB0068D5BC /* AppFlowCoverView.swift in Sources */,

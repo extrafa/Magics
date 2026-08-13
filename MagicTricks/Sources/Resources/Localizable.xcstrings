@@ -4926,6 +4926,261 @@
         }
       }
     },
+    "settings.help.exitHint.answer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "To close a trick, press and hold the area at the top left of the screen. A tip shows you where it is when you open a trick. You can turn it off in the \"Show Exit Tip\" setting."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Al abrir un truco, aparece una barra en la parte inferior de la pantalla. Mantenla presionada para cerrar el truco. Puedes desactivar este aviso en el ajuste de Salida de arriba."
+          }
+        }
+      }
+    },
+    "settings.help.exitHint.question" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How do I close a trick?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cómo cierro un truco?"
+          }
+        }
+      }
+    },
+    "settings.help.faceDown.answer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Flip the phone face down to make it vibrate. The spectator cannot see the screen. If this is off, the phone vibrates right away when you open a trick."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuando está activado, voltea el teléfono boca abajo para iniciar la vibración. El espectador no puede ver la pantalla. Cuando está desactivado, el teléfono vibra de inmediato al abrir un truco."
+          }
+        }
+      }
+    },
+    "settings.help.faceDown.question" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What is face down?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué es el activador boca abajo?"
+          }
+        }
+      }
+    },
+    "settings.help.grouping.answer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Instead of one long row, the phone breaks big numbers into small groups of 3. The number 7 becomes: vibrate 3 times, short pause, 3 times, short pause, 1 time. Much easier to follow."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Los grupos dividen los números grandes en bloques de 3. El número 7 se convierte en 3 + 3 + 1. Una pausa más larga marca el límite entre grupos. Esto hace que los números grandes sean más fáciles de seguir."
+          }
+        }
+      }
+    },
+    "settings.help.grouping.question" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What are group vibrations?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué son las vibraciones en grupo?"
+          }
+        }
+      }
+    },
+    "settings.help.holdDuration.answer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How long you need to hold the phone face down before it vibrates. Use a longer time if it goes off too soon by accident. Use a shorter time if you want it to go off faster."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuánto tiempo debe permanecer el teléfono boca abajo antes de activarse. Un valor menor significa respuesta más rápida. Un valor mayor reduce las activaciones accidentales."
+          }
+        }
+      }
+    },
+    "settings.help.holdDuration.question" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What is hold duration?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué hace la duración de espera?"
+          }
+        }
+      }
+    },
+    "settings.help.signal.answer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "The phone vibrates to pass you a number. Count the vibrations. That number is what the spectator picked. For example, 7 vibrations means the number is 7."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El teléfono vibra una vez por cada conteo. Para el número 7, vibra 7 veces seguidas. Sientes el número sin mirar la pantalla."
+          }
+        }
+      }
+    },
+    "settings.help.signal.question" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How does it tell me the number?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Cómo funciona la señal?"
+          }
+        }
+      }
+    },
+    "settings.help.speed.answer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Controls how fast the vibrations come one after another. Use high speed if the number is hard to count in time."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qué tan rápido se reproducen las vibraciones. Mayor velocidad significa menos pausa entre pulsos. Usa mayor velocidad si necesitas leer un número grande rápidamente."
+          }
+        }
+      }
+    },
+    "settings.help.speed.question" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What does speed do?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué controla la velocidad?"
+          }
+        }
+      }
+    },
+    "settings.help.strength.answer" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "How strong the vibration feels. Weak is soft and easy to miss. Strong is easy to feel even through a pocket or a table."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Qué tan fuerte vibra el teléfono. Suave es sutil y discreta. Fuerte se siente fácilmente a través de la ropa o una mesa."
+          }
+        }
+      }
+    },
+    "settings.help.strength.question" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "What does strength do?"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "¿Qué controla la intensidad?"
+          }
+        }
+      }
+    },
+    "settings.help.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Help"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ayuda"
+          }
+        }
+      }
+    },
     "settings.haptics.intensity.medium" : {
       "extractionState" : "manual",
       "localizations" : {
