@@ -13,6 +13,21 @@ final class AppFlowCoordinator: ObservableObject {
     @Published var activeFlow: FullScreenFlow?
     @Published var activeSheet: SheetFlow?
 
+    private let preferences = AppPreferences.shared
+    private static let ratingTriggerCount = 3
+
+    func recordTrickClose() {
+        guard !preferences.hasRespondedToRating else { return }
+        preferences.trickLaunchCount += 1
+        if preferences.trickLaunchCount >= Self.ratingTriggerCount {
+            preferences.trickLaunchCount = 0
+            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
+                guard let self, self.activeFlow == nil, self.activeSheet == nil else { return }
+                self.activeSheet = .rateApp
+            }
+        }
+    }
+
     func open(trick: Trick) {
         activeFlow = .trick(trick: trick)
     }

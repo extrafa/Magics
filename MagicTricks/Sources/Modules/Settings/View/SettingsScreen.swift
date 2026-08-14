@@ -11,6 +11,7 @@ struct SettingsScreen: View {
 
     @EnvironmentObject private var store: SettingsStore
     @EnvironmentObject private var storeManager: StoreManager
+    @EnvironmentObject private var flow: AppFlowCoordinator
 
     var body: some View {
         ZStack {
@@ -66,6 +67,18 @@ private extension SettingsScreen {
                 }
                 .tint(.orange)
                 .padding(18)
+
+                SettingsDivider()
+
+                Button {
+                    AppPreferences.shared.hasRespondedToRating = false
+                    AppPreferences.shared.trickLaunchCount = 0
+                    flow.activeSheet = .rateApp
+                } label: {
+                    SettingsActionRow(icon: "star.bubble", title: "Show Rate App Sheet")
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 18)
 
                 SettingsDivider()
 

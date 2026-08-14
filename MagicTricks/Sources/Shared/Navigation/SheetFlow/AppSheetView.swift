@@ -25,6 +25,9 @@ struct AppSheetView: View {
                     flow.activeFlow = .trick(trick: trick)
                 }
             }
+        case .rateApp:
+            RateAppSheet()
+                .environmentObject(flow)
         }
     }
 }

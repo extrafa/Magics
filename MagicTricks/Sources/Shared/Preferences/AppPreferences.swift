@@ -51,6 +51,8 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         static let isExitHintEnabled = "isExitHintEnabled"
         static let usesStandardMagicGallerySet = "ImpossibleGalleryUsesStandardSet"
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
+        static let trickLaunchCount = "trickLaunchCount"
+        static let hasRespondedToRating = "hasRespondedToRating"
     }
 
     enum Default {
@@ -150,6 +152,16 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     var hasCompletedOnboarding: Bool {
         get { store.bool(forKey: Key.hasCompletedOnboarding) }
         nonmutating set { store.set(newValue, forKey: Key.hasCompletedOnboarding) }
+    }
+
+    var trickLaunchCount: Int {
+        get { Int(store.double(forKey: Key.trickLaunchCount)) }
+        nonmutating set { store.set(Double(newValue), forKey: Key.trickLaunchCount) }
+    }
+
+    var hasRespondedToRating: Bool {
+        get { store.bool(forKey: Key.hasRespondedToRating) }
+        nonmutating set { store.set(newValue, forKey: Key.hasRespondedToRating) }
     }
 
     var usesStandardMagicGallerySet: Bool {

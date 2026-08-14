@@ -86,6 +86,11 @@ struct CollectionView: View {
             AppFlowCoverView(activeFlow: activeFlow)
                 .environmentObject(store)
         }
+        .onChange(of: flow.activeFlow) { oldValue, newValue in
+            if case .trick = oldValue, newValue == nil {
+                flow.recordTrickClose()
+            }
+        }
     }
 }
 

@@ -30,6 +30,11 @@ extension Instruction {
                 phase: .preparation
             ),
             InstructionStep(
+                title: String(localized: "instruction.time.step3.title"),
+                description: String(localized: "instruction.time.step3.description"),
+                phase: .demonstration
+            ),
+            InstructionStep(
                 title: String(localized: "instruction.time.step4.title"),
                 description: String(localized: "instruction.time.step4.description"),
                 phase: .demonstration
@@ -43,11 +48,6 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.time.step6.title"),
                 description: String(localized: "instruction.time.step6.description"),
-                phase: .demonstration
-            ),
-            InstructionStep(
-                title: String(localized: "instruction.time.step7.title"),
-                description: String(localized: "instruction.time.step7.description"),
                 phase: .demonstration
             ),
         ]
