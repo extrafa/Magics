@@ -9,7 +9,8 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step1.title"),
                 description: String(localized: "instruction.calculatorPrediction.step1.description"),
-                phase: .preparation
+                phase: .preparation,
+                imageName: "calculator.step.acNumber"
             ),
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step2.title"),
@@ -34,7 +35,8 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step6.title"),
                 description: String(localized: "instruction.calculatorPrediction.step6.description"),
-                phase: .demonstration
+                phase: .demonstration,
+                imageName: "calculator.step.multiply"
             ),
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step7.title"),

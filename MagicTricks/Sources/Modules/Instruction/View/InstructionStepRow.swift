@@ -45,15 +45,18 @@ struct InstructionStepRow: View {
             stepText
 
             if let imageName = step.imageName {
-                Image(imageName)
-                    .resizable()
-                    .aspectRatio(contentMode: .fit)
+                Color.clear
+                    .aspectRatio(step.imageRatio.rawValue, contentMode: .fit)
+                    .overlay {
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFill()
+                    }
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     .overlay {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                             .stroke(Color.grayBorder, lineWidth: 1)
                     }
-                    .frame(maxWidth: .infinity)
             }
 
             if !step.actions.isEmpty {

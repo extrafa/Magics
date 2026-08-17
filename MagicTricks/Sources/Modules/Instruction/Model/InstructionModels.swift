@@ -19,6 +19,11 @@ enum InstructionStepAction: Hashable {
     case hapticSettings
 }
 
+enum InstructionImageRatio: CGFloat {
+    case standard = 0.75  // 3:4
+    case compact  = 1.5   // 3:2
+}
+
 struct InstructionStep: Identifiable, Hashable {
     let id = UUID()
     let title: String
@@ -26,18 +31,21 @@ struct InstructionStep: Identifiable, Hashable {
     let phase: InstructionPhase
     let actions: [InstructionStepAction]
     let imageName: String?
+    let imageRatio: InstructionImageRatio
 
     init(
         title: String,
         description: String,
         phase: InstructionPhase,
         actions: [InstructionStepAction] = [],
-        imageName: String? = nil
+        imageName: String? = nil,
+        imageRatio: InstructionImageRatio = .standard
     ) {
         self.title = title
         self.description = description
         self.phase = phase
         self.actions = actions
         self.imageName = imageName
+        self.imageRatio = imageRatio
     }
 }

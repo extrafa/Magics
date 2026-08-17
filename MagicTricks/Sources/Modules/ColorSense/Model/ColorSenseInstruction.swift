@@ -32,7 +32,8 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.color.step4.title"),
                 description: String(localized: "instruction.color.step4.description"),
-                phase: .demonstration
+                phase: .demonstration,
+                imageName: "color.step.colorGrid"
             ),
             InstructionStep(
                 title: String(localized: "instruction.color.step5.title"),
