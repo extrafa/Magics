@@ -21,12 +21,14 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.geo.step2.title"),
                 description: String(localized: "instruction.geo.step2.description"),
-                phase: .demonstration
+                phase: .demonstration,
+                imageName: "instruction.geo.step2"
             ),
             InstructionStep(
                 title: String(localized: "instruction.geo.step3.title"),
                 description: String(localized: "instruction.geo.step3.description"),
-                phase: .demonstration
+                phase: .demonstration,
+                imageName: "instruction.geo.step3"
             ),
             InstructionStep(
                 title: String(localized: "instruction.geo.step4.title"),

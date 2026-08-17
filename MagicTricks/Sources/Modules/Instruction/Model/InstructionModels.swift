@@ -25,16 +25,19 @@ struct InstructionStep: Identifiable, Hashable {
     let description: String
     let phase: InstructionPhase
     let actions: [InstructionStepAction]
+    let imageName: String?
 
     init(
         title: String,
         description: String,
         phase: InstructionPhase,
-        actions: [InstructionStepAction] = []
+        actions: [InstructionStepAction] = [],
+        imageName: String? = nil
     ) {
         self.title = title
         self.description = description
         self.phase = phase
         self.actions = actions
+        self.imageName = imageName
     }
 }

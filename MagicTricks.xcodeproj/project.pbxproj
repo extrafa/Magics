@@ -391,6 +391,14 @@
 			path = SheetFlow;
 			sourceTree = "<group>";
 		};
+		0AEE0000000000000000001E /* RateApp */ = {
+			isa = PBXGroup;
+			children = (
+				0AEE0000000000000000001C /* RateAppSheet.swift */,
+			);
+			path = RateApp;
+			sourceTree = "<group>";
+		};
 		2806231A301A8481003F0C44 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -748,14 +756,6 @@
 				913AE9A12F54939D0061F75A /* AppConfig.swift */,
 			);
 			path = Application;
-			sourceTree = "<group>";
-		};
-		0AEE0000000000000000001E /* RateApp */ = {
-			isa = PBXGroup;
-			children = (
-				0AEE0000000000000000001C /* RateAppSheet.swift */,
-			);
-			path = RateApp;
 			sourceTree = "<group>";
 		};
 		913FDE082EBEDAE500B05D99 /* Modules */ = {
@@ -1361,7 +1361,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = Rostulik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -1401,7 +1401,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.2;
+				MARKETING_VERSION = 1.1.3;
 				PRODUCT_BUNDLE_IDENTIFIER = Rostulik;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
