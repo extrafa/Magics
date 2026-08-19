@@ -17,7 +17,7 @@ enum TrickType {
 
     var requiresPro: Bool {
         switch self {
-        case .geoMentalism, .mindLink: false
+        case .geoMentalism: false
         default: true
         }
     }
