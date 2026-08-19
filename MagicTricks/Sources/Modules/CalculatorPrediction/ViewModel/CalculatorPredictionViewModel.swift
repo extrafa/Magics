@@ -143,9 +143,9 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
             for _ in 0..<2 {
                 isSaveBlinkVisible = true
-                try? await Task.sleep(for: .milliseconds(140))
+                try? await Task.sleep(milliseconds: 140)
                 isSaveBlinkVisible = false
-                try? await Task.sleep(for: .milliseconds(140))
+                try? await Task.sleep(milliseconds: 140)
             }
         }
     }

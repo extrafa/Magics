@@ -7,18 +7,15 @@
 
 import SwiftUI
 
-private enum CollectionRoute: Hashable {
-    case settings
-}
-
 struct CollectionView: View {
 
     @EnvironmentObject private var flow: AppFlowCoordinator
     @EnvironmentObject private var store: StoreManager
-    @State private var navigationPath = NavigationPath()
+    @State private var showSettings = false
+    @State private var previousActiveFlow: FullScreenFlow? = nil
 
     var body: some View {
-        NavigationStack(path: $navigationPath) {
+        NavigationStackCompat {
             ZStack {
                 Color.background.ignoresSafeArea()
 
@@ -48,21 +45,20 @@ struct CollectionView: View {
                     }
                     .padding(16)
                 }
-                .scrollIndicators(.hidden)
+                .hideScrollIndicators()
+
+                NavigationLink(destination: SettingsScreen(), isActive: $showSettings) {
+                    EmptyView()
+                }
+                .hidden()
             }
             .navigationTitle(String(localized: "collection.title"))
             .navigationBarTitleDisplayMode(.large)
-            .fontDesign(.rounded)
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    Button { navigationPath.append(CollectionRoute.settings) } label: {
+                    Button { showSettings = true } label: {
                         Image(systemName: "gearshape")
                     }
-                }
-            }
-            .navigationDestination(for: CollectionRoute.self) { route in
-                switch route {
-                case .settings: SettingsScreen()
                 }
             }
         }
@@ -71,14 +67,14 @@ struct CollectionView: View {
                 ProUpgradeButton(action: flow.openPaywall)
                     .padding(.leading, 20)
                     .padding(.top, 4)
-                    .opacity(navigationPath.isEmpty ? 1 : 0)
-                    .scaleEffect(navigationPath.isEmpty ? 1 : 0.85, anchor: .leading)
-                    .animation(.spring(duration: 0.35, bounce: 0.2), value: navigationPath.isEmpty)
+                    .opacity(showSettings ? 0 : 1)
+                    .scaleEffect(showSettings ? 0.85 : 1, anchor: .leading)
+                    .animation(.spring(response: 0.35, dampingFraction: 0.78), value: showSettings)
             }
         }
         .sheet(item: $flow.activeSheet) { activeSheet in
             AppSheetView(activeSheet: activeSheet)
-                .presentationDragIndicator(.visible)
+                .withPresentationDragIndicator()
                 .environmentObject(store)
                 .environmentObject(flow)
         }
@@ -86,10 +82,11 @@ struct CollectionView: View {
             AppFlowCoverView(activeFlow: activeFlow)
                 .environmentObject(store)
         }
-        .onChange(of: flow.activeFlow) { oldValue, newValue in
-            if case .trick = oldValue, newValue == nil {
+        .onChange(of: flow.activeFlow) { newValue in
+            if case .trick = previousActiveFlow, newValue == nil {
                 flow.recordTrickClose()
             }
+            previousActiveFlow = newValue
         }
     }
 }
@@ -139,9 +136,9 @@ private struct ProUpgradeButton: View {
 
     private func shimmerLoop() async {
         while !Task.isCancelled {
-            try? await Task.sleep(for: .seconds(2.5))
+            try? await Task.sleep(seconds: 2.5)
             withAnimation(.easeInOut(duration: 0.75)) { shimmer = true }
-            try? await Task.sleep(for: .milliseconds(950))
+            try? await Task.sleep(milliseconds: 950)
             shimmer = false
         }
     }

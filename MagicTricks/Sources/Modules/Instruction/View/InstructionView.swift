@@ -36,17 +36,14 @@ struct InstructionView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $presentedSheet) { sheet in
-            NavigationStack {
+            NavigationStackCompat {
                 InstructionActionSheetDestination(sheet: sheet)
             }
-            .presentationDragIndicator(.visible)
+            .withPresentationDragIndicator()
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(
-                    item: InstructionShareFormatter.shareText(for: instruction),
-                    preview: SharePreview(instruction.title)
-                ) {
+                ShareLink(item: InstructionShareFormatter.shareText(for: instruction)) {
                     Image(systemName: "square.and.arrow.up")
                         .foregroundStyle(.primaryText)
                 }
@@ -108,7 +105,7 @@ private extension InstructionView {
 }
 
 #Preview {
-    NavigationStack {
+    NavigationStackCompat {
         InstructionView(instruction: .calculatorPrediction)
     }
 }

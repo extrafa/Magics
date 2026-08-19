@@ -40,13 +40,11 @@ struct MagicGalleryCapturePanel: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(String(localized: "magicGallery.standardSet.title"))
-                    .font(.subheadline)
-                    .fontWeight(.bold)
+                    .font(.subheadline.weight(.bold))
                     .foregroundStyle(Color.primaryText)
 
                 Text(String(localized: "magicGallery.standardSet.description"))
-                    .font(.caption)
-                    .fontWeight(.medium)
+                    .font(.caption.weight(.medium))
                     .foregroundStyle(Color.primaryText.opacity(0.58))
                     .fixedSize(horizontal: false, vertical: true)
             }

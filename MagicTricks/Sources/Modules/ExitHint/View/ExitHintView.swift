@@ -59,7 +59,7 @@ struct ExitHintView: View {
             viewModel.configurePresentation(isVisible: isVisible, isHintVisible: $isVisible)
             syncGestureState()
         }
-        .onChange(of: isVisible) { _, newValue in
+        .onChange(of: isVisible) { newValue in
             if newValue {
                 viewModel.configurePresentation(isVisible: newValue, isHintVisible: $isVisible)
             } else {
@@ -67,10 +67,10 @@ struct ExitHintView: View {
             }
             syncGestureState()
         }
-        .onChange(of: viewModel.isConfirmAlertPresented) { _, _ in
+        .onChange(of: viewModel.isConfirmAlertPresented) { _ in
             syncGestureState()
         }
-        .onChange(of: viewModel.isSwipeAlertPresented) { _, _ in
+        .onChange(of: viewModel.isSwipeAlertPresented) { _ in
             syncGestureState()
         }
         .onDisappear {
@@ -127,7 +127,7 @@ struct ExitHintView: View {
                             .onAppear {
                                 ExitHintGestureState.shared.globalRect = proxy.frame(in: .global)
                             }
-                            .onChange(of: proxy.frame(in: .global)) { _, newValue in
+                            .onChange(of: proxy.frame(in: .global)) { newValue in
                                 ExitHintGestureState.shared.globalRect = newValue
                             }
                     }

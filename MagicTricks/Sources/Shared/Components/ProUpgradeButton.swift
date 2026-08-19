@@ -59,9 +59,9 @@ struct ProUpgradeButton: View {
 
     private func shimmerLoop() async {
         while !Task.isCancelled {
-            try? await Task.sleep(for: .seconds(2.5))
+            try? await Task.sleep(seconds: 2.5)
             withAnimation(.easeInOut(duration: 0.75)) { shimmer = true }
-            try? await Task.sleep(for: .milliseconds(950))
+            try? await Task.sleep(milliseconds: 950)
             shimmer = false
         }
     }

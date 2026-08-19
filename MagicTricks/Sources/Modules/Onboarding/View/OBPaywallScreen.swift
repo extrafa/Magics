@@ -61,15 +61,15 @@ struct OBPaywallScreen: View {
         }
         .onAppear {
             Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(240))
+                try? await Task.sleep(milliseconds: 240)
                 appeared = true
             }
         }
-        .onChange(of: store.hasProAccess) {
+        .onChange(of: store.hasProAccess) { _ in
             if store.hasProAccess { onDismiss() }
         }
         .tint(.primary)
-        .fontDesign(.rounded)
+        
     }
 
     // MARK: Close

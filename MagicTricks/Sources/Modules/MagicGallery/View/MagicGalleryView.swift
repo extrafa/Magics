@@ -15,7 +15,7 @@ struct MagicGalleryView: View {
     @State private var showSourceDialog = false
 
     var body: some View {
-        NavigationStack {
+        NavigationStackCompat {
             ZStack {
                 Color.background.ignoresSafeArea()
 
@@ -35,7 +35,6 @@ struct MagicGalleryView: View {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { dismiss() } label: {
                         Image(systemName: "xmark")
-                            .fontWeight(.semibold)
                     }
                 }
             }

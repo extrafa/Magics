@@ -103,12 +103,11 @@ struct SettingsSnapSlider: View {
             Text(String(format: format, value))
                 .font(.system(size: 26, weight: .bold, design: .rounded))
                 .foregroundStyle(TrickPalette.Collection.timeControl)
-                .contentTransition(.numericText())
                 .animation(.easeInOut(duration: 0.12), value: value)
 
             Slider(value: $value, in: range, step: step)
                 .tint(TrickPalette.Collection.timeControl)
-                .onChange(of: value) { _, newValue in
+                .onChange(of: value) { newValue in
                     let currentStep = Int(round((newValue - range.lowerBound) / step))
                     guard currentStep != lastHapticStep else { return }
                     lastHapticStep = currentStep

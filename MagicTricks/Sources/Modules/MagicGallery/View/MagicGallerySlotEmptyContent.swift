@@ -15,8 +15,7 @@ struct MagicGallerySlotEmptyContent: View {
                 .foregroundStyle(.indigo)
 
             Text(String(localized: "magicGallery.emptySlot"))
-                .font(.subheadline)
-                .fontWeight(.semibold)
+                .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Color.primaryText)
 
             Text(String(localized: "magicGallery.tapToCapture"))

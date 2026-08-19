@@ -42,12 +42,12 @@ struct HapticSettingsScreen: View {
                 .padding(.top, 28)
                 .padding(.bottom, 36)
             }
-            .scrollIndicators(.hidden)
+            .hideScrollIndicators()
         }
         .navigationTitle(String(localized: "settings.haptics.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .fontDesign(.rounded)
-        .onChange(of: settings.isSecretGestureEnabled) { _, enabled in
+        
+        .onChange(of: settings.isSecretGestureEnabled) { enabled in
             guard !enabled, isWaitingForGesture else { return }
             gestureTask?.cancel()
             gestureTask = nil
@@ -88,7 +88,7 @@ struct HapticSettingsScreen: View {
 }
 
 #Preview {
-    NavigationStack {
+    NavigationStackCompat {
         HapticSettingsScreen()
             .environmentObject(SettingsStore())
     }

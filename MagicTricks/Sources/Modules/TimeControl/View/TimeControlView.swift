@@ -36,7 +36,7 @@ struct TimeControlView: View {
 
             ExitHintView(isVisible: $isVisible, style: .specialWhite)
         }
-        .onChange(of: scenePhase) { _, newPhase in
+        .onChange(of: scenePhase) { newPhase in
             guard newPhase == .active else { return }
             viewModel.handleSceneBecameActive()
         }

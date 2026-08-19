@@ -57,14 +57,14 @@ final class ExitHintViewModel: ObservableObject {
         guard isVisible, didLearnExitHint else { return }
 
         autoFadeTask = Task {
-            try? await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(seconds: 2)
             guard !Task.isCancelled else { return }
 
             withAnimation(.easeOut(duration: 2.2)) {
                 self.hintOpacity = 0.18
             }
 
-            try? await Task.sleep(for: .milliseconds(2200))
+            try? await Task.sleep(milliseconds: 2200)
             guard !Task.isCancelled else { return }
 
             // Fade to 0 within ExitHintView's own hierarchy — avoids triggering an
@@ -74,7 +74,7 @@ final class ExitHintViewModel: ObservableObject {
                 self.hintOpacity = 0
             }
 
-            try? await Task.sleep(for: .milliseconds(800))
+            try? await Task.sleep(milliseconds: 800)
             guard !Task.isCancelled else { return }
 
             // Already at opacity 0 — set binding without animation so the parent
@@ -90,11 +90,11 @@ final class ExitHintViewModel: ObservableObject {
                 withAnimation(.easeOut(duration: 0.07)) {
                     self.flashBrightness = 0.30
                 }
-                try? await Task.sleep(for: .milliseconds(90))
+                try? await Task.sleep(milliseconds: 90)
                 withAnimation(.easeIn(duration: 0.16)) {
                     self.flashBrightness = 0.0
                 }
-                try? await Task.sleep(for: .milliseconds(200))
+                try? await Task.sleep(milliseconds: 200)
             }
         }
     }

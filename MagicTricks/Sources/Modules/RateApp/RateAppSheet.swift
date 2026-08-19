@@ -12,7 +12,6 @@ struct RateAppSheet: View {
 
     @EnvironmentObject private var flow: AppFlowCoordinator
     @Environment(\.dismiss) private var dismiss
-    @Environment(\.requestReview) private var requestReview
 
     @State private var phase: Phase = .question
 
@@ -38,15 +37,13 @@ struct RateAppSheet: View {
                     ))
             }
         }
-        .animation(.spring(duration: 0.4, bounce: 0.1), value: phase)
+        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: phase)
         .padding(.horizontal, 24)
         .padding(.top, 32)
         .padding(.bottom, 24)
-        .fontDesign(.rounded)
-        .presentationDetents([.height(300)])
-        .presentationBackground(Color.background)
-        .presentationDragIndicator(.visible)
-        .presentationCornerRadius(28)
+        
+        .withPresentationDragIndicator()
+        .modifier(RateAppPresentationModifier())
     }
 
     // MARK: - Question
@@ -132,8 +129,13 @@ struct RateAppSheet: View {
         AppPreferences.shared.hasRespondedToRating = true
         dismiss()
         Task {
-            try? await Task.sleep(for: .milliseconds(600))
-            await MainActor.run { requestReview() }
+            try? await Task.sleep(milliseconds: 600)
+            await MainActor.run {
+                if let scene = UIApplication.shared.connectedScenes
+                    .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
+                    SKStoreReviewController.requestReview(in: scene)
+                }
+            }
         }
     }
 
@@ -154,6 +156,24 @@ struct RateAppSheet: View {
 
     private func handleMaybeLater() {
         dismiss()
+    }
+}
+
+// MARK: - Presentation modifier
+
+private struct RateAppPresentationModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 16.4, *) {
+            content
+                .presentationDetents([.height(300)])
+                .presentationBackground(Color.background)
+                .presentationCornerRadius(28)
+        } else if #available(iOS 16, *) {
+            content
+                .presentationDetents([.height(300)])
+        } else {
+            content
+        }
     }
 }
 

@@ -37,8 +37,9 @@ struct TrickCardView: View {
     // MARK: Card
 
     private var cardBody: some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .leading, spacing: 0) {
             header
+            Spacer(minLength: 16)
             TrickCardActions(onStartTap: onStartTap, onHowToTap: onHowToTap)
         }
         .padding(22)
@@ -64,8 +65,7 @@ struct TrickCardView: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(trick.cardTitle ?? trick.title)
-                    .font(.title3)
-                    .fontWeight(.bold)
+                    .font(.title3.weight(.bold))
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)

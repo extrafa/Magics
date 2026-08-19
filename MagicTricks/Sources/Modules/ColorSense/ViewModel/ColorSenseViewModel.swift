@@ -48,7 +48,7 @@ final class ColorSenseViewModel: ObservableObject {
         tapAnimationTask?.cancel()
         activeTapCardID = cardID
         tapAnimationTask = Task { [weak self] in
-            try? await Task.sleep(for: .milliseconds(145))
+            try? await Task.sleep(milliseconds: 145)
             guard !Task.isCancelled else { return }
             if self?.activeTapCardID == cardID {
                 self?.activeTapCardID = nil
@@ -60,7 +60,7 @@ final class ColorSenseViewModel: ObservableObject {
         canTap = false
         playSignalTask?.cancel()
         playSignalTask = Task { [weak self] in
-            try? await Task.sleep(for: .seconds(1))
+            try? await Task.sleep(seconds: 1)
             guard !Task.isCancelled, let self else { return }
             haptics.playColorCode(type.vibrations) { [weak self] in
                 self?.canTap = true

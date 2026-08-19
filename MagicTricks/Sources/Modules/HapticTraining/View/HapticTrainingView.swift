@@ -144,7 +144,7 @@ struct HapticTrainingView: View {
             await viewModel.playSignal()
             if playedValue == 1 {
                 // single-pulse signal — brief delay so the keyboard doesn't pop before the vibration settles
-                try? await Task.sleep(for: .milliseconds(250))
+                try? await Task.sleep(milliseconds: 250)
             }
             isAnswerFocused = viewModel.result == nil
         }

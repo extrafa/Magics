@@ -44,7 +44,7 @@ struct GeoMentalismCitiesView: View {
             isVisible = false
             viewModel.generateList(for: city)
             Task {
-                try? await Task.sleep(for: .milliseconds(550))
+                try? await Task.sleep(milliseconds: 550)
                 withAnimation(.easeInOut) {
                     viewModel.shuffleList()
                 }
@@ -60,7 +60,7 @@ struct GeoMentalismCitiesView: View {
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "shuffle")
-                    .fontWeight(.semibold)
+                    .font(.system(size: 17, weight: .semibold))
                 Text(String(localized: "geo.shuffle"))
                     .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
@@ -78,9 +78,14 @@ struct GeoMentalismCitiesView: View {
 }
 
 #Preview {
-    @Previewable @State var isVisible = false
-    NavigationStack {
-        GeoMentalismCitiesView(city: "Barcelona", isVisible: $isVisible)
+    struct Preview: View {
+        @State var isVisible = false
+        var body: some View {
+            NavigationStackCompat {
+                GeoMentalismCitiesView(city: "Barcelona", isVisible: $isVisible)
+            }
+            .environmentObject(StoreManager())
+        }
     }
-    .environmentObject(StoreManager())
+    return Preview()
 }

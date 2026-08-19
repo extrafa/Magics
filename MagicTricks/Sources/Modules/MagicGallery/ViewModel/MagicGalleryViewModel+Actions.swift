@@ -79,7 +79,7 @@ extension MagicGalleryViewModel {
         isSaving = true
         defer {
             Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(800))
+                try? await Task.sleep(milliseconds: 800)
                 isSaving = false
             }
         }

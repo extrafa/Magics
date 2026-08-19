@@ -53,10 +53,11 @@
 		28258EC12FF3E31800DE5695 /* OBValueDeliveryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */; };
 		28258EC22FF3E31800DE5695 /* OBFeatureSlideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */; };
 		28258EC32FF3E31800DE5695 /* OBPaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */; };
-		282AC7622FCF09E400315861 /* MagicTricksIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 282AC7612FCF09E400315861 /* MagicTricksIcon.icon */; };
+		282AC7622FCF09E400315861 /* MagicTricksIconOLD.icon in Resources */ = {isa = PBXBuildFile; fileRef = 282AC7612FCF09E400315861 /* MagicTricksIconOLD.icon */; };
 		28335ADD2FA55DCD00DE419B /* ColorSenseInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */; };
 		2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370A2FAA196500234419 /* TimeControlViewModel.swift */; };
 		2834370D2FAA196500234419 /* TimeControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370C2FAA196500234419 /* TimeControlView.swift */; };
+		283618DF303475D2000111EB /* MagicTricksIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 283618DE303475D2000111EB /* MagicTricksIcon.icon */; };
 		28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28404A052FC056FF0062D941 /* TimeControlSignalTransmitter.swift */; };
 		2860B4AF2FA5363300525B68 /* SettingsComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2860B4AD2FA5363300525B68 /* SettingsComponents.swift */; };
 		2860B4B02FA5363300525B68 /* SettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2860B4AE2FA5363300525B68 /* SettingsScreen.swift */; };
@@ -102,6 +103,7 @@
 		28E100012FC9F00000BB0001 /* TrickPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E100002FC9F00000BB0001 /* TrickPalette.swift */; };
 		28E200022FCE720000BB0001 /* TrickButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E200012FCE720000BB0001 /* TrickButtonStyles.swift */; };
 		28E935822FF2BEEC00AEF6EC /* OBFirstScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */; };
+		28F1571830334E1A00DBF903 /* MagicTricksIconSecond.icon in Resources */ = {isa = PBXBuildFile; fileRef = 28F1571730334E1A00DBF903 /* MagicTricksIconSecond.icon */; };
 		28F200012FCE500000CC0001 /* MotionSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F200002FCE500000CC0001 /* MotionSettingsSection.swift */; };
 		9100D5882F89343C005B0BC0 /* TrickCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9100D5872F89343C005B0BC0 /* TrickCardView.swift */; };
 		9100D58A2FCE720000B0BC0 /* TrickCardActions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9100D5892FCE720000B0BC0 /* TrickCardActions.swift */; };
@@ -138,7 +140,18 @@
 		92A000032FC7600000A00001 /* HapticTrainingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */; };
 		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
 		92A000092FC8600000A00001 /* CalculatorPredictionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */; };
-/* End PBXBuildFile section */
+		0AML00000000000000000002 /* MindLinkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000001 /* MindLinkModels.swift */; };
+		0AML00000000000000000004 /* MindLinkInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000003 /* MindLinkInstruction.swift */; };
+		0AML00000000000000000006 /* MindLinkSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000005 /* MindLinkSessionManager.swift */; };
+		0AML00000000000000000008 /* MindLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000007 /* MindLinkViewModel.swift */; };
+		0AML0000000000000000000A /* MindLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000009 /* MindLinkView.swift */; };
+		0AML0000000000000000000C /* MindLinkSenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000B /* MindLinkSenderView.swift */; };
+		0AML0000000000000000000E /* MindLinkReceiverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000D /* MindLinkReceiverView.swift */; };
+
+		0AML00000000000000000010 /* MindLinkTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000F /* MindLinkTestView.swift */; };
+		0AML00000000000000000021 /* NavigationStackCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000020 /* NavigationStackCompat.swift */; };
+		0A15C0MP00000000000002 /* iOS15Compat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15C0MP00000000000001 /* iOS15Compat.swift */; };
+		/* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
 		9191CE222F549D7E00D5BAE8 /* PBXContainerItemProxy */ = {
@@ -197,11 +210,12 @@
 		28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPaywallScreen.swift; sourceTree = "<group>"; };
 		28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPreferenceScreen.swift; sourceTree = "<group>"; };
 		28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBValueDeliveryScreen.swift; sourceTree = "<group>"; };
-		282AC7612FCF09E400315861 /* MagicTricksIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIcon.icon; sourceTree = "<group>"; };
+		282AC7612FCF09E400315861 /* MagicTricksIconOLD.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIconOLD.icon; sourceTree = "<group>"; };
 		28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseInstruction.swift; sourceTree = "<group>"; };
 		28335AE22FA5838300DE419B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2834370A2FAA196500234419 /* TimeControlViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModel.swift; sourceTree = "<group>"; };
 		2834370C2FAA196500234419 /* TimeControlView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlView.swift; sourceTree = "<group>"; };
+		283618DE303475D2000111EB /* MagicTricksIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIcon.icon; sourceTree = "<group>"; };
 		28404A052FC056FF0062D941 /* TimeControlSignalTransmitter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlSignalTransmitter.swift; sourceTree = "<group>"; };
 		2860B4AD2FA5363300525B68 /* SettingsComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsComponents.swift; sourceTree = "<group>"; };
 		2860B4AE2FA5363300525B68 /* SettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsScreen.swift; sourceTree = "<group>"; };
@@ -247,6 +261,7 @@
 		28E100002FC9F00000BB0001 /* TrickPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickPalette.swift; sourceTree = "<group>"; };
 		28E200012FCE720000BB0001 /* TrickButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickButtonStyles.swift; sourceTree = "<group>"; };
 		28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBFirstScreen.swift; sourceTree = "<group>"; };
+		28F1571730334E1A00DBF903 /* MagicTricksIconSecond.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIconSecond.icon; sourceTree = "<group>"; };
 		28F200002FCE500000CC0001 /* MotionSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSettingsSection.swift; sourceTree = "<group>"; };
 		9100D5872F89343C005B0BC0 /* TrickCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickCardView.swift; sourceTree = "<group>"; };
 		9100D5892FCE720000B0BC0 /* TrickCardActions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickCardActions.swift; sourceTree = "<group>"; };
@@ -285,7 +300,18 @@
 		92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingViewModelTests.swift; sourceTree = "<group>"; };
 		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
 		92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModelTests.swift; sourceTree = "<group>"; };
-/* End PBXFileReference section */
+		0AML00000000000000000001 /* MindLinkModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkModels.swift; sourceTree = "<group>"; };
+		0AML00000000000000000003 /* MindLinkInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkInstruction.swift; sourceTree = "<group>"; };
+		0AML00000000000000000005 /* MindLinkSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkSessionManager.swift; sourceTree = "<group>"; };
+		0AML00000000000000000007 /* MindLinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkViewModel.swift; sourceTree = "<group>"; };
+		0AML00000000000000000009 /* MindLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkView.swift; sourceTree = "<group>"; };
+		0AML0000000000000000000B /* MindLinkSenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkSenderView.swift; sourceTree = "<group>"; };
+		0AML0000000000000000000D /* MindLinkReceiverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkReceiverView.swift; sourceTree = "<group>"; };
+
+		0AML0000000000000000000F /* MindLinkTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkTestView.swift; sourceTree = "<group>"; };
+		0AML00000000000000000020 /* NavigationStackCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackCompat.swift; sourceTree = "<group>"; };
+		0A15C0MP00000000000001 /* iOS15Compat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS15Compat.swift; sourceTree = "<group>"; };
+		/* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		913FDDDC2EBED62D00B05D99 /* Frameworks */ = {
@@ -773,6 +799,7 @@
 				2875DE902FBA7D6E00B9298C /* HapticTraining */,
 				0A00FF000000000000000001 /* Onboarding */,
 				0AEE0000000000000000001E /* RateApp */,
+				0AML00000000000000000014 /* MindLink */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -788,10 +815,12 @@
 		913FDE0B2EBEDB5300B05D99 /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				28F1571730334E1A00DBF903 /* MagicTricksIconSecond.icon */,
 				913FDDFF2EBED98800B05D99 /* Assets.xcassets */,
 				915B2A3D2F120A32002917D7 /* Localizable.xcstrings */,
 				918C353F2F16B06800EAF6D9 /* Magics.storekit */,
-				282AC7612FCF09E400315861 /* MagicTricksIcon.icon */,
+				282AC7612FCF09E400315861 /* MagicTricksIconOLD.icon */,
+				283618DE303475D2000111EB /* MagicTricksIcon.icon */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -865,6 +894,7 @@
 				91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */,
 				918FC1D52F1417C300621893 /* TrickRouterView.swift */,
 				918359812F2719DB0068D5BC /* AppFlowCoverView.swift */,
+				0AML00000000000000000020 /* NavigationStackCompat.swift */,
 			);
 			path = FullScreenFlow;
 			sourceTree = "<group>";
@@ -878,6 +908,7 @@
 				28D000022FC7350000AA0001 /* Preferences */,
 				28C4F25A2FAB7A92002BB78D /* Haptics */,
 				0A0002000000000000000027 /* AsyncUtilities.swift */,
+				0A15C0MP00000000000001 /* iOS15Compat.swift */,
 				2875DE8D2FBA738B00B9298C /* Motion */,
 			);
 			path = Shared;
@@ -949,6 +980,46 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
+		0AML00000000000000000014 /* MindLink */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000015 /* Model */,
+				0AML00000000000000000016 /* ViewModel */,
+				0AML00000000000000000017 /* View */,
+			);
+			path = MindLink;
+			sourceTree = "<group>";
+		};
+		0AML00000000000000000015 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000001 /* MindLinkModels.swift */,
+				0AML00000000000000000003 /* MindLinkInstruction.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		0AML00000000000000000016 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000005 /* MindLinkSessionManager.swift */,
+				0AML00000000000000000007 /* MindLinkViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		0AML00000000000000000017 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000009 /* MindLinkView.swift */,
+				0AML0000000000000000000B /* MindLinkSenderView.swift */,
+				0AML0000000000000000000D /* MindLinkReceiverView.swift */,
+				0AML0000000000000000000F /* MindLinkTestView.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1040,7 +1111,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				915B2A3E2F120A32002917D7 /* Localizable.xcstrings in Resources */,
-				282AC7622FCF09E400315861 /* MagicTricksIcon.icon in Resources */,
+				28F1571830334E1A00DBF903 /* MagicTricksIconSecond.icon in Resources */,
+				283618DF303475D2000111EB /* MagicTricksIcon.icon in Resources */,
+				282AC7622FCF09E400315861 /* MagicTricksIconOLD.icon in Resources */,
 				918C35402F16B06800EAF6D9 /* Magics.storekit in Resources */,
 				913FDE052EBED98800B05D99 /* Assets.xcassets in Resources */,
 			);
@@ -1151,6 +1224,7 @@
 				0A000200000000000000002A /* WatermarkView.swift in Sources */,
 				0A0002000000000000000026 /* OnboardingCTAButton.swift in Sources */,
 				0A0002000000000000000028 /* AsyncUtilities.swift in Sources */,
+				0A15C0MP00000000000002 /* iOS15Compat.swift in Sources */,
 				0A000300000000000000001B /* OnboardingFlowView.swift in Sources */,
 				0A000400000000000000001B /* OnboardingProgressBar.swift in Sources */,
 				0A000500000000000000001B /* OBOptionRow.swift in Sources */,
@@ -1165,6 +1239,15 @@
 				0AEE00000000000000000004 /* MagicGalleryCameraView.swift in Sources */,
 				0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */,
 				0AEE0000000000000000001D /* RateAppSheet.swift in Sources */,
+				0AML00000000000000000021 /* NavigationStackCompat.swift in Sources */,
+				0AML00000000000000000002 /* MindLinkModels.swift in Sources */,
+				0AML00000000000000000004 /* MindLinkInstruction.swift in Sources */,
+				0AML00000000000000000006 /* MindLinkSessionManager.swift in Sources */,
+				0AML00000000000000000008 /* MindLinkViewModel.swift in Sources */,
+				0AML0000000000000000000A /* MindLinkView.swift in Sources */,
+				0AML0000000000000000000C /* MindLinkSenderView.swift in Sources */,
+				0AML0000000000000000000E /* MindLinkReceiverView.swift in Sources */,
+				0AML00000000000000000010 /* MindLinkTestView.swift in Sources */,
 				0AEE00000000000000000006 /* HapticTrainingMode.swift in Sources */,
 				0AEE00000000000000000008 /* HapticTrainingView.swift in Sources */,
 				0AEE0000000000000000000A /* CalculatorPredictionEngine.swift in Sources */,
@@ -1262,7 +1345,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
@@ -1323,7 +1406,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
@@ -1356,7 +1439,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1396,7 +1479,7 @@
 				INFOPLIST_KEY_UIStatusBarHidden = NO;
 				INFOPLIST_KEY_UIStatusBarStyle = "";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations = UIInterfaceOrientationPortrait;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.6;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

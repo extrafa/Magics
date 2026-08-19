@@ -37,7 +37,7 @@ struct OnboardingFlowView: View {
             .animation(.easeOut(duration: 0.3), value: viewModel.step)
         }
         .offset(y: isDismissing ? 900 : 0)
-        .fontDesign(.rounded)
+        
         .animation(.spring(response: 0.35, dampingFraction: 0.82), value: isDismissing)
         .animation(.easeOut(duration: 0.22), value: viewModel.step)
     }
@@ -76,7 +76,7 @@ struct OnboardingFlowView: View {
     private func dismissPaywall() {
         isDismissing = true
         Task {
-            try? await Task.sleep(for: .milliseconds(300))
+            try? await Task.sleep(milliseconds: 300)
             viewModel.complete()
         }
     }

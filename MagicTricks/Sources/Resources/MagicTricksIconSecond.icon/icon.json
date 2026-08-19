@@ -6,26 +6,28 @@
     {
       "layers" : [
         {
+          "blend-mode" : "normal",
+          "fill" : "automatic",
           "glass-specializations" : [
+            {
+              "value" : true
+            },
             {
               "appearance" : "tinted",
               "value" : true
             }
           ],
+          "hidden" : false,
           "image-name" : "image.png",
           "name" : "image",
-          "position-specializations" : [
-            {
-              "idiom" : "square",
-              "value" : {
-                "scale" : 0.84,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            }
-          ]
+          "opacity" : 1,
+          "position" : {
+            "scale" : 0.84,
+            "translation-in-points" : [
+              0,
+              0
+            ]
+          }
         }
       ],
       "shadow" : {

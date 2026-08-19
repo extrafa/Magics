@@ -77,8 +77,7 @@ struct MagicGallerySlotCard: View {
 
     private func statusBadge(for photo: MagicGalleryPhoto) -> some View {
         Text(statusText(for: photo))
-            .font(.caption2)
-            .fontWeight(.semibold)
+            .font(.caption2.weight(.semibold))
             .foregroundStyle(.white)
             .padding(.horizontal, 10)
             .padding(.vertical, 7)

@@ -17,13 +17,15 @@ struct GeoMentalismView: View {
     }
 
     var body: some View {
-        NavigationStack {
+        NavigationStackCompat {
             ZStack {
                 Color.background.ignoresSafeArea()
 
                 List {
                     ForEach(GeoMentalismCities.all, id: \.self) { city in
-                        NavigationLink(value: city) {
+                        NavigationLink {
+                            GeoMentalismCitiesView(city: city, isVisible: $isVisible)
+                        } label: {
                             Text(city)
                                 .font(.system(size: 17, weight: .medium, design: .rounded))
                                 .foregroundStyle(Color.primaryText)
@@ -34,10 +36,7 @@ struct GeoMentalismView: View {
                     }
                 }
                 .listStyle(.plain)
-                .scrollContentBackground(.hidden)
-                .navigationDestination(for: String.self) { city in
-                    GeoMentalismCitiesView(city: city, isVisible: $isVisible)
-                }
+                .hideScrollContentBackground()
 
                 ExitHintView(isVisible: $isVisible)
                     .padding(.top, statusBarHeight)

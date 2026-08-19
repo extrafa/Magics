@@ -32,11 +32,11 @@ struct SettingsScreen: View {
                 .padding(.top, 28)
                 .padding(.bottom, 36)
             }
-            .scrollIndicators(.hidden)
+            .hideScrollIndicators()
         }
         .navigationTitle(String(localized: "settings.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .fontDesign(.rounded)
+        
     }
 }
 
@@ -163,22 +163,19 @@ private extension SettingsScreen {
         }
     }
 
-    @ViewBuilder
     var shareButton: some View {
-        let label = SettingsActionRow(
-            icon: "square.and.arrow.up",
-            title: String(localized: "settings.shareApp")
-        )
-        if let url = store.appShareURL {
-            ShareLink(item: url) { label }.buttonStyle(.plain)
-        } else {
-            ShareLink(item: store.appShareText) { label }.buttonStyle(.plain)
+        let item = store.appShareURL ?? URL(string: "https://apps.apple.com")!
+        return ShareLink(item: item) {
+            SettingsActionRow(
+                icon: "square.and.arrow.up",
+                title: String(localized: "settings.shareApp")
+            )
         }
     }
 }
 
 #Preview {
-    NavigationStack {
+    NavigationStackCompat {
         SettingsScreen()
             .environmentObject(SettingsStore())
             .environmentObject(StoreManager())
