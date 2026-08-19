@@ -1802,7 +1802,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "He names any number from 1 to 10. Then you let him open your real gallery. The last photo shows his number."
+            "value" : "He names a number from 1 to 10. You hand him your phone. He opens your gallery. The last photo shows his number."
           }
         }
       }
@@ -1812,7 +1812,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "While the trick runs, \"Magic Gallery\" trick lets you secretly save a photo of his number to your real gallery."
+            "value" : "The app has a dark perform screen. While you talk, you swipe on it that many times. The photo saves silently. He never sees you do it."
           }
         }
       }
@@ -1822,7 +1822,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the \"Magic Gallery\" trick before the show starts. Hold the phone so he cannot see the screen. You will see photos of all 10 numbers. When he names his number, tap it and press \"Save to Gallery\"."
+            "value" : "Open Magic Gallery and tap \"Perform\". A dark screen opens. This is where you will work during the show. The standard set already has photos of numbers 1 to 10."
           }
         }
       }
@@ -1832,7 +1832,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "How it works"
+            "value" : "Get ready"
           }
         }
       }
@@ -1842,7 +1842,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Say to him: \"Think of a number from 1 to 10. Say the first number you think of.\""
+            "value" : "Say: \"Think of any number from 1 to 10. Say the first one that comes to mind.\""
           }
         }
       }
@@ -1852,7 +1852,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Set the scene"
+            "value" : "Ask him to pick"
           }
         }
       }
@@ -1872,7 +1872,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Let him choose"
+            "value" : "He says it"
           }
         }
       }
@@ -1882,7 +1882,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask him: \"Are you sure? Or do you want to change it?\" When he is sure, tap his number and press \"Save to Gallery\"."
+            "value" : "While you talk, swipe left and right on the dark screen. Count your swipes. Do as many swipes as his number. After a short pause the photo saves on its own."
           }
         }
       }
@@ -1892,7 +1892,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Save the photo"
+            "value" : "Swipe in secret"
           }
         }
       }
@@ -1902,7 +1902,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Let him open your gallery. The last photo shows his number."
+            "value" : "Hand him your phone. Ask him to open the gallery. The last photo shows his number."
           }
         }
       }
@@ -1912,7 +1912,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show the photo"
+            "value" : "Show the reveal"
           }
         }
       }
@@ -1922,7 +1922,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You can use your own photos: cards, colors, or other things. Then do the trick again with a new number."
+            "value" : "You can swap the standard photos for your own. Use playing cards, symbols, or any image. Set them up before the show. Each slot number matches one photo."
           }
         }
       }
@@ -3004,6 +3004,17 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Set Estándar"
+          }
+        }
+      }
+    },
+    "magicGallery.perform" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perform"
           }
         }
       }

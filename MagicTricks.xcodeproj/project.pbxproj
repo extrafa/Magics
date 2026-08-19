@@ -67,7 +67,7 @@
 		287D56272FACD66B00ECCE14 /* MagicGalleryView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56262FACD66B00ECCE14 /* MagicGalleryView.swift */; };
 		287D56292FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56282FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift */; };
 		287D562C2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D562B2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift */; };
-		287D562E2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D562D2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift */; };
+		287D562E2FCE700000ECCE14 /* MagicGalleryPerformView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D562D2FCE700000ECCE14 /* MagicGalleryPerformView.swift */; };
 		287D56302FCE700000ECCE14 /* MagicGallerySlotCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D562F2FCE700000ECCE14 /* MagicGallerySlotCard.swift */; };
 		287D56322FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56312FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift */; };
 		287D56342FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56332FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift */; };
@@ -225,7 +225,7 @@
 		287D56262FACD66B00ECCE14 /* MagicGalleryView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryView.swift; sourceTree = "<group>"; };
 		287D56282FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryPhotoLibrary.swift; sourceTree = "<group>"; };
 		287D562B2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCapturePanel.swift; sourceTree = "<group>"; };
-		287D562D2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryBottomSaveBar.swift; sourceTree = "<group>"; };
+		287D562D2FCE700000ECCE14 /* MagicGalleryPerformView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryPerformView.swift; sourceTree = "<group>"; };
 		287D562F2FCE700000ECCE14 /* MagicGallerySlotCard.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotCard.swift; sourceTree = "<group>"; };
 		287D56312FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotPhotoContent.swift; sourceTree = "<group>"; };
 		287D56332FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotEmptyContent.swift; sourceTree = "<group>"; };
@@ -509,7 +509,7 @@
 		287D561C2FACD5F500ECCE14 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				287D562D2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift */,
+				287D562D2FCE700000ECCE14 /* MagicGalleryPerformView.swift */,
 				287D562B2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift */,
 				287D562F2FCE700000ECCE14 /* MagicGallerySlotCard.swift */,
 				287D56332FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift */,
@@ -1155,7 +1155,7 @@
 				28335ADD2FA55DCD00DE419B /* ColorSenseInstruction.swift in Sources */,
 				91A793CF2F0E14B1009CA8A3 /* FullScreenFlow.swift in Sources */,
 				287D56292FC7470000ECCE14 /* MagicGalleryPhotoLibrary.swift in Sources */,
-				287D562E2FCE700000ECCE14 /* MagicGalleryBottomSaveBar.swift in Sources */,
+				287D562E2FCE700000ECCE14 /* MagicGalleryPerformView.swift in Sources */,
 				287D56342FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift in Sources */,
 				2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */,
 				28960C5D2FABD6D2003268CD /* ExitHintViewModel.swift in Sources */,

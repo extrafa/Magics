@@ -10,7 +10,6 @@ import SwiftUI
 struct MagicGallerySlotGrid: View {
     let customPhotos: [MagicGalleryPhoto]
     let usesStandardSet: Bool
-    let selectedPhotoNumber: Int?
     let photoProvider: (Int) -> MagicGalleryPhoto?
     let onSlotTap: (Int) -> Void
     let onDelete: (MagicGalleryPhoto) -> Void
@@ -26,8 +25,7 @@ struct MagicGallerySlotGrid: View {
                 MagicGallerySlotCard(
                     number: number,
                     photo: photoProvider(number),
-                    isSelected: selectedPhotoNumber == number,
-                    onTap: { onSlotTap(number) },
+                    onTap: photoProvider(number) == nil ? { onSlotTap(number) } : nil,
                     onDelete: { deletePhoto(for: number) }
                 )
             }

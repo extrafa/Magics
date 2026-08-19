@@ -11,10 +11,8 @@ import UIKit
 @MainActor
 final class MagicGalleryViewModel: ObservableObject {
     @Published private(set) var customPhotos: [MagicGalleryPhoto] = []
-    @Published var selectedPhotoNumber: Int?
     @Published var activeCaptureSession: MagicGalleryCaptureSession?
     @Published var alertMessage: String?
-    @Published var isSaving = false
     @Published private(set) var usesStandardSet: Bool
 
     let photoLibrary: MagicGalleryPhotoLibraryManaging
@@ -65,8 +63,5 @@ final class MagicGalleryViewModel: ObservableObject {
     func setStandardSet(_ value: Bool) {
         usesStandardSet = value
         preferences.usesStandardMagicGallerySet = value
-        if selectedPhoto == nil {
-            selectedPhotoNumber = nil
-        }
     }
 }
