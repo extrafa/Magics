@@ -18,7 +18,7 @@ struct MindLinkView: View {
                 Color.background.ignoresSafeArea()
                 contentView
             }
-            .navigationTitle("Mind Link")
+            .navigationTitle("Phantom Draw")
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {

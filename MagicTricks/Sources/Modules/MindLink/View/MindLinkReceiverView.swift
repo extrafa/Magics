@@ -31,7 +31,7 @@ struct MindLinkReceiverView: View {
                 }
             }
         }
-        .navigationTitle("Mind Link")
+        .navigationTitle("Phantom Draw")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
