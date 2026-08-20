@@ -78,6 +78,8 @@ struct MagicGalleryView: View {
         MagicGalleryCapturePanel(
             usesStandardSet: vm.usesStandardSet,
             onToggleStandardSet: vm.setStandardSet,
+            gestureMode: vm.gestureMode,
+            onGestureModeChange: vm.setGestureMode,
             captureButtonTitle: vm.captureButtonTitle,
             canAddMorePhotos: vm.canAddMorePhotos,
             onCapture: { showSourceDialog = true }

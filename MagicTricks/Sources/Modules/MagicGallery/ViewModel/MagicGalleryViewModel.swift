@@ -14,6 +14,7 @@ final class MagicGalleryViewModel: ObservableObject {
     @Published var activeCaptureSession: MagicGalleryCaptureSession?
     @Published var alertMessage: String?
     @Published private(set) var usesStandardSet: Bool
+    @Published private(set) var gestureMode: MagicGalleryGestureMode
 
     let photoLibrary: MagicGalleryPhotoLibraryManaging
     let photoSaver: MagicGalleryPhotoSaving
@@ -32,6 +33,7 @@ final class MagicGalleryViewModel: ObservableObject {
         self.photoLibrary = photoLibrary ?? MagicGalleryPhotoLibrary()
         self.photoSaver = photoSaver ?? MagicGallerySystemPhotoSaver()
         self.usesStandardSet = preferences.usesStandardMagicGallerySet
+        self.gestureMode = preferences.magicGalleryGestureMode
 
         loadStoredPhotos()
     }
@@ -63,5 +65,10 @@ final class MagicGalleryViewModel: ObservableObject {
     func setStandardSet(_ value: Bool) {
         usesStandardSet = value
         preferences.usesStandardMagicGallerySet = value
+    }
+
+    func setGestureMode(_ mode: MagicGalleryGestureMode) {
+        gestureMode = mode
+        preferences.magicGalleryGestureMode = mode
     }
 }

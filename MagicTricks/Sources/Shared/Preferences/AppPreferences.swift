@@ -30,6 +30,7 @@ protocol MotionPreferenceManaging {
 
 protocol MagicGalleryPreferenceManaging {
     var usesStandardMagicGallerySet: Bool { get set }
+    var magicGalleryGestureMode: MagicGalleryGestureMode { get set }
 }
 
 struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, MotionPreferenceManaging, MagicGalleryPreferenceManaging {
@@ -50,6 +51,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         static let didLearnExitHint = "didLearnExitHint"
         static let isExitHintEnabled = "isExitHintEnabled"
         static let usesStandardMagicGallerySet = "ImpossibleGalleryUsesStandardSet"
+        static let magicGalleryGestureMode = "magicGalleryGestureMode"
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
         static let trickLaunchCount = "trickLaunchCount"
         static let hasRespondedToRating = "hasRespondedToRating"
@@ -172,6 +174,14 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
             return store.bool(forKey: Key.usesStandardMagicGallerySet)
         }
         nonmutating set { store.set(newValue, forKey: Key.usesStandardMagicGallerySet) }
+    }
+
+    var magicGalleryGestureMode: MagicGalleryGestureMode {
+        get {
+            guard store.object(forKey: Key.magicGalleryGestureMode) != nil else { return .tap }
+            return MagicGalleryGestureMode(rawValue: Int(store.double(forKey: Key.magicGalleryGestureMode))) ?? .swipe
+        }
+        nonmutating set { store.set(Double(newValue.rawValue), forKey: Key.magicGalleryGestureMode) }
     }
 
     func resetHapticSettings() {

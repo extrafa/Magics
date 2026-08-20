@@ -26,10 +26,15 @@ struct MagicGalleryPerformView: View {
                 .gesture(
                     DragGesture(minimumDistance: 10)
                         .onEnded { value in
+                            guard vm.gestureMode == .swipe else { return }
                             guard abs(value.translation.width) > abs(value.translation.height) else { return }
-                            registerSwipe()
+                            registerGesture()
                         }
                 )
+                .onTapGesture {
+                    guard vm.gestureMode == .tap else { return }
+                    registerGesture()
+                }
 
             if showSaved {
                 Image(systemName: "checkmark")
@@ -62,7 +67,7 @@ struct MagicGalleryPerformView: View {
         }
     }
 
-    private func registerSwipe() {
+    private func registerGesture() {
         if swipeCount >= 10 {
             errorFeedback.notificationOccurred(.error)
             swipeCount = 0
