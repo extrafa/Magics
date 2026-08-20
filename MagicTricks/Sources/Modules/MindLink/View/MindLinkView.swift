@@ -131,16 +131,6 @@ struct MindLinkView: View {
 
             Spacer()
 
-            #if DEBUG
-            NavigationLink {
-                MindLinkTestView()
-            } label: {
-                Label("Test on this device", systemImage: "rectangle.split.1x2")
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
-            }
-            .padding(.bottom, 32)
-            #endif
         }
     }
 
