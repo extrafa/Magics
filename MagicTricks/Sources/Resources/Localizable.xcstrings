@@ -1802,7 +1802,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "He names a number from 1 to 10. You hand him your phone. He opens your gallery. The last photo shows his number."
+            "value" : "Ask him to pick any number from 1 to 10. He says it out loud. Ask him to open your gallery. The last photo shows his number. You never touched the screen in front of him."
           }
         }
       }
@@ -1812,7 +1812,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The app has a dark perform screen. While you talk, you swipe on it that many times. The photo saves silently. He never sees you do it."
+            "value" : "You have the dark perform screen open in your hand or pocket. When he says his number, you swipe that many times on the dark screen. The photo saves on its own. He sees nothing."
           }
         }
       }
@@ -1822,7 +1822,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open Magic Gallery and tap \"Perform\". A dark screen opens. This is where you will work during the show. The standard set already has photos of numbers 1 to 10."
+            "value" : "Open Magic Gallery and tap \"Perform\". A dark screen opens. Keep the phone in your hand or put it in your pocket. The standard set already has photos of numbers 1 to 10."
           }
         }
       }
@@ -1842,7 +1842,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Say: \"Think of any number from 1 to 10. Say the first one that comes to mind.\""
+            "value" : "Say: \"Pick any number from 1 to 10. Don't think too long. Just say it.\""
           }
         }
       }
@@ -1862,7 +1862,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "He says a number. Remember it."
+            "value" : "He says a number. Say nothing about it. Remember it."
           }
         }
       }
@@ -1882,7 +1882,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "While you talk, swipe left and right on the dark screen. Count your swipes. Do as many swipes as his number. After a short pause the photo saves on its own."
+            "value" : "Swipe left and right on the dark screen. If he said 7, swipe 7 times. Do it while you talk, or turn the phone away from him. After a short pause the photo saves on its own."
           }
         }
       }
@@ -1902,7 +1902,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hand him your phone. Ask him to open the gallery. The last photo shows his number."
+            "value" : "Hand him your phone. Say: \"Open my gallery.\" He opens it. The last photo shows his number."
           }
         }
       }
@@ -1960,7 +1960,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "He draws anything on your phone. You tell him what he drew."
+            "value" : "You give him a phone. You turn away or go to another room. He draws a number on the screen. Then, without looking, you say the number he drew."
           }
         }
       }
@@ -1971,7 +1971,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You have two phones. One sends the drawing to the other in real time over a wireless connection. He never sees your phone."
+            "value" : "You use two devices. You give one phone to him so he can draw on it. The second device (iPhone or Apple Watch) stays with you. When he draws a number on the phone, you see it on your device in real time."
           }
         }
       }
@@ -1982,7 +1982,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open \"Phantom Draw\" on both phones. On your phone, tap \"This phone is mine\". On the other phone, tap \"Give to spectator\". Wait for the connection."
+            "value" : "Open the \"Phantom Draw\" trick on two devices. On the phone you give to him, tap the \"Give to spectator\" button. On the device that stays with you, tap the \"This phone is mine\" button. Wait for both devices to connect. A canvas will appear on both screens."
           }
         }
       }
@@ -1993,7 +1993,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Set up before the show"
+            "value" : "Connect the devices"
           }
         }
       }
@@ -2004,7 +2004,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hand him the second phone. Say: \"Draw anything you want. A shape, a number, a symbol. Keep it simple.\""
+            "value" : "Hide your device from him. If it is a phone, put it in your pocket. If it is an Apple Watch, put your hand in your pocket or do not show it to him. He must not see your device."
           }
         }
       }
@@ -2015,7 +2015,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Give him the phone"
+            "value" : "Hide your device"
           }
         }
       }
@@ -2026,7 +2026,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "While he draws, your phone receives the drawing in real time. Look at it secretly."
+            "value" : "Take the phone he will draw on and give it to him. Say: \"Draw any number from 0 to 9 on the phone.\" Then turn away or leave the room."
           }
         }
       }
@@ -2037,7 +2037,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Read his mind"
+            "value" : "Give him the phone"
           }
         }
       }
@@ -2048,7 +2048,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When he finishes, tell him what he drew. Or draw the same thing on paper before he shows you."
+            "value" : "While he draws, secretly check your device. You will see his number on the screen. When he is done, say: \"Your reflexes will help me understand what number you drew.\" Ask him to give you his hand. Take his hand and look him in the eyes. Say each number from 0 to 9. Stop on the number he drew and say: \"That is the number you drew.\""
           }
         }
       }
@@ -2059,7 +2059,29 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reveal it"
+            "value" : "Name the number"
+          }
+        }
+      }
+    },
+    "instruction.mindLink.step5.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If he drew a two-digit number like 15 or 23, do not worry. Use a different method. Say: \"First I will guess the range. It was between 10 and 20.\" Then say each number from 10 to 20. Stop on the number he drew and say: \"That is the number you drew.\""
+          }
+        }
+      }
+    },
+    "instruction.mindLink.step5.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "If he drew two digits"
           }
         }
       }

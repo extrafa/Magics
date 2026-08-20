@@ -31,6 +31,11 @@ extension Instruction {
                 description: String(localized: "instruction.mindLink.step4.description"),
                 phase: .demonstration
             ),
+            InstructionStep(
+                title: String(localized: "instruction.mindLink.step5.title"),
+                description: String(localized: "instruction.mindLink.step5.description"),
+                phase: .demonstration
+            ),
         ]
     )
 }
