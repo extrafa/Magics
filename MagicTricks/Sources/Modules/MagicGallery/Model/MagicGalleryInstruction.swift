@@ -39,11 +39,6 @@ extension Instruction {
                 description: String(localized: "instruction.magicGallery.step5.description"),
                 phase: .demonstration
             ),
-            InstructionStep(
-                title: String(localized: "instruction.magicGallery.step6.title"),
-                description: String(localized: "instruction.magicGallery.step6.description"),
-                phase: .demonstration
-            ),
         ]
     )
 }

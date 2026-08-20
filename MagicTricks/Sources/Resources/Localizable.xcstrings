@@ -229,7 +229,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "A spectator discovers their choice inside your photo gallery."
+            "value" : "He names a number. You open your gallery. His number is already there."
           }
         },
         "es" : {
@@ -1802,7 +1802,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Ask him to pick any number from 1 to 10. He says it out loud. Ask him to open your gallery. The last photo shows his number. You never touched the screen in front of him."
+            "value" : "Ask him to pick any number from 1 to 10. He says it. Ask him to open your gallery. The last photo shows his number."
           }
         }
       }
@@ -1812,7 +1812,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You have the dark perform screen open in your hand or pocket. When he says his number, you swipe that many times on the dark screen. The photo saves on its own. He sees nothing."
+            "value" : "When he says his number, you swipe that many times on the phone screen in your pocket. The app saves the photo to your gallery. He sees nothing."
           }
         }
       }
@@ -1822,7 +1822,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the \"Magic Gallery\" trick and tap \"Perform\". A dark screen opens. Keep the phone in your hand or put it in your pocket. The standard set already has photos of numbers 1 to 10."
+            "value" : "Open the \"Magic Gallery\" trick and tap \"Perform\". A dark screen opens. Put the phone in your pocket. The standard set already has photos of numbers from 1 to 10."
           }
         }
       }
@@ -1862,7 +1862,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "He says a number. Say nothing about it. Remember it."
+            "value" : "He says a number. Remember it. Say: \"Do you believe in intuition? Sometimes we pick something without knowing why.\" While you talk, swipe on the phone in your pocket. Swipe like you are turning a page, not sliding a finger. Example: if he said 7, swipe 7 times. After a short pause the photo saves to your gallery."
           }
         }
       }
@@ -1872,7 +1872,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "He says it"
+            "value" : "Talk and swipe"
           }
         }
       }
@@ -1882,7 +1882,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Swipe left and right on the dark screen. If he said 7, swipe 7 times. Do it while you talk, or turn the phone away from him. After a short pause the photo saves on its own."
+            "value" : "Give him your phone. Say: \"Open my gallery.\" He opens it. The last photo shows his number."
           }
         }
       }
@@ -1892,7 +1892,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Swipe in secret"
+            "value" : "Show the reveal"
           }
         }
       }
@@ -1902,7 +1902,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hand him your phone. Say: \"Open my gallery.\" He opens it. The last photo shows his number."
+            "value" : "You can swap the standard photos for your own. Use playing cards, symbols, or any image. Set them up before the show. Each slot number matches one photo."
           }
         }
       }
@@ -1912,12 +1912,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Show the reveal"
+            "value" : "Use your own photos"
           }
         }
       }
     },
     "instruction.magicGallery.step6.description" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -1928,6 +1929,7 @@
       }
     },
     "instruction.magicGallery.step6.title" : {
+      "extractionState" : "stale",
       "localizations" : {
         "en" : {
           "stringUnit" : {
@@ -2894,6 +2896,17 @@
         }
       }
     },
+    "magicGallery.perform" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Perform"
+          }
+        }
+      }
+    },
     "magicGallery.progress.customReady" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3030,17 +3043,6 @@
         }
       }
     },
-    "magicGallery.perform" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Perform"
-          }
-        }
-      }
-    },
     "magicGallery.status.custom" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3111,10 +3113,6 @@
     },
     "Maybe later" : {
       "comment" : "A button that dismisses the feedback form.",
-      "isCommentAutoGenerated" : true
-    },
-    "Phantom Draw" : {
-      "comment" : "The title of the screen that displays a user's drawing.",
       "isCommentAutoGenerated" : true
     },
     "mindPattern.animal.ant" : {
@@ -4832,6 +4830,10 @@
     },
     "Open this trick on both phones." : {
       "comment" : "A description of how to open the Mind Link trick on both devices.",
+      "isCommentAutoGenerated" : true
+    },
+    "Phantom Draw" : {
+      "comment" : "The title of the screen that displays a user's drawing.",
       "isCommentAutoGenerated" : true
     },
     "Photo Library" : {
