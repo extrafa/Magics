@@ -1053,7 +1053,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the trick and enter any 5-digit number. Then press and hold AC for 2 seconds. The screen blinks. The number is now saved."
+            "value" : "Open the \"Calculator Prediction\" trick and enter any 5-digit number. Then press and hold AC for 2 seconds. The screen blinks. The number is now saved."
           }
         },
         "es" : {
@@ -1410,7 +1410,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Start the trick. Hold the phone with the screen facing him. Make sure your fingers can feel the vibrations."
+            "value" : "Open the \"Color Sense\" trick. Hold the phone with the screen facing him. Make sure your fingers can feel the vibrations."
           }
         },
         "es" : {
@@ -1626,7 +1626,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Press \"Start\" on the \"Geo Mentalism\" trick. A list of cities will appear on the screen. Give the phone to the person. Ask him to pick any city and tap it."
+            "value" : "Open the \"Geo Mentalism\" trick and press \"Start\". A list of cities will appear on the screen. Give the phone to the person. Ask him to pick any city and tap it."
           }
         },
         "es" : {
@@ -1822,7 +1822,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open Magic Gallery and tap \"Perform\". A dark screen opens. Keep the phone in your hand or put it in your pocket. The standard set already has photos of numbers 1 to 10."
+            "value" : "Open the \"Magic Gallery\" trick and tap \"Perform\". A dark screen opens. Keep the phone in your hand or put it in your pocket. The standard set already has photos of numbers 1 to 10."
           }
         }
       }
@@ -2629,7 +2629,7 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Start the trick. Hold the phone with the screen facing him. Make sure your fingers can feel the vibrations. Ask him to press Start and stop the stopwatch whenever he wants."
+            "value" : "Open the \"Time Control\" trick. Hold the phone with the screen facing him. Make sure your fingers can feel the vibrations. Ask him to press Start and stop the stopwatch whenever he wants."
           }
         }
       }
