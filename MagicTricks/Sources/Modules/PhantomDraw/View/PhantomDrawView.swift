@@ -12,6 +12,11 @@ struct PhantomDrawView: View {
 
     private var state: PhantomDrawConnectionState { viewModel.session.connectionState }
 
+    private var isSenderCanvas: Bool {
+        guard viewModel.role == .sender, case .connected = state else { return false }
+        return true
+    }
+
     var body: some View {
         NavigationStackCompat {
             ZStack {
@@ -22,8 +27,10 @@ struct PhantomDrawView: View {
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .topBarLeading) {
-                    Button { stop() } label: {
-                        Image(systemName: "xmark")
+                    if !isSenderCanvas {
+                        Button { stop() } label: {
+                            Image(systemName: "xmark")
+                        }
                     }
                 }
             }

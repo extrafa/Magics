@@ -9,6 +9,7 @@ struct PhantomDrawSenderView: View {
 
     @ObservedObject var viewModel: PhantomDrawViewModel
     @State private var showClearConfirm = false
+    @State private var exitHintVisible = AppPreferences.shared.isExitHintEnabled
 
     var body: some View {
         ZStack {
@@ -41,6 +42,9 @@ struct PhantomDrawSenderView: View {
                     }
                 }
             }
+        }
+        .overlay(alignment: .topLeading) {
+            ExitHintView(isVisible: $exitHintVisible, style: .specialWhite)
         }
         .navigationTitle("Draw")
         .navigationBarTitleDisplayMode(.inline)
