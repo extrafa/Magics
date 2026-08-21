@@ -2,9 +2,6 @@
 //  PhantomDrawTestView.swift
 //  Magic Tricks
 //
-//  Single-device test mode: top half = receiver, bottom half = sender.
-//  No Bluetooth — strokes pass through shared in-memory state.
-//
 
 import SwiftUI
 

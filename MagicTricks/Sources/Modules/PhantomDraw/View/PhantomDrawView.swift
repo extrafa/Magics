@@ -60,10 +60,7 @@ struct PhantomDrawView: View {
 
             if case .connected = state {
                 connectedView
-                    .transition(.asymmetric(
-                        insertion: .opacity,
-                        removal: .opacity
-                    ))
+                    .transition(.opacity)
             }
 
             if case .disconnected = state {

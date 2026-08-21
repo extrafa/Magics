@@ -62,8 +62,6 @@ struct PhantomDrawReceiverView: View {
                 .foregroundStyle(.secondary)
         }
     }
-    // Note: receiver is never shown this view while reconnecting —
-    // it transitions to .searching state and the session auto-reconnects.
 }
 
 private func drawStrokes(_ strokes: [DrawingStroke], context: GraphicsContext, canvasSize: CGSize) {

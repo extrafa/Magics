@@ -8,7 +8,6 @@ import SwiftUI
 struct PhantomDrawSenderView: View {
 
     @ObservedObject var viewModel: PhantomDrawViewModel
-    @State private var showClearConfirm = false
     @State private var exitHintVisible = AppPreferences.shared.isExitHintEnabled
 
     var body: some View {
@@ -17,7 +16,7 @@ struct PhantomDrawSenderView: View {
 
             GeometryReader { geo in
                 ZStack {
-                    if viewModel.completedStrokes.isEmpty && viewModel.currentStroke.isEmpty {
+                    if viewModel.totalDrawnLength < 8 {
                         placeholder
                     }
 
@@ -25,6 +24,7 @@ struct PhantomDrawSenderView: View {
                         drawStrokes(viewModel.completedStrokes, context: context, canvasSize: size, color: .black)
                         drawActiveStroke(viewModel.currentStroke, context: context, color: .black)
                     }
+                    .ignoresSafeArea()
                     .gesture(
                         DragGesture(minimumDistance: 0)
                             .onChanged { value in
@@ -42,6 +42,7 @@ struct PhantomDrawSenderView: View {
                     }
                 }
             }
+            .ignoresSafeArea()
         }
         .overlay(alignment: .topLeading) {
             ExitHintView(isVisible: $exitHintVisible, style: .specialWhite)
@@ -50,16 +51,10 @@ struct PhantomDrawSenderView: View {
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                Button {
-                    showClearConfirm = true
-                } label: {
-                    Image(systemName: "arrow.counterclockwise")
+                Button(action: viewModel.clearDrawing) {
+                    Image(systemName: "trash")
                 }
                 .disabled(viewModel.completedStrokes.isEmpty && viewModel.currentStroke.isEmpty)
-                .confirmationDialog("Clear drawing?", isPresented: $showClearConfirm) {
-                    Button("Clear", role: .destructive, action: viewModel.clearDrawing)
-                    Button("Cancel", role: .cancel) {}
-                }
             }
         }
     }

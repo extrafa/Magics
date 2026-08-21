@@ -22,10 +22,11 @@ struct MagicGallerySlotGrid: View {
     var body: some View {
         LazyVGrid(columns: Self.columns, spacing: 12) {
             ForEach(1...10, id: \.self) { number in
+                let photo = photoProvider(number)
                 MagicGallerySlotCard(
                     number: number,
-                    photo: photoProvider(number),
-                    onTap: photoProvider(number) == nil ? { onSlotTap(number) } : nil,
+                    photo: photo,
+                    onTap: photo == nil ? { onSlotTap(number) } : nil,
                     onDelete: { deletePhoto(for: number) }
                 )
             }

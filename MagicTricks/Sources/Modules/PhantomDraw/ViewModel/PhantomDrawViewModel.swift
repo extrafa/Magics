@@ -12,19 +12,18 @@ final class PhantomDrawViewModel: ObservableObject {
     @Published var role: PhantomDrawRole?
     @Published var currentStroke: [CGPoint] = []
     @Published var completedStrokes: [DrawingStroke] = []
+    @Published private(set) var totalDrawnLength: CGFloat = 0
 
     let session = PhantomDrawSessionManager()
 
     private var canvasSize: CGSize = .zero
     private var sessionCancellable: AnyCancellable?
+    private var lastStrokePoint: CGPoint?
 
     init() {
-        // Forward session's published changes so the view re-renders.
         sessionCancellable = session.objectWillChange
             .sink { [weak self] _ in self?.objectWillChange.send() }
 
-        // When a fresh connection arrives on the sender side, push all current strokes
-        // so the receiver is immediately in sync (even after a reconnect).
         session.onNewConnection = { [weak self] in
             guard let self, self.role == .sender, !self.completedStrokes.isEmpty else { return }
             self.session.send(.sync(self.completedStrokes))
@@ -44,6 +43,12 @@ final class PhantomDrawViewModel: ObservableObject {
     }
 
     func addPoint(_ point: CGPoint) {
+        if let last = lastStrokePoint {
+            let dx = point.x - last.x
+            let dy = point.y - last.y
+            totalDrawnLength += sqrt(dx * dx + dy * dy)
+        }
+        lastStrokePoint = point
         currentStroke.append(point)
     }
 
@@ -54,11 +59,14 @@ final class PhantomDrawViewModel: ObservableObject {
         completedStrokes.append(stroke)
         session.send(.stroke(stroke))
         currentStroke = []
+        lastStrokePoint = nil
     }
 
     func clearDrawing() {
         completedStrokes = []
         currentStroke = []
+        totalDrawnLength = 0
+        lastStrokePoint = nil
         session.send(.clear)
     }
 
@@ -67,5 +75,7 @@ final class PhantomDrawViewModel: ObservableObject {
         role = nil
         completedStrokes = []
         currentStroke = []
+        totalDrawnLength = 0
+        lastStrokePoint = nil
     }
 }

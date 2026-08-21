@@ -13,7 +13,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
     @Published var display: String = "0"
     @Published var isSaveBlinkVisible = false
 
-    private let operators: Set<String> = ["+", "−", "×", "÷", "%"]
+    private static let operators: Set<String> = ["+", "−", "×", "÷", "%"]
     private let expressionEvaluator: CalculatorExpressionEvaluating
     private var savedValue: String?
     private var saveBlinkTask: Task<Void, Never>?

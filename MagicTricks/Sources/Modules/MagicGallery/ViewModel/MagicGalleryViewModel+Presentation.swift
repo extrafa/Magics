@@ -12,10 +12,6 @@ extension MagicGalleryViewModel {
         customPhotos.count < photoLibrary.maxPhotos
     }
 
-    var captureButtonTitle: String {
-        String(localized: "magicGallery.addPhotos")
-    }
-
     func photo(for number: Int) -> MagicGalleryPhoto? {
         if usesStandardSet {
             return photoLibrary.standardPhoto(for: number)

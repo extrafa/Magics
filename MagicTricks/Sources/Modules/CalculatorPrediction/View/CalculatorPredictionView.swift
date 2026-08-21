@@ -41,17 +41,17 @@ struct CalculatorPredictionView: View {
 
                     LazyVGrid(columns: Self.columns, spacing: 12) {
                         ForEach(CalculatorPrediction.buttons, id: \.self) { label in
-                            CalculatorPredictionButtonView(label: label.rawValue, buttonSize: buttonSize) {
+                            let button = CalculatorPredictionButtonView(label: label.rawValue, buttonSize: buttonSize) {
                                 vm.buttonPressed(label)
                             }
-                            .simultaneousGesture(
-                                LongPressGesture(minimumDuration: 2)
-                                    .onEnded { _ in
-                                        if label == .clear {
-                                            vm.saveSecretValue()
-                                        }
-                                    }
-                            )
+                            if label == .clear {
+                                button.simultaneousGesture(
+                                    LongPressGesture(minimumDuration: 2)
+                                        .onEnded { _ in vm.saveSecretValue() }
+                                )
+                            } else {
+                                button
+                            }
                         }
                     }
                 }

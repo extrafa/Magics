@@ -12,7 +12,6 @@ struct MagicGalleryCapturePanel: View {
     let onToggleStandardSet: (Bool) -> Void
     let gestureMode: MagicGalleryGestureMode
     let onGestureModeChange: (MagicGalleryGestureMode) -> Void
-    let captureButtonTitle: String
     let canAddMorePhotos: Bool
     let onCapture: () -> Void
 
@@ -92,7 +91,7 @@ struct MagicGalleryCapturePanel: View {
 
     private var captureButton: some View {
         Button(action: onCapture) {
-            Label(captureButtonTitle, systemImage: "photo.badge.plus")
+            Label(String(localized: "magicGallery.addPhotos"), systemImage: "photo.badge.plus")
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 15)

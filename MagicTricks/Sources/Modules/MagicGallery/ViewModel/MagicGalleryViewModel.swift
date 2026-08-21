@@ -19,8 +19,8 @@ final class MagicGalleryViewModel: ObservableObject {
     let photoLibrary: MagicGalleryPhotoLibraryManaging
     let photoSaver: MagicGalleryPhotoSaving
     let haptics: HapticNotificationPlaying
-    private var preferences: MagicGalleryPreferenceManaging
-    var captureFlow = MagicGalleryCaptureFlow()
+    private let preferences: MagicGalleryPreferenceManaging
+    let captureFlow = MagicGalleryCaptureFlow()
 
     init(
         haptics: HapticNotificationPlaying? = nil,

@@ -12,22 +12,13 @@
               "value" : true
             }
           ],
-          "image-name" : "image1.png",
-          "name" : "image1",
+          "image-name" : "image.png",
+          "name" : "image",
           "position-specializations" : [
-            {
-              "value" : {
-                "scale" : 1,
-                "translation-in-points" : [
-                  0,
-                  0
-                ]
-              }
-            },
             {
               "idiom" : "square",
               "value" : {
-                "scale" : 1,
+                "scale" : 0.84,
                 "translation-in-points" : [
                   0,
                   0

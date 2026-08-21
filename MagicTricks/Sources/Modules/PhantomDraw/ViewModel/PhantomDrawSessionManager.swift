@@ -9,17 +9,13 @@ import Network
 @MainActor
 final class PhantomDrawSessionManager: ObservableObject {
 
-    private static let bonjourType = "_mindlink-magic._tcp"
+    private static let bonjourType = "_phantomdraw-magic._tcp"
 
     @Published var connectionState: PhantomDrawConnectionState = .idle
     @Published var receivedStrokes: [DrawingStroke] = []
 
-    /// True only on the sender side: connection dropped but listener is still running.
-    /// The sender canvas stays visible; a banner is shown instead.
     @Published var isReconnecting = false
 
-    /// Called on the main thread the moment a fresh connection becomes ready.
-    /// The sender uses this to push a full-sync of current strokes to the new peer.
     var onNewConnection: (() -> Void)?
 
     private enum CurrentRole { case sender, receiver }
@@ -77,7 +73,6 @@ final class PhantomDrawSessionManager: ObservableObject {
         l.newConnectionHandler = { [weak self] conn in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
-                // Accept only if searching or reconnecting; reject if already connected
                 if case .connected = self.connectionState, !self.isReconnecting {
                     conn.cancel()
                     return
@@ -98,7 +93,6 @@ final class PhantomDrawSessionManager: ObservableObject {
         let b = NWBrowser(for: .bonjour(type: Self.bonjourType, domain: nil), using: params)
         b.browseResultsChangedHandler = { [weak self] results, _ in
             DispatchQueue.main.async { [weak self] in
-                // Guard against double-connection if handler fires multiple times
                 guard let self, self.connection == nil, let result = results.first else { return }
                 self.browser?.cancel()
                 self.browser = nil
@@ -124,7 +118,6 @@ final class PhantomDrawSessionManager: ObservableObject {
                 guard let self else { return }
                 switch state {
                 case .ready:
-                    // Guard: ignore if a newer connection has already replaced this one.
                     guard self.connection === conn else { return }
                     self.isReconnecting = false
                     self.connectionState = .connected(peerName: conn.endpoint.peerName)
@@ -132,8 +125,6 @@ final class PhantomDrawSessionManager: ObservableObject {
                     self.onNewConnection?()
 
                 case .failed, .cancelled:
-                    // Guard: stale handlers from old connections must not overwrite
-                    // self.connection or self.isReconnecting for the new live connection.
                     guard self.connection === conn else { return }
                     self.connection = nil
                     switch self.currentRole {
@@ -163,8 +154,6 @@ final class PhantomDrawSessionManager: ObservableObject {
     private func receiveLoop(_ conn: NWConnection) {
         conn.receive(minimumIncompleteLength: 4, maximumLength: 4) { [weak self] header, _, done, error in
             guard let self, let header, header.count == 4, error == nil, !done else {
-                // Remote sent FIN (done) or connection errored — cancel so that
-                // stateUpdateHandler fires and reconnect logic runs.
                 if done || error != nil { conn.cancel() }
                 return
             }
