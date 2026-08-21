@@ -1,5 +1,5 @@
 //
-//  MindLinkViewModel.swift
+//  PhantomDrawViewModel.swift
 //  Magic Tricks
 //
 
@@ -7,13 +7,13 @@ import SwiftUI
 import Combine
 
 @MainActor
-final class MindLinkViewModel: ObservableObject {
+final class PhantomDrawViewModel: ObservableObject {
 
-    @Published var role: MindLinkRole?
+    @Published var role: PhantomDrawRole?
     @Published var currentStroke: [CGPoint] = []
     @Published var completedStrokes: [DrawingStroke] = []
 
-    let session = MindLinkSessionManager()
+    let session = PhantomDrawSessionManager()
 
     private var canvasSize: CGSize = .zero
     private var sessionCancellable: AnyCancellable?
@@ -31,7 +31,7 @@ final class MindLinkViewModel: ObservableObject {
         }
     }
 
-    func selectRole(_ role: MindLinkRole) {
+    func selectRole(_ role: PhantomDrawRole) {
         self.role = role
         switch role {
         case .receiver: session.startAsReceiver()

@@ -1,17 +1,17 @@
 //
-//  MindLinkModels.swift
+//  PhantomDrawModels.swift
 //  Magic Tricks
 //
 
 import Foundation
 import CoreGraphics
 
-enum MindLinkRole {
+enum PhantomDrawRole {
     case receiver
     case sender
 }
 
-enum MindLinkConnectionState: Equatable {
+enum PhantomDrawConnectionState: Equatable {
     case idle
     case searching
     case connected(peerName: String)
@@ -38,7 +38,7 @@ struct DrawingStroke: Codable, Identifiable, Equatable {
     let points: [DrawingPoint]
 }
 
-enum MindLinkMessage: Codable {
+enum PhantomDrawMessage: Codable {
     case stroke(DrawingStroke)
     case clear
     case sync([DrawingStroke])

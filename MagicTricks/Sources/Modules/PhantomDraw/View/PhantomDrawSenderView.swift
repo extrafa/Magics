@@ -1,13 +1,13 @@
 //
-//  MindLinkSenderView.swift
+//  PhantomDrawSenderView.swift
 //  Magic Tricks
 //
 
 import SwiftUI
 
-struct MindLinkSenderView: View {
+struct PhantomDrawSenderView: View {
 
-    @ObservedObject var viewModel: MindLinkViewModel
+    @ObservedObject var viewModel: PhantomDrawViewModel
     @State private var showClearConfirm = false
 
     var body: some View {

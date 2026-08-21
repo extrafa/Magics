@@ -1,16 +1,16 @@
 //
-//  MindLinkView.swift
+//  PhantomDrawView.swift
 //  Magic Tricks
 //
 
 import SwiftUI
 
-struct MindLinkView: View {
+struct PhantomDrawView: View {
 
-    @StateObject private var viewModel = MindLinkViewModel()
+    @StateObject private var viewModel = PhantomDrawViewModel()
     @Environment(\.dismiss) private var dismiss
 
-    private var state: MindLinkConnectionState { viewModel.session.connectionState }
+    private var state: PhantomDrawConnectionState { viewModel.session.connectionState }
 
     var body: some View {
         NavigationStackCompat {
@@ -87,9 +87,9 @@ struct MindLinkView: View {
     @ViewBuilder
     private var connectedView: some View {
         if viewModel.role == .receiver {
-            MindLinkReceiverView(viewModel: viewModel)
+            PhantomDrawReceiverView(viewModel: viewModel)
         } else {
-            MindLinkSenderView(viewModel: viewModel)
+            PhantomDrawSenderView(viewModel: viewModel)
         }
     }
 
@@ -100,7 +100,7 @@ struct MindLinkView: View {
             VStack(spacing: 10) {
                 Image(systemName: "antenna.radiowaves.left.and.right")
                     .font(.system(size: 48, weight: .light))
-                    .foregroundStyle(TrickPalette.Collection.mindLink)
+                    .foregroundStyle(TrickPalette.Collection.phantomDraw)
 
                 VStack(spacing: 3) {
                     Text("Open this trick on both phones.")
@@ -134,18 +134,18 @@ struct MindLinkView: View {
         }
     }
 
-    private func roleButton(title: String, subtitle: String, icon: String, role: MindLinkRole) -> some View {
+    private func roleButton(title: String, subtitle: String, icon: String, role: PhantomDrawRole) -> some View {
         Button {
             viewModel.selectRole(role)
         } label: {
             HStack(spacing: 16) {
                 ZStack {
                     Circle()
-                        .fill(TrickPalette.Collection.mindLink.opacity(0.15))
+                        .fill(TrickPalette.Collection.phantomDraw.opacity(0.15))
                         .frame(width: 48, height: 48)
                     Image(systemName: icon)
                         .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(TrickPalette.Collection.mindLink)
+                        .foregroundStyle(TrickPalette.Collection.phantomDraw)
                 }
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
@@ -178,7 +178,7 @@ struct MindLinkView: View {
     private var searchingView: some View {
         VStack(spacing: 0) {
             Spacer()
-            PulsingSignalView(color: TrickPalette.Collection.mindLink)
+            PulsingSignalView(color: TrickPalette.Collection.phantomDraw)
                 .frame(width: 120, height: 120)
             Spacer().frame(height: 28)
             Text(viewModel.role == .sender ? "Waiting..." : "Connecting...")
@@ -219,7 +219,7 @@ struct MindLinkView: View {
                 .padding(.horizontal, 40)
             Spacer()
             Button(buttonTitle, action: action)
-                .buttonStyle(PrimaryTrickButtonStyle(color: TrickPalette.Collection.mindLink))
+                .buttonStyle(PrimaryTrickButtonStyle(color: TrickPalette.Collection.phantomDraw))
                 .padding(.horizontal, 32)
                 .padding(.bottom, 32)
         }

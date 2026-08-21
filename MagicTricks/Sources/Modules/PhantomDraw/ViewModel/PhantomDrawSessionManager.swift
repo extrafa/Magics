@@ -1,5 +1,5 @@
 //
-//  MindLinkSessionManager.swift
+//  PhantomDrawSessionManager.swift
 //  Magic Tricks
 //
 
@@ -7,11 +7,11 @@ import Foundation
 import Network
 
 @MainActor
-final class MindLinkSessionManager: ObservableObject {
+final class PhantomDrawSessionManager: ObservableObject {
 
     private static let bonjourType = "_mindlink-magic._tcp"
 
-    @Published var connectionState: MindLinkConnectionState = .idle
+    @Published var connectionState: PhantomDrawConnectionState = .idle
     @Published var receivedStrokes: [DrawingStroke] = []
 
     /// True only on the sender side: connection dropped but listener is still running.
@@ -47,7 +47,7 @@ final class MindLinkSessionManager: ObservableObject {
         startListening()
     }
 
-    func send(_ message: MindLinkMessage) {
+    func send(_ message: PhantomDrawMessage) {
         guard let connection,
               let data = try? JSONEncoder().encode(message) else { return }
         sendFramed(data, over: connection)
@@ -176,7 +176,7 @@ final class MindLinkSessionManager: ObservableObject {
                     if done2 || error2 != nil { conn.cancel() }
                     return
                 }
-                if let msg = try? JSONDecoder().decode(MindLinkMessage.self, from: body) {
+                if let msg = try? JSONDecoder().decode(PhantomDrawMessage.self, from: body) {
                     DispatchQueue.main.async { [weak self] in
                         guard let self else { return }
                         switch msg {

@@ -1,5 +1,5 @@
 //
-//  MindLinkTestView.swift
+//  PhantomDrawTestView.swift
 //  Magic Tricks
 //
 //  Single-device test mode: top half = receiver, bottom half = sender.
@@ -8,7 +8,7 @@
 
 import SwiftUI
 
-struct MindLinkTestView: View {
+struct PhantomDrawTestView: View {
 
     @State private var strokes: [DrawingStroke] = []
     @State private var currentPoints: [CGPoint] = []

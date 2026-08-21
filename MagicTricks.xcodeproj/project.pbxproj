@@ -140,15 +140,15 @@
 		92A000032FC7600000A00001 /* HapticTrainingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */; };
 		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
 		92A000092FC8600000A00001 /* CalculatorPredictionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */; };
-		0AML00000000000000000002 /* MindLinkModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000001 /* MindLinkModels.swift */; };
-		0AML00000000000000000004 /* MindLinkInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000003 /* MindLinkInstruction.swift */; };
-		0AML00000000000000000006 /* MindLinkSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000005 /* MindLinkSessionManager.swift */; };
-		0AML00000000000000000008 /* MindLinkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000007 /* MindLinkViewModel.swift */; };
-		0AML0000000000000000000A /* MindLinkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000009 /* MindLinkView.swift */; };
-		0AML0000000000000000000C /* MindLinkSenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000B /* MindLinkSenderView.swift */; };
-		0AML0000000000000000000E /* MindLinkReceiverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000D /* MindLinkReceiverView.swift */; };
+		0AML00000000000000000002 /* PhantomDrawModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000001 /* PhantomDrawModels.swift */; };
+		0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000003 /* PhantomDrawInstruction.swift */; };
+		0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000005 /* PhantomDrawSessionManager.swift */; };
+		0AML00000000000000000008 /* PhantomDrawViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000007 /* PhantomDrawViewModel.swift */; };
+		0AML0000000000000000000A /* PhantomDrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000009 /* PhantomDrawView.swift */; };
+		0AML0000000000000000000C /* PhantomDrawSenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000B /* PhantomDrawSenderView.swift */; };
+		0AML0000000000000000000E /* PhantomDrawReceiverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000D /* PhantomDrawReceiverView.swift */; };
 
-		0AML00000000000000000010 /* MindLinkTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000F /* MindLinkTestView.swift */; };
+		0AML00000000000000000010 /* PhantomDrawTestView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000F /* PhantomDrawTestView.swift */; };
 		0AML00000000000000000021 /* NavigationStackCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000020 /* NavigationStackCompat.swift */; };
 		0A15C0MP00000000000002 /* iOS15Compat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15C0MP00000000000001 /* iOS15Compat.swift */; };
 		/* End PBXBuildFile section */
@@ -300,15 +300,15 @@
 		92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingViewModelTests.swift; sourceTree = "<group>"; };
 		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
 		92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModelTests.swift; sourceTree = "<group>"; };
-		0AML00000000000000000001 /* MindLinkModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkModels.swift; sourceTree = "<group>"; };
-		0AML00000000000000000003 /* MindLinkInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkInstruction.swift; sourceTree = "<group>"; };
-		0AML00000000000000000005 /* MindLinkSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkSessionManager.swift; sourceTree = "<group>"; };
-		0AML00000000000000000007 /* MindLinkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkViewModel.swift; sourceTree = "<group>"; };
-		0AML00000000000000000009 /* MindLinkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkView.swift; sourceTree = "<group>"; };
-		0AML0000000000000000000B /* MindLinkSenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkSenderView.swift; sourceTree = "<group>"; };
-		0AML0000000000000000000D /* MindLinkReceiverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkReceiverView.swift; sourceTree = "<group>"; };
+		0AML00000000000000000001 /* PhantomDrawModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawModels.swift; sourceTree = "<group>"; };
+		0AML00000000000000000003 /* PhantomDrawInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawInstruction.swift; sourceTree = "<group>"; };
+		0AML00000000000000000005 /* PhantomDrawSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawSessionManager.swift; sourceTree = "<group>"; };
+		0AML00000000000000000007 /* PhantomDrawViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawViewModel.swift; sourceTree = "<group>"; };
+		0AML00000000000000000009 /* PhantomDrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawView.swift; sourceTree = "<group>"; };
+		0AML0000000000000000000B /* PhantomDrawSenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawSenderView.swift; sourceTree = "<group>"; };
+		0AML0000000000000000000D /* PhantomDrawReceiverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawReceiverView.swift; sourceTree = "<group>"; };
 
-		0AML0000000000000000000F /* MindLinkTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MindLinkTestView.swift; sourceTree = "<group>"; };
+		0AML0000000000000000000F /* PhantomDrawTestView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawTestView.swift; sourceTree = "<group>"; };
 		0AML00000000000000000020 /* NavigationStackCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackCompat.swift; sourceTree = "<group>"; };
 		0A15C0MP00000000000001 /* iOS15Compat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS15Compat.swift; sourceTree = "<group>"; };
 		/* End PBXFileReference section */
@@ -799,7 +799,7 @@
 				2875DE902FBA7D6E00B9298C /* HapticTraining */,
 				0A00FF000000000000000001 /* Onboarding */,
 				0AEE0000000000000000001E /* RateApp */,
-				0AML00000000000000000014 /* MindLink */,
+				0AML00000000000000000014 /* PhantomDraw */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -980,21 +980,21 @@
 			path = Model;
 			sourceTree = "<group>";
 		};
-		0AML00000000000000000014 /* MindLink */ = {
+		0AML00000000000000000014 /* PhantomDraw */ = {
 			isa = PBXGroup;
 			children = (
 				0AML00000000000000000015 /* Model */,
 				0AML00000000000000000016 /* ViewModel */,
 				0AML00000000000000000017 /* View */,
 			);
-			path = MindLink;
+			path = PhantomDraw;
 			sourceTree = "<group>";
 		};
 		0AML00000000000000000015 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				0AML00000000000000000001 /* MindLinkModels.swift */,
-				0AML00000000000000000003 /* MindLinkInstruction.swift */,
+				0AML00000000000000000001 /* PhantomDrawModels.swift */,
+				0AML00000000000000000003 /* PhantomDrawInstruction.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1002,8 +1002,8 @@
 		0AML00000000000000000016 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				0AML00000000000000000005 /* MindLinkSessionManager.swift */,
-				0AML00000000000000000007 /* MindLinkViewModel.swift */,
+				0AML00000000000000000005 /* PhantomDrawSessionManager.swift */,
+				0AML00000000000000000007 /* PhantomDrawViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1011,10 +1011,10 @@
 		0AML00000000000000000017 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				0AML00000000000000000009 /* MindLinkView.swift */,
-				0AML0000000000000000000B /* MindLinkSenderView.swift */,
-				0AML0000000000000000000D /* MindLinkReceiverView.swift */,
-				0AML0000000000000000000F /* MindLinkTestView.swift */,
+				0AML00000000000000000009 /* PhantomDrawView.swift */,
+				0AML0000000000000000000B /* PhantomDrawSenderView.swift */,
+				0AML0000000000000000000D /* PhantomDrawReceiverView.swift */,
+				0AML0000000000000000000F /* PhantomDrawTestView.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1240,14 +1240,14 @@
 				0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */,
 				0AEE0000000000000000001D /* RateAppSheet.swift in Sources */,
 				0AML00000000000000000021 /* NavigationStackCompat.swift in Sources */,
-				0AML00000000000000000002 /* MindLinkModels.swift in Sources */,
-				0AML00000000000000000004 /* MindLinkInstruction.swift in Sources */,
-				0AML00000000000000000006 /* MindLinkSessionManager.swift in Sources */,
-				0AML00000000000000000008 /* MindLinkViewModel.swift in Sources */,
-				0AML0000000000000000000A /* MindLinkView.swift in Sources */,
-				0AML0000000000000000000C /* MindLinkSenderView.swift in Sources */,
-				0AML0000000000000000000E /* MindLinkReceiverView.swift in Sources */,
-				0AML00000000000000000010 /* MindLinkTestView.swift in Sources */,
+				0AML00000000000000000002 /* PhantomDrawModels.swift in Sources */,
+				0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */,
+				0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */,
+				0AML00000000000000000008 /* PhantomDrawViewModel.swift in Sources */,
+				0AML0000000000000000000A /* PhantomDrawView.swift in Sources */,
+				0AML0000000000000000000C /* PhantomDrawSenderView.swift in Sources */,
+				0AML0000000000000000000E /* PhantomDrawReceiverView.swift in Sources */,
+				0AML00000000000000000010 /* PhantomDrawTestView.swift in Sources */,
 				0AEE00000000000000000006 /* HapticTrainingMode.swift in Sources */,
 				0AEE00000000000000000008 /* HapticTrainingView.swift in Sources */,
 				0AEE0000000000000000000A /* CalculatorPredictionEngine.swift in Sources */,

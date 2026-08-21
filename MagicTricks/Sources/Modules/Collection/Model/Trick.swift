@@ -13,7 +13,7 @@ enum TrickType {
     case timeControl
     case magicGallery
     case geoMentalism
-    case mindLink
+    case phantomDraw
 
     var requiresPro: Bool {
         switch self {
@@ -111,13 +111,13 @@ struct TrickCollection {
             instruction: .magicGallery
         ),
         Trick(
-            id: .mindLink,
-            title: String(localized: "card.mindLink.title"),
-            cardTitle: String(localized: "card.mindLink.cardTitle"),
-            subtitle: String(localized: "card.mindLink.subtitle"),
+            id: .phantomDraw,
+            title: String(localized: "card.phantomDraw.title"),
+            cardTitle: String(localized: "card.phantomDraw.cardTitle"),
+            subtitle: String(localized: "card.phantomDraw.subtitle"),
             image: "antenna.radiowaves.left.and.right",
             difficulty: .easy,
-            instruction: .mindLink
+            instruction: .phantomDraw
         )
     ]
 }

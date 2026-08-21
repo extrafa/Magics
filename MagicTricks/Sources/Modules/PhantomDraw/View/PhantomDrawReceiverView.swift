@@ -1,13 +1,13 @@
 //
-//  MindLinkReceiverView.swift
+//  PhantomDrawReceiverView.swift
 //  Magic Tricks
 //
 
 import SwiftUI
 
-struct MindLinkReceiverView: View {
+struct PhantomDrawReceiverView: View {
 
-    @ObservedObject var viewModel: MindLinkViewModel
+    @ObservedObject var viewModel: PhantomDrawViewModel
 
     var body: some View {
         ZStack {
