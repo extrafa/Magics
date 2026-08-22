@@ -47,7 +47,6 @@ struct PhantomDrawSenderView: View {
         .overlay(alignment: .topLeading) {
             ExitHintView(isVisible: $exitHintVisible, style: .specialWhite)
         }
-        .navigationTitle("Draw")
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {

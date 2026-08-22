@@ -10,7 +10,6 @@ import StoreKit
 
 struct RateAppSheet: View {
 
-    @EnvironmentObject private var flow: AppFlowCoordinator
     @Environment(\.dismiss) private var dismiss
 
     @State private var phase: Phase = .question

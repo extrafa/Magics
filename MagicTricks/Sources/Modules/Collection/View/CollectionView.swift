@@ -91,8 +91,6 @@ struct CollectionView: View {
     }
 }
 
-// MARK: - ProUpgradeButton
-
 private struct ProUpgradeButton: View {
     let action: () -> Void
     @State private var shimmer = false

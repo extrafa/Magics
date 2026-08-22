@@ -9,7 +9,7 @@ import Network
 @MainActor
 final class PhantomDrawSessionManager: ObservableObject {
 
-    private static let bonjourType = "_phantomdraw-magic._tcp"
+    private static let bonjourType = "_phantomdraw._tcp"
 
     @Published var connectionState: PhantomDrawConnectionState = .idle
     @Published var receivedStrokes: [DrawingStroke] = []

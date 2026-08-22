@@ -63,17 +63,6 @@ struct PhantomDrawView: View {
                     .transition(.opacity)
             }
 
-            if case .disconnected = state {
-                statusView(
-                    icon: "wifi.slash",
-                    title: "Connection Lost",
-                    subtitle: "The other phone went away.",
-                    buttonTitle: "Try Again",
-                    action: retry
-                )
-                .transition(.opacity)
-            }
-
             if case .failed = state {
                 statusView(
                     icon: "exclamationmark.triangle",

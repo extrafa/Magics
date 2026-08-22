@@ -15,7 +15,6 @@ enum PhantomDrawConnectionState: Equatable {
     case idle
     case searching
     case connected(peerName: String)
-    case disconnected
     case failed
 }
 

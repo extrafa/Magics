@@ -2,12 +2,10 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>NSLocalNetworkUsageDescription</key>
-	<string>Used to connect two phones wirelessly for the Mind Link trick.</string>
 	<key>NSBonjourServices</key>
 	<array>
-		<string>_mindlink-magic._tcp</string>
-		<string>_mindlink-magic._udp</string>
+		<string>_phantomdraw._tcp</string>
+		<string>_phantomdraw._udp</string>
 	</array>
 </dict>
 </plist>

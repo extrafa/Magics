@@ -179,7 +179,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     var magicGalleryGestureMode: MagicGalleryGestureMode {
         get {
             guard store.object(forKey: Key.magicGalleryGestureMode) != nil else { return .tap }
-            return MagicGalleryGestureMode(rawValue: Int(store.double(forKey: Key.magicGalleryGestureMode))) ?? .swipe
+            return MagicGalleryGestureMode(rawValue: Int(store.double(forKey: Key.magicGalleryGestureMode))) ?? .tap
         }
         nonmutating set { store.set(Double(newValue.rawValue), forKey: Key.magicGalleryGestureMode) }
     }

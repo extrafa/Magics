@@ -47,7 +47,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
     func saveSecretValue() {
         let raw = rawDisplay
-        let hasOperator = raw.contains { operators.contains(String($0)) }
+        let hasOperator = raw.contains { Self.operators.contains(String($0)) }
         guard !hasOperator else { return }
         savedValue = raw
         triggerSaveBlink()
@@ -63,14 +63,14 @@ final class CalculatorPredictionViewModel: ObservableObject {
         var raw = rawDisplay
         guard let last = raw.last else { return }
         if last == "," { return }
-        if operators.contains(String(last)) { raw.removeLast() }
+        if Self.operators.contains(String(last)) { raw.removeLast() }
         raw.append(op)
         display = formatExpression(raw)
     }
 
     private func appendDecimal() {
         let raw = rawDisplay
-        let components = raw.split { operators.contains(String($0)) }
+        let components = raw.split { Self.operators.contains(String($0)) }
         if let last = components.last, !last.contains(",") {
             display = formatExpression(raw + ",")
         }
@@ -105,7 +105,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
             } catch { }
             return
         }
-        if operators.contains(lastStr) { return }
+        if Self.operators.contains(lastStr) { return }
 
         do {
             let result = try expressionEvaluator.evaluate(raw)
@@ -130,7 +130,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
         var numBuffer = ""
 
         for char in raw {
-            if operators.contains(String(char)) {
+            if Self.operators.contains(String(char)) {
                 result += formatNumber(numBuffer) + String(char)
                 numBuffer = ""
             } else {
