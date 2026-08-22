@@ -23,6 +23,8 @@ struct TrickRouterView: View {
             TimeControlView()
         case .geoMentalism:
             GeoMentalismView()
+        case .phantomDraw:
+            PhantomDrawView()
         }
     }
 }

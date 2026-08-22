@@ -10,7 +10,10 @@ import SwiftUI
 @MainActor
 final class ExitHintViewModel: ObservableObject {
     @Published var hintOpacity = 1.0
+    @Published var holdScale: CGFloat = 1.0
+    @Published var flashBrightness: Double = 0.0
     @Published var isConfirmAlertPresented = false
+    @Published var isSwipeAlertPresented = false
 
     private var autoFadeTask: Task<Void, Never>?
     private var flashTask: Task<Void, Never>?
@@ -26,12 +29,17 @@ final class ExitHintViewModel: ObservableObject {
     }
 
     var shouldBlockInteraction: Bool {
-        !didLearnExitHint && !isConfirmAlertPresented
+        !didLearnExitHint && !isConfirmAlertPresented && !isSwipeAlertPresented
     }
 
     func presentConfirmation() {
         guard !didLearnExitHint else { return }
         isConfirmAlertPresented = true
+    }
+
+    func presentSwipeAlert() {
+        guard !didLearnExitHint else { return }
+        isSwipeAlertPresented = true
     }
 
     func confirmHintDismiss(onConfirmExit: @escaping () -> Void) {
@@ -49,14 +57,14 @@ final class ExitHintViewModel: ObservableObject {
         guard isVisible, didLearnExitHint else { return }
 
         autoFadeTask = Task {
-            try? await Task.sleep(for: .seconds(2))
+            try? await Task.sleep(seconds: 2)
             guard !Task.isCancelled else { return }
 
             withAnimation(.easeOut(duration: 2.2)) {
                 self.hintOpacity = 0.18
             }
 
-            try? await Task.sleep(for: .milliseconds(2200))
+            try? await Task.sleep(milliseconds: 2200)
             guard !Task.isCancelled else { return }
 
             // Fade to 0 within ExitHintView's own hierarchy — avoids triggering an
@@ -66,7 +74,7 @@ final class ExitHintViewModel: ObservableObject {
                 self.hintOpacity = 0
             }
 
-            try? await Task.sleep(for: .milliseconds(800))
+            try? await Task.sleep(milliseconds: 800)
             guard !Task.isCancelled else { return }
 
             // Already at opacity 0 — set binding without animation so the parent
@@ -79,15 +87,28 @@ final class ExitHintViewModel: ObservableObject {
         flashTask?.cancel()
         flashTask = Task {
             for _ in 0..<2 {
-                withAnimation(.easeOut(duration: 0.14)) {
-                    self.hintOpacity = 0.62
+                withAnimation(.easeOut(duration: 0.07)) {
+                    self.flashBrightness = 0.30
                 }
-                try? await Task.sleep(for: .milliseconds(140))
-                withAnimation(.easeInOut(duration: 0.2)) {
-                    self.hintOpacity = 1
+                try? await Task.sleep(milliseconds: 90)
+                withAnimation(.easeIn(duration: 0.16)) {
+                    self.flashBrightness = 0.0
                 }
-                try? await Task.sleep(for: .milliseconds(120))
+                try? await Task.sleep(milliseconds: 200)
             }
+        }
+    }
+
+    func holdStarted() {
+        cancelAutoFade()
+        withAnimation(.easeInOut(duration: ExitHintZone.minimumPressDuration * 1.4)) {
+            holdScale = 0.90
+        }
+    }
+
+    func holdCancelled() {
+        withAnimation(.spring(response: 0.38, dampingFraction: 0.55)) {
+            holdScale = 1.0
         }
     }
 

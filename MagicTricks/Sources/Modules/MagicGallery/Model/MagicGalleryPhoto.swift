@@ -7,6 +7,11 @@
 
 import UIKit
 
+enum MagicGalleryGestureMode: Int {
+    case swipe
+    case tap
+}
+
 enum MagicGalleryPhotoSource: Equatable {
     case custom
     case standard

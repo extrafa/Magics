@@ -9,10 +9,14 @@ import Foundation
 
 enum SheetFlow: Identifiable, Equatable {
     case instruction(instruction: Instruction)
+    case instructionFirstLaunch(instruction: Instruction, trick: Trick)
+    case rateApp
 
     var id: String {
         switch self {
         case .instruction(let instruction): return "instruction_\(instruction.title)"
+        case .instructionFirstLaunch(let instruction, _): return "firstLaunch_\(instruction.title)"
+        case .rateApp: return "rateApp"
         }
     }
 }

@@ -25,6 +25,8 @@ struct ExitHintView: View {
                 exitHitArea
                 hintOverlay
                     .opacity(isVisible ? viewModel.hintOpacity : 0)
+                    .scaleEffect(viewModel.holdScale)
+                    .brightness(viewModel.flashBrightness)
             }
             .padding(.top, 10)
             .padding(.leading, 12)
@@ -45,11 +47,19 @@ struct ExitHintView: View {
         } message: {
             Text(String(localized: "exitHint.confirm.description"))
         }
+        .alert(
+            String(localized: "exitHint.swipe.title"),
+            isPresented: $viewModel.isSwipeAlertPresented
+        ) {
+            Button(String(localized: "common.gotIt")) { }
+        } message: {
+            Text(String(localized: "exitHint.swipe.description"))
+        }
         .onAppear {
             viewModel.configurePresentation(isVisible: isVisible, isHintVisible: $isVisible)
             syncGestureState()
         }
-        .onChange(of: isVisible) { _, newValue in
+        .onChange(of: isVisible) { newValue in
             if newValue {
                 viewModel.configurePresentation(isVisible: newValue, isHintVisible: $isVisible)
             } else {
@@ -57,13 +67,19 @@ struct ExitHintView: View {
             }
             syncGestureState()
         }
-        .onChange(of: viewModel.isConfirmAlertPresented) { _, _ in
+        .onChange(of: viewModel.isConfirmAlertPresented) { _ in
+            syncGestureState()
+        }
+        .onChange(of: viewModel.isSwipeAlertPresented) { _ in
             syncGestureState()
         }
         .onDisappear {
             ExitHintGestureState.shared.isTrainingActive = false
             ExitHintGestureState.shared.onTrainingHold = nil
             ExitHintGestureState.shared.onOutsideTap = nil
+            ExitHintGestureState.shared.onHoldStarted = nil
+            ExitHintGestureState.shared.onHoldCancelled = nil
+            ExitHintGestureState.shared.onSwipe = nil
         }
     }
 
@@ -81,10 +97,7 @@ struct ExitHintView: View {
                     style.strokeColor,
                     style: StrokeStyle(lineWidth: 1.4, dash: [7, 5])
                 )
-                .background {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(style.fillColor)
-                }
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .overlay {
                     VStack(spacing: 0) {
                         Spacer(minLength: 18)
@@ -114,7 +127,7 @@ struct ExitHintView: View {
                             .onAppear {
                                 ExitHintGestureState.shared.globalRect = proxy.frame(in: .global)
                             }
-                            .onChange(of: proxy.frame(in: .global)) { _, newValue in
+                            .onChange(of: proxy.frame(in: .global)) { newValue in
                                 ExitHintGestureState.shared.globalRect = newValue
                             }
                     }
@@ -122,7 +135,7 @@ struct ExitHintView: View {
                 .allowsHitTesting(false)
         }
     }
-    
+
     private func syncGestureState() {
         ExitHintGestureState.shared.isTrainingActive = isVisible && viewModel.shouldBlockInteraction
         ExitHintGestureState.shared.onTrainingHold = {
@@ -130,6 +143,15 @@ struct ExitHintView: View {
         }
         ExitHintGestureState.shared.onOutsideTap = {
             viewModel.flashHint()
+        }
+        ExitHintGestureState.shared.onHoldStarted = {
+            viewModel.holdStarted()
+        }
+        ExitHintGestureState.shared.onHoldCancelled = {
+            viewModel.holdCancelled()
+        }
+        ExitHintGestureState.shared.onSwipe = {
+            viewModel.presentSwipeAlert()
         }
     }
 }

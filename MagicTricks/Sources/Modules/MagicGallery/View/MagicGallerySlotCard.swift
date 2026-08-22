@@ -10,43 +10,38 @@ import SwiftUI
 struct MagicGallerySlotCard: View {
     let number: Int
     let photo: MagicGalleryPhoto?
-    let isSelected: Bool
-    let onTap: () -> Void
+    let onTap: (() -> Void)?
     let onDelete: () -> Void
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
-            Button(action: onTap) {
-                ZStack {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(Color.grayCard)
+            ZStack {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color.grayCard)
 
-                    if let photo {
-                        MagicGallerySlotPhotoContent(photo: photo)
-                    } else {
-                        MagicGallerySlotEmptyContent()
-                    }
-                }
-                .frame(height: 184)
-                .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
-                .overlay {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .strokeBorder(
-                            isSelected ? Color.button : Color.primaryText.opacity(0.08),
-                            lineWidth: isSelected ? 3 : 1
-                        )
-                }
-                .overlay(alignment: .topLeading) {
-                    numberBadge
-                        .padding(10)
-                }
-                .overlay(alignment: .bottomLeading) {
-                    if let photo {
-                        statusBadge(for: photo)
-                    }
+                if let photo {
+                    MagicGallerySlotPhotoContent(photo: photo)
+                } else {
+                    MagicGallerySlotEmptyContent()
                 }
             }
-            .buttonStyle(.plain)
+            .frame(height: 184)
+            .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
+            .overlay {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .strokeBorder(Color.primaryText.opacity(0.08), lineWidth: 1)
+            }
+            .overlay(alignment: .topLeading) {
+                numberBadge.padding(10)
+            }
+            .overlay(alignment: .bottomLeading) {
+                if let photo {
+                    sourceBadge(for: photo)
+                }
+            }
+            .onTapGesture {
+                onTap?()
+            }
 
             if let photo, photo.isCustom {
                 deleteButton
@@ -75,22 +70,15 @@ struct MagicGallerySlotCard: View {
         .padding(10)
     }
 
-    private func statusBadge(for photo: MagicGalleryPhoto) -> some View {
-        Text(statusText(for: photo))
-            .font(.caption2)
-            .fontWeight(.semibold)
+    private func sourceBadge(for photo: MagicGalleryPhoto) -> some View {
+        Text(photo.isStandard
+             ? String(localized: "magicGallery.status.standard")
+             : String(localized: "magicGallery.status.custom"))
+            .font(.caption2.weight(.semibold))
             .foregroundStyle(.white)
             .padding(.horizontal, 10)
             .padding(.vertical, 7)
             .background(.black.opacity(0.42), in: Capsule(style: .continuous))
             .padding(10)
-    }
-
-    private func statusText(for photo: MagicGalleryPhoto) -> String {
-        if isSelected {
-            return String(localized: "magicGallery.status.selected")
-        }
-
-        return photo.isStandard ? String(localized: "magicGallery.status.standard") : String(localized: "magicGallery.status.custom")
     }
 }

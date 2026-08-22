@@ -6,13 +6,12 @@
 //
 
 import SwiftUI
-import StoreKit
 
 struct SettingsScreen: View {
 
     @EnvironmentObject private var store: SettingsStore
     @EnvironmentObject private var storeManager: StoreManager
-    @Environment(\.requestReview) private var requestReview
+    @EnvironmentObject private var flow: AppFlowCoordinator
 
     var body: some View {
         ZStack {
@@ -21,8 +20,10 @@ struct SettingsScreen: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 34) {
+                    exitHintSection
                     vibrationsSection
                     appSection
+                    HapticHelpSection()
                     if showsTestFlightSection {
                         testFlightSection
                     }
@@ -31,11 +32,11 @@ struct SettingsScreen: View {
                 .padding(.top, 28)
                 .padding(.bottom, 36)
             }
-            .scrollIndicators(.hidden)
+            .hideScrollIndicators()
         }
         .navigationTitle(String(localized: "settings.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .fontDesign(.rounded)
+        
     }
 }
 
@@ -51,19 +52,70 @@ private extension SettingsScreen {
 
     var testFlightSection: some View {
         SettingsSection(title: "TestFlight") {
-            Toggle(isOn: $storeManager.isProOverride) {
+            VStack(spacing: 0) {
+                Toggle(isOn: $storeManager.isProOverride) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Pro Access Override")
+                            .font(.system(size: 17, weight: .bold, design: .rounded))
+                            .foregroundStyle(.primaryText)
+
+                        Text("Unlocks all tricks.")
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .foregroundStyle(Color.primaryText.opacity(0.58))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .tint(.orange)
+                .padding(18)
+
+                SettingsDivider()
+
+                Button {
+                    AppPreferences.shared.hasRespondedToRating = false
+                    AppPreferences.shared.trickLaunchCount = 0
+                    flow.activeSheet = .rateApp
+                } label: {
+                    SettingsActionRow(icon: "star.bubble", title: "Show Rate App Sheet")
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 18)
+
+                SettingsDivider()
+
+                Toggle(isOn: $storeManager.isWatermarkHidden) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text("Hide Watermark")
+                            .font(.system(size: 17, weight: .bold, design: .rounded))
+                            .foregroundStyle(.primaryText)
+
+                        Text("Hides the free trial banner.")
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .foregroundStyle(Color.primaryText.opacity(0.58))
+                            .fixedSize(horizontal: false, vertical: true)
+                    }
+                }
+                .tint(.orange)
+                .padding(18)
+            }
+            .settingsCard()
+        }
+    }
+
+    var exitHintSection: some View {
+        SettingsSection(title: String(localized: "settings.exitHint.section")) {
+            Toggle(isOn: $store.isExitHintEnabled) {
                 VStack(alignment: .leading, spacing: 4) {
-                    Text("Pro Access Override")
+                    Text(String(localized: "settings.exitHint"))
                         .font(.system(size: 17, weight: .bold, design: .rounded))
                         .foregroundStyle(.primaryText)
 
-                    Text("Unlocks all tricks.")
+                    Text(String(localized: "settings.exitHint.description"))
                         .font(.system(size: 13, weight: .medium, design: .rounded))
                         .foregroundStyle(Color.primaryText.opacity(0.58))
                         .fixedSize(horizontal: false, vertical: true)
                 }
             }
-            .tint(.orange)
+            .tint(TrickPalette.Collection.timeControl)
             .padding(18)
             .settingsCard()
         }
@@ -73,11 +125,11 @@ private extension SettingsScreen {
         SettingsSection(title: String(localized: "settings.section.vibrations")) {
             VStack(spacing: 0) {
                 NavigationLink {
-                    HapticTrainingView()
+                    HapticSettingsScreen()
                 } label: {
                     SettingsActionRow(
-                        icon: "dot.radiowaves.left.and.right",
-                        title: String(localized: "settings.vibrationTrainer"),
+                        icon: "waveform.path.ecg",
+                        title: String(localized: "settings.vibrationSettings"),
                         showsChevron: true
                     )
                 }
@@ -86,11 +138,11 @@ private extension SettingsScreen {
                 SettingsDivider()
 
                 NavigationLink {
-                    HapticSettingsScreen()
+                    HapticTrainingView()
                 } label: {
                     SettingsActionRow(
-                        icon: "waveform.path.ecg",
-                        title: String(localized: "settings.vibrationSettings"),
+                        icon: "dot.radiowaves.left.and.right",
+                        title: String(localized: "settings.vibrationTrainer"),
                         showsChevron: true
                     )
                 }
@@ -105,36 +157,25 @@ private extension SettingsScreen {
         SettingsSection(title: String(localized: "settings.section.app")) {
             VStack(spacing: 0) {
                 shareButton
-                SettingsDivider()
-                Button { requestReview() } label: {
-                    SettingsActionRow(
-                        icon: "star",
-                        title: String(localized: "settings.rateUs")
-                    )
-                }
-                .buttonStyle(.plain)
             }
             .padding(.horizontal, 18)
             .settingsCard()
         }
     }
 
-    @ViewBuilder
     var shareButton: some View {
-        let label = SettingsActionRow(
-            icon: "square.and.arrow.up",
-            title: String(localized: "settings.shareApp")
-        )
-        if let url = store.appShareURL {
-            ShareLink(item: url) { label }.buttonStyle(.plain)
-        } else {
-            ShareLink(item: store.appShareText) { label }.buttonStyle(.plain)
+        let item = store.appShareURL ?? URL(string: "https://apps.apple.com")!
+        return ShareLink(item: item) {
+            SettingsActionRow(
+                icon: "square.and.arrow.up",
+                title: String(localized: "settings.shareApp")
+            )
         }
     }
 }
 
 #Preview {
-    NavigationStack {
+    NavigationStackCompat {
         SettingsScreen()
             .environmentObject(SettingsStore())
             .environmentObject(StoreManager())

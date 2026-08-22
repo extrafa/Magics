@@ -60,6 +60,8 @@ struct HapticTrainingView: View {
                     .frame(height: 22)
             }
 
+            hintLegend
+
             Button(action: playSignal) {
                 Label(mode.playButtonTitle, systemImage: "dot.radiowaves.left.and.right")
                     .font(.headline)
@@ -73,6 +75,33 @@ struct HapticTrainingView: View {
         .padding(22)
         .frame(maxWidth: .infinity)
         .background(deckBackground)
+    }
+
+    private var hintLegend: some View {
+        HStack(spacing: 20) {
+            VStack(spacing: 2) {
+                Text("0")
+                    .font(.system(size: 17, weight: .black, design: .rounded))
+                    .foregroundStyle(mode.accentColor)
+                Text("long vibration")
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Color.primaryText.opacity(0.45))
+            }
+
+            Rectangle()
+                .fill(Color.primaryText.opacity(0.12))
+                .frame(width: 1, height: 30)
+
+            VStack(spacing: 2) {
+                Text("1–9")
+                    .font(.system(size: 17, weight: .black, design: .rounded))
+                    .foregroundStyle(mode.accentColor)
+                Text("that many vibrations")
+                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .foregroundStyle(Color.primaryText.opacity(0.45))
+            }
+        }
+        .padding(.vertical, 6)
     }
 
     private var deckBackground: some View {
@@ -115,7 +144,7 @@ struct HapticTrainingView: View {
             await viewModel.playSignal()
             if playedValue == 1 {
                 // single-pulse signal — brief delay so the keyboard doesn't pop before the vibration settles
-                try? await Task.sleep(for: .milliseconds(250))
+                try? await Task.sleep(milliseconds: 250)
             }
             isAnswerFocused = viewModel.result == nil
         }
@@ -131,12 +160,14 @@ struct HapticTrainingView: View {
         guard viewModel.hasPlayed, viewModel.result == nil else { return }
         if let number = Int(filtered) {
             viewModel.submitGuess(number)
+            isAnswerFocused = false
         }
     }
 
     private func submitExplicit() {
         guard let number = Int(answerText) else { return }
         viewModel.submitGuess(number)
+        isAnswerFocused = false
     }
 
     private func startNewRound() {

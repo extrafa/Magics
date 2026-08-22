@@ -62,7 +62,7 @@ struct OBWelcomeScreen: View {
         }
         .onAppear {
             Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(150))
+                try? await Task.sleep(milliseconds: 150)
                 appeared = true
             }
         }
@@ -108,7 +108,7 @@ struct OBWelcomeScreen: View {
                 }
             }
         }
-        .fontDesign(.rounded)
+        
     }
 }
 

@@ -15,8 +15,8 @@ struct MagicGalleryView: View {
     @State private var showSourceDialog = false
 
     var body: some View {
-        NavigationStack {
-            ZStack {
+        NavigationStackCompat {
+            ZStack(alignment: .bottom) {
                 Color.background.ignoresSafeArea()
 
                 ScrollView(.vertical, showsIndicators: false) {
@@ -29,13 +29,12 @@ struct MagicGalleryView: View {
                     .padding(.bottom, 120)
                 }
 
-                if vm.selectedPhoto != nil { bottomSaveButton }
+                performButton
             }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { dismiss() } label: {
                         Image(systemName: "xmark")
-                            .fontWeight(.semibold)
                     }
                 }
             }
@@ -63,7 +62,10 @@ struct MagicGalleryView: View {
                 onCancel: vm.handleCaptureCancelled
             )
         }
-        .alert(String(localized: "instruction.magicGallery.title"), isPresented: alertBinding) {
+        .alert(String(localized: "instruction.magicGallery.title"), isPresented: Binding(
+            get: { vm.alertMessage != nil },
+            set: { if !$0 { vm.alertMessage = nil } }
+        )) {
             Button(String(localized: "common.ok"), role: .cancel) {
                 vm.alertMessage = nil
             }
@@ -76,7 +78,8 @@ struct MagicGalleryView: View {
         MagicGalleryCapturePanel(
             usesStandardSet: vm.usesStandardSet,
             onToggleStandardSet: vm.setStandardSet,
-            captureButtonTitle: vm.captureButtonTitle,
+            gestureMode: vm.gestureMode,
+            onGestureModeChange: vm.setGestureMode,
             canAddMorePhotos: vm.canAddMorePhotos,
             onCapture: { showSourceDialog = true }
         )
@@ -86,32 +89,34 @@ struct MagicGalleryView: View {
         MagicGallerySlotGrid(
             customPhotos: vm.customPhotos,
             usesStandardSet: vm.usesStandardSet,
-            selectedPhotoNumber: vm.selectedPhoto?.number,
             photoProvider: vm.photo(for:),
             onSlotTap: vm.handleSlotTap,
             onDelete: vm.deletePhoto
         )
     }
 
-    private var bottomSaveButton: some View {
-        MagicGalleryBottomSaveBar(
-            saveButtonTitle: vm.saveButtonTitle,
-            hasPhoto: vm.selectedPhoto != nil,
-            isSaving: vm.isSaving,
-            onSave: {
-                Task {
-                    await vm.saveSelectedPhotoToGallery()
-                }
-            }
-        )
-    }
+    private var performButton: some View {
+        VStack(spacing: 0) {
+            LinearGradient(
+                colors: [Color.background.opacity(0), Color.background],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 36)
+            .allowsHitTesting(false)
 
-    private var alertBinding: Binding<Bool> {
-        Binding(
-            get: { vm.alertMessage != nil },
-            set: { newValue in
-                if !newValue { vm.alertMessage = nil }
+            NavigationLink {
+                MagicGalleryPerformView(vm: vm)
+            } label: {
+                Label(String(localized: "magicGallery.perform"), systemImage: "wand.and.stars")
+                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 54)
             }
-        )
+            .buttonStyle(PrimaryTrickButtonStyle(color: .button))
+            .padding(.horizontal, 20)
+            .padding(.bottom, 16)
+            .background(Color.background)
+        }
     }
 }

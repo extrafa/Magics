@@ -91,7 +91,7 @@ final class TimeControlViewModel: ObservableObject {
             guard let self else { return }
             while !Task.isCancelled {
                 self.tick()
-                try? await Task.sleep(for: .milliseconds(10))
+                try? await Task.sleep(milliseconds: 10)
             }
         }
     }

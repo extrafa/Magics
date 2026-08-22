@@ -44,8 +44,14 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
         var onExit: () -> Void
         private weak var installedWindow: UIWindow?
         private var longPressRecognizer: UILongPressGestureRecognizer?
+        private var touchTracker: TouchTrackingRecognizer?
         private var tapRecognizer: UITapGestureRecognizer?
+        private var panRecognizer: UIPanGestureRecognizer?
         private var didTriggerExit = false
+        private var isHoldActive = false
+        private var panStartedInRect = false
+        private var didTriggerSwipe = false
+        private var touchStartTime: Date?
 
         init(onExit: @escaping () -> Void) {
             self.onExit = onExit
@@ -54,38 +60,77 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
         func installRecognizerIfNeeded(on window: UIWindow) {
             guard installedWindow !== window else { return }
 
-            if let longPressRecognizer, let installedWindow {
-                installedWindow.removeGestureRecognizer(longPressRecognizer)
+            [longPressRecognizer, touchTracker, tapRecognizer, panRecognizer].forEach { recognizer in
+                if let r = recognizer, let w = installedWindow {
+                    w.removeGestureRecognizer(r)
+                }
             }
 
-            if let tapRecognizer, let installedWindow {
-                installedWindow.removeGestureRecognizer(tapRecognizer)
+            let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
+            longPress.minimumPressDuration = ExitHintZone.minimumPressDuration
+            longPress.allowableMovement = 1000
+            longPress.cancelsTouchesInView = false
+            longPress.delegate = self
+            window.addGestureRecognizer(longPress)
+
+            let tracker = TouchTrackingRecognizer()
+            tracker.cancelsTouchesInView = false
+            tracker.delegate = self
+
+            tracker.onTouchDown = { [weak self] location in
+                guard let self else { return }
+                guard ExitHintGestureState.shared.globalRect.contains(location) else { return }
+                self.isHoldActive = true
+                self.touchStartTime = Date()
+                ExitHintGestureState.shared.onHoldStarted?()
             }
 
-            let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
-            longPressRecognizer.minimumPressDuration = ExitHintZone.minimumPressDuration
-            longPressRecognizer.cancelsTouchesInView = false
-            longPressRecognizer.delegate = self
-            window.addGestureRecognizer(longPressRecognizer)
+            tracker.onTouchMoved = { [weak self] location in
+                guard let self, self.isHoldActive else { return }
+                let activeRect = ExitHintGestureState.shared.globalRect.insetBy(dx: -20, dy: -20)
+                if !activeRect.contains(location) {
+                    self.isHoldActive = false
+                    ExitHintGestureState.shared.onHoldCancelled?()
+                }
+            }
 
-            let tapRecognizer = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
-            tapRecognizer.cancelsTouchesInView = false
-            tapRecognizer.delaysTouchesBegan = false
-            tapRecognizer.delaysTouchesEnded = false
-            tapRecognizer.delegate = self
-            window.addGestureRecognizer(tapRecognizer)
+            tracker.onTouchUp = { [weak self] in
+                guard let self, self.isHoldActive else { return }
+                self.isHoldActive = false
+                ExitHintGestureState.shared.onHoldCancelled?()
+            }
+
+            window.addGestureRecognizer(tracker)
+
+            let tap = UITapGestureRecognizer(target: self, action: #selector(handleTap(_:)))
+            tap.cancelsTouchesInView = false
+            tap.delaysTouchesBegan = false
+            tap.delaysTouchesEnded = false
+            tap.delegate = self
+            window.addGestureRecognizer(tap)
+
+            let pan = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+            pan.minimumNumberOfTouches = 1
+            pan.maximumNumberOfTouches = 1
+            pan.cancelsTouchesInView = false
+            pan.delegate = self
+            window.addGestureRecognizer(pan)
 
             installedWindow = window
-            self.longPressRecognizer = longPressRecognizer
-            self.tapRecognizer = tapRecognizer
+            longPressRecognizer = longPress
+            touchTracker = tracker
+            tapRecognizer = tap
+            panRecognizer = pan
         }
 
         @objc private func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
             switch recognizer.state {
             case .began:
                 let location = recognizer.location(in: recognizer.view)
-                let targetRect = ExitHintGestureState.shared.globalRect
-                guard targetRect.contains(location), !didTriggerExit else { return }
+                let expandedRect = ExitHintGestureState.shared.globalRect.insetBy(dx: -20, dy: -20)
+                guard expandedRect.contains(location), !didTriggerExit, !didTriggerSwipe else {
+                    return
+                }
                 didTriggerExit = true
                 if ExitHintGestureState.shared.isTrainingActive {
                     ExitHintGestureState.shared.onTrainingHold?()
@@ -99,12 +144,38 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             }
         }
 
+        @objc private func handlePan(_ recognizer: UIPanGestureRecognizer) {
+            switch recognizer.state {
+            case .began:
+                let location = recognizer.location(in: recognizer.view)
+                let translation = recognizer.translation(in: recognizer.view)
+                let startLocation = CGPoint(
+                    x: location.x - translation.x,
+                    y: location.y - translation.y
+                )
+                panStartedInRect = ExitHintGestureState.shared.globalRect.contains(startLocation)
+                didTriggerSwipe = false
+            case .changed:
+                guard panStartedInRect, !didTriggerSwipe, !didTriggerExit,
+                      ExitHintGestureState.shared.isTrainingActive else { return }
+                if let start = touchStartTime, Date().timeIntervalSince(start) > 0.5 { return }
+                let velocity = recognizer.velocity(in: recognizer.view)
+                let speed = hypot(velocity.x, velocity.y)
+                guard speed > 400 else { return }
+                didTriggerSwipe = true
+                ExitHintGestureState.shared.onSwipe?()
+            case .ended, .cancelled, .failed:
+                panStartedInRect = false
+                didTriggerSwipe = false
+            default:
+                break
+            }
+        }
+
         @objc private func handleTap(_ recognizer: UITapGestureRecognizer) {
             guard recognizer.state == .ended, ExitHintGestureState.shared.isTrainingActive else { return }
-
             let location = recognizer.location(in: recognizer.view)
-            let targetRect = ExitHintGestureState.shared.globalRect
-            guard !targetRect.contains(location) else { return }
+            guard !ExitHintGestureState.shared.globalRect.contains(location) else { return }
             ExitHintGestureState.shared.onOutsideTap?()
         }
 
@@ -112,15 +183,50 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             if gestureRecognizer === tapRecognizer {
                 return ExitHintGestureState.shared.isTrainingActive
             }
-
             return true
         }
 
-        func gestureRecognizer(_ gestureRecognizer: UIGestureRecognizer, shouldRecognizeSimultaneouslyWith otherGestureRecognizer: UIGestureRecognizer) -> Bool {
-            true
-        }
+        func gestureRecognizer(
+            _ gestureRecognizer: UIGestureRecognizer,
+            shouldRecognizeSimultaneouslyWith other: UIGestureRecognizer
+        ) -> Bool { true }
     }
 }
+
+// MARK: - Touch tracking
+
+private final class TouchTrackingRecognizer: UIGestureRecognizer {
+    var onTouchDown: ((CGPoint) -> Void)?
+    var onTouchMoved: ((CGPoint) -> Void)?
+    var onTouchUp: (() -> Void)?
+
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesBegan(touches, with: event)
+        guard let touch = touches.first else { return }
+        onTouchDown?(touch.location(in: view))
+        state = .began
+    }
+
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesMoved(touches, with: event)
+        guard let touch = touches.first else { return }
+        onTouchMoved?(touch.location(in: view))
+    }
+
+    override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesEnded(touches, with: event)
+        onTouchUp?()
+        state = .ended
+    }
+
+    override func touchesCancelled(_ touches: Set<UITouch>, with event: UIEvent) {
+        super.touchesCancelled(touches, with: event)
+        onTouchUp?()
+        state = .cancelled
+    }
+}
+
+// MARK: - Installer view
 
 private final class GestureInstallerView: UIView {
     var onMoveToWindow: ((UIWindow) -> Void)?
@@ -137,9 +243,7 @@ private final class GestureInstallerView: UIView {
 
     override func didMoveToWindow() {
         super.didMoveToWindow()
-        if let window {
-            onMoveToWindow?(window)
-        }
+        if let window { onMoveToWindow?(window) }
     }
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {

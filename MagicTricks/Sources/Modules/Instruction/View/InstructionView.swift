@@ -10,9 +10,10 @@ import SwiftUI
 struct InstructionView: View {
     @State private var presentedSheet: InstructionPresentedSheet?
     let instruction: Instruction
+    var onStart: (() -> Void)? = nil
 
     var body: some View {
-        ZStack {
+        ZStack(alignment: .bottom) {
             Color.background
                 .ignoresSafeArea()
 
@@ -23,29 +24,52 @@ struct InstructionView: View {
                     secretSection
                     stepsSection
 
-                    Color.clear.frame(height: 32)
+                    Color.clear.frame(height: onStart != nil ? 100 : 32)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 8)
             }
+
+            if let onStart {
+                startTrickButton(action: onStart)
+            }
         }
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $presentedSheet) { sheet in
-            NavigationStack {
+            NavigationStackCompat {
                 InstructionActionSheetDestination(sheet: sheet)
             }
-            .presentationDragIndicator(.visible)
+            .withPresentationDragIndicator()
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(
-                    item: InstructionShareFormatter.shareText(for: instruction),
-                    preview: SharePreview(instruction.title)
-                ) {
+                ShareLink(item: InstructionShareFormatter.shareText(for: instruction)) {
                     Image(systemName: "square.and.arrow.up")
                         .foregroundStyle(.primaryText)
                 }
             }
+        }
+    }
+
+    private func startTrickButton(action: @escaping () -> Void) -> some View {
+        VStack(spacing: 0) {
+            LinearGradient(
+                colors: [Color.background.opacity(0), Color.background],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 32)
+
+            Button(action: action) {
+                Text(String(localized: "instruction.startTrick"))
+                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 54)
+            }
+            .buttonStyle(PrimaryTrickButtonStyle(color: .button))
+            .padding(.horizontal, 20)
+            .padding(.bottom, 16)
+            .background(Color.background)
         }
     }
 }
@@ -81,7 +105,7 @@ private extension InstructionView {
 }
 
 #Preview {
-    NavigationStack {
+    NavigationStackCompat {
         InstructionView(instruction: .calculatorPrediction)
     }
 }

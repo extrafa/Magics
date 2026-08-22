@@ -10,7 +10,7 @@ import SwiftUI
 struct TimeControlView: View {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var viewModel = TimeControlViewModel()
-    @State private var isVisible = true
+    @State private var isVisible = AppPreferences.shared.isExitHintEnabled
 
     var body: some View {
         ZStack {
@@ -36,7 +36,7 @@ struct TimeControlView: View {
 
             ExitHintView(isVisible: $isVisible, style: .specialWhite)
         }
-        .onChange(of: scenePhase) { _, newPhase in
+        .onChange(of: scenePhase) { newPhase in
             guard newPhase == .active else { return }
             viewModel.handleSceneBecameActive()
         }

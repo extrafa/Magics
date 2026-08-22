@@ -20,6 +20,9 @@ final class StoreManager: ObservableObject {
     @Published var isProOverride: Bool {
         didSet { UserDefaults.standard.set(isProOverride, forKey: "dev.proOverride") }
     }
+    @Published var isWatermarkHidden: Bool {
+        didSet { UserDefaults.standard.set(isWatermarkHidden, forKey: "dev.watermarkHidden") }
+    }
 
     var hasProAccess: Bool { _hasStoreAccess || isProOverride }
 
@@ -37,6 +40,7 @@ final class StoreManager: ObservableObject {
         self.productIDs = productIDs
         self.service = service
         self.isProOverride = UserDefaults.standard.bool(forKey: "dev.proOverride")
+        self.isWatermarkHidden = UserDefaults.standard.bool(forKey: "dev.watermarkHidden")
     }
 
     deinit {

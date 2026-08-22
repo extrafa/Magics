@@ -37,8 +37,9 @@ struct TrickCardView: View {
     // MARK: Card
 
     private var cardBody: some View {
-        VStack(alignment: .leading, spacing: 18) {
+        VStack(alignment: .leading, spacing: 0) {
             header
+            Spacer(minLength: 16)
             TrickCardActions(onStartTap: onStartTap, onHowToTap: onHowToTap)
         }
         .padding(22)
@@ -64,8 +65,7 @@ struct TrickCardView: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(trick.cardTitle ?? trick.title)
-                    .font(.title3)
-                    .fontWeight(.bold)
+                    .font(.title3.weight(.bold))
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
@@ -104,13 +104,13 @@ struct TrickCardView: View {
                 .font(.system(size: 11, weight: .bold, design: .rounded))
                 .tracking(0.4)
         }
-        .foregroundStyle(Color.orange)
+        .foregroundStyle(Color.primary.opacity(0.45))
         .padding(.horizontal, 10)
         .padding(.vertical, 7)
-        .background(Capsule(style: .continuous).fill(Color.orange.opacity(0.14)))
+        .background(Capsule(style: .continuous).fill(Color.primary.opacity(0.07)))
         .overlay {
             Capsule(style: .continuous)
-                .stroke(Color.orange.opacity(0.42), lineWidth: 1.2)
+                .stroke(Color.primary.opacity(0.22), lineWidth: 1.2)
         }
     }
 }

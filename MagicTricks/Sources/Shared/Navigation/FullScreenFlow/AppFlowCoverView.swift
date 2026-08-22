@@ -15,7 +15,7 @@ struct AppFlowCoverView: View {
     var body: some View {
         switch activeFlow {
         case .trick(let trick):
-            NavigationStack {
+            NavigationStackCompat {
                 TrickRouterView(trick: trick)
             }
         case .paywall:

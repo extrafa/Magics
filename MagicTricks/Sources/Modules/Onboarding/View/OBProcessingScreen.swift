@@ -70,10 +70,10 @@ struct OBProcessingScreen: View {
         .frame(maxWidth: .infinity)
         .onAppear {
             Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(240))
+                try? await Task.sleep(milliseconds: 240)
                 appeared = true
                 schedulePhaseAdvance()
-                try? await Task.sleep(for: .milliseconds(350))
+                try? await Task.sleep(milliseconds: 350)
                 breathing = true
             }
         }
@@ -126,14 +126,14 @@ struct OBProcessingScreen: View {
             withAnimation(.easeInOut(duration: 1.8)) { progress = 1.0 / total }
 
             for i in 1..<phases.count {
-                try? await Task.sleep(for: .milliseconds(2200))
+                try? await Task.sleep(milliseconds: 2200)
                 withAnimation(.easeInOut(duration: 0.4)) { phaseIndex = i }
                 withAnimation(.easeInOut(duration: 1.2)) { progress = CGFloat(i + 1) / total }
             }
-            try? await Task.sleep(for: .milliseconds(2200))
+            try? await Task.sleep(milliseconds: 2200)
             withAnimation(.spring(response: 0.45, dampingFraction: 0.65)) { isDone = true }
             withAnimation(.easeInOut(duration: 1.2)) { progress = 1.0 }
-            try? await Task.sleep(for: .milliseconds(800))
+            try? await Task.sleep(milliseconds: 800)
             withAnimation(.easeOut(duration: 0.35)) { isButtonVisible = true }
         }
     }

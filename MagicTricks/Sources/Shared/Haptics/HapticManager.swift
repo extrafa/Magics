@@ -12,8 +12,12 @@ import UIKit
 final class HapticManager {
     static let shared = HapticManager()
 
-    let mediumImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
-    let heavyImpactGenerator = UIImpactFeedbackGenerator(style: .heavy)
+    var mediumImpactGenerator: UIImpactFeedbackGenerator {
+        UIImpactFeedbackGenerator(style: HapticPreferences.intensity.feedbackStyle)
+    }
+    var heavyImpactGenerator: UIImpactFeedbackGenerator {
+        UIImpactFeedbackGenerator(style: HapticPreferences.intensity.feedbackStyle)
+    }
     private let notificationGenerator = UINotificationFeedbackGenerator()
     let enginePlayer: HapticEnginePlaying
     let scheduler: HapticScheduling
@@ -40,7 +44,11 @@ final class HapticManager {
     }
 
     func playTrainingDigit(_ digit: Int, completion: (() -> Void)? = nil) {
-        playCountSignal(digit, generator: heavyImpactGenerator, completion: completion)
+        if HapticPreferences.isGroupByThreeEnabled {
+            playGroupedCountSignal(digit, generator: heavyImpactGenerator, completion: completion)
+        } else {
+            playCountSignal(digit, generator: heavyImpactGenerator, completion: completion)
+        }
     }
 
     func playDigitSignal(_ digit: Int, initialDelay: TimeInterval = HapticTiming.initialDelay, completion: (() -> Void)? = nil) {

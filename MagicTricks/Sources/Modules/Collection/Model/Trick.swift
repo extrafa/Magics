@@ -13,6 +13,7 @@ enum TrickType {
     case timeControl
     case magicGallery
     case geoMentalism
+    case phantomDraw
 
     var requiresPro: Bool {
         switch self {
@@ -72,7 +73,7 @@ struct TrickCollection {
             cardTitle: String(localized: "card.geo.cardTitle"),
             subtitle: String(localized: "card.geo.subtitle"),
             image: "globe.europe.africa.fill",
-            difficulty: .easy,
+            difficulty: .medium,
             instruction: .geoMentalism
         ),
         Trick(
@@ -87,6 +88,7 @@ struct TrickCollection {
         Trick(
             id: .calculatorPrediction,
             title: String(localized: "card.calculatorPrediction.title"),
+            cardTitle: String(localized: "card.calculatorPrediction.cardTitle"),
             subtitle: String(localized: "card.calculatorPrediction.subtitle"),
             image: "ipad",
             difficulty: .medium,
@@ -107,6 +109,15 @@ struct TrickCollection {
             image: "photo.on.rectangle.angled",
             difficulty: .hard,
             instruction: .magicGallery
+        ),
+        Trick(
+            id: .phantomDraw,
+            title: String(localized: "card.phantomDraw.title"),
+            cardTitle: String(localized: "card.phantomDraw.cardTitle"),
+            subtitle: String(localized: "card.phantomDraw.subtitle"),
+            image: "antenna.radiowaves.left.and.right",
+            difficulty: .easy,
+            instruction: .phantomDraw
         )
     ]
 }

@@ -13,7 +13,6 @@ extension MagicGalleryViewModel {
             alertMessage = String(localized: "magicGallery.error.allPhotosReady")
             return
         }
-
         activeCaptureSession = captureFlow.startSequential(firstNumber: nextAvailableNumber)
     }
 
@@ -22,11 +21,7 @@ extension MagicGalleryViewModel {
     }
 
     func handleSlotTap(_ number: Int) {
-        if let photo = photo(for: number) {
-            selectedPhotoNumber = photo.number
-        } else {
-            startCapture(for: number)
-        }
+        startCapture(for: number)
     }
 
     func handleCaptureCancelled() {
@@ -45,7 +40,6 @@ extension MagicGalleryViewModel {
             do {
                 let photo = try await photoLibrary.saveCustomPhoto(image, for: number)
                 upsert(photo)
-                selectedPhotoNumber = photo.number
             } catch {
                 alertMessage = String(localized: "magicGallery.error.savePhotoFailed")
             }
@@ -54,11 +48,7 @@ extension MagicGalleryViewModel {
 
     func deletePhoto(_ photo: MagicGalleryPhoto) {
         guard photo.isCustom else { return }
-
         removeCustomPhoto(number: photo.number)
-        if selectedPhotoNumber == photo.number {
-            selectedPhotoNumber = nil
-        }
 
         Task {
             do {
@@ -69,26 +59,14 @@ extension MagicGalleryViewModel {
         }
     }
 
-    func saveSelectedPhotoToGallery() async {
-        guard !isSaving else { return }
-        guard let image = selectedPhoto?.image else {
-            alertMessage = String(localized: "magicGallery.selectPhotoFirst")
-            return
-        }
-
-        isSaving = true
-        defer {
-            Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(800))
-                isSaving = false
-            }
-        }
-
+    func savePhoto(number: Int) async -> Bool {
+        guard let image = photo(for: number)?.image else { return false }
         do {
             try await photoSaver.saveToGallery(image)
             haptics.playSuccessNotification()
+            return true
         } catch {
-            alertMessage = String(localized: "magicGallery.error.saveToGalleryFailed")
+            return false
         }
     }
 
@@ -96,7 +74,6 @@ extension MagicGalleryViewModel {
         guard let pendingSession = captureFlow.pendingSessionIfNeeded(
             isActiveSessionPresent: activeCaptureSession != nil
         ) else { return }
-
         activeCaptureSession = pendingSession
     }
 }

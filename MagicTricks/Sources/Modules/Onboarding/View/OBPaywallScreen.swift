@@ -12,6 +12,7 @@ struct OBPaywallScreen: View {
 
     @EnvironmentObject private var store: StoreManager
     @State private var appeared = false
+    @State private var topInset: CGFloat = 44
 
     private struct Benefit {
         let icon: String
@@ -45,21 +46,30 @@ struct OBPaywallScreen: View {
             benefitsList
                 .padding(.horizontal, 24)
 
-            Spacer()
-
             bottomBlock
+                .padding(.top, 28)
                 .padding(.bottom, 40)
+        }
+        .background(
+            GeometryReader { proxy in
+                Color.clear.preference(key: TopInsetKey.self, value: proxy.safeAreaInsets.top)
+            }
+            .ignoresSafeArea()
+        )
+        .onPreferenceChange(TopInsetKey.self) { value in
+            if value > 0 { topInset = value }
         }
         .onAppear {
             Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(240))
+                try? await Task.sleep(milliseconds: 240)
                 appeared = true
             }
         }
-        .onChange(of: store.hasProAccess) {
+        .onChange(of: store.hasProAccess) { _ in
             if store.hasProAccess { onDismiss() }
         }
-        .fontDesign(.rounded)
+        .tint(.primary)
+        
     }
 
     // MARK: Close
@@ -76,18 +86,36 @@ struct OBPaywallScreen: View {
             }
         }
         .padding(.horizontal, 20)
-        .padding(.top, 12)
+        .padding(.top, topInset + 8)
         .opacity(appeared ? 1 : 0)
         .animation(.easeOut(duration: 0.2).delay(0.5), value: appeared)
     }
 
     // MARK: Hero
 
+    @State private var heroPulse = false
+
     private var heroIcon: some View {
         ZStack {
             Circle()
-                .fill(Color.primaryText.opacity(0.07))
-                .frame(width: 100, height: 100)
+                .stroke(Color.primaryText.opacity(0.1), lineWidth: 1)
+                .frame(width: 136, height: 136)
+
+            ForEach(0..<8, id: \.self) { i in
+                HeroSparkle(index: i)
+            }
+
+            Circle()
+                .fill(Color.primaryText.opacity(heroPulse ? 0.13 : 0.07))
+                .frame(
+                    width: heroPulse ? 104 : 98,
+                    height: heroPulse ? 104 : 98
+                )
+                .animation(
+                    .easeInOut(duration: 2.6).repeatForever(autoreverses: true),
+                    value: heroPulse
+                )
+
             Image(systemName: "wand.and.stars")
                 .font(.system(size: 42, weight: .semibold))
                 .foregroundStyle(.primaryText)
@@ -95,6 +123,7 @@ struct OBPaywallScreen: View {
         .scaleEffect(appeared ? 1 : 0.65)
         .opacity(appeared ? 1 : 0)
         .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.06), value: appeared)
+        .onAppear { heroPulse = true }
     }
 
     // MARK: Title
@@ -219,6 +248,46 @@ struct OBPaywallScreen: View {
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
         .background(Capsule().fill(Color("collectionMindPattern").opacity(0.12)))
+    }
+}
+
+
+private struct TopInsetKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = max(value, nextValue())
+    }
+}
+
+private struct HeroSparkle: View {
+    let index: Int
+
+    private static let sizes:  [CGFloat] = [8, 4, 9, 4, 7, 4, 9, 4]
+    private static let delays: [Double]  = [0, 0.55, 0.25, 0.80, 0.45, 0.10, 0.65, 0.35]
+
+    private var angle:    Double  { Double(index) / 8.0 * 2 * .pi - .pi / 2 }
+    private var starSize: CGFloat { Self.sizes[index] }
+    private var duration: Double  { 1.4 + Double(index % 3) * 0.4 }
+    private var delay:    Double  { Self.delays[index] }
+
+    @State private var active = false
+
+    var body: some View {
+        Image(systemName: "sparkle")
+            .font(.system(size: starSize, weight: .bold))
+            .foregroundStyle(Color.primaryText)
+            .opacity(active ? 0.7 : 0.08)
+            .scaleEffect(active ? 1.1 : 0.5)
+            .offset(x: cos(angle) * 68, y: sin(angle) * 68)
+            .onAppear {
+                withAnimation(
+                    .easeInOut(duration: duration)
+                    .repeatForever(autoreverses: true)
+                    .delay(delay)
+                ) {
+                    active = true
+                }
+            }
     }
 }
 

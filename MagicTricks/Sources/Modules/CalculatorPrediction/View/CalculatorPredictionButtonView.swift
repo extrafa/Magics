@@ -23,8 +23,7 @@ struct CalculatorPredictionButtonView: View {
                         .offset(x: -2)
                 } else {
                     Text(label)
-                        .font(.system(size: 32))
-                        .fontWeight(.medium)
+                        .font(.system(size: 32, weight: .medium))
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
             }

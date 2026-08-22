@@ -41,7 +41,7 @@ struct HapticAnswerSectionView: View {
                         .stroke(answerFieldStroke, lineWidth: 1.2)
                 }
                 .opacity(hasPlayed && !isPlaying || result != nil ? 1 : 0.42)
-                .onChange(of: answerText) { _, newValue in
+                .onChange(of: answerText) { newValue in
                     onAnswerChange(newValue)
                 }
 
@@ -49,8 +49,6 @@ struct HapticAnswerSectionView: View {
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(resultColor)
                 .frame(maxWidth: .infinity, minHeight: 20, alignment: .center)
-
-
         }
     }
 

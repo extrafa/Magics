@@ -44,6 +44,21 @@ struct InstructionStepRow: View {
         VStack(alignment: .leading, spacing: 12) {
             stepText
 
+            if let imageName = step.imageName {
+                Color.clear
+                    .aspectRatio(step.imageRatio.rawValue, contentMode: .fit)
+                    .overlay {
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFill()
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .stroke(Color.grayBorder, lineWidth: 1)
+                    }
+            }
+
             if !step.actions.isEmpty {
                 InstructionStepActionsView(actions: step.actions, onAction: onAction)
                     .frame(maxWidth: .infinity, alignment: .leading)

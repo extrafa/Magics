@@ -23,16 +23,16 @@ struct MotionSettingsScreen: View {
                 .padding(.top, 28)
                 .padding(.bottom, 36)
             }
-            .scrollIndicators(.hidden)
+            .hideScrollIndicators()
         }
         .navigationTitle(String(localized: "settings.motion.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .fontDesign(.rounded)
+        
     }
 }
 
 #Preview {
-    NavigationStack {
+    NavigationStackCompat {
         MotionSettingsScreen()
             .environmentObject(SettingsStore())
     }

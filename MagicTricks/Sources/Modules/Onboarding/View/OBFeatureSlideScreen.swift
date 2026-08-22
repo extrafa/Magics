@@ -103,7 +103,7 @@ struct OBFeatureSlideScreen: View {
         }
         .onAppear {
             Task { @MainActor in
-                try? await Task.sleep(for: .milliseconds(240))
+                try? await Task.sleep(milliseconds: 240)
                 appeared = true
             }
         }
