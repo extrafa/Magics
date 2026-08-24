@@ -21,28 +21,30 @@ struct OBPaywallScreen: View {
         let detail: String
     }
 
+    private typealias Palette = TrickPalette.Collection
+
     private let benefits: [Benefit] = [
         Benefit(
             icon: "photo.on.rectangle.angled",
-            color: TrickPalette.Collection.magicGallery,
+            color: Palette.magicGallery,
             title: String.paywall("benefit.magicGallery"),
             detail: String.paywall("benefit.magicGallery.detail")
         ),
         Benefit(
             icon: "ipad",
-            color: TrickPalette.Collection.calculatorPrediction,
+            color: Palette.calculatorPrediction,
             title: String.paywall("benefit.calculatorPrediction"),
             detail: String.paywall("benefit.calculatorPrediction.detail")
         ),
         Benefit(
             icon: "paintpalette",
-            color: TrickPalette.Collection.colorSense,
+            color: Palette.colorSense,
             title: String.paywall("benefit.colorSense"),
             detail: String.paywall("benefit.colorSense.detail")
         ),
         Benefit(
             icon: "stopwatch.fill",
-            color: TrickPalette.Collection.timeControl,
+            color: Palette.timeControl,
             title: String.paywall("benefit.timeControl"),
             detail: String.paywall("benefit.timeControl.detail")
         ),
@@ -182,7 +184,6 @@ struct OBPaywallScreen: View {
             Text(String.paywall("title"))
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundStyle(.primaryText)
-                .multilineTextAlignment(.center)
                 .opacity(appeared ? 1 : 0)
                 .offset(y: appeared ? 0 : 14)
                 .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.2), value: appeared)
@@ -190,11 +191,11 @@ struct OBPaywallScreen: View {
             Text(String.paywall("subtitle"))
                 .font(.system(size: 16, weight: .regular, design: .rounded))
                 .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
                 .opacity(appeared ? 1 : 0)
                 .offset(y: appeared ? 0 : 10)
                 .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.27), value: appeared)
         }
+        .multilineTextAlignment(.center)
     }
 
     // MARK: Benefits
