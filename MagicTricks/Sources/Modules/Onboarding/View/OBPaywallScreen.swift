@@ -22,11 +22,36 @@ struct OBPaywallScreen: View {
     }
 
     private let benefits: [Benefit] = [
-        Benefit(icon: "photo.on.rectangle.angled", color: TrickPalette.Collection.magicGallery,         title: String(localized: "onboarding.paywall.benefit.magicGallery"),         detail: String(localized: "onboarding.paywall.benefit.magicGallery.detail")),
-        Benefit(icon: "ipad",                      color: TrickPalette.Collection.calculatorPrediction, title: String(localized: "onboarding.paywall.benefit.calculatorPrediction"), detail: String(localized: "onboarding.paywall.benefit.calculatorPrediction.detail")),
-        Benefit(icon: "paintpalette",              color: TrickPalette.Collection.colorSense,           title: String(localized: "onboarding.paywall.benefit.colorSense"),           detail: String(localized: "onboarding.paywall.benefit.colorSense.detail")),
-        Benefit(icon: "stopwatch.fill",            color: TrickPalette.Collection.timeControl,          title: String(localized: "onboarding.paywall.benefit.timeControl"),          detail: String(localized: "onboarding.paywall.benefit.timeControl.detail")),
-        Benefit(icon: "sparkles",                  color: Color("collectionMindPattern"),               title: String(localized: "onboarding.paywall.benefit.noWatermark"),         detail: String(localized: "onboarding.paywall.benefit.noWatermark.detail")),
+        Benefit(
+            icon: "photo.on.rectangle.angled",
+            color: TrickPalette.Collection.magicGallery,
+            title: String.paywall("benefit.magicGallery"),
+            detail: String.paywall("benefit.magicGallery.detail")
+        ),
+        Benefit(
+            icon: "ipad",
+            color: TrickPalette.Collection.calculatorPrediction,
+            title: String.paywall("benefit.calculatorPrediction"),
+            detail: String.paywall("benefit.calculatorPrediction.detail")
+        ),
+        Benefit(
+            icon: "paintpalette",
+            color: TrickPalette.Collection.colorSense,
+            title: String.paywall("benefit.colorSense"),
+            detail: String.paywall("benefit.colorSense.detail")
+        ),
+        Benefit(
+            icon: "stopwatch.fill",
+            color: TrickPalette.Collection.timeControl,
+            title: String.paywall("benefit.timeControl"),
+            detail: String.paywall("benefit.timeControl.detail")
+        ),
+        Benefit(
+            icon: "sparkles",
+            color: Color("collectionMindPattern"),
+            title: String.paywall("benefit.noWatermark"),
+            detail: String.paywall("benefit.noWatermark.detail")
+        ),
     ]
 
     var body: some View {
@@ -69,7 +94,31 @@ struct OBPaywallScreen: View {
             if store.hasProAccess { onDismiss() }
         }
         .tint(.primary)
-        
+        .alert(
+            String(localized: "common.error"),
+            isPresented: isAlertPresented,
+            actions: errorAlertActions,
+            message: errorAlertMessage
+        )
+    }
+
+    // MARK: Alert
+
+    private var isAlertPresented: Binding<Bool> {
+        Binding(
+            get: { store.alertMessage != nil },
+            set: { if !$0 { store.alertMessage = nil } }
+        )
+    }
+
+    @ViewBuilder
+    private func errorAlertActions() -> some View {
+        Button(String(localized: "common.ok")) { store.alertMessage = nil }
+    }
+
+    @ViewBuilder
+    private func errorAlertMessage() -> some View {
+        Text(store.alertMessage ?? "")
     }
 
     // MARK: Close
@@ -130,7 +179,7 @@ struct OBPaywallScreen: View {
 
     private var titleBlock: some View {
         VStack(spacing: 8) {
-            Text(String(localized: "onboarding.paywall.title"))
+            Text(String.paywall("title"))
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundStyle(.primaryText)
                 .multilineTextAlignment(.center)
@@ -138,7 +187,7 @@ struct OBPaywallScreen: View {
                 .offset(y: appeared ? 0 : 14)
                 .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.2), value: appeared)
 
-            Text(String(localized: "onboarding.paywall.subtitle"))
+            Text(String.paywall("subtitle"))
                 .font(.system(size: 16, weight: .regular, design: .rounded))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
@@ -189,31 +238,64 @@ struct OBPaywallScreen: View {
         VStack(spacing: 12) {
             priceLabel
 
-            OnboardingCTAButton(
-                title: String(localized: "onboarding.paywall.cta"),
-                isEnabled: !store.products.isEmpty,
-                action: { Task { await store.purchase() } }
-            )
-            .padding(.horizontal, 24)
+            purchaseSection
 
             Button(action: { Task { await store.restore() } }) {
-                Text(String(localized: "onboarding.paywall.restore"))
-                    .font(.system(size: 14, weight: .medium, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .padding(.vertical, 8)
+                if store.phase == .restoring {
+                    ProgressView()
+                        .padding(.vertical, 8)
+                } else {
+                    Text(String.paywall("restore"))
+                        .font(.system(size: 14, weight: .medium, design: .rounded))
+                        .foregroundStyle(.secondary)
+                        .padding(.vertical, 8)
+                }
             }
+            .disabled(store.phase != .idle)
 
             HStack(spacing: 16) {
-                Link(String(localized: "onboarding.paywall.terms"), destination: AppConfig.termsOfUseURL)
+                Link(String.paywall("terms"), destination: AppConfig.termsOfUseURL)
                 Text("·")
-                Link(String(localized: "onboarding.paywall.privacy"), destination: AppConfig.privacyPolicyURL)
+                Link(String.paywall("privacy"), destination: AppConfig.privacyPolicyURL)
             }
             .font(.system(size: 11, weight: .regular, design: .rounded))
             .foregroundStyle(.tertiary)
         }
+        .frame(maxWidth: .infinity)
         .opacity(appeared ? 1 : 0)
         .offset(y: appeared ? 0 : 16)
         .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.58 + Double(benefits.count - 1) * 0.08), value: appeared)
+    }
+
+    // MARK: Purchase
+
+    @ViewBuilder
+    private var purchaseSection: some View {
+        if let productsLoadError = store.productsLoadError {
+            VStack(spacing: 10) {
+                Text(productsLoadError)
+                    .font(.system(size: 13, weight: .regular, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+                    .frame(width: 300)
+
+                OnboardingCTAButton(
+                    title: String.paywall("retry"),
+                    isLoading: store.phase == .loadingProducts,
+                    action: { Task { await store.retryLoadProducts() } }
+                )
+                .padding(.horizontal, 24)
+            }
+        } else {
+            OnboardingCTAButton(
+                title: String.paywall("cta"),
+                isEnabled: !store.products.isEmpty && store.phase != .restoring,
+                isLoading: store.phase == .purchasing || store.phase == .loadingProducts,
+                action: { Task { await store.purchase() } }
+            )
+            .padding(.horizontal, 24)
+        }
     }
 
     // MARK: Price
@@ -229,7 +311,7 @@ struct OBPaywallScreen: View {
                         .font(.system(size: 26, weight: .bold, design: .rounded))
                         .foregroundStyle(.primaryText)
 
-                    Text(String(localized: "onboarding.paywall.period"))
+                    Text(String.paywall("period"))
                         .font(.system(size: 14, weight: .medium, design: .rounded))
                         .foregroundStyle(.secondary)
                 }
@@ -241,7 +323,7 @@ struct OBPaywallScreen: View {
         HStack(spacing: 5) {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 11))
-            Text(String(localized: "onboarding.paywall.onetime"))
+            Text(String.paywall("onetime"))
                 .font(.system(size: 12, weight: .semibold, design: .rounded))
         }
         .foregroundStyle(Color("collectionMindPattern"))
@@ -251,6 +333,12 @@ struct OBPaywallScreen: View {
     }
 }
 
+
+private extension String {
+    static func paywall(_ key: String) -> String {
+        NSLocalizedString("onboarding.paywall.\(key)", comment: "")
+    }
+}
 
 private struct TopInsetKey: PreferenceKey {
     static var defaultValue: CGFloat = 0

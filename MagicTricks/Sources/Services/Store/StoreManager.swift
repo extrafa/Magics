@@ -7,6 +7,17 @@
 
 import Foundation
 
+// MARK: - Phase
+
+enum PurchasePhase: Equatable {
+    case idle
+    case purchasing
+    case restoring
+    case loadingProducts
+}
+
+// MARK: - Manager
+
 @MainActor
 final class StoreManager: ObservableObject {
 
@@ -16,6 +27,9 @@ final class StoreManager: ObservableObject {
     }
 
     @Published private(set) var products: [StoreProduct] = []
+    @Published private(set) var phase: PurchasePhase = .idle
+    @Published var alertMessage: String?
+    @Published private(set) var productsLoadError: String?
     @Published private var _hasStoreAccess: Bool = false
     @Published var isProOverride: Bool {
         didSet { UserDefaults.standard.set(isProOverride, forKey: "dev.proOverride") }
@@ -75,28 +89,55 @@ final class StoreManager: ObservableObject {
     // MARK: Actions
 
     func purchase() async {
-        guard let id = products.first?.id else { return }
+        guard let id = products.first?.id else {
+            alertMessage = .paywallError("productsLoadFailed")
+            return
+        }
+        phase = .purchasing
+        defer { phase = .idle }
         do {
-            let result = try await service.purchase(productID: id)
-            if result == .success {
+            switch try await service.purchase(productID: id) {
+            case .success:
                 await refreshAccess()
+            case .userCancelled:
+                break
+            case .pending:
+                alertMessage = .paywallError("pending")
             }
-        } catch { }
+        } catch {
+            alertMessage = .paywallError("purchaseFailed")
+        }
     }
 
     func restore() async {
+        phase = .restoring
+        defer { phase = .idle }
         do {
             try await service.sync()
             await refreshAccess()
-        } catch { }
+            if !hasProAccess {
+                alertMessage = .paywallError("noPurchasesFound")
+            }
+        } catch {
+            alertMessage = .paywallError("restoreFailed")
+        }
+    }
+
+    func retryLoadProducts() async {
+        await loadProducts()
     }
 
     // MARK: Private
 
     private func loadProducts() async {
+        phase = .loadingProducts
+        defer { phase = .idle }
         do {
             products = try await service.loadProducts(for: productIDs)
-        } catch { }
+            productsLoadError = products.isEmpty ? .paywallError("productsLoadFailed") : nil
+        } catch {
+            productsLoadError = .paywallError("productsLoadFailed")
+        }
     }
 
     private func refreshAccess() async {
@@ -115,5 +156,11 @@ final class StoreManager: ObservableObject {
                 await refreshAccess()
             }
         }
+    }
+}
+
+private extension String {
+    static func paywallError(_ key: String) -> String {
+        NSLocalizedString("onboarding.paywall.error.\(key)", comment: "")
     }
 }
