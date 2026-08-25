@@ -42,10 +42,6 @@ final class HapticManager {
         }
     }
 
-    func playDigitSignal(_ digit: Int, initialDelay: TimeInterval = HapticTiming.initialDelay, completion: (() -> Void)? = nil) {
-        playCountSignal(digit, initialDelay: initialDelay, generator: impactGenerator, completion: completion)
-    }
-
     func playTimeValue(
         _ value: Int,
         initialDelay: TimeInterval = 0,
