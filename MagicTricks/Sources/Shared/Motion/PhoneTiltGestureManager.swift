@@ -46,7 +46,12 @@ final class PhoneTiltGestureManager {
 
     private func startMonitoring(completion: @escaping @MainActor (Bool) -> Void) {
         guard motionManager.isDeviceMotionAvailable else {
+            // Simulator has no accelerometer; keep the gesture testable there.
+            #if targetEnvironment(simulator)
             Task { @MainActor in completion(true) }
+            #else
+            Task { @MainActor in completion(false) }
+            #endif
             return
         }
 
