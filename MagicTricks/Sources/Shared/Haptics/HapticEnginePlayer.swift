@@ -69,7 +69,6 @@ final class HapticEnginePlayer {
             try engine.start()
             self.engine = engine
         } catch {
-            supportsHaptics = false
             engine = nil
         }
     }
