@@ -24,8 +24,8 @@ extension HapticManager {
         let tens = value / 10
         let ones = value % 10
         let totalDuration = TimeControlHapticPattern.digitDuration(tens)
-        + TimeControlHapticPattern.digitGap
-        + TimeControlHapticPattern.digitDuration(ones)
+            + TimeControlHapticPattern.digitGap
+            + TimeControlHapticPattern.digitDuration(ones)
 
         playTimeValueWithCoreHaptics(tens: tens, ones: ones, initialDelay: initialDelay)
         scheduleCompletion(
