@@ -12,12 +12,7 @@ import UIKit
 final class HapticManager {
     static let shared = HapticManager()
 
-    var mediumImpactGenerator: UIImpactFeedbackGenerator {
-        UIImpactFeedbackGenerator(style: HapticPreferences.intensity.feedbackStyle)
-    }
-    var heavyImpactGenerator: UIImpactFeedbackGenerator {
-        UIImpactFeedbackGenerator(style: HapticPreferences.intensity.feedbackStyle)
-    }
+    let impactGenerator = UIImpactFeedbackGenerator(style: .heavy)
     private let notificationGenerator = UINotificationFeedbackGenerator()
     let enginePlayer: HapticEnginePlaying
     let scheduler: HapticScheduling
@@ -39,20 +34,16 @@ final class HapticManager {
         notificationGenerator.notificationOccurred(.success)
     }
 
-    func playColorCode(_ count: Int, completion: (() -> Void)? = nil) {
-        playCountSignal(count, generator: mediumImpactGenerator, completion: completion)
-    }
-
-    func playTrainingDigit(_ digit: Int, completion: (() -> Void)? = nil) {
+    func playCount(_ count: Int, completion: (() -> Void)? = nil) {
         if HapticPreferences.isGroupByThreeEnabled {
-            playGroupedCountSignal(digit, generator: heavyImpactGenerator, completion: completion)
+            playGroupedCountSignal(count, generator: impactGenerator, completion: completion)
         } else {
-            playCountSignal(digit, generator: heavyImpactGenerator, completion: completion)
+            playCountSignal(count, generator: impactGenerator, completion: completion)
         }
     }
 
     func playDigitSignal(_ digit: Int, initialDelay: TimeInterval = HapticTiming.initialDelay, completion: (() -> Void)? = nil) {
-        playCountSignal(digit, initialDelay: initialDelay, generator: heavyImpactGenerator, completion: completion)
+        playCountSignal(digit, initialDelay: initialDelay, generator: impactGenerator, completion: completion)
     }
 
     func playTimeValue(

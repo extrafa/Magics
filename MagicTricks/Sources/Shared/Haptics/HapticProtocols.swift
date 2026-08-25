@@ -54,8 +54,7 @@ protocol HapticNotificationPlaying {
 
 @MainActor
 protocol CountHapticPlaying {
-    func playColorCode(_ count: Int, completion: (() -> Void)?)
-    func playTrainingDigit(_ digit: Int, completion: (() -> Void)?)
+    func playCount(_ count: Int, completion: (() -> Void)?)
     func playDigitSignal(_ digit: Int, initialDelay: TimeInterval, completion: (() -> Void)?)
 }
 
