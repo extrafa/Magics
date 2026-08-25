@@ -39,12 +39,20 @@ final class PhoneTiltGestureManager {
         monitoringTask?.cancel()
         monitoringTask = nil
         screenDownSince = nil
-        pendingCompletion = nil
+        resumePendingCompletion(with: false)
     }
 
     // MARK: Private
 
+    private func resumePendingCompletion(with result: Bool) {
+        let handler = pendingCompletion
+        pendingCompletion = nil
+        handler?(result)
+    }
+
     private func startMonitoring(completion: @escaping @MainActor (Bool) -> Void) {
+        resumePendingCompletion(with: false)
+
         guard motionManager.isDeviceMotionAvailable else {
             // Simulator has no accelerometer; keep the gesture testable there.
             #if targetEnvironment(simulator)
@@ -82,6 +90,7 @@ final class PhoneTiltGestureManager {
             if screenDownSince == nil { screenDownSince = Date() }
             if let since = screenDownSince, Date().timeIntervalSince(since) >= holdDuration {
                 let handler = pendingCompletion
+                pendingCompletion = nil
                 stopMonitoring()
                 handler?(true)
             }
