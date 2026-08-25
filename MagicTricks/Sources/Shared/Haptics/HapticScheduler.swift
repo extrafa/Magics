@@ -32,11 +32,7 @@ final class HapticScheduler {
         intensity: CGFloat? = nil
     ) {
         schedule(after: delay) {
-            if let intensity {
-                generator.impactOccurred(intensity: intensity)
-            } else {
-                generator.impactOccurred()
-            }
+            generator.impactOccurred(intensity: intensity ?? HapticPreferences.intensity.impactIntensity)
             generator.prepare()
         }
     }
@@ -53,12 +49,13 @@ final class HapticScheduler {
             return
         }
 
+        let intensity = HapticPreferences.intensity.impactIntensity
         generator.prepare()
 
         for index in 0..<count {
             let isLast = index == count - 1
             schedule(after: initialDelay + Double(index) * interval) {
-                generator.impactOccurred()
+                generator.impactOccurred(intensity: intensity)
                 if !isLast { generator.prepare() }
                 if isLast { completion?() }
             }
