@@ -70,12 +70,12 @@ struct HapticSettingsScreen: View {
                     isTesting = false
                     return
                 }
-                haptics.playTrainingDigit(testNumber) {
+                haptics.playCount(testNumber) {
                     isTesting = false
                 }
             }
         } else {
-            haptics.playTrainingDigit(testNumber) {
+            haptics.playCount(testNumber) {
                 isTesting = false
             }
         }

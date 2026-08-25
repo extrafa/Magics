@@ -62,7 +62,7 @@ final class ColorSenseViewModel: ObservableObject {
         playSignalTask = Task { [weak self] in
             try? await Task.sleep(seconds: 1)
             guard !Task.isCancelled, let self else { return }
-            haptics.playColorCode(type.vibrations) { [weak self] in
+            haptics.playCount(type.vibrations) { [weak self] in
                 self?.canTap = true
             }
         }

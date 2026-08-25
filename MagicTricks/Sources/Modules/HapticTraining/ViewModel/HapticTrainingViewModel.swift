@@ -61,7 +61,7 @@ final class HapticTrainingViewModel: ObservableObject {
         hasPlayed = true
 
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-            countHaptics.playTrainingDigit(targetValue) { continuation.resume() }
+            countHaptics.playCount(targetValue) { continuation.resume() }
         }
 
         isPlaying = false

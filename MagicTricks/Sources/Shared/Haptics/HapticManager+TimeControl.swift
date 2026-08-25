@@ -13,9 +13,9 @@ extension HapticManager {
         let ones = value % 10
         let gapAfterTens = HapticPreferences.groupedDigitGap
 
-        playGroupedCountSignal(tens, initialDelay: initialDelay, generator: heavyImpactGenerator) {
+        playGroupedCountSignal(tens, initialDelay: initialDelay, generator: impactGenerator) {
             self.schedule(after: gapAfterTens) {
-                self.playGroupedCountSignal(ones, generator: self.heavyImpactGenerator, completion: completion)
+                self.playGroupedCountSignal(ones, generator: self.impactGenerator, completion: completion)
             }
         }
     }
@@ -24,8 +24,8 @@ extension HapticManager {
         let tens = value / 10
         let ones = value % 10
         let totalDuration = TimeControlHapticPattern.digitDuration(tens)
-        + TimeControlHapticPattern.digitGap
-        + TimeControlHapticPattern.digitDuration(ones)
+            + TimeControlHapticPattern.digitGap
+            + TimeControlHapticPattern.digitDuration(ones)
 
         playTimeValueWithCoreHaptics(tens: tens, ones: ones, initialDelay: initialDelay)
         scheduleCompletion(
@@ -48,11 +48,11 @@ extension HapticManager {
     }
 
     func playTimeValueFallback(tens: Int, ones: Int, initialDelay: TimeInterval) {
-        heavyImpactGenerator.prepare()
+        impactGenerator.prepare()
         var time = initialDelay
 
-        time = scheduler.scheduleTimeDigit(tens, startTime: time, generator: heavyImpactGenerator)
+        time = scheduler.scheduleTimeDigit(tens, startTime: time, generator: impactGenerator)
         time += TimeControlHapticPattern.digitGap
-        _ = scheduler.scheduleTimeDigit(ones, startTime: time, generator: heavyImpactGenerator)
+        _ = scheduler.scheduleTimeDigit(ones, startTime: time, generator: impactGenerator)
     }
 }

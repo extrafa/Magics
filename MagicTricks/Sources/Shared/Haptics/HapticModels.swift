@@ -23,6 +23,14 @@ enum HapticIntensity: Equatable, Hashable {
         }
     }
 
+    var impactIntensity: CGFloat {
+        switch self {
+        case .light: 1.0 / 3.0
+        case .medium: 2.0 / 3.0
+        case .heavy: 1.0
+        }
+    }
+
     var localizedTitle: String {
         switch self {
         case .light: String(localized: "settings.haptics.intensity.weak")
