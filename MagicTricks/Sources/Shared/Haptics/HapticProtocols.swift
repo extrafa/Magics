@@ -13,11 +13,13 @@ import UIKit
 protocol HapticEnginePlaying {
     func restartEngineIfNeeded()
     func playEvents(_ events: [CHHapticEvent], fallback: () -> Void)
+    func stop()
 }
 
 @MainActor
 protocol HapticScheduling {
     func schedule(after delay: TimeInterval, action: @escaping () -> Void)
+    func cancelAll()
     func scheduleCompletion(
         initialDelay: TimeInterval,
         signalDuration: TimeInterval,
@@ -55,6 +57,7 @@ protocol HapticNotificationPlaying {
 @MainActor
 protocol CountHapticPlaying {
     func playCount(_ count: Int, completion: (() -> Void)?)
+    func cancelPendingHaptics()
 }
 
 @MainActor
@@ -65,4 +68,5 @@ protocol TimeHapticPlaying {
         usesGrouping: Bool,
         completion: (() -> Void)?
     )
+    func cancelPendingHaptics()
 }

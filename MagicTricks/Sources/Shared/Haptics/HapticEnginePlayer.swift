@@ -15,6 +15,7 @@ final class HapticEnginePlayer {
     }
 
     private var engine: CHHapticEngine?
+    private var currentPlayer: CHHapticPatternPlayer?
     private var supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
 
     init() {
@@ -50,6 +51,12 @@ final class HapticEnginePlayer {
         }
     }
 
+    func stop() {
+        guard let engine, let currentPlayer else { return }
+        try? currentPlayer.stop(atTime: engine.currentTime)
+        self.currentPlayer = nil
+    }
+
     private func configureEngine() {
         guard supportsHaptics else { return }
 
@@ -83,6 +90,7 @@ final class HapticEnginePlayer {
         let pattern = try CHHapticPattern(events: events, parameters: [])
         let player = try engine.makePlayer(with: pattern)
         try player.start(atTime: 0)
+        currentPlayer = player
     }
 }
 

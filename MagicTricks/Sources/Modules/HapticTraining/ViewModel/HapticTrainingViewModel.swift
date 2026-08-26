@@ -26,6 +26,8 @@ final class HapticTrainingViewModel: ObservableObject {
     private let options: [Int]
     private let countHaptics: CountHapticPlaying
 
+    private var pendingHapticCompletion: Completion?
+
     init(
         mode: HapticTrainingMode = .digits,
         countHaptics: CountHapticPlaying? = nil
@@ -54,16 +56,30 @@ final class HapticTrainingViewModel: ObservableObject {
         }
     }
 
-    // Bridges the callback-based HapticManager API into async/await.
+    func cancel() {
+        countHaptics.cancelPendingHaptics()
+        resumePendingHapticCompletion()
+        isPlaying = false
+    }
+
     func playSignal() async {
         guard !isPlaying else { return }
         isPlaying = true
         hasPlayed = true
 
         await withCheckedContinuation { (continuation: CheckedContinuation<Void, Never>) in
-            countHaptics.playCount(targetValue) { continuation.resume() }
+            pendingHapticCompletion = { continuation.resume() }
+            countHaptics.playCount(targetValue) { [weak self] in
+                self?.resumePendingHapticCompletion()
+            }
         }
 
         isPlaying = false
+    }
+
+    private func resumePendingHapticCompletion() {
+        let completion = pendingHapticCompletion
+        pendingHapticCompletion = nil
+        completion?()
     }
 }

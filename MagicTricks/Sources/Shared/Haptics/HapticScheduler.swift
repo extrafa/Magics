@@ -10,10 +10,18 @@ import UIKit
 
 @MainActor
 final class HapticScheduler {
+    private var generation = 0
+
     func schedule(after delay: TimeInterval, action: @escaping () -> Void) {
-        DispatchQueue.main.asyncAfter(deadline: .now() + delay) {
+        let scheduledGeneration = generation
+        DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
+            guard self?.generation == scheduledGeneration else { return }
             action()
         }
+    }
+
+    func cancelAll() {
+        generation += 1
     }
 
     func scheduleCompletion(

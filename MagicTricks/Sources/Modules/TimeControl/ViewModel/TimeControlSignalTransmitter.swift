@@ -34,6 +34,8 @@ final class TimeControlSignalTransmitter: TimeControlSignalTransmitting {
     private let automaticStartDelay: TimeInterval = 1
     private let sectionDelay: TimeInterval = 3
 
+    private var pendingHapticCompletion: Completion?
+
     init(
         haptics: TimeHapticPlaying? = nil,
         preferences: MotionPreferenceManaging = AppPreferences.shared,
@@ -69,6 +71,8 @@ final class TimeControlSignalTransmitter: TimeControlSignalTransmitting {
 
     func cancel() {
         gestureManager.stopMonitoring()
+        haptics.cancelPendingHaptics()
+        resumePendingHapticCompletion()
     }
 
     private func waitForStartTrigger() async -> Bool {
@@ -81,9 +85,16 @@ final class TimeControlSignalTransmitter: TimeControlSignalTransmitting {
 
     private func playTimeValue(_ value: Int) async {
         await withCheckedContinuation { continuation in
-            haptics.playTimeValue(value, initialDelay: 0, usesGrouping: true) {
-                continuation.resume()
+            pendingHapticCompletion = { continuation.resume() }
+            haptics.playTimeValue(value, initialDelay: 0, usesGrouping: true) { [weak self] in
+                self?.resumePendingHapticCompletion()
             }
         }
+    }
+
+    private func resumePendingHapticCompletion() {
+        let completion = pendingHapticCompletion
+        pendingHapticCompletion = nil
+        completion?()
     }
 }

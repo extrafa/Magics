@@ -34,7 +34,13 @@ final class HapticManager {
         notificationGenerator.notificationOccurred(.success)
     }
 
+    func cancelPendingHaptics() {
+        scheduler.cancelAll()
+        enginePlayer.stop()
+    }
+
     func playCount(_ count: Int, completion: (() -> Void)? = nil) {
+        cancelPendingHaptics()
         if HapticPreferences.isGroupByThreeEnabled {
             playGroupedCountSignal(count, generator: impactGenerator, completion: completion)
         } else {
@@ -48,6 +54,7 @@ final class HapticManager {
         usesGrouping: Bool = true,
         completion: (() -> Void)? = nil
     ) {
+        cancelPendingHaptics()
         if usesGrouping && HapticPreferences.isGroupByThreeEnabled {
             playGroupedTimeValue(value, initialDelay: initialDelay, completion: completion)
         } else {

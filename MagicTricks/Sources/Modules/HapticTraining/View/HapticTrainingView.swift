@@ -32,6 +32,9 @@ struct HapticTrainingView: View {
             .padding(.top, 24)
             .padding(.bottom, 24)
         }
+        .onDisappear {
+            viewModel.cancel()
+        }
     }
 
     private var signalDeck: some View {
