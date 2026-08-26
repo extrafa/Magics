@@ -18,6 +18,7 @@ protocol HapticEnginePlaying {
 @MainActor
 protocol HapticScheduling {
     func schedule(after delay: TimeInterval, action: @escaping () -> Void)
+    func cancelAll()
     func scheduleCompletion(
         initialDelay: TimeInterval,
         signalDuration: TimeInterval,
