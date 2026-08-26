@@ -13,6 +13,7 @@ import UIKit
 protocol HapticEnginePlaying {
     func restartEngineIfNeeded()
     func playEvents(_ events: [CHHapticEvent], fallback: () -> Void)
+    func stop()
 }
 
 @MainActor

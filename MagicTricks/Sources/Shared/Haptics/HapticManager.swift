@@ -36,6 +36,7 @@ final class HapticManager {
 
     func cancelPendingHaptics() {
         scheduler.cancelAll()
+        enginePlayer.stop()
     }
 
     func playCount(_ count: Int, completion: (() -> Void)? = nil) {
