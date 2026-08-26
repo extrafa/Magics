@@ -157,25 +157,30 @@ final class PhantomDrawSessionManager: ObservableObject {
                 if done || error != nil { conn.cancel() }
                 return
             }
-            let length = header.withUnsafeBytes { $0.load(as: UInt32.self).bigEndian }
-            guard length > 0, length < 1_000_000 else { self.receiveLoop(conn); return }
+            let length = header.withUnsafeBytes { $0.loadUnaligned(as: UInt32.self).bigEndian }
+            guard length > 0, length < 1_000_000 else {
+                conn.cancel()
+                return
+            }
 
             conn.receive(minimumIncompleteLength: Int(length), maximumLength: Int(length)) { [weak self] body, _, done2, error2 in
                 guard let self, let body, !done2, error2 == nil else {
                     if done2 || error2 != nil { conn.cancel() }
                     return
                 }
-                if let msg = try? JSONDecoder().decode(PhantomDrawMessage.self, from: body) {
-                    DispatchQueue.main.async { [weak self] in
-                        guard let self else { return }
-                        switch msg {
-                        case .stroke(let s):    self.receivedStrokes.append(s)
-                        case .clear:            self.receivedStrokes = []
-                        case .sync(let all):    self.receivedStrokes = all
-                        }
+                guard let msg = try? JSONDecoder().decode(PhantomDrawMessage.self, from: body) else {
+                    conn.cancel()
+                    return
+                }
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    switch msg {
+                    case .stroke(let s):    self.receivedStrokes.append(s)
+                    case .clear:            self.receivedStrokes = []
+                    case .sync(let all):    self.receivedStrokes = all
                     }
                 }
-                self.receiveLoop(conn)
+                DispatchQueue.main.async { [weak self] in self?.receiveLoop(conn) }
             }
         }
     }
