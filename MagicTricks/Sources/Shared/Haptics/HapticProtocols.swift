@@ -56,6 +56,7 @@ protocol HapticNotificationPlaying {
 @MainActor
 protocol CountHapticPlaying {
     func playCount(_ count: Int, completion: (() -> Void)?)
+    func cancelPendingHaptics()
 }
 
 @MainActor
@@ -66,4 +67,5 @@ protocol TimeHapticPlaying {
         usesGrouping: Bool,
         completion: (() -> Void)?
     )
+    func cancelPendingHaptics()
 }

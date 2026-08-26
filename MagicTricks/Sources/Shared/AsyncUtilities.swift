@@ -1,5 +1,7 @@
 import Foundation
 
+typealias Completion = () -> Void
+
 func waitSeconds(_ seconds: TimeInterval) async -> Bool {
     do {
         try await Task.sleep(nanoseconds: UInt64(seconds * 1_000_000_000))

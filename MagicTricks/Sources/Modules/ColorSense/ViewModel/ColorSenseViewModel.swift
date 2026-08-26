@@ -40,6 +40,7 @@ final class ColorSenseViewModel: ObservableObject {
     func cancel() {
         tapAnimationTask?.cancel()
         playSignalTask?.cancel()
+        haptics.cancelPendingHaptics()
         activeTapCardID = nil
         canTap = true
     }
