@@ -54,6 +54,9 @@ struct HapticSettingsScreen: View {
             isWaitingForGesture = false
             isTesting = false
         }
+        .onDisappear {
+            haptics.cancelPendingHaptics()
+        }
     }
 
     private func playPreview() {
