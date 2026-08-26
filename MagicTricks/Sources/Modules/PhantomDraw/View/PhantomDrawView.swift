@@ -9,6 +9,7 @@ struct PhantomDrawView: View {
 
     @StateObject private var viewModel = PhantomDrawViewModel()
     @Environment(\.dismiss) private var dismiss
+    @AppStorage("phantomDrawLastCode") private var codeInput = ""
 
     private var state: PhantomDrawConnectionState { viewModel.session.connectionState }
 
@@ -44,6 +45,14 @@ struct PhantomDrawView: View {
         ZStack {
             if case .idle = state {
                 roleSelectionView
+                    .transition(.asymmetric(
+                        insertion: .opacity,
+                        removal: .opacity.combined(with: .offset(y: 24))
+                    ))
+            }
+
+            if case .enteringCode = state {
+                enteringCodeView
                     .transition(.asymmetric(
                         insertion: .opacity,
                         removal: .opacity.combined(with: .offset(y: 24))
@@ -166,6 +175,63 @@ struct PhantomDrawView: View {
         .buttonStyle(.plain)
     }
 
+    // MARK: - Entering Code
+
+    private var enteringCodeView: some View {
+        VStack(spacing: 0) {
+            Spacer()
+            VStack(spacing: 10) {
+                Image(systemName: "number")
+                    .font(.system(size: 44, weight: .light))
+                    .foregroundStyle(TrickPalette.Collection.phantomDraw)
+                Text("Enter the Code")
+                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.primaryText)
+                Text("Type the code shown on the spectator's phone.")
+                    .font(.system(size: 15, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+            }
+            Spacer().frame(height: 28)
+            TextField("00", text: $codeInput)
+                .keyboardType(.numberPad)
+                .font(.system(size: 34, weight: .black, design: .rounded))
+                .foregroundStyle(.primaryText)
+                .multilineTextAlignment(.center)
+                .frame(width: 120, height: 60)
+                .background {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(Color.grayCard)
+                        .overlay {
+                            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                                .stroke(Color.grayBorder, lineWidth: 1)
+                        }
+                }
+                .onChange(of: codeInput) { newValue in
+                    codeInput = String(newValue.filter(\.isNumber).prefix(2))
+                }
+            Spacer().frame(height: 28)
+            Button {
+                viewModel.submitReceiverCode(codeInput)
+            } label: {
+                Text("Connect")
+                    .font(.headline)
+                    .frame(maxWidth: .infinity)
+                    .frame(height: 54)
+            }
+            .buttonStyle(PrimaryTrickButtonStyle(color: TrickPalette.Collection.phantomDraw))
+            .disabled(codeInput.count != 2)
+            .padding(.horizontal, 32)
+            Spacer()
+            Button("Cancel", action: stop)
+                .font(.system(size: 16, weight: .medium, design: .rounded))
+                .foregroundStyle(.secondary)
+                .padding(.bottom, 32)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
     // MARK: - Searching
 
     private var searchingView: some View {
@@ -183,6 +249,15 @@ struct PhantomDrawView: View {
                  : "Keep both phones close together.")
                 .font(.system(size: 15, design: .rounded))
                 .foregroundStyle(.secondary)
+            if viewModel.role == .sender, let code = viewModel.session.pairingCode {
+                Spacer().frame(height: 20)
+                Text(code)
+                    .font(.system(size: 44, weight: .heavy, design: .rounded))
+                    .foregroundStyle(TrickPalette.Collection.phantomDraw)
+                Text("Enter this code on the other device")
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
             Spacer()
             Button("Cancel", action: stop)
                 .font(.system(size: 16, weight: .medium, design: .rounded))
@@ -228,6 +303,7 @@ struct PhantomDrawView: View {
 
     private func stop() {
         viewModel.stop()
+        codeInput = ""
         dismiss()
     }
 }
