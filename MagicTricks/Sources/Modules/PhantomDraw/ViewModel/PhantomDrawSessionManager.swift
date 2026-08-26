@@ -5,14 +5,17 @@
 
 import Foundation
 import Network
+import Security
 
 @MainActor
 final class PhantomDrawSessionManager: ObservableObject {
 
     private static let bonjourType = "_phantomdraw._tcp"
+    private static let pskIdentity = "PhantomDraw"
 
     @Published var connectionState: PhantomDrawConnectionState = .idle
     @Published var receivedStrokes: [DrawingStroke] = []
+    @Published private(set) var pairingCode: String?
 
     @Published var isReconnecting = false
 
@@ -24,23 +27,27 @@ final class PhantomDrawSessionManager: ObservableObject {
     private var listener: NWListener?
     private var browser: NWBrowser?
     private var connection: NWConnection?
+    private var receiverCode: String?
 
     // MARK: - Public API
 
-    func startAsReceiver() {
+    func startAsReceiver(code: String) {
         teardown()
         currentRole = .receiver
         isReconnecting = false
+        receiverCode = code
         connectionState = .searching
-        startBrowsing()
+        startBrowsing(code: code)
     }
 
     func startAsSender() {
         teardown()
         currentRole = .sender
         isReconnecting = false
+        let code = String(format: "%02d", Int.random(in: 0..<100))
+        pairingCode = code
         connectionState = .searching
-        startListening()
+        startListening(code: code)
     }
 
     func send(_ message: PhantomDrawMessage) {
@@ -54,13 +61,14 @@ final class PhantomDrawSessionManager: ObservableObject {
         isReconnecting = false
         connectionState = .idle
         receivedStrokes = []
+        pairingCode = nil
     }
 
     // MARK: - Sender: persistent listener
 
-    private func startListening() {
+    private func startListening(code: String) {
         listener?.cancel()
-        let params = makeParams()
+        let params = makeParams(code: code)
         guard let l = try? NWListener(using: params) else {
             connectionState = .failed; return
         }
@@ -87,9 +95,9 @@ final class PhantomDrawSessionManager: ObservableObject {
 
     // MARK: - Receiver: auto-restart browser
 
-    private func startBrowsing() {
+    private func startBrowsing(code: String) {
         browser?.cancel()
-        let params = makeParams()
+        let params = makeParams(code: code)
         let b = NWBrowser(for: .bonjour(type: Self.bonjourType, domain: nil), using: params)
         b.browseResultsChangedHandler = { [weak self] results, _ in
             DispatchQueue.main.async { [weak self] in
@@ -132,7 +140,9 @@ final class PhantomDrawSessionManager: ObservableObject {
                         self.isReconnecting = true
                     case .receiver:
                         self.connectionState = .searching
-                        self.startBrowsing()
+                        if let receiverCode = self.receiverCode {
+                            self.startBrowsing(code: receiverCode)
+                        }
                     }
 
                 default:
@@ -187,8 +197,22 @@ final class PhantomDrawSessionManager: ObservableObject {
 
     // MARK: - Helpers
 
-    private func makeParams() -> NWParameters {
-        let p = NWParameters.tcp
+    private func makeParams(code: String) -> NWParameters {
+        let tlsOptions = NWProtocolTLS.Options()
+        let secOptions = tlsOptions.securityProtocolOptions
+
+        // Don't pin min TLS version — with the PSK below it forces TLS 1.3 anyway, but pinning it explicitly breaks the handshake.
+        let keyBytes = Array(code.utf8)
+        let identityBytes = Array(Self.pskIdentity.utf8)
+        keyBytes.withUnsafeBytes { rawKey in
+            identityBytes.withUnsafeBytes { rawIdentity in
+                let key = DispatchData(bytes: rawKey)
+                let identity = DispatchData(bytes: rawIdentity)
+                sec_protocol_options_add_pre_shared_key(secOptions, key as __DispatchData, identity as __DispatchData)
+            }
+        }
+
+        let p = NWParameters(tls: tlsOptions, tcp: NWProtocolTCP.Options())
         p.includePeerToPeer = true
         return p
     }
@@ -200,6 +224,7 @@ final class PhantomDrawSessionManager: ObservableObject {
         browser = nil
         listener = nil
         connection = nil
+        receiverCode = nil
     }
 }
 
