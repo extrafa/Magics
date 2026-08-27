@@ -9,17 +9,21 @@ import SwiftUI
 import UIKit
 
 private struct ExitHintLongPressModifier: ViewModifier {
+    let rect: CGRect
     let onExit: () -> Void
 
     func body(content: Content) -> some View {
         content.overlay {
-            ExitHintGestureCaptureView(onExit: onExit)
+            ExitHintGestureCaptureView(rect: rect, onExit: onExit)
         }
     }
 }
 
 private struct ExitHintGestureCaptureView: UIViewRepresentable {
+    let rect: CGRect
     let onExit: () -> Void
+
+    @EnvironmentObject private var gestureCoordinator: ExitHintGestureCoordinator
 
     func makeCoordinator() -> Coordinator {
         Coordinator(onExit: onExit)
@@ -35,6 +39,9 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
     func updateUIView(_ uiView: GestureInstallerView, context: Context) {
         context.coordinator.onExit = onExit
+        context.coordinator.rect = rect
+        context.coordinator.gestureCoordinator = gestureCoordinator
+        uiView.isTrainingActive = gestureCoordinator.isTrainingActive
         if let window = uiView.window {
             context.coordinator.installRecognizerIfNeeded(on: window)
         }
@@ -42,6 +49,8 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         var onExit: () -> Void
+        var rect: CGRect = .zero
+        weak var gestureCoordinator: ExitHintGestureCoordinator?
         private weak var installedWindow: UIWindow?
         private var longPressRecognizer: UILongPressGestureRecognizer?
         private var touchTracker: TouchTrackingRecognizer?
@@ -79,25 +88,25 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
             tracker.onTouchDown = { [weak self] location in
                 guard let self else { return }
-                guard ExitHintGestureState.shared.globalRect.contains(location) else { return }
+                guard self.rect.contains(location) else { return }
                 self.isHoldActive = true
                 self.touchStartTime = Date()
-                ExitHintGestureState.shared.onHoldStarted?()
+                self.gestureCoordinator?.onHoldStarted?()
             }
 
             tracker.onTouchMoved = { [weak self] location in
                 guard let self, self.isHoldActive else { return }
-                let activeRect = ExitHintGestureState.shared.globalRect.insetBy(dx: -20, dy: -20)
+                let activeRect = self.rect.insetBy(dx: -20, dy: -20)
                 if !activeRect.contains(location) {
                     self.isHoldActive = false
-                    ExitHintGestureState.shared.onHoldCancelled?()
+                    self.gestureCoordinator?.onHoldCancelled?()
                 }
             }
 
             tracker.onTouchUp = { [weak self] in
                 guard let self, self.isHoldActive else { return }
                 self.isHoldActive = false
-                ExitHintGestureState.shared.onHoldCancelled?()
+                self.gestureCoordinator?.onHoldCancelled?()
             }
 
             window.addGestureRecognizer(tracker)
@@ -127,13 +136,13 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             switch recognizer.state {
             case .began:
                 let location = recognizer.location(in: recognizer.view)
-                let expandedRect = ExitHintGestureState.shared.globalRect.insetBy(dx: -20, dy: -20)
+                let expandedRect = rect.insetBy(dx: -20, dy: -20)
                 guard expandedRect.contains(location), !didTriggerExit, !didTriggerSwipe else {
                     return
                 }
                 didTriggerExit = true
-                if ExitHintGestureState.shared.isTrainingActive {
-                    ExitHintGestureState.shared.onTrainingHold?()
+                if gestureCoordinator?.isTrainingActive == true {
+                    gestureCoordinator?.onTrainingHold?()
                 } else {
                     onExit()
                 }
@@ -153,17 +162,17 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
                     x: location.x - translation.x,
                     y: location.y - translation.y
                 )
-                panStartedInRect = ExitHintGestureState.shared.globalRect.contains(startLocation)
+                panStartedInRect = rect.contains(startLocation)
                 didTriggerSwipe = false
             case .changed:
                 guard panStartedInRect, !didTriggerSwipe, !didTriggerExit,
-                      ExitHintGestureState.shared.isTrainingActive else { return }
+                      gestureCoordinator?.isTrainingActive == true else { return }
                 if let start = touchStartTime, Date().timeIntervalSince(start) > 0.5 { return }
                 let velocity = recognizer.velocity(in: recognizer.view)
                 let speed = hypot(velocity.x, velocity.y)
                 guard speed > 400 else { return }
                 didTriggerSwipe = true
-                ExitHintGestureState.shared.onSwipe?()
+                gestureCoordinator?.onSwipe?()
             case .ended, .cancelled, .failed:
                 panStartedInRect = false
                 didTriggerSwipe = false
@@ -173,15 +182,15 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
         }
 
         @objc private func handleTap(_ recognizer: UITapGestureRecognizer) {
-            guard recognizer.state == .ended, ExitHintGestureState.shared.isTrainingActive else { return }
+            guard recognizer.state == .ended, gestureCoordinator?.isTrainingActive == true else { return }
             let location = recognizer.location(in: recognizer.view)
-            guard !ExitHintGestureState.shared.globalRect.contains(location) else { return }
-            ExitHintGestureState.shared.onOutsideTap?()
+            guard !rect.contains(location) else { return }
+            gestureCoordinator?.onOutsideTap?()
         }
 
         func gestureRecognizerShouldBegin(_ gestureRecognizer: UIGestureRecognizer) -> Bool {
             if gestureRecognizer === tapRecognizer {
-                return ExitHintGestureState.shared.isTrainingActive
+                return gestureCoordinator?.isTrainingActive == true
             }
             return true
         }
@@ -230,6 +239,7 @@ private final class TouchTrackingRecognizer: UIGestureRecognizer {
 
 private final class GestureInstallerView: UIView {
     var onMoveToWindow: ((UIWindow) -> Void)?
+    var isTrainingActive = false
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -247,12 +257,12 @@ private final class GestureInstallerView: UIView {
     }
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        ExitHintGestureState.shared.isTrainingActive
+        isTrainingActive
     }
 }
 
 extension View {
-    func exitHintLongPressEnabled(onExit: @escaping () -> Void) -> some View {
-        modifier(ExitHintLongPressModifier(onExit: onExit))
+    func exitHintLongPressEnabled(rect: CGRect, onExit: @escaping () -> Void) -> some View {
+        modifier(ExitHintLongPressModifier(rect: rect, onExit: onExit))
     }
 }
