@@ -179,12 +179,13 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
 
         guard let cgImg = normalizedImage.cgImage else { return normalizedImage }
         let pixelRatio = CGFloat(cgImg.width) / imageView.bounds.width
+        let imageBounds = CGRect(x: 0, y: 0, width: cgImg.width, height: cgImg.height)
         let pixelRect = CGRect(
             x: visibleInView.minX * pixelRatio,
             y: visibleInView.minY * pixelRatio,
             width: visibleInView.width * pixelRatio,
             height: visibleInView.height * pixelRatio
-        ).integral
+        ).integral.intersection(imageBounds)
 
         guard let cropped = cgImg.cropping(to: pixelRect) else {
             return normalizedImage
