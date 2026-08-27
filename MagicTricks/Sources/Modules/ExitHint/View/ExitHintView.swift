@@ -25,8 +25,11 @@ struct ExitHintView: View {
                 exitHitArea
                 hintOverlay
                     .opacity(isVisible ? viewModel.hintOpacity : 0)
+                    .animation(hintOpacityAnimation, value: viewModel.hintOpacity)
                     .scaleEffect(viewModel.holdScale)
+                    .animation(holdScaleAnimation, value: viewModel.holdScale)
                     .brightness(viewModel.flashBrightness)
+                    .animation(flashBrightnessAnimation, value: viewModel.flashBrightness)
             }
             .padding(.top, 10)
             .padding(.leading, 12)
@@ -39,7 +42,8 @@ struct ExitHintView: View {
         ) {
             Button(String(localized: "exitHint.showAgain"), role: .cancel) { }
             Button(String(localized: "common.gotIt")) {
-                viewModel.confirmHintDismiss {
+                withAnimation(.easeOut(duration: ExitHintConfirmAnimation.duration)) {
+                    viewModel.confirmHintDismiss()
                     isVisible = false
                     dismiss()
                 }
@@ -56,12 +60,12 @@ struct ExitHintView: View {
             Text(String(localized: "exitHint.swipe.description"))
         }
         .onAppear {
-            viewModel.configurePresentation(isVisible: isVisible, isHintVisible: $isVisible)
+            viewModel.configurePresentation(isVisible: isVisible) { isVisible = false }
             syncGestureState()
         }
         .onChange(of: isVisible) { newValue in
             if newValue {
-                viewModel.configurePresentation(isVisible: newValue, isHintVisible: $isVisible)
+                viewModel.configurePresentation(isVisible: newValue) { isVisible = false }
             } else {
                 viewModel.cancelAutoFade()
             }
@@ -134,6 +138,27 @@ struct ExitHintView: View {
                 }
                 .allowsHitTesting(false)
         }
+    }
+
+    private var hintOpacityAnimation: Animation? {
+        switch viewModel.hintOpacity {
+        case ExitHintOpacity.visible: nil
+        case ExitHintOpacity.dimmed: .easeOut(duration: ExitHintFadeTiming.dimDuration)
+        default:                     .easeOut(duration: ExitHintFadeTiming.hideDuration)
+        }
+    }
+
+    private var holdScaleAnimation: Animation {
+        let pressDuration = ExitHintZone.minimumPressDuration * ExitHintHoldAnimation.pressDurationMultiplier
+        return viewModel.holdScale == ExitHintHoldScale.pressed
+            ? .easeInOut(duration: pressDuration)
+            : .spring(response: ExitHintHoldAnimation.releaseSpringResponse, dampingFraction: ExitHintHoldAnimation.releaseSpringDamping)
+    }
+
+    private var flashBrightnessAnimation: Animation {
+        viewModel.flashBrightness == ExitHintFlash.peak
+            ? .easeOut(duration: ExitHintFlashAnimation.fadeInDuration)
+            : .easeIn(duration: ExitHintFlashAnimation.fadeOutDuration)
     }
 
     private func syncGestureState() {

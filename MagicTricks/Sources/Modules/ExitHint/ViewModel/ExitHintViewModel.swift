@@ -5,13 +5,13 @@
 //  Created by Ross on 09/04/2026.
 //
 
-import SwiftUI
+import Foundation
 
 @MainActor
 final class ExitHintViewModel: ObservableObject {
-    @Published var hintOpacity = 1.0
-    @Published var holdScale: CGFloat = 1.0
-    @Published var flashBrightness: Double = 0.0
+    @Published var hintOpacity = ExitHintOpacity.visible
+    @Published var holdScale: CGFloat = ExitHintHoldScale.released
+    @Published var flashBrightness = ExitHintFlash.rest
     @Published var isConfirmAlertPresented = false
     @Published var isSwipeAlertPresented = false
 
@@ -42,77 +42,61 @@ final class ExitHintViewModel: ObservableObject {
         isSwipeAlertPresented = true
     }
 
-    func confirmHintDismiss(onConfirmExit: @escaping () -> Void) {
+    func confirmHintDismiss() {
         didLearnExitHint = true
         isConfirmAlertPresented = false
-        withAnimation(.easeOut(duration: 0.22)) {
-            onConfirmExit()
-        }
     }
 
-    func configurePresentation(isVisible: Bool, isHintVisible: Binding<Bool>) {
+    func configurePresentation(isVisible: Bool, onAutoFadeComplete: @escaping () -> Void) {
         autoFadeTask?.cancel()
-        hintOpacity = 1
+        hintOpacity = ExitHintOpacity.visible
 
         guard isVisible, didLearnExitHint else { return }
 
         autoFadeTask = Task {
-            try? await Task.sleep(seconds: 2)
+            await pause(ExitHintFadeTiming.initialDelay)
             guard !Task.isCancelled else { return }
 
-            withAnimation(.easeOut(duration: 2.2)) {
-                self.hintOpacity = 0.18
-            }
+            hintOpacity = ExitHintOpacity.dimmed
 
-            try? await Task.sleep(milliseconds: 2200)
+            await pause(ExitHintFadeTiming.dimDuration)
             guard !Task.isCancelled else { return }
 
-            // Fade to 0 within ExitHintView's own hierarchy — avoids triggering an
-            // animation transaction on the parent view (which would merge with any
-            // repeatForever animations on sibling views and cause a visual jerk).
-            withAnimation(.easeOut(duration: 0.8)) {
-                self.hintOpacity = 0
-            }
+            hintOpacity = ExitHintOpacity.hidden
 
-            try? await Task.sleep(milliseconds: 800)
+            await pause(ExitHintFadeTiming.hideDuration)
             guard !Task.isCancelled else { return }
 
-            // Already at opacity 0 — set binding without animation so the parent
-            // doesn't receive an animated transaction.
-            isHintVisible.wrappedValue = false
+            onAutoFadeComplete()
         }
     }
 
     func flashHint() {
         flashTask?.cancel()
         flashTask = Task {
-            for _ in 0..<2 {
-                withAnimation(.easeOut(duration: 0.07)) {
-                    self.flashBrightness = 0.30
-                }
-                try? await Task.sleep(milliseconds: 90)
-                withAnimation(.easeIn(duration: 0.16)) {
-                    self.flashBrightness = 0.0
-                }
-                try? await Task.sleep(milliseconds: 200)
+            for _ in 0..<ExitHintFlash.repeatCount {
+                flashBrightness = ExitHintFlash.peak
+                await pause(ExitHintFlashTiming.holdAfterPeak)
+                flashBrightness = ExitHintFlash.rest
+                await pause(ExitHintFlashTiming.holdAfterRest)
             }
         }
     }
 
     func holdStarted() {
         cancelAutoFade()
-        withAnimation(.easeInOut(duration: ExitHintZone.minimumPressDuration * 1.4)) {
-            holdScale = 0.90
-        }
+        holdScale = ExitHintHoldScale.pressed
     }
 
     func holdCancelled() {
-        withAnimation(.spring(response: 0.38, dampingFraction: 0.55)) {
-            holdScale = 1.0
-        }
+        holdScale = ExitHintHoldScale.released
     }
 
     func cancelAutoFade() {
         autoFadeTask?.cancel()
+    }
+
+    private func pause(_ duration: TimeInterval) async {
+        try? await Task.sleep(seconds: duration)
     }
 }

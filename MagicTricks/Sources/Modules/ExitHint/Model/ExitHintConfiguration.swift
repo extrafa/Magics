@@ -24,6 +24,49 @@ enum ExitHintZone {
     static let minimumPressDuration: TimeInterval = 1.5
 }
 
+enum ExitHintOpacity {
+    static let visible = 1.0
+    static let dimmed = 0.18
+    static let hidden = 0.0
+}
+
+enum ExitHintHoldScale {
+    static let pressed: CGFloat = 0.90
+    static let released: CGFloat = 1.0
+}
+
+enum ExitHintFlash {
+    static let peak = 0.30
+    static let rest = 0.0
+    static let repeatCount = 2
+}
+
+enum ExitHintFadeTiming {
+    static let initialDelay: TimeInterval = 2
+    static let dimDuration: TimeInterval = 2.2
+    static let hideDuration: TimeInterval = 0.8
+}
+
+enum ExitHintFlashTiming {
+    static let holdAfterPeak: TimeInterval = 0.09
+    static let holdAfterRest: TimeInterval = 0.20
+}
+
+enum ExitHintFlashAnimation {
+    static let fadeInDuration: TimeInterval = 0.07
+    static let fadeOutDuration: TimeInterval = 0.16
+}
+
+enum ExitHintHoldAnimation {
+    static let pressDurationMultiplier: TimeInterval = 1.4
+    static let releaseSpringResponse = 0.38
+    static let releaseSpringDamping = 0.55
+}
+
+enum ExitHintConfirmAnimation {
+    static let duration: TimeInterval = 0.22
+}
+
 enum ExitHintStyle {
     case normal
     case specialWhite
