@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum TrickType {
+enum TrickType: String, CaseIterable {
     case colorSense
     case calculatorPrediction
     case timeControl
