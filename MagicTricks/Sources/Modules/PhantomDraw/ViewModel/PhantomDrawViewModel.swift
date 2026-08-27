@@ -33,9 +33,13 @@ final class PhantomDrawViewModel: ObservableObject {
     func selectRole(_ role: PhantomDrawRole) {
         self.role = role
         switch role {
-        case .receiver: session.startAsReceiver()
+        case .receiver: session.connectionState = .enteringCode
         case .sender:   session.startAsSender()
         }
+    }
+
+    func submitReceiverCode(_ code: String) {
+        session.startAsReceiver(code: code)
     }
 
     func setCanvasSize(_ size: CGSize) {

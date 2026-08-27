@@ -13,6 +13,7 @@ enum PhantomDrawRole {
 
 enum PhantomDrawConnectionState: Equatable {
     case idle
+    case enteringCode
     case searching
     case connected(peerName: String)
     case failed
