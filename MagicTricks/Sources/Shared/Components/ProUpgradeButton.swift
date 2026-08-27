@@ -14,10 +14,10 @@ struct ProUpgradeButton: View {
     var body: some View {
         Button(action: action) {
             Text("Get Pro")
-                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(.white)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 6)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 9)
                 .background { capsule }
         }
         .task { await shimmerLoop() }
