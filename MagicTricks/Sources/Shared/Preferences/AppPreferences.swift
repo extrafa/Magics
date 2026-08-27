@@ -4,8 +4,8 @@ protocol PreferenceStoring {
     func object(forKey defaultName: String) -> Any?
     func bool(forKey defaultName: String) -> Bool
     func double(forKey defaultName: String) -> Double
-    func set(_ value: Bool, forKey defaultName: String)
-    func set(_ value: Double, forKey defaultName: String)
+    func stringArray(forKey defaultName: String) -> [String]?
+    func set(_ value: Any?, forKey defaultName: String)
 }
 
 extension UserDefaults: PreferenceStoring {}
@@ -55,6 +55,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
         static let trickLaunchCount = "trickLaunchCount"
         static let hasRespondedToRating = "hasRespondedToRating"
+        static let seenTrickIds = "seenTrickIds"
     }
 
     enum Default {
@@ -164,6 +165,11 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     var hasRespondedToRating: Bool {
         get { store.bool(forKey: Key.hasRespondedToRating) }
         nonmutating set { store.set(newValue, forKey: Key.hasRespondedToRating) }
+    }
+
+    var seenTrickIds: [String] {
+        get { store.stringArray(forKey: Key.seenTrickIds) ?? [] }
+        nonmutating set { store.set(newValue, forKey: Key.seenTrickIds) }
     }
 
     var usesStandardMagicGallerySet: Bool {
