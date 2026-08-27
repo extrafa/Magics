@@ -70,9 +70,10 @@ final class SettingsStoreTests: XCTestCase {
 private final class MockSettingsPreferenceStore: PreferenceStoring {
     var bools: [String: Bool] = [:]
     var doubles: [String: Double] = [:]
+    var stringArrays: [String: [String]] = [:]
 
     func object(forKey defaultName: String) -> Any? {
-        bools[defaultName] ?? doubles[defaultName]
+        bools[defaultName] ?? doubles[defaultName] ?? stringArrays[defaultName]
     }
 
     func bool(forKey defaultName: String) -> Bool {
@@ -83,11 +84,16 @@ private final class MockSettingsPreferenceStore: PreferenceStoring {
         doubles[defaultName] ?? 0
     }
 
-    func set(_ value: Bool, forKey defaultName: String) {
-        bools[defaultName] = value
+    func stringArray(forKey defaultName: String) -> [String]? {
+        stringArrays[defaultName]
     }
 
-    func set(_ value: Double, forKey defaultName: String) {
-        doubles[defaultName] = value
+    func set(_ value: Any?, forKey defaultName: String) {
+        switch value {
+        case let value as Bool:     bools[defaultName] = value
+        case let value as Double:   doubles[defaultName] = value
+        case let value as [String]: stringArrays[defaultName] = value
+        default: break
+        }
     }
 }
