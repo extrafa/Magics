@@ -13,8 +13,12 @@ final class AppFlowCoordinator: ObservableObject {
     @Published var activeFlow: FullScreenFlow?
     @Published var activeSheet: SheetFlow?
 
-    private let preferences = AppPreferences.shared
+    private let preferences: AppPreferences
     private static let ratingTriggerCount = 3
+
+    init(preferences: AppPreferences = .shared) {
+        self.preferences = preferences
+    }
 
     func recordTrickClose() {
         guard !preferences.hasRespondedToRating else { return }
@@ -49,15 +53,14 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     func markTrickAsSeen(_ trick: Trick) {
-        var seen = UserDefaults.standard.stringArray(forKey: "seenTrickIds") ?? []
-        let id = String(describing: trick.id)
+        var seen = preferences.seenTrickIds
+        let id = trick.id.rawValue
         guard !seen.contains(id) else { return }
         seen.append(id)
-        UserDefaults.standard.set(seen, forKey: "seenTrickIds")
+        preferences.seenTrickIds = seen
     }
 
     private func hasSeenTrick(_ trick: Trick) -> Bool {
-        let seen = UserDefaults.standard.stringArray(forKey: "seenTrickIds") ?? []
-        return seen.contains(String(describing: trick.id))
+        preferences.seenTrickIds.contains(trick.id.rawValue)
     }
 }
