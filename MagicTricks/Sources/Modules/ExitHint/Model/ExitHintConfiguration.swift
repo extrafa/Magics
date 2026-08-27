@@ -7,10 +7,15 @@
 
 import SwiftUI
 
+struct ExitHintRectPreferenceKey: PreferenceKey {
+    static var defaultValue: CGRect = .zero
+    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
+        value = nextValue()
+    }
+}
+
 @MainActor
-final class ExitHintGestureState {
-    static let shared = ExitHintGestureState()
-    var globalRect: CGRect = .zero
+final class ExitHintGestureCoordinator: ObservableObject {
     var isTrainingActive = false
     var onTrainingHold: (() -> Void)?
     var onOutsideTap: (() -> Void)?

@@ -13,6 +13,8 @@ struct ExitHintView: View {
     let style: ExitHintStyle
 
     @StateObject private var viewModel = ExitHintViewModel()
+    @StateObject private var gestureCoordinator = ExitHintGestureCoordinator()
+    @State private var hintGlobalRect: CGRect = .zero
 
     init(isVisible: Binding<Bool>, style: ExitHintStyle = .normal) {
         _isVisible = isVisible
@@ -35,7 +37,9 @@ struct ExitHintView: View {
             .padding(.leading, 12)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .exitHintLongPressEnabled(onExit: dismiss.callAsFunction)
+        .exitHintLongPressEnabled(rect: hintGlobalRect, onExit: dismiss.callAsFunction)
+        .environmentObject(gestureCoordinator)
+        .onPreferenceChange(ExitHintRectPreferenceKey.self) { hintGlobalRect = $0 }
         .alert(
             String(localized: "exitHint.confirm.title"),
             isPresented: $viewModel.isConfirmAlertPresented
@@ -76,14 +80,6 @@ struct ExitHintView: View {
         }
         .onChange(of: viewModel.isSwipeAlertPresented) { _ in
             syncGestureState()
-        }
-        .onDisappear {
-            ExitHintGestureState.shared.isTrainingActive = false
-            ExitHintGestureState.shared.onTrainingHold = nil
-            ExitHintGestureState.shared.onOutsideTap = nil
-            ExitHintGestureState.shared.onHoldStarted = nil
-            ExitHintGestureState.shared.onHoldCancelled = nil
-            ExitHintGestureState.shared.onSwipe = nil
         }
     }
 
@@ -128,12 +124,7 @@ struct ExitHintView: View {
                 .background {
                     GeometryReader { proxy in
                         Color.clear
-                            .onAppear {
-                                ExitHintGestureState.shared.globalRect = proxy.frame(in: .global)
-                            }
-                            .onChange(of: proxy.frame(in: .global)) { newValue in
-                                ExitHintGestureState.shared.globalRect = newValue
-                            }
+                            .preference(key: ExitHintRectPreferenceKey.self, value: proxy.frame(in: .global))
                     }
                 }
                 .allowsHitTesting(false)
@@ -162,20 +153,20 @@ struct ExitHintView: View {
     }
 
     private func syncGestureState() {
-        ExitHintGestureState.shared.isTrainingActive = isVisible && viewModel.shouldBlockInteraction
-        ExitHintGestureState.shared.onTrainingHold = {
+        gestureCoordinator.isTrainingActive = isVisible && viewModel.shouldBlockInteraction
+        gestureCoordinator.onTrainingHold = {
             viewModel.presentConfirmation()
         }
-        ExitHintGestureState.shared.onOutsideTap = {
+        gestureCoordinator.onOutsideTap = {
             viewModel.flashHint()
         }
-        ExitHintGestureState.shared.onHoldStarted = {
+        gestureCoordinator.onHoldStarted = {
             viewModel.holdStarted()
         }
-        ExitHintGestureState.shared.onHoldCancelled = {
+        gestureCoordinator.onHoldCancelled = {
             viewModel.holdCancelled()
         }
-        ExitHintGestureState.shared.onSwipe = {
+        gestureCoordinator.onSwipe = {
             viewModel.presentSwipeAlert()
         }
     }
