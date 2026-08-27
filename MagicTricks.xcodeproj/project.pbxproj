@@ -113,6 +113,7 @@
 		28D000012FC7350000AA0001 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D000002FC7350000AA0001 /* AppPreferences.swift */; };
 		28E100012FC9F00000BB0001 /* TrickPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E100002FC9F00000BB0001 /* TrickPalette.swift */; };
 		28E200022FCE720000BB0001 /* TrickButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E200012FCE720000BB0001 /* TrickButtonStyles.swift */; };
+		0AML00000000000000000025 /* ProUpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000024 /* ProUpgradeButton.swift */; };
 		28E935822FF2BEEC00AEF6EC /* OBFirstScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */; };
 		28F1571830334E1A00DBF903 /* MagicTricksIconSecond.icon in Resources */ = {isa = PBXBuildFile; fileRef = 28F1571730334E1A00DBF903 /* MagicTricksIconSecond.icon */; };
 		28F200012FCE500000CC0001 /* MotionSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F200002FCE500000CC0001 /* MotionSettingsSection.swift */; };
@@ -271,6 +272,7 @@
 		28D000002FC7350000AA0001 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
 		28E100002FC9F00000BB0001 /* TrickPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickPalette.swift; sourceTree = "<group>"; };
 		28E200012FCE720000BB0001 /* TrickButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickButtonStyles.swift; sourceTree = "<group>"; };
+		0AML00000000000000000024 /* ProUpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProUpgradeButton.swift; sourceTree = "<group>"; };
 		28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBFirstScreen.swift; sourceTree = "<group>"; };
 		28F1571730334E1A00DBF903 /* MagicTricksIconSecond.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIconSecond.icon; sourceTree = "<group>"; };
 		28F200002FCE500000CC0001 /* MotionSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSettingsSection.swift; sourceTree = "<group>"; };
@@ -680,6 +682,7 @@
 			children = (
 				28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */,
 				28E200012FCE720000BB0001 /* TrickButtonStyles.swift */,
+				0AML00000000000000000024 /* ProUpgradeButton.swift */,
 				0A0002000000000000000023 /* TrickGradientCard.swift */,
 				0A0002000000000000000029 /* WatermarkView.swift */,
 			);
@@ -1157,6 +1160,7 @@
 				28F200012FCE500000CC0001 /* MotionSettingsSection.swift in Sources */,
 				28E100012FC9F00000BB0001 /* TrickPalette.swift in Sources */,
 				28E200022FCE720000BB0001 /* TrickButtonStyles.swift in Sources */,
+				0AML00000000000000000025 /* ProUpgradeButton.swift in Sources */,
 				289123EF2FC880000051759C /* HapticEnginePlayer.swift in Sources */,
 				289123F12FC880000051759C /* HapticScheduler.swift in Sources */,
 				289123F32FC880000051759C /* HapticProtocols.swift in Sources */,
