@@ -24,7 +24,7 @@ struct PhantomDrawReceiverView: View {
                     }
 
                     Canvas { context, size in
-                        drawStrokes(viewModel.session.receivedStrokes, context: context, canvasSize: size)
+                        context.drawStrokes(viewModel.session.receivedStrokes, canvasSize: size)
                     }
                     .padding(24)
                     .allowsHitTesting(false)
@@ -61,21 +61,5 @@ struct PhantomDrawReceiverView: View {
                 .font(.system(size: 13, weight: .medium, design: .rounded))
                 .foregroundStyle(.secondary)
         }
-    }
-}
-
-private func drawStrokes(_ strokes: [DrawingStroke], context: GraphicsContext, canvasSize: CGSize) {
-    for stroke in strokes {
-        guard stroke.points.count > 1 else { continue }
-        var path = Path()
-        path.move(to: stroke.points[0].toCGPoint(in: canvasSize))
-        for point in stroke.points.dropFirst() {
-            path.addLine(to: point.toCGPoint(in: canvasSize))
-        }
-        context.stroke(
-            path,
-            with: .color(.black),
-            style: StrokeStyle(lineWidth: 3.5, lineCap: .round, lineJoin: .round)
-        )
     }
 }

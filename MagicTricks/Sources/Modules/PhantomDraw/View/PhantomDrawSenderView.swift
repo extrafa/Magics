@@ -21,8 +21,8 @@ struct PhantomDrawSenderView: View {
                     }
 
                     Canvas { context, size in
-                        drawStrokes(viewModel.completedStrokes, context: context, canvasSize: size, color: .black)
-                        drawActiveStroke(viewModel.currentStroke, context: context, color: .black)
+                        context.drawStrokes(viewModel.completedStrokes, canvasSize: size)
+                        context.drawActiveStroke(viewModel.currentStroke)
                     }
                     .ignoresSafeArea()
                     .gesture(
@@ -69,36 +69,4 @@ struct PhantomDrawSenderView: View {
         }
         .allowsHitTesting(false)
     }
-}
-
-// MARK: - Drawing helpers
-
-private func drawStrokes(_ strokes: [DrawingStroke], context: GraphicsContext, canvasSize: CGSize, color: Color) {
-    for stroke in strokes {
-        guard stroke.points.count > 1 else { continue }
-        var path = Path()
-        path.move(to: stroke.points[0].toCGPoint(in: canvasSize))
-        for point in stroke.points.dropFirst() {
-            path.addLine(to: point.toCGPoint(in: canvasSize))
-        }
-        context.stroke(
-            path,
-            with: .color(color),
-            style: StrokeStyle(lineWidth: 3.5, lineCap: .round, lineJoin: .round)
-        )
-    }
-}
-
-private func drawActiveStroke(_ points: [CGPoint], context: GraphicsContext, color: Color) {
-    guard points.count > 1 else { return }
-    var path = Path()
-    path.move(to: points[0])
-    for point in points.dropFirst() {
-        path.addLine(to: point)
-    }
-    context.stroke(
-        path,
-        with: .color(color),
-        style: StrokeStyle(lineWidth: 3.5, lineCap: .round, lineJoin: .round)
-    )
 }
