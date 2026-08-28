@@ -53,7 +53,12 @@ final class StoreManager: ObservableObject {
     ) {
         self.productIDs = productIDs
         self.service = service
-        self.isProOverride = UserDefaults.standard.bool(forKey: "dev.proOverride")
+        let storedProOverride = UserDefaults.standard.bool(forKey: "dev.proOverride")
+        self.isProOverride = AppBuildEnvironment.isSandboxOrDebug && storedProOverride
+        if storedProOverride, !AppBuildEnvironment.isSandboxOrDebug {
+            // Property observers don't fire during init, so this write is explicit.
+            UserDefaults.standard.set(false, forKey: "dev.proOverride")
+        }
         self.isWatermarkHidden = UserDefaults.standard.bool(forKey: "dev.watermarkHidden")
     }
 
