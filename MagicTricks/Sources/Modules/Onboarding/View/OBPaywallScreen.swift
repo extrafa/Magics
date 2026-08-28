@@ -92,6 +92,9 @@ struct OBPaywallScreen: View {
                 appeared = true
             }
         }
+        .task {
+            await store.reloadProductsIfNeeded()
+        }
         .onChange(of: store.hasProAccess) { _ in
             if store.hasProAccess { onDismiss() }
         }
