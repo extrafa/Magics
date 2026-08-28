@@ -38,12 +38,14 @@ enum TimeHapticPatternBuilder {
         to events: inout [CHHapticEvent],
         startTime: TimeInterval
     ) -> TimeInterval {
+        let intensity = HapticPreferences.intensity.coreHapticsValue
+
         guard digit > 0 else {
             events.append(
                 CHHapticEvent(
                     eventType: .hapticContinuous,
                     parameters: [
-                        CHHapticEventParameter(parameterID: .hapticIntensity, value: HapticPreferences.intensity.coreHapticsValue),
+                        CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity),
                         CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.35)
                     ],
                     relativeTime: startTime,
@@ -58,7 +60,7 @@ enum TimeHapticPatternBuilder {
                 CHHapticEvent(
                     eventType: .hapticTransient,
                     parameters: [
-                        CHHapticEventParameter(parameterID: .hapticIntensity, value: HapticPreferences.intensity.coreHapticsValue),
+                        CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity),
                         CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.85)
                     ],
                     relativeTime: startTime + TimeInterval(index) * TimeControlHapticPattern.pulseGap
