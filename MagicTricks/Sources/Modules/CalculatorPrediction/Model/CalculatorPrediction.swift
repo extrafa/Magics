@@ -7,6 +7,15 @@
 
 import Foundation
 
+extension CalculatorPredictionButton {
+    var displayLabel: String {
+        switch self {
+        case .decimal: Locale.current.decimalSeparator ?? rawValue
+        default: rawValue
+        }
+    }
+}
+
 struct CalculatorPrediction {
     static let buttons: [CalculatorPredictionButton] = [
         .delete, .clear, .percent, .divide,

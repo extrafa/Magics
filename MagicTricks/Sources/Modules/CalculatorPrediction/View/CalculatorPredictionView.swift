@@ -41,7 +41,7 @@ struct CalculatorPredictionView: View {
 
                     LazyVGrid(columns: Self.columns, spacing: 12) {
                         ForEach(CalculatorPrediction.buttons, id: \.self) { label in
-                            let button = CalculatorPredictionButtonView(label: label.rawValue, buttonSize: buttonSize) {
+                            let button = CalculatorPredictionButtonView(button: label, buttonSize: buttonSize) {
                                 vm.buttonPressed(label)
                             }
                             if label == .clear {
