@@ -138,6 +138,11 @@ final class StoreManager: ObservableObject {
         await loadProducts()
     }
 
+    func reloadProductsIfNeeded() async {
+        guard products.isEmpty else { return }
+        await loadProducts()
+    }
+
     // MARK: Private
 
     private func loadProducts() async {
