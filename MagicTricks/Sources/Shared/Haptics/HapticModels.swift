@@ -31,6 +31,14 @@ enum HapticIntensity: Equatable, Hashable {
         }
     }
 
+    var coreHapticsValue: Float {
+        switch self {
+        case .light: 0.45
+        case .medium: 0.7
+        case .heavy: 1.0
+        }
+    }
+
     var localizedTitle: String {
         switch self {
         case .light: String(localized: "settings.haptics.intensity.weak")
