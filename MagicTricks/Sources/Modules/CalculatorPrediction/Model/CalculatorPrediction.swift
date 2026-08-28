@@ -38,4 +38,11 @@ enum CalculatorPredictionButton: String {
     case zero = "0"
     case decimal = ","
     case equal = "="
+
+    var displayLabel: String {
+        switch self {
+        case .decimal: Locale.current.decimalSeparator ?? rawValue
+        default: rawValue
+        }
+    }
 }
