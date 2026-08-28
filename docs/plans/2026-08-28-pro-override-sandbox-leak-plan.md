@@ -53,3 +53,11 @@ sandbox/debug — сбросить в `false`. `didSet` уже пишет зна
 
 `showsTestFlightSection` переиспользует `AppBuildEnvironment.isSandboxOrDebug`
 вместо собственной копии проверки.
+
+## Дополнение по факту ревью диффа
+
+`isWatermarkHidden` — тот же паттерн, та же секция, тот же безусловный `!store.isWatermarkHidden`
+в `WatermarkView.swift`, ревью его просто не упомянуло. Логику сброса вынес в
+`StoreManager.sandboxGatedFlag(forKey:)` и применил к обоим флагам вместо
+дублирования. `AppBuildEnvironment.isSandboxOrDebug` заодно стал `static let` —
+значение не меняется за время жизни процесса, пересчитывать незачем.

@@ -53,13 +53,19 @@ final class StoreManager: ObservableObject {
     ) {
         self.productIDs = productIDs
         self.service = service
-        let storedProOverride = UserDefaults.standard.bool(forKey: "dev.proOverride")
-        self.isProOverride = AppBuildEnvironment.isSandboxOrDebug && storedProOverride
-        if storedProOverride, !AppBuildEnvironment.isSandboxOrDebug {
-            // Property observers don't fire during init, so this write is explicit.
-            UserDefaults.standard.set(false, forKey: "dev.proOverride")
+        self.isProOverride = Self.sandboxGatedFlag(forKey: "dev.proOverride")
+        self.isWatermarkHidden = Self.sandboxGatedFlag(forKey: "dev.watermarkHidden")
+    }
+
+    private static func sandboxGatedFlag(forKey key: String) -> Bool {
+        guard AppBuildEnvironment.isSandboxOrDebug else {
+            if UserDefaults.standard.bool(forKey: key) {
+                // Property observers don't fire during init, so this write is explicit.
+                UserDefaults.standard.set(false, forKey: key)
+            }
+            return false
         }
-        self.isWatermarkHidden = UserDefaults.standard.bool(forKey: "dev.watermarkHidden")
+        return UserDefaults.standard.bool(forKey: key)
     }
 
     deinit {

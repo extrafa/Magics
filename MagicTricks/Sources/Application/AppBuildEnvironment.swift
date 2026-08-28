@@ -8,11 +8,11 @@
 import Foundation
 
 enum AppBuildEnvironment {
-    static var isSandboxOrDebug: Bool {
+    static let isSandboxOrDebug: Bool = {
         #if DEBUG
         true
         #else
         Bundle.main.appStoreReceiptURL?.path.contains("sandboxReceipt") ?? false
         #endif
-    }
+    }()
 }
