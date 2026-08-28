@@ -50,7 +50,7 @@ struct OBPaywallScreen: View {
         ),
         Benefit(
             icon: "sparkles",
-            color: Color("collectionMindPattern"),
+            color: TrickPalette.accentPrimary,
             title: String.paywall("benefit.noWatermark"),
             detail: String.paywall("benefit.noWatermark.detail")
         ),
@@ -327,10 +327,10 @@ struct OBPaywallScreen: View {
             Text(String.paywall("onetime"))
                 .font(.system(size: 12, weight: .semibold, design: .rounded))
         }
-        .foregroundStyle(Color("collectionMindPattern"))
+        .foregroundStyle(TrickPalette.accentPrimary)
         .padding(.horizontal, 12)
         .padding(.vertical, 6)
-        .background(Capsule().fill(Color("collectionMindPattern").opacity(0.12)))
+        .background(Capsule().fill(TrickPalette.accentPrimary.opacity(0.12)))
     }
 }
 

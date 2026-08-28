@@ -21,7 +21,7 @@ enum HapticTrainingMode {
 
     var playButtonTitle: String { String(localized: "training.digits.playButton") }
 
-    var accentColor: Color { Color.collectionMindPattern }
+    var accentColor: Color { TrickPalette.accentPrimary }
 
     var systemIcon: String { "waveform.path.ecg" }
 }
