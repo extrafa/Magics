@@ -8,8 +8,10 @@
 import SwiftUI
 
 enum TrickPalette {
+    static let accentPrimary = Color("accentPrimary")
+
     enum Difficulty {
-        static let easy = Color("collectionMindPattern")
+        static let easy = Color("difficultyEasy")
         static let medium = Color("collectionCalculatorPrediction")
         static let hard = Color("difficultyHard")
     }
@@ -26,7 +28,7 @@ enum TrickPalette {
     enum ColorSense {
         static let red = Color("colorSenseRed")
         static let blue = Color("colorSenseBlue")
-        static let green = Color("collectionMindPattern")
+        static let green = Color("colorSenseGreen")
         static let yellow = Color("colorSenseYellow")
     }
 
