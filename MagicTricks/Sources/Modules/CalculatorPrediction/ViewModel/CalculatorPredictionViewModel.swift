@@ -14,6 +14,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
     @Published var isSaveBlinkVisible = false
 
     private static let operators: Set<String> = ["+", "−", "×", "÷", "%"]
+    private static let maxResultFractionDigits = 10
     private let expressionEvaluator: CalculatorExpressionEvaluating
     private var savedValue: String?
     private var saveBlinkTask: Task<Void, Never>?
@@ -23,6 +24,14 @@ final class CalculatorPredictionViewModel: ObservableObject {
         formatter.numberStyle = .decimal
         formatter.usesGroupingSeparator = true
         formatter.maximumFractionDigits = 0
+        return formatter
+    }()
+
+    private lazy var resultFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = false
+        formatter.maximumFractionDigits = Self.maxResultFractionDigits
         return formatter
     }()
 
@@ -132,7 +141,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
             }
             return formatExpression(String(format: "%.0f", value))
         }
-        let str = String(value).replacingOccurrences(of: ".", with: decimalSeparator)
+        let str = resultFormatter.string(from: value as NSNumber) ?? String(value)
         return formatExpression(str)
     }
 
