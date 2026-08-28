@@ -76,11 +76,7 @@ final class HapticScheduler {
         generator: UIImpactFeedbackGenerator
     ) -> TimeInterval {
         for pulseTime in TimeHapticPatternBuilder.fallbackDigitImpactTimes(digit, startTime: startTime) {
-            scheduleImpact(
-                using: generator,
-                after: pulseTime,
-                intensity: digit == 0 ? 1 : nil
-            )
+            scheduleImpact(using: generator, after: pulseTime)
         }
 
         return TimeHapticPatternBuilder.nextDigitStartTime(digit, startTime: startTime)
