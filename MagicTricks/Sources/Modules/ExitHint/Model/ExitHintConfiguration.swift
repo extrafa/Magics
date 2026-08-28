@@ -27,6 +27,13 @@ final class ExitHintGestureCoordinator: ObservableObject {
 enum ExitHintZone {
     static let frame = CGSize(width: 250, height: 220)
     static let minimumPressDuration: TimeInterval = 1.5
+    static let hitTestMargin: CGFloat = 20
+    static let longPressAllowableMovement: CGFloat = 1000
+}
+
+enum ExitHintSwipeGesture {
+    static let timeLimit: TimeInterval = 0.5
+    static let minimumSpeed: CGFloat = 400
 }
 
 enum ExitHintOpacity {

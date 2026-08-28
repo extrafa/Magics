@@ -47,6 +47,10 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
         }
     }
 
+    static func dismantleUIView(_ uiView: GestureInstallerView, coordinator: Coordinator) {
+        coordinator.teardown()
+    }
+
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         var onExit: () -> Void
         var rect: CGRect = .zero
@@ -68,16 +72,11 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
         func installRecognizerIfNeeded(on window: UIWindow) {
             guard installedWindow !== window else { return }
-
-            [longPressRecognizer, touchTracker, tapRecognizer, panRecognizer].forEach { recognizer in
-                if let r = recognizer, let w = installedWindow {
-                    w.removeGestureRecognizer(r)
-                }
-            }
+            removeInstalledRecognizers()
 
             let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
             longPress.minimumPressDuration = ExitHintZone.minimumPressDuration
-            longPress.allowableMovement = 1000
+            longPress.allowableMovement = ExitHintZone.longPressAllowableMovement
             longPress.cancelsTouchesInView = false
             longPress.delegate = self
             window.addGestureRecognizer(longPress)
@@ -96,7 +95,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
             tracker.onTouchMoved = { [weak self] location in
                 guard let self, self.isHoldActive else { return }
-                let activeRect = self.rect.insetBy(dx: -20, dy: -20)
+                let activeRect = self.rect.insetBy(dx: -ExitHintZone.hitTestMargin, dy: -ExitHintZone.hitTestMargin)
                 if !activeRect.contains(location) {
                     self.isHoldActive = false
                     self.gestureCoordinator?.onHoldCancelled?()
@@ -132,11 +131,27 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             panRecognizer = pan
         }
 
+        func teardown() {
+            removeInstalledRecognizers()
+            installedWindow = nil
+            longPressRecognizer = nil
+            touchTracker = nil
+            tapRecognizer = nil
+            panRecognizer = nil
+        }
+
+        private func removeInstalledRecognizers() {
+            guard let window = installedWindow else { return }
+            [longPressRecognizer, touchTracker, tapRecognizer, panRecognizer].forEach { recognizer in
+                if let recognizer { window.removeGestureRecognizer(recognizer) }
+            }
+        }
+
         @objc private func handleLongPress(_ recognizer: UILongPressGestureRecognizer) {
             switch recognizer.state {
             case .began:
                 let location = recognizer.location(in: recognizer.view)
-                let expandedRect = rect.insetBy(dx: -20, dy: -20)
+                let expandedRect = rect.insetBy(dx: -ExitHintZone.hitTestMargin, dy: -ExitHintZone.hitTestMargin)
                 guard expandedRect.contains(location), !didTriggerExit, !didTriggerSwipe else {
                     return
                 }
@@ -167,10 +182,10 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             case .changed:
                 guard panStartedInRect, !didTriggerSwipe, !didTriggerExit,
                       gestureCoordinator?.isTrainingActive == true else { return }
-                if let start = touchStartTime, Date().timeIntervalSince(start) > 0.5 { return }
+                if let start = touchStartTime, Date().timeIntervalSince(start) > ExitHintSwipeGesture.timeLimit { return }
                 let velocity = recognizer.velocity(in: recognizer.view)
                 let speed = hypot(velocity.x, velocity.y)
-                guard speed > 400 else { return }
+                guard speed > ExitHintSwipeGesture.minimumSpeed else { return }
                 didTriggerSwipe = true
                 gestureCoordinator?.onSwipe?()
             case .ended, .cancelled, .failed:
