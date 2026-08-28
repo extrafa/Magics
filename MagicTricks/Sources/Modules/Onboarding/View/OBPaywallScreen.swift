@@ -239,10 +239,11 @@ struct OBPaywallScreen: View {
     // MARK: Bottom
 
     private var bottomBlock: some View {
-        VStack(spacing: 12) {
-            priceLabel
+        let product = store.products.first
+        return VStack(spacing: 12) {
+            priceLabel(for: product)
 
-            purchaseSection
+            purchaseSection(for: product)
 
             Button(action: { Task { await store.restore() } }) {
                 if store.phase == .restoring {
@@ -274,7 +275,7 @@ struct OBPaywallScreen: View {
     // MARK: Purchase
 
     @ViewBuilder
-    private var purchaseSection: some View {
+    private func purchaseSection(for product: StoreProduct?) -> some View {
         if let productsLoadError = store.productsLoadError {
             VStack(spacing: 10) {
                 Text(productsLoadError)
@@ -294,9 +295,12 @@ struct OBPaywallScreen: View {
         } else {
             OnboardingCTAButton(
                 title: String.paywall("cta"),
-                isEnabled: !store.products.isEmpty && store.phase != .restoring,
+                isEnabled: product != nil && store.phase != .restoring,
                 isLoading: store.phase == .purchasing || store.phase == .loadingProducts,
-                action: { Task { await store.purchase() } }
+                action: {
+                    guard let product else { return }
+                    Task { await store.purchase(productID: product.id) }
+                }
             )
             .padding(.horizontal, 24)
         }
@@ -305,8 +309,8 @@ struct OBPaywallScreen: View {
     // MARK: Price
 
     @ViewBuilder
-    private var priceLabel: some View {
-        if let price = store.products.first?.displayPrice {
+    private func priceLabel(for product: StoreProduct?) -> some View {
+        if let price = product?.displayPrice {
             VStack(spacing: 6) {
                 purchaseBadge
 
