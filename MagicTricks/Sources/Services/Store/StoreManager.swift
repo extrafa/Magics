@@ -100,6 +100,7 @@ final class StoreManager: ObservableObject {
     // MARK: Actions
 
     func purchase() async {
+        guard phase == .idle else { return }
         guard let id = products.first?.id else {
             alertMessage = .paywallError("productsLoadFailed")
             return
@@ -121,6 +122,7 @@ final class StoreManager: ObservableObject {
     }
 
     func restore() async {
+        guard phase == .idle else { return }
         phase = .restoring
         defer { phase = .idle }
         do {
