@@ -43,11 +43,7 @@ struct SettingsScreen: View {
 private extension SettingsScreen {
 
     var showsTestFlightSection: Bool {
-        #if DEBUG
-        true
-        #else
-        Bundle.main.appStoreReceiptURL?.path.contains("sandboxReceipt") ?? false
-        #endif
+        AppBuildEnvironment.isSandboxOrDebug
     }
 
     var testFlightSection: some View {

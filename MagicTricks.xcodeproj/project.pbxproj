@@ -131,6 +131,7 @@
 		913878242F89732E00CA371E /* InstructionComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913878232F89732E00CA371E /* InstructionComponents.swift */; };
 		913878262F89733200CA371E /* InstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913878252F89733200CA371E /* InstructionView.swift */; };
 		913AE9A22F54939D0061F75A /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913AE9A12F54939D0061F75A /* AppConfig.swift */; };
+		1F45D054A04AEEB39784C0E1 /* AppBuildEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF4DFBBF5D58E49EC0AAB3 /* AppBuildEnvironment.swift */; };
 		913FDE042EBED98800B05D99 /* MagicTricksApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913FDE012EBED98800B05D99 /* MagicTricksApp.swift */; };
 		913FDE052EBED98800B05D99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 913FDDFF2EBED98800B05D99 /* Assets.xcassets */; };
 		915B2A3E2F120A32002917D7 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 915B2A3D2F120A32002917D7 /* Localizable.xcstrings */; };
@@ -290,6 +291,7 @@
 		913878232F89732E00CA371E /* InstructionComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionComponents.swift; sourceTree = "<group>"; };
 		913878252F89733200CA371E /* InstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionView.swift; sourceTree = "<group>"; };
 		913AE9A12F54939D0061F75A /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
+		14BF4DFBBF5D58E49EC0AAB3 /* AppBuildEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBuildEnvironment.swift; sourceTree = "<group>"; };
 		913FDDDF2EBED62D00B05D99 /* MagicTricks.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MagicTricks.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		913FDDFF2EBED98800B05D99 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		913FDE012EBED98800B05D99 /* MagicTricksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicTricksApp.swift; sourceTree = "<group>"; };
@@ -834,6 +836,7 @@
 			children = (
 				913FDE012EBED98800B05D99 /* MagicTricksApp.swift */,
 				913AE9A12F54939D0061F75A /* AppConfig.swift */,
+				14BF4DFBBF5D58E49EC0AAB3 /* AppBuildEnvironment.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -1188,6 +1191,7 @@
 				28960C5B2FABD6D1003268CD /* ExitHintConfiguration.swift in Sources */,
 				9122DB932EDD1CCB00277108 /* CollectionView.swift in Sources */,
 				913AE9A22F54939D0061F75A /* AppConfig.swift in Sources */,
+				1F45D054A04AEEB39784C0E1 /* AppBuildEnvironment.swift in Sources */,
 				915CE57C2F9285DA00C5B32A /* InstructionShareFormatter.swift in Sources */,
 				91AFB57A2F8FDC7E00AAF6B7 /* ColorCard.swift in Sources */,
 				287D56302FCE700000ECCE14 /* MagicGallerySlotCard.swift in Sources */,
