@@ -125,6 +125,10 @@ final class StoreManager: ObservableObject {
         guard phase == .idle else { return }
         phase = .restoring
         defer { phase = .idle }
+
+        await refreshAccess()
+        guard !hasProAccess else { return }
+
         do {
             try await service.sync()
             await refreshAccess()
