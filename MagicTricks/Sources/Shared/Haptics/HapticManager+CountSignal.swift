@@ -113,7 +113,7 @@ extension HapticManager {
         let event = CHHapticEvent(
             eventType: .hapticContinuous,
             parameters: [
-                CHHapticEventParameter(parameterID: .hapticIntensity, value: 1),
+                CHHapticEventParameter(parameterID: .hapticIntensity, value: HapticPreferences.intensity.coreHapticsValue),
                 CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.35)
             ],
             relativeTime: initialDelay,
@@ -121,7 +121,7 @@ extension HapticManager {
         )
         enginePlayer.playEvents([event]) {
             // Fallback if CoreHaptics unavailable
-            self.scheduler.scheduleImpact(using: generator, after: initialDelay, intensity: 1.0)
+            self.scheduler.scheduleImpact(using: generator, after: initialDelay, intensity: nil)
         }
         scheduler.scheduleCompletion(
             initialDelay: initialDelay,
