@@ -48,6 +48,11 @@ enum HapticTiming {
     static let shortDuration: TimeInterval = 0.08
     static let longDuration: TimeInterval = 0.55
     static let completionPadding: TimeInterval = 0.1
+
+    // Each must sit strictly between base/2.5 (max speed) and base itself — see scaledWithFloor's assert.
+    static let minPulseGap: TimeInterval = 0.18
+    static let minDigitGap: TimeInterval = 0.7
+    static let minLongDuration: TimeInterval = 0.42
 }
 
 enum HapticPreferences {
@@ -70,11 +75,11 @@ enum HapticPreferences {
         AppPreferences.shared.hapticIntensity
     }
 
-    static var pulseGap: TimeInterval { max(scaled(HapticTiming.pulseGap), 0.07) }
-    static var digitGap: TimeInterval { max(scaled(HapticTiming.digitGap), 1.15) }
+    static var pulseGap: TimeInterval { scaledWithFloor(HapticTiming.pulseGap, floor: HapticTiming.minPulseGap) }
+    static var digitGap: TimeInterval { scaledWithFloor(HapticTiming.digitGap, floor: HapticTiming.minDigitGap) }
     static var sectionGap: TimeInterval { HapticTiming.sectionGap }
     static var shortDuration: TimeInterval { scaled(HapticTiming.shortDuration) }
-    static var longDuration: TimeInterval { max(scaled(HapticTiming.longDuration), 0.42) }
+    static var longDuration: TimeInterval { scaledWithFloor(HapticTiming.longDuration, floor: HapticTiming.minLongDuration) }
     static var completionPadding: TimeInterval { HapticTiming.completionPadding }
     static var groupedPulseGap: TimeInterval { groupTiming.pulseGap }
     static var groupedRemainderPulseGap: TimeInterval { groupTiming.remainderPulseGap }
@@ -104,6 +109,14 @@ enum HapticPreferences {
 
     private static func scaled(_ value: TimeInterval) -> TimeInterval {
         value / speedMultiplier
+    }
+
+    private static func scaledWithFloor(_ base: TimeInterval, floor: TimeInterval) -> TimeInterval {
+        assert(
+            floor > base / speedRange.upperBound && floor < base,
+            "floor \(floor) can never affect scaled base \(base)"
+        )
+        return max(scaled(base), floor)
     }
 }
 
