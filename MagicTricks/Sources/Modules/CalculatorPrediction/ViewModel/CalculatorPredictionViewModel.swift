@@ -22,8 +22,11 @@ final class CalculatorPredictionViewModel: ObservableObject {
         self.expressionEvaluator = expressionEvaluator
     }
 
+    private var decimalSeparator: String { Locale.current.decimalSeparator ?? "." }
+    private var groupingSeparator: String { Locale.current.groupingSeparator ?? "," }
+
     private var rawDisplay: String {
-        display.replacingOccurrences(of: ".", with: "")
+        display.replacingOccurrences(of: groupingSeparator, with: "")
     }
 
     func buttonPressed(_ button: CalculatorPredictionButton) {
@@ -62,7 +65,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
     private func appendOperator(_ op: String) {
         var raw = rawDisplay
         guard let last = raw.last else { return }
-        if last == "," { return }
+        if String(last) == decimalSeparator { return }
         if Self.operators.contains(String(last)) { raw.removeLast() }
         raw.append(op)
         display = formatExpression(raw)
@@ -71,8 +74,8 @@ final class CalculatorPredictionViewModel: ObservableObject {
     private func appendDecimal() {
         let raw = rawDisplay
         let components = raw.split { Self.operators.contains(String($0)) }
-        if let last = components.last, !last.contains(",") {
-            display = formatExpression(raw + ",")
+        if let last = components.last, !last.contains(decimalSeparator) {
+            display = formatExpression(raw + decimalSeparator)
         }
     }
 
@@ -93,7 +96,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
         let raw = rawDisplay
         guard let last = raw.last else { return }
-        if last == "," { return }
+        if String(last) == decimalSeparator { return }
 
         let lastStr = String(last)
         if lastStr == "%" {
@@ -121,7 +124,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
             }
             return formatExpression(String(format: "%.0f", value))
         }
-        let str = String(value).replacingOccurrences(of: ".", with: ",")
+        let str = String(value).replacingOccurrences(of: ".", with: decimalSeparator)
         return formatExpression(str)
     }
 
@@ -147,17 +150,27 @@ final class CalculatorPredictionViewModel: ObservableObject {
         let isNegative = num.hasPrefix("-")
         let unsigned = isNegative ? String(num.dropFirst()) : num
 
-        let parts = unsigned.split(separator: ",", maxSplits: 1, omittingEmptySubsequences: false)
-        let intPart = String(parts[0])
-        let fracPart = parts.count > 1 ? "," + String(parts[1]) : ""
-
-        var formatted = ""
-        for (i, char) in intPart.reversed().enumerated() {
-            if i > 0 && i % 3 == 0 { formatted = "." + formatted }
-            formatted = String(char) + formatted
+        let intPart: String
+        let fracPart: String
+        if let separatorRange = unsigned.range(of: decimalSeparator) {
+            intPart = String(unsigned[unsigned.startIndex..<separatorRange.lowerBound])
+            fracPart = String(unsigned[separatorRange.lowerBound...])
+        } else {
+            intPart = unsigned
+            fracPart = ""
         }
 
-        return (isNegative ? "-" : "") + formatted + fracPart
+        return (isNegative ? "-" : "") + groupedDigits(intPart) + fracPart
+    }
+
+    private func groupedDigits(_ digits: String) -> String {
+        guard let value = Decimal(string: digits) else { return digits }
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = .current
+        formatter.usesGroupingSeparator = true
+        formatter.maximumFractionDigits = 0
+        return formatter.string(from: value as NSDecimalNumber) ?? digits
     }
 
     private func showSecretResult() {
