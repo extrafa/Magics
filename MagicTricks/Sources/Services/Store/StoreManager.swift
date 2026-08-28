@@ -99,16 +99,12 @@ final class StoreManager: ObservableObject {
 
     // MARK: Actions
 
-    func purchase() async {
+    func purchase(productID: String) async {
         guard phase == .idle else { return }
-        guard let id = products.first?.id else {
-            alertMessage = .paywallError("productsLoadFailed")
-            return
-        }
         phase = .purchasing
         defer { phase = .idle }
         do {
-            switch try await service.purchase(productID: id) {
+            switch try await service.purchase(productID: productID) {
             case .success:
                 await refreshAccess()
             case .userCancelled:
