@@ -18,6 +18,14 @@ final class CalculatorPredictionViewModel: ObservableObject {
     private var savedValue: String?
     private var saveBlinkTask: Task<Void, Never>?
 
+    private lazy var groupingFormatter: NumberFormatter = {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.usesGroupingSeparator = true
+        formatter.maximumFractionDigits = 0
+        return formatter
+    }()
+
     init(expressionEvaluator: CalculatorExpressionEvaluating = CalculatorPredictionEngine()) {
         self.expressionEvaluator = expressionEvaluator
     }
@@ -153,8 +161,8 @@ final class CalculatorPredictionViewModel: ObservableObject {
         let intPart: String
         let fracPart: String
         if let separatorRange = unsigned.range(of: decimalSeparator) {
-            intPart = String(unsigned[unsigned.startIndex..<separatorRange.lowerBound])
-            fracPart = String(unsigned[separatorRange.lowerBound...])
+            intPart = String(unsigned.prefix(upTo: separatorRange.lowerBound))
+            fracPart = String(unsigned.suffix(from: separatorRange.lowerBound))
         } else {
             intPart = unsigned
             fracPart = ""
@@ -165,12 +173,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
     private func groupedDigits(_ digits: String) -> String {
         guard let value = Decimal(string: digits) else { return digits }
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .decimal
-        formatter.locale = .current
-        formatter.usesGroupingSeparator = true
-        formatter.maximumFractionDigits = 0
-        return formatter.string(from: value as NSDecimalNumber) ?? digits
+        return groupingFormatter.string(from: value as NSDecimalNumber) ?? digits
     }
 
     private func showSecretResult() {

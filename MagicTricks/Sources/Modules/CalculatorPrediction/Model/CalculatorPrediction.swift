@@ -7,15 +7,6 @@
 
 import Foundation
 
-extension CalculatorPredictionButton {
-    var displayLabel: String {
-        switch self {
-        case .decimal: Locale.current.decimalSeparator ?? rawValue
-        default: rawValue
-        }
-    }
-}
-
 struct CalculatorPrediction {
     static let buttons: [CalculatorPredictionButton] = [
         .delete, .clear, .percent, .divide,
@@ -47,4 +38,11 @@ enum CalculatorPredictionButton: String {
     case zero = "0"
     case decimal = ","
     case equal = "="
+
+    var displayLabel: String {
+        switch self {
+        case .decimal: Locale.current.decimalSeparator ?? rawValue
+        default: rawValue
+        }
+    }
 }
