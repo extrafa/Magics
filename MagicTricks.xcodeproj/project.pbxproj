@@ -148,6 +148,7 @@
 		91C7F5452FC9EC0000A00001 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */; };
 		91C7F5472FCE7B0000A00001 /* HapticManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */; };
 		92A000012FC7600000A00001 /* CalculatorPredictionEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */; };
+		EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */; };
 		92A000022FC7600000A00001 /* AppPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000062FC7600000A00001 /* AppPreferencesTests.swift */; };
 		92A000032FC7600000A00001 /* HapticTrainingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */; };
 		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
@@ -309,6 +310,7 @@
 		91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
 		91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManagerTests.swift; sourceTree = "<group>"; };
 		92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionEngineTests.swift; sourceTree = "<group>"; };
+		32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTimingsTests.swift; sourceTree = "<group>"; };
 		92A000062FC7600000A00001 /* AppPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferencesTests.swift; sourceTree = "<group>"; };
 		92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingViewModelTests.swift; sourceTree = "<group>"; };
 		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
@@ -925,6 +927,7 @@
 			isa = PBXGroup;
 			children = (
 				92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */,
+				32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */,
 				91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */,
 				91C7F5402FC9D90000A00001 /* HapticPatternBuilderTests.swift */,
 				91C7F5422FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift */,
@@ -1283,6 +1286,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92A000012FC7600000A00001 /* CalculatorPredictionEngineTests.swift in Sources */,
+				EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */,
 				91C7F5412FC9D90000A00001 /* HapticPatternBuilderTests.swift in Sources */,
 				91C7F5472FCE7B0000A00001 /* HapticManagerTests.swift in Sources */,
 				91C7F5432FC9E10000A00001 /* PhoneTiltGestureManagerTests.swift in Sources */,
