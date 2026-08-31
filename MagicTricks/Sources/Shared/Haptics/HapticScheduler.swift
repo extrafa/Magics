@@ -10,9 +10,14 @@ import UIKit
 
 @MainActor
 final class HapticScheduler {
+    private let preferences: HapticPreferenceManaging
     private var generation = 0
 
-    func schedule(after delay: TimeInterval, action: @escaping () -> Void) {
+    init(preferences: HapticPreferenceManaging = AppPreferences.shared) {
+        self.preferences = preferences
+    }
+
+    func schedule(after delay: TimeInterval, action: @escaping Completion) {
         let scheduledGeneration = generation
         DispatchQueue.main.asyncAfter(deadline: .now() + delay) { [weak self] in
             guard self?.generation == scheduledGeneration else { return }
@@ -27,9 +32,9 @@ final class HapticScheduler {
     func scheduleCompletion(
         initialDelay: TimeInterval,
         signalDuration: TimeInterval,
-        completion: (() -> Void)?
+        completion: Completion?
     ) {
-        schedule(after: initialDelay + signalDuration + HapticPreferences.completionPadding) {
+        schedule(after: initialDelay + signalDuration + HapticTiming.completionPadding) {
             completion?()
         }
     }
@@ -40,7 +45,7 @@ final class HapticScheduler {
         intensity: CGFloat? = nil
     ) {
         schedule(after: delay) {
-            generator.impactOccurred(intensity: intensity ?? HapticPreferences.intensity.impactIntensity)
+            generator.impactOccurred(intensity: intensity ?? self.preferences.hapticIntensity.impactIntensity)
             generator.prepare()
         }
     }
@@ -50,14 +55,14 @@ final class HapticScheduler {
         initialDelay: TimeInterval,
         interval: TimeInterval,
         generator: UIImpactFeedbackGenerator,
-        completion: (() -> Void)?
+        completion: Completion?
     ) {
         guard count > 0 else {
             completion?()
             return
         }
 
-        let intensity = HapticPreferences.intensity.impactIntensity
+        let intensity = preferences.hapticIntensity.impactIntensity
         generator.prepare()
 
         for index in 0..<count {
@@ -70,16 +75,18 @@ final class HapticScheduler {
         }
     }
 
+    @discardableResult
     func scheduleTimeDigit(
         _ digit: Int,
         startTime: TimeInterval,
         generator: UIImpactFeedbackGenerator
     ) -> TimeInterval {
-        for pulseTime in TimeHapticPatternBuilder.fallbackDigitImpactTimes(digit, startTime: startTime) {
+        let timings = HapticTimings(preferences: preferences)
+        for pulseTime in TimeHapticPatternBuilder.fallbackDigitImpactTimes(digit, startTime: startTime, timings: timings) {
             scheduleImpact(using: generator, after: pulseTime)
         }
 
-        return TimeHapticPatternBuilder.nextDigitStartTime(digit, startTime: startTime)
+        return TimeHapticPatternBuilder.nextDigitStartTime(digit, startTime: startTime, timings: timings)
     }
 }
 

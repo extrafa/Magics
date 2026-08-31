@@ -12,18 +12,18 @@ import UIKit
 @MainActor
 protocol HapticEnginePlaying {
     func restartEngineIfNeeded()
-    func playEvents(_ events: [CHHapticEvent], fallback: () -> Void)
+    func playEvents(_ events: [CHHapticEvent], fallback: Completion)
     func stop()
 }
 
 @MainActor
 protocol HapticScheduling {
-    func schedule(after delay: TimeInterval, action: @escaping () -> Void)
+    func schedule(after delay: TimeInterval, action: @escaping Completion)
     func cancelAll()
     func scheduleCompletion(
         initialDelay: TimeInterval,
         signalDuration: TimeInterval,
-        completion: (() -> Void)?
+        completion: Completion?
     )
     func scheduleImpact(
         using generator: UIImpactFeedbackGenerator,
@@ -35,8 +35,9 @@ protocol HapticScheduling {
         initialDelay: TimeInterval,
         interval: TimeInterval,
         generator: UIImpactFeedbackGenerator,
-        completion: (() -> Void)?
+        completion: Completion?
     )
+    @discardableResult
     func scheduleTimeDigit(
         _ digit: Int,
         startTime: TimeInterval,
@@ -56,7 +57,7 @@ protocol HapticNotificationPlaying {
 
 @MainActor
 protocol CountHapticPlaying {
-    func playCount(_ count: Int, completion: (() -> Void)?)
+    func playCount(_ count: Int, completion: Completion?)
     func cancelPendingHaptics()
 }
 
@@ -66,7 +67,7 @@ protocol TimeHapticPlaying {
         _ value: Int,
         initialDelay: TimeInterval,
         usesGrouping: Bool,
-        completion: (() -> Void)?
+        completion: Completion?
     )
     func cancelPendingHaptics()
 }
