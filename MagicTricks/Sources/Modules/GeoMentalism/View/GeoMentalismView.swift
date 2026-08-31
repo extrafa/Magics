@@ -17,37 +17,37 @@ struct GeoMentalismView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.background.ignoresSafeArea()
+        ZStack {
+            Color.background.ignoresSafeArea()
 
-                List {
-                    ForEach(GeoMentalismCities.all, id: \.self) { city in
-                        NavigationLink {
-                            GeoMentalismCitiesView(city: city, isVisible: $isVisible)
-                        } label: {
-                            Text(city)
-                                .font(.system(size: 17, weight: .medium, design: .rounded))
-                                .foregroundStyle(Color.primaryText)
-                                .padding(.vertical, 4)
-                        }
-                        .listRowBackground(Color.background)
-                        .listRowSeparatorTint(Color.grayBorder)
+            List {
+                ForEach(GeoMentalismCities.all, id: \.self) { city in
+                    NavigationLink {
+                        GeoMentalismCitiesView(city: city, isVisible: $isVisible)
+                    } label: {
+                        Text(city)
+                            .font(.system(size: 17, weight: .medium, design: .rounded))
+                            .foregroundStyle(Color.primaryText)
+                            .padding(.vertical, 4)
                     }
+                    .listRowBackground(Color.background)
+                    .listRowSeparatorTint(Color.grayBorder)
                 }
-                .listStyle(.plain)
-                .hideScrollContentBackground()
-
-                ExitHintView(isVisible: $isVisible)
-                    .padding(.top, statusBarHeight)
-                    .ignoresSafeArea(edges: .top)
             }
-            .navigationTitle(String(localized: "geo.list.title"))
-            .navigationBarTitleDisplayMode(.large)
+            .listStyle(.plain)
+            .hideScrollContentBackground()
+
+            ExitHintView(isVisible: $isVisible)
+                .padding(.top, statusBarHeight)
+                .ignoresSafeArea(edges: .top)
         }
+        .navigationTitle(String(localized: "geo.list.title"))
+        .navigationBarTitleDisplayMode(.large)
     }
 }
 
 #Preview {
-    GeoMentalismView()
+    NavigationStack {
+        GeoMentalismView()
+    }
 }

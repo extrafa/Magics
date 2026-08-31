@@ -15,27 +15,25 @@ struct MagicGalleryView: View {
     @State private var showSourceDialog = false
 
     var body: some View {
-        NavigationStack {
-            ZStack(alignment: .bottom) {
-                Color.background.ignoresSafeArea()
+        ZStack(alignment: .bottom) {
+            Color.background.ignoresSafeArea()
 
-                ScrollView(.vertical, showsIndicators: false) {
-                    VStack(alignment: .leading, spacing: 22) {
-                        capturePanel
-                        slotGrid
-                    }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 18)
-                    .padding(.bottom, 120)
+            ScrollView(.vertical, showsIndicators: false) {
+                VStack(alignment: .leading, spacing: 22) {
+                    capturePanel
+                    slotGrid
                 }
-
-                performButton
+                .padding(.horizontal, 20)
+                .padding(.top, 18)
+                .padding(.bottom, 120)
             }
-            .toolbar {
-                ToolbarItem(placement: .topBarTrailing) {
-                    Button { dismiss() } label: {
-                        Image(systemName: "xmark")
-                    }
+
+            performButton
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                Button { dismiss() } label: {
+                    Image(systemName: "xmark")
                 }
             }
         }
