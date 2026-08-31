@@ -19,7 +19,7 @@ struct PhantomDrawView: View {
     }
 
     var body: some View {
-        NavigationStackCompat {
+        NavigationStack {
             ZStack {
                 Color.background.ignoresSafeArea()
                 contentView

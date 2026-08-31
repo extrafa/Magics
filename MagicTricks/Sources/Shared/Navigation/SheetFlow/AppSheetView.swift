@@ -14,11 +14,11 @@ struct AppSheetView: View {
     var body: some View {
         switch activeSheet {
         case .instruction(let instruction):
-            NavigationStackCompat {
+            NavigationStack {
                 InstructionView(instruction: instruction)
             }
         case .instructionFirstLaunch(let instruction, let trick):
-            NavigationStackCompat {
+            NavigationStack {
                 InstructionView(instruction: instruction) {
                     flow.markTrickAsSeen(trick)
                     flow.activeSheet = nil

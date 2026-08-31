@@ -52,7 +52,6 @@
 		0AML0000000000000000000C /* PhantomDrawSenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000B /* PhantomDrawSenderView.swift */; };
 		0AML0000000000000000000E /* PhantomDrawReceiverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000D /* PhantomDrawReceiverView.swift */; };
 		0AML00000000000000000023 /* PhantomDrawStrokeRendering.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000022 /* PhantomDrawStrokeRendering.swift */; };
-		0AML00000000000000000021 /* NavigationStackCompat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000020 /* NavigationStackCompat.swift */; };
 		2806231C301A8495003F0C44 /* GeoMentalismView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806231B301A8495003F0C44 /* GeoMentalismView.swift */; };
 		28062320301A87BC003F0C44 /* GeoMentalismCities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2806231F301A87BC003F0C44 /* GeoMentalismCities.swift */; };
 		28062323301A8966003F0C44 /* GeoMentalismViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062322301A8966003F0C44 /* GeoMentalismViewModel.swift */; };
@@ -211,7 +210,6 @@
 		0AML0000000000000000000B /* PhantomDrawSenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawSenderView.swift; sourceTree = "<group>"; };
 		0AML0000000000000000000D /* PhantomDrawReceiverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawReceiverView.swift; sourceTree = "<group>"; };
 		0AML00000000000000000022 /* PhantomDrawStrokeRendering.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawStrokeRendering.swift; sourceTree = "<group>"; };
-		0AML00000000000000000020 /* NavigationStackCompat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationStackCompat.swift; sourceTree = "<group>"; };
 		2806231B301A8495003F0C44 /* GeoMentalismView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismView.swift; sourceTree = "<group>"; };
 		2806231F301A87BC003F0C44 /* GeoMentalismCities.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCities.swift; sourceTree = "<group>"; };
 		28062322301A8966003F0C44 /* GeoMentalismViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismViewModel.swift; sourceTree = "<group>"; };
@@ -952,7 +950,6 @@
 				91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */,
 				918FC1D52F1417C300621893 /* TrickRouterView.swift */,
 				918359812F2719DB0068D5BC /* AppFlowCoverView.swift */,
-				0AML00000000000000000020 /* NavigationStackCompat.swift */,
 			);
 			path = FullScreenFlow;
 			sourceTree = "<group>";
@@ -1260,7 +1257,6 @@
 				0AEE00000000000000000004 /* MagicGalleryCameraView.swift in Sources */,
 				0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */,
 				0AEE0000000000000000001D /* RateAppSheet.swift in Sources */,
-				0AML00000000000000000021 /* NavigationStackCompat.swift in Sources */,
 				0AML00000000000000000002 /* PhantomDrawModels.swift in Sources */,
 				0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */,
 				0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */,

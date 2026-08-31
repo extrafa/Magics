@@ -171,7 +171,7 @@ private extension SettingsScreen {
 }
 
 #Preview {
-    NavigationStackCompat {
+    NavigationStack {
         SettingsScreen()
             .environmentObject(SettingsStore())
             .environmentObject(StoreManager())

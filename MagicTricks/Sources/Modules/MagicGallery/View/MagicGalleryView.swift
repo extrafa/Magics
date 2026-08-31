@@ -15,7 +15,7 @@ struct MagicGalleryView: View {
     @State private var showSourceDialog = false
 
     var body: some View {
-        NavigationStackCompat {
+        NavigationStack {
             ZStack(alignment: .bottom) {
                 Color.background.ignoresSafeArea()
 
