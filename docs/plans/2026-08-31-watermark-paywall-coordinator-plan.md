@@ -45,19 +45,22 @@ SwiftUI должен распознать смену идентичности и
 
 Новое `@Published var isPaywallOverlayPresented = false` — отдельно от
 `activeFlow`, чтобы не путать «сменить весь экран» с «показать поверх и дать
-вернуться».
+вернуться». Плюс `presentPaywallOverlay()`/`dismissPaywallOverlay()` — по
+финальному ревью-проходу: вью не должны мутировать `@Published`-свойство
+координатора напрямую, тот же принцип, что уже применили к `AppSheetView` в
+PR #34 (там было `flow.activeSheet = nil` → `flow.startTrickAfterInstruction`).
 
 ## Чанк 2 — WatermarkView.swift
 
 - Убрать `@State private var showPaywall`, `.fullScreenCover(isPresented:)`.
 - Добавить `@EnvironmentObject private var flow: AppFlowCoordinator`.
-- Кнопка «Free Trial» по тапу ставит `flow.isPaywallOverlayPresented = true`.
+- Кнопка «Free Trial» по тапу зовёт `flow.presentPaywallOverlay()`.
 
 ## Чанк 3 — AppFlowCoverView.swift + CollectionView.swift
 
 - `AppFlowCoverView` получает `@EnvironmentObject private var flow: AppFlowCoordinator`
   и вешает `.fullScreenCover(isPresented: $flow.isPaywallOverlayPresented)` на
-  `NavigationStack` в кейсе `.trick` — контент: `OBPaywallScreen(onDismiss: { flow.isPaywallOverlayPresented = false })`.
+  `NavigationStack` в кейсе `.trick` — контент: `OBPaywallScreen(onDismiss: flow.dismissPaywallOverlay)`.
   Модификатор на корне, переживает любые изменения `store.hasProAccess` внутри.
 - `CollectionView.swift`: `.environmentObject(flow)` при презентации
   `AppFlowCoverView` — без этого `AppFlowCoverView` не увидит координатор

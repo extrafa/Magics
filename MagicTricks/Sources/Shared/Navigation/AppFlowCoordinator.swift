@@ -46,6 +46,14 @@ final class AppFlowCoordinator: ObservableObject {
         activeFlow = .paywall
     }
 
+    func presentPaywallOverlay() {
+        isPaywallOverlayPresented = true
+    }
+
+    func dismissPaywallOverlay() {
+        isPaywallOverlayPresented = false
+    }
+
     func openStartFlow(for trick: Trick) {
         if hasSeenTrick(trick) {
             activeFlow = .trick(trick: trick)

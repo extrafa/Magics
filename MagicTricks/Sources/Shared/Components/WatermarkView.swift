@@ -15,7 +15,7 @@ struct WatermarkView: View {
     var body: some View {
         if !store.hasProAccess && !isDismissed && !store.isWatermarkHidden {
             HStack(spacing: 0) {
-                Button { flow.isPaywallOverlayPresented = true } label: {
+                Button { flow.presentPaywallOverlay() } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "sparkles")
                             .font(.system(size: 11, weight: .semibold))
