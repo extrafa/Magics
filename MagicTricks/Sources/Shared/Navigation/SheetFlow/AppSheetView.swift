@@ -20,9 +20,7 @@ struct AppSheetView: View {
         case .instructionFirstLaunch(let instruction, let trick):
             NavigationStack {
                 InstructionView(instruction: instruction) {
-                    flow.markTrickAsSeen(trick)
-                    flow.activeSheet = nil
-                    flow.activeFlow = .trick(trick: trick)
+                    flow.startTrickAfterInstruction(trick)
                 }
             }
         case .rateApp:
