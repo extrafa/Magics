@@ -79,6 +79,7 @@ struct CollectionView: View {
         .fullScreenCover(item: $flow.activeFlow) { activeFlow in
             AppFlowCoverView(activeFlow: activeFlow)
                 .environmentObject(store)
+                .environmentObject(flow)
         }
         .onChange(of: flow.activeFlow) { newValue in
             if case .trick = previousActiveFlow, newValue == nil {
