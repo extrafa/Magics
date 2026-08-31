@@ -38,7 +38,7 @@ final class HapticEnginePlayer {
         }
     }
 
-    func playEvents(_ events: [CHHapticEvent], fallback: () -> Void) {
+    func playEvents(_ events: [CHHapticEvent], fallback: Completion) {
         guard supportsHaptics else {
             fallback()
             return
