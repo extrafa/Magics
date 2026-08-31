@@ -12,6 +12,7 @@ final class AppFlowCoordinator: ObservableObject {
 
     @Published var activeFlow: FullScreenFlow?
     @Published var activeSheet: SheetFlow?
+    @Published var isPaywallOverlayPresented = false
 
     private var pendingFlow: FullScreenFlow?
     private let preferences: AppPreferences
