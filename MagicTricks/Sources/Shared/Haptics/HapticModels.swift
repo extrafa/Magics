@@ -56,86 +56,70 @@ enum HapticTiming {
     static let shortDuration: TimeInterval = 0.08
     static let longDuration: TimeInterval = 0.55
     static let completionPadding: TimeInterval = 0.1
+    static let groupedChunkSize = 3
 
-    // Each must sit strictly between base/2.5 (max speed) and base itself — see scaledWithFloor's assert.
+    // Each must sit strictly between base/2.5 and base — checked by scaledWithFloor's assert.
     static let minPulseGap: TimeInterval = 0.18
     static let minDigitGap: TimeInterval = 0.7
     static let minLongDuration: TimeInterval = 0.42
 }
 
-enum HapticPreferences {
-    static let speedKey = AppPreferences.Key.hapticSpeedMultiplier
-    static let groupByThreeKey = AppPreferences.Key.hapticGroupByThreeEnabled
-    static let defaultSpeedMultiplier = AppPreferences.Default.hapticSpeedMultiplier
-    static let defaultGroupByThree = AppPreferences.Default.hapticGroupByThreeEnabled
-    static let groupedChunkSize = 3
-    static let speedRange = AppPreferences.Range.hapticSpeedMultiplier
+// Computed once from injected preferences instead of reading AppPreferences.shared directly.
+struct HapticTimings {
+    let pulseGap: TimeInterval
+    let digitGap: TimeInterval
+    let shortDuration: TimeInterval
+    let longDuration: TimeInterval
+    let intensity: HapticIntensity
+    let isGroupByThreeEnabled: Bool
+    let grouped: Grouped
 
-    static var speedMultiplier: Double {
-        AppPreferences.shared.hapticSpeedMultiplier
+    var zeroDuration: TimeInterval { longDuration }
+
+    init(preferences: HapticPreferenceManaging) {
+        let speed = preferences.hapticSpeedMultiplier
+
+        pulseGap = Self.scaledWithFloor(HapticTiming.pulseGap, floor: HapticTiming.minPulseGap, speed: speed)
+        digitGap = Self.scaledWithFloor(HapticTiming.digitGap, floor: HapticTiming.minDigitGap, speed: speed)
+        shortDuration = HapticTiming.shortDuration / speed
+        longDuration = Self.scaledWithFloor(HapticTiming.longDuration, floor: HapticTiming.minLongDuration, speed: speed)
+        isGroupByThreeEnabled = preferences.isHapticGroupByThreeEnabled
+        intensity = preferences.hapticIntensity
+        grouped = Grouped(speed: speed, digitGap: digitGap)
     }
 
-    static var isGroupByThreeEnabled: Bool {
-        AppPreferences.shared.isHapticGroupByThreeEnabled
-    }
-
-    static var intensity: HapticIntensity {
-        AppPreferences.shared.hapticIntensity
-    }
-
-    static var pulseGap: TimeInterval { scaledWithFloor(HapticTiming.pulseGap, floor: HapticTiming.minPulseGap) }
-    static var digitGap: TimeInterval { scaledWithFloor(HapticTiming.digitGap, floor: HapticTiming.minDigitGap) }
-    static var sectionGap: TimeInterval { HapticTiming.sectionGap }
-    static var shortDuration: TimeInterval { scaled(HapticTiming.shortDuration) }
-    static var longDuration: TimeInterval { scaledWithFloor(HapticTiming.longDuration, floor: HapticTiming.minLongDuration) }
-    static var completionPadding: TimeInterval { HapticTiming.completionPadding }
-    static var groupedPulseGap: TimeInterval { groupTiming.pulseGap }
-    static var groupedRemainderPulseGap: TimeInterval { groupTiming.remainderPulseGap }
-    static var groupedGroupGap: TimeInterval { groupTiming.groupGap }
-
-    // Per-speed group timing. Ratio groupGap/pulseGap is held at ~3.7:1 across
-    // all speeds — the brain reliably detects a boundary at 3.5x the within-group
-    // interval. Gaps much longer than ~1s break the pattern thread; shorter than
-    // 2.5x the pulse gap and the boundary disappears.
-    private static var groupTiming: (pulseGap: TimeInterval, remainderPulseGap: TimeInterval, groupGap: TimeInterval) {
-        let s = speedMultiplier
-        if s >= 2.25 {
-            return (pulseGap: 0.10, remainderPulseGap: 0.14, groupGap: 0.36)
-        } else if s >= 1.75 {
-            return (pulseGap: 0.115, remainderPulseGap: 0.15, groupGap: 0.40)
-        } else if s >= 1.25 {
-            return (pulseGap: 0.13, remainderPulseGap: 0.17, groupGap: 0.46)
-        } else {
-            return (pulseGap: 0.15, remainderPulseGap: 0.19, groupGap: 0.53)
-        }
-    }
-    static var groupedDigitGap: TimeInterval { digitGap }
-
-    static func reset() {
-        AppPreferences.shared.resetHapticSettings()
-    }
-
-    private static func scaled(_ value: TimeInterval) -> TimeInterval {
-        value / speedMultiplier
-    }
-
-    private static func scaledWithFloor(_ base: TimeInterval, floor: TimeInterval) -> TimeInterval {
-        assert(
-            floor > base / speedRange.upperBound && floor < base,
-            "floor \(floor) can never affect scaled base \(base)"
-        )
-        return max(scaled(base), floor)
-    }
-}
-
-enum TimeControlHapticPattern {
-    static var pulseGap: TimeInterval { HapticPreferences.pulseGap }
-    static var digitGap: TimeInterval { HapticPreferences.digitGap }
-    static var sectionGap: TimeInterval { HapticPreferences.sectionGap }
-    static var zeroDuration: TimeInterval { HapticPreferences.longDuration }
-
-    static func digitDuration(_ digit: Int) -> TimeInterval {
+    func digitDuration(_ digit: Int) -> TimeInterval {
         guard digit > 0 else { return zeroDuration }
-        return TimeInterval(digit - 1) * Self.pulseGap
+        return TimeInterval(digit - 1) * pulseGap
+    }
+
+    private static func scaledWithFloor(_ base: TimeInterval, floor: TimeInterval, speed: Double) -> TimeInterval {
+        assert(floor > base / AppPreferences.Range.hapticSpeedMultiplier.upperBound && floor < base)
+        return max(base / speed, floor)
+    }
+
+    struct Grouped {
+        let pulseGap: TimeInterval
+        let remainderPulseGap: TimeInterval
+        let groupGap: TimeInterval
+        let digitGap: TimeInterval
+
+        // Ratio ~3.7:1 (groupGap:pulseGap) keeps the group boundary perceptible; tuned per speed tier.
+        init(speed: Double, digitGap: TimeInterval) {
+            let tier: (pulseGap: TimeInterval, remainderPulseGap: TimeInterval, groupGap: TimeInterval)
+            if speed >= 2.25 {
+                tier = (0.10, 0.14, 0.36)
+            } else if speed >= 1.75 {
+                tier = (0.115, 0.15, 0.40)
+            } else if speed >= 1.25 {
+                tier = (0.13, 0.17, 0.46)
+            } else {
+                tier = (0.15, 0.19, 0.53)
+            }
+            self.pulseGap = tier.pulseGap
+            self.remainderPulseGap = tier.remainderPulseGap
+            self.groupGap = tier.groupGap
+            self.digitGap = digitGap
+        }
     }
 }
