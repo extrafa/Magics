@@ -56,6 +56,11 @@ struct HapticSettingsScreen: View {
         }
         .onDisappear {
             haptics.cancelPendingHaptics()
+            gestureTask?.cancel()
+            gestureTask = nil
+            gestureManager.stopMonitoring()
+            isWaitingForGesture = false
+            isTesting = false
         }
     }
 
