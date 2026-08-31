@@ -9,36 +9,37 @@ import CoreHaptics
 import Foundation
 
 enum TimeHapticPatternBuilder {
-    static func timeValueEvents(tens: Int, ones: Int, initialDelay: TimeInterval) -> [CHHapticEvent] {
+    static func timeValueEvents(tens: Int, ones: Int, initialDelay: TimeInterval, timings: HapticTimings) -> [CHHapticEvent] {
         var events: [CHHapticEvent] = []
         var time = initialDelay
 
-        time = appendDigitEvents(tens, to: &events, startTime: time)
-        time += TimeControlHapticPattern.digitGap
-        _ = appendDigitEvents(ones, to: &events, startTime: time)
+        time = appendDigitEvents(tens, to: &events, startTime: time, timings: timings)
+        time += timings.digitGap
+        _ = appendDigitEvents(ones, to: &events, startTime: time, timings: timings)
 
         return events
     }
 
-    static func fallbackDigitImpactTimes(_ digit: Int, startTime: TimeInterval) -> [TimeInterval] {
+    static func fallbackDigitImpactTimes(_ digit: Int, startTime: TimeInterval, timings: HapticTimings) -> [TimeInterval] {
         guard digit > 0 else { return [startTime] }
 
         return (0..<digit).map { index in
-            startTime + TimeInterval(index) * TimeControlHapticPattern.pulseGap
+            startTime + TimeInterval(index) * timings.pulseGap
         }
     }
 
-    static func nextDigitStartTime(_ digit: Int, startTime: TimeInterval) -> TimeInterval {
-        startTime + TimeControlHapticPattern.digitDuration(digit)
+    static func nextDigitStartTime(_ digit: Int, startTime: TimeInterval, timings: HapticTimings) -> TimeInterval {
+        startTime + timings.digitDuration(digit)
     }
 
     @discardableResult
     private static func appendDigitEvents(
         _ digit: Int,
         to events: inout [CHHapticEvent],
-        startTime: TimeInterval
+        startTime: TimeInterval,
+        timings: HapticTimings
     ) -> TimeInterval {
-        let intensity = HapticPreferences.intensity.coreHapticsValue
+        let intensity = timings.intensity.coreHapticsValue
 
         guard digit > 0 else {
             events.append(
@@ -49,10 +50,10 @@ enum TimeHapticPatternBuilder {
                         CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.35)
                     ],
                     relativeTime: startTime,
-                    duration: TimeControlHapticPattern.zeroDuration
+                    duration: timings.zeroDuration
                 )
             )
-            return startTime + TimeControlHapticPattern.zeroDuration
+            return startTime + timings.zeroDuration
         }
 
         for index in 0..<digit {
@@ -63,11 +64,11 @@ enum TimeHapticPatternBuilder {
                         CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity),
                         CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.85)
                     ],
-                    relativeTime: startTime + TimeInterval(index) * TimeControlHapticPattern.pulseGap
+                    relativeTime: startTime + TimeInterval(index) * timings.pulseGap
                 )
             )
         }
 
-        return startTime + TimeControlHapticPattern.digitDuration(digit)
+        return startTime + timings.digitDuration(digit)
     }
 }
