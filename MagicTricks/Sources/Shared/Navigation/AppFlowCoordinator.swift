@@ -13,6 +13,7 @@ final class AppFlowCoordinator: ObservableObject {
     @Published var activeFlow: FullScreenFlow?
     @Published var activeSheet: SheetFlow?
 
+    private var pendingFlow: FullScreenFlow?
     private let preferences: AppPreferences
     private static let ratingTriggerCount = 3
 
@@ -58,6 +59,18 @@ final class AppFlowCoordinator: ObservableObject {
         guard !seen.contains(id) else { return }
         seen.append(id)
         preferences.seenTrickIds = seen
+    }
+
+    func startTrickAfterInstruction(_ trick: Trick) {
+        markTrickAsSeen(trick)
+        pendingFlow = .trick(trick: trick)
+        activeSheet = nil
+    }
+
+    func sheetDidDismiss() {
+        guard let pendingFlow else { return }
+        self.pendingFlow = nil
+        activeFlow = pendingFlow
     }
 
     private func hasSeenTrick(_ trick: Trick) -> Bool {
