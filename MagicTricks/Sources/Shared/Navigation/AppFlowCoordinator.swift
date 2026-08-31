@@ -12,6 +12,7 @@ final class AppFlowCoordinator: ObservableObject {
 
     @Published var activeFlow: FullScreenFlow?
     @Published var activeSheet: SheetFlow?
+    @Published var isPaywallOverlayPresented = false
 
     private var pendingFlow: FullScreenFlow?
     private let preferences: AppPreferences
@@ -43,6 +44,14 @@ final class AppFlowCoordinator: ObservableObject {
 
     func openPaywall() {
         activeFlow = .paywall
+    }
+
+    func presentPaywallOverlay() {
+        isPaywallOverlayPresented = true
+    }
+
+    func dismissPaywallOverlay() {
+        isPaywallOverlayPresented = false
     }
 
     func openStartFlow(for trick: Trick) {

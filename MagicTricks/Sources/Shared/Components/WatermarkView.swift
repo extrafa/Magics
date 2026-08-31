@@ -9,13 +9,13 @@ import SwiftUI
 
 struct WatermarkView: View {
     @EnvironmentObject private var store: StoreManager
-    @State private var showPaywall = false
+    @EnvironmentObject private var flow: AppFlowCoordinator
     @State private var isDismissed = false
 
     var body: some View {
         if !store.hasProAccess && !isDismissed && !store.isWatermarkHidden {
             HStack(spacing: 0) {
-                Button { showPaywall = true } label: {
+                Button { flow.presentPaywallOverlay() } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "sparkles")
                             .font(.system(size: 11, weight: .semibold))
@@ -48,9 +48,14 @@ struct WatermarkView: View {
                 }
                 .buttonStyle(.plain)
             }
-            .fullScreenCover(isPresented: $showPaywall) {
-                AppFlowCoverView(activeFlow: .paywall)
-                    .environmentObject(store)
+            .background {
+                if #available(iOS 26, *) {
+                    Color.clear
+                } else {
+                    Capsule()
+                        .fill(.ultraThinMaterial)
+                        .overlay(Capsule().stroke(Color.grayBorder, lineWidth: 1))
+                }
             }
         }
     }
