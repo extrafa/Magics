@@ -75,6 +75,7 @@ final class HapticScheduler {
         }
     }
 
+    @discardableResult
     func scheduleTimeDigit(
         _ digit: Int,
         startTime: TimeInterval,

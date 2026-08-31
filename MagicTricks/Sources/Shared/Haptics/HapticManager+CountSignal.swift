@@ -112,7 +112,6 @@ extension HapticManager {
         timings: HapticTimings,
         completion: Completion?
     ) {
-        // 0 is a long continuous buzz, not a transient tap
         let event = CHHapticEvent(
             eventType: .hapticContinuous,
             parameters: [
@@ -123,7 +122,6 @@ extension HapticManager {
             duration: timings.longDuration
         )
         enginePlayer.playEvents([event]) {
-            // Fallback if CoreHaptics unavailable
             self.scheduler.scheduleImpact(using: generator, after: initialDelay, intensity: timings.intensity.impactIntensity)
         }
         scheduler.scheduleCompletion(

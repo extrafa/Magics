@@ -37,6 +37,7 @@ protocol HapticScheduling {
         generator: UIImpactFeedbackGenerator,
         completion: Completion?
     )
+    @discardableResult
     func scheduleTimeDigit(
         _ digit: Int,
         startTime: TimeInterval,

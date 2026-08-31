@@ -50,21 +50,21 @@ enum HapticIntensity: Equatable, Hashable {
 
 enum HapticTiming {
     static let initialDelay: TimeInterval = 0
-    static let pulseGap: TimeInterval = 0.32
-    static let digitGap: TimeInterval = 1.15
     static let sectionGap: TimeInterval = 3.0
     static let shortDuration: TimeInterval = 0.08
-    static let longDuration: TimeInterval = 0.55
     static let completionPadding: TimeInterval = 0.1
     static let groupedChunkSize = 3
 
-    // Each must sit strictly between base/2.5 and base — checked by scaledWithFloor's assert.
+    static let pulseGap: TimeInterval = 0.32
     static let minPulseGap: TimeInterval = 0.18
+
+    static let digitGap: TimeInterval = 1.15
     static let minDigitGap: TimeInterval = 0.7
+
+    static let longDuration: TimeInterval = 0.55
     static let minLongDuration: TimeInterval = 0.42
 }
 
-// Computed once from injected preferences instead of reading AppPreferences.shared directly.
 struct HapticTimings {
     let pulseGap: TimeInterval
     let digitGap: TimeInterval
@@ -104,21 +104,26 @@ struct HapticTimings {
         let groupGap: TimeInterval
         let digitGap: TimeInterval
 
-        // Ratio ~3.7:1 (groupGap:pulseGap) keeps the group boundary perceptible; tuned per speed tier.
+        private struct Tier {
+            let minSpeed: Double
+            let pulseGap: TimeInterval
+            let remainderPulseGap: TimeInterval
+            let groupGap: TimeInterval
+        }
+
+        private static let tiers: [Tier] = [
+            Tier(minSpeed: 2.25, pulseGap: 0.10, remainderPulseGap: 0.14, groupGap: 0.36),
+            Tier(minSpeed: 1.75, pulseGap: 0.115, remainderPulseGap: 0.15, groupGap: 0.40),
+            Tier(minSpeed: 1.25, pulseGap: 0.13, remainderPulseGap: 0.17, groupGap: 0.46),
+            Tier(minSpeed: 0, pulseGap: 0.15, remainderPulseGap: 0.19, groupGap: 0.53)
+        ]
+
         init(speed: Double, digitGap: TimeInterval) {
-            let tier: (pulseGap: TimeInterval, remainderPulseGap: TimeInterval, groupGap: TimeInterval)
-            if speed >= 2.25 {
-                tier = (0.10, 0.14, 0.36)
-            } else if speed >= 1.75 {
-                tier = (0.115, 0.15, 0.40)
-            } else if speed >= 1.25 {
-                tier = (0.13, 0.17, 0.46)
-            } else {
-                tier = (0.15, 0.19, 0.53)
-            }
-            self.pulseGap = tier.pulseGap
-            self.remainderPulseGap = tier.remainderPulseGap
-            self.groupGap = tier.groupGap
+            // The last tier's minSpeed is 0, so this always matches.
+            let tier = Self.tiers.first(where: { speed >= $0.minSpeed })!
+            pulseGap = tier.pulseGap
+            remainderPulseGap = tier.remainderPulseGap
+            groupGap = tier.groupGap
             self.digitGap = digitGap
         }
     }

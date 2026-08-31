@@ -11,12 +11,8 @@ import Foundation
 enum TimeHapticPatternBuilder {
     static func timeValueEvents(tens: Int, ones: Int, initialDelay: TimeInterval, timings: HapticTimings) -> [CHHapticEvent] {
         var events: [CHHapticEvent] = []
-        var time = initialDelay
-
-        time = appendDigitEvents(tens, to: &events, startTime: time, timings: timings)
-        time += timings.digitGap
-        _ = appendDigitEvents(ones, to: &events, startTime: time, timings: timings)
-
+        let tensEnd = appendDigitEvents(tens, to: &events, startTime: initialDelay, timings: timings)
+        appendDigitEvents(ones, to: &events, startTime: tensEnd + timings.digitGap, timings: timings)
         return events
     }
 

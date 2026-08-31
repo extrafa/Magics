@@ -50,10 +50,7 @@ extension HapticManager {
 
     func playTimeValueFallback(tens: Int, ones: Int, initialDelay: TimeInterval, timings: HapticTimings) {
         impactGenerator.prepare()
-        var time = initialDelay
-
-        time = scheduler.scheduleTimeDigit(tens, startTime: time, generator: impactGenerator)
-        time += timings.digitGap
-        _ = scheduler.scheduleTimeDigit(ones, startTime: time, generator: impactGenerator)
+        let tensEnd = scheduler.scheduleTimeDigit(tens, startTime: initialDelay, generator: impactGenerator)
+        scheduler.scheduleTimeDigit(ones, startTime: tensEnd + timings.digitGap, generator: impactGenerator)
     }
 }
