@@ -19,19 +19,17 @@ struct PhantomDrawView: View {
     }
 
     var body: some View {
-        NavigationStack {
-            ZStack {
-                Color.background.ignoresSafeArea()
-                contentView
-            }
-            .navigationTitle("Phantom Draw")
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .topBarLeading) {
-                    if !isSenderCanvas {
-                        Button { stop() } label: {
-                            Image(systemName: "xmark")
-                        }
+        ZStack {
+            Color.background.ignoresSafeArea()
+            contentView
+        }
+        .navigationTitle("Phantom Draw")
+        .navigationBarTitleDisplayMode(.inline)
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                if !isSenderCanvas {
+                    Button { stop() } label: {
+                        Image(systemName: "xmark")
                     }
                 }
             }
