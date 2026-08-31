@@ -1106,9 +1106,6 @@
 			);
 			mainGroup = 913FDDD62EBED62D00B05D99;
 			minimizedProjectReferenceProxies = 1;
-			packageReferences = (
-				91DD6A402F7DB817008626D9 /* XCRemoteSwiftPackageReference "Instructions" */,
-			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 913FDDE02EBED62D00B05D99 /* Products */;
 			projectDirPath = "";
@@ -1581,16 +1578,6 @@
 		};
 /* End XCConfigurationList section */
 
-/* Begin XCRemoteSwiftPackageReference section */
-		91DD6A402F7DB817008626D9 /* XCRemoteSwiftPackageReference "Instructions" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/ephread/Instructions";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 2.3.0;
-			};
-		};
-/* End XCRemoteSwiftPackageReference section */
 	};
 	rootObject = 913FDDD72EBED62D00B05D99 /* Project object */;
 }
