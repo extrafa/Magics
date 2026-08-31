@@ -17,6 +17,7 @@ protocol ExitHintPreferenceManaging {
 protocol HapticPreferenceManaging {
     var hapticSpeedMultiplier: Double { get set }
     var isHapticGroupByThreeEnabled: Bool { get set }
+    var hapticIntensity: HapticIntensity { get set }
 
     func resetHapticSettings()
 }
