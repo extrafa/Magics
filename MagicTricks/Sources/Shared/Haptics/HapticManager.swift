@@ -16,13 +16,16 @@ final class HapticManager {
     private let notificationGenerator = UINotificationFeedbackGenerator()
     let enginePlayer: HapticEnginePlaying
     let scheduler: HapticScheduling
+    let preferences: HapticPreferenceManaging
 
     init(
         enginePlayer: HapticEnginePlaying? = nil,
-        scheduler: HapticScheduling? = nil
+        scheduler: HapticScheduling? = nil,
+        preferences: HapticPreferenceManaging = AppPreferences.shared
     ) {
+        self.preferences = preferences
         self.enginePlayer = enginePlayer ?? HapticEnginePlayer()
-        self.scheduler = scheduler ?? HapticScheduler()
+        self.scheduler = scheduler ?? HapticScheduler(preferences: preferences)
     }
 
     func handleScenePhase(_ phase: ScenePhase) {
@@ -39,12 +42,13 @@ final class HapticManager {
         enginePlayer.stop()
     }
 
-    func playCount(_ count: Int, completion: (() -> Void)? = nil) {
+    func playCount(_ count: Int, completion: Completion? = nil) {
         cancelPendingHaptics()
-        if HapticPreferences.isGroupByThreeEnabled {
-            playGroupedCountSignal(count, generator: impactGenerator, completion: completion)
+        let timings = HapticTimings(preferences: preferences)
+        if timings.isGroupByThreeEnabled {
+            playGroupedCountSignal(count, generator: impactGenerator, timings: timings, completion: completion)
         } else {
-            playCountSignal(count, generator: impactGenerator, completion: completion)
+            playCountSignal(count, generator: impactGenerator, timings: timings, completion: completion)
         }
     }
 
@@ -52,13 +56,14 @@ final class HapticManager {
         _ value: Int,
         initialDelay: TimeInterval = 0,
         usesGrouping: Bool = true,
-        completion: (() -> Void)? = nil
+        completion: Completion? = nil
     ) {
         cancelPendingHaptics()
-        if usesGrouping && HapticPreferences.isGroupByThreeEnabled {
-            playGroupedTimeValue(value, initialDelay: initialDelay, completion: completion)
+        let timings = HapticTimings(preferences: preferences)
+        if usesGrouping && timings.isGroupByThreeEnabled {
+            playGroupedTimeValue(value, initialDelay: initialDelay, timings: timings, completion: completion)
         } else {
-            playClassicTimeValue(value, initialDelay: initialDelay, completion: completion)
+            playClassicTimeValue(value, initialDelay: initialDelay, timings: timings, completion: completion)
         }
     }
 }
