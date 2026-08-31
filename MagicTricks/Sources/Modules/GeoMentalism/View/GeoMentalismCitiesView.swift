@@ -81,7 +81,7 @@ struct GeoMentalismCitiesView: View {
     struct Preview: View {
         @State var isVisible = false
         var body: some View {
-            NavigationStackCompat {
+            NavigationStack {
                 GeoMentalismCitiesView(city: "Barcelona", isVisible: $isVisible)
             }
             .environmentObject(StoreManager())

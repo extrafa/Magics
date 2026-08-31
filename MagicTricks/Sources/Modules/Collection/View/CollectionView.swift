@@ -15,7 +15,7 @@ struct CollectionView: View {
     @State private var previousActiveFlow: FullScreenFlow? = nil
 
     var body: some View {
-        NavigationStackCompat {
+        NavigationStack {
             ZStack {
                 Color.background.ignoresSafeArea()
 
@@ -46,14 +46,12 @@ struct CollectionView: View {
                     .padding(16)
                 }
                 .hideScrollIndicators()
-
-                NavigationLink(destination: SettingsScreen(), isActive: $showSettings) {
-                    EmptyView()
-                }
-                .hidden()
             }
             .navigationTitle(String(localized: "collection.title"))
             .navigationBarTitleDisplayMode(.large)
+            .navigationDestination(isPresented: $showSettings) {
+                SettingsScreen()
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
                     Button { showSettings = true } label: {

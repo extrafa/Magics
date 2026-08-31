@@ -32,7 +32,7 @@ struct MotionSettingsScreen: View {
 }
 
 #Preview {
-    NavigationStackCompat {
+    NavigationStack {
         MotionSettingsScreen()
             .environmentObject(SettingsStore())
     }

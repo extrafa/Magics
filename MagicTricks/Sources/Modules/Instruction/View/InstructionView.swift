@@ -36,7 +36,7 @@ struct InstructionView: View {
         }
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $presentedSheet) { sheet in
-            NavigationStackCompat {
+            NavigationStack {
                 InstructionActionSheetDestination(sheet: sheet)
             }
             .withPresentationDragIndicator()
@@ -105,7 +105,7 @@ private extension InstructionView {
 }
 
 #Preview {
-    NavigationStackCompat {
+    NavigationStack {
         InstructionView(instruction: .calculatorPrediction)
     }
 }

@@ -91,7 +91,7 @@ struct HapticSettingsScreen: View {
 }
 
 #Preview {
-    NavigationStackCompat {
+    NavigationStack {
         HapticSettingsScreen()
             .environmentObject(SettingsStore())
     }
