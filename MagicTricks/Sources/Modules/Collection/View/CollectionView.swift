@@ -70,7 +70,7 @@ struct CollectionView: View {
                     .animation(.spring(response: 0.35, dampingFraction: 0.78), value: showSettings)
             }
         }
-        .sheet(item: $flow.activeSheet) { activeSheet in
+        .sheet(item: $flow.activeSheet, onDismiss: flow.sheetDidDismiss) { activeSheet in
             AppSheetView(activeSheet: activeSheet)
                 .withPresentationDragIndicator()
                 .environmentObject(store)
