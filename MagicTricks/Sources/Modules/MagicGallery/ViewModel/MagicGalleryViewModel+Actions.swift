@@ -8,16 +8,16 @@
 import UIKit
 
 extension MagicGalleryViewModel {
-    func startSequentialCapture() {
+    func startSequentialCapture(sourceType: UIImagePickerController.SourceType = .camera) {
         guard let nextAvailableNumber else {
             alertMessage = String(localized: "magicGallery.error.allPhotosReady")
             return
         }
-        activeCaptureSession = captureFlow.startSequential(firstNumber: nextAvailableNumber)
+        activeCaptureSession = captureFlow.startSequential(firstNumber: nextAvailableNumber, sourceType: sourceType)
     }
 
-    func startCapture(for number: Int) {
-        activeCaptureSession = captureFlow.startSingle(number: number)
+    func startCapture(for number: Int, sourceType: UIImagePickerController.SourceType = .camera) {
+        activeCaptureSession = captureFlow.startSingle(number: number, sourceType: sourceType)
     }
 
     func handleSlotTap(_ number: Int) {
