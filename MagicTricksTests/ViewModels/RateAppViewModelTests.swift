@@ -53,7 +53,9 @@ final class RateAppViewModelTests: XCTestCase {
     }
 }
 
-private struct MockRateAppPreferences: RateAppPreferenceManaging {
+// A class, not a struct: RateAppViewModel stores its own copy of the
+// preferences value, so a struct mock's mutations wouldn't be visible here.
+private final class MockRateAppPreferences: RateAppPreferenceManaging {
     var hasRespondedToRating = false
     var ratingSnoozedUntil: Date?
 }
