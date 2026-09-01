@@ -11,5 +11,5 @@ struct AppConfig {
     static let appStoreURL: URL? = nil
     static let privacyPolicyURL = URL(string: "https://magictricksapp.com/privacy")!
     static let termsOfUseURL = URL(string: "https://magictricksapp.com/terms")!
-    static let supportEmail = "support@magictricksapp.com"
+    static let supportEmail = "usmoder@gmail.com"
 }
