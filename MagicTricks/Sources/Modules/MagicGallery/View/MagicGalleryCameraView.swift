@@ -46,7 +46,7 @@ private struct MagicGalleryPickerRepresentable: UIViewControllerRepresentable {
 
     func makeUIViewController(context: Context) -> UIImagePickerController {
         let picker = UIImagePickerController()
-        picker.sourceType = sourceType
+        picker.sourceType = UIImagePickerController.isSourceTypeAvailable(sourceType) ? sourceType : .photoLibrary
         picker.allowsEditing = false
         picker.delegate = context.coordinator
         return picker
