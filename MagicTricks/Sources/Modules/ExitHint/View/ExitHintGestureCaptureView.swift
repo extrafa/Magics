@@ -9,18 +9,16 @@ import SwiftUI
 import UIKit
 
 private struct ExitHintLongPressModifier: ViewModifier {
-    let rect: CGRect
     let onExit: () -> Void
 
     func body(content: Content) -> some View {
         content.overlay {
-            ExitHintGestureCaptureView(rect: rect, onExit: onExit)
+            ExitHintGestureCaptureView(onExit: onExit)
         }
     }
 }
 
 private struct ExitHintGestureCaptureView: UIViewRepresentable {
-    let rect: CGRect
     let onExit: () -> Void
 
     @EnvironmentObject private var gestureCoordinator: ExitHintGestureCoordinator
@@ -31,6 +29,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> GestureInstallerView {
         let view = GestureInstallerView()
+        context.coordinator.installerView = view
         view.onMoveToWindow = { window in
             context.coordinator.installRecognizerIfNeeded(on: window)
         }
@@ -39,7 +38,6 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
     func updateUIView(_ uiView: GestureInstallerView, context: Context) {
         context.coordinator.onExit = onExit
-        context.coordinator.rect = rect
         context.coordinator.gestureCoordinator = gestureCoordinator
         uiView.isTrainingActive = gestureCoordinator.isTrainingActive
         if let window = uiView.window {
@@ -53,7 +51,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
     final class Coordinator: NSObject, UIGestureRecognizerDelegate {
         var onExit: () -> Void
-        var rect: CGRect = .zero
+        weak var installerView: UIView?
         weak var gestureCoordinator: ExitHintGestureCoordinator?
         private weak var installedWindow: UIWindow?
         private var longPressRecognizer: UILongPressGestureRecognizer?
@@ -68,6 +66,21 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
         init(onExit: @escaping () -> Void) {
             self.onExit = onExit
+        }
+
+        // The hint zone is drawn at a fixed offset/size within the capture view's
+        // own bounds (see ExitHintView.body), so its screen rect is derived from
+        // UIKit layout directly instead of round-tripping through SwiftUI's
+        // GeometryReader/.global coordinate space, which reported stale values here.
+        private var rect: CGRect {
+            guard let installerView, let window = installerView.window else { return .zero }
+            let localRect = CGRect(
+                x: ExitHintZone.leadingInset,
+                y: ExitHintZone.topInset,
+                width: ExitHintZone.frame.width,
+                height: ExitHintZone.frame.height
+            )
+            return installerView.convert(localRect, to: window)
         }
 
         func installRecognizerIfNeeded(on window: UIWindow) {
@@ -277,7 +290,7 @@ private final class GestureInstallerView: UIView {
 }
 
 extension View {
-    func exitHintLongPressEnabled(rect: CGRect, onExit: @escaping () -> Void) -> some View {
-        modifier(ExitHintLongPressModifier(rect: rect, onExit: onExit))
+    func exitHintLongPressEnabled(onExit: @escaping () -> Void) -> some View {
+        modifier(ExitHintLongPressModifier(onExit: onExit))
     }
 }

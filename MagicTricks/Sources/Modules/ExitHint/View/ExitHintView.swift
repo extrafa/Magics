@@ -14,7 +14,6 @@ struct ExitHintView: View {
 
     @StateObject private var viewModel = ExitHintViewModel()
     @StateObject private var gestureCoordinator = ExitHintGestureCoordinator()
-    @State private var hintGlobalRect: CGRect = .zero
 
     init(isVisible: Binding<Bool>, style: ExitHintStyle = .normal) {
         _isVisible = isVisible
@@ -33,13 +32,12 @@ struct ExitHintView: View {
                     .brightness(viewModel.flashBrightness)
                     .animation(flashBrightnessAnimation, value: viewModel.flashBrightness)
             }
-            .padding(.top, 10)
-            .padding(.leading, 12)
+            .padding(.top, ExitHintZone.topInset)
+            .padding(.leading, ExitHintZone.leadingInset)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .exitHintLongPressEnabled(rect: hintGlobalRect, onExit: dismiss.callAsFunction)
+        .exitHintLongPressEnabled(onExit: dismiss.callAsFunction)
         .environmentObject(gestureCoordinator)
-        .onPreferenceChange(ExitHintRectPreferenceKey.self) { hintGlobalRect = $0 }
         .alert(
             String(localized: "exitHint.confirm.title"),
             isPresented: $viewModel.isConfirmAlertPresented
@@ -121,12 +119,6 @@ struct ExitHintView: View {
                     .padding(.bottom, 18)
                 }
                 .frame(width: ExitHintZone.frame.width, height: ExitHintZone.frame.height)
-                .background {
-                    GeometryReader { proxy in
-                        Color.clear
-                            .preference(key: ExitHintRectPreferenceKey.self, value: proxy.frame(in: .global))
-                    }
-                }
                 .allowsHitTesting(false)
         }
     }
