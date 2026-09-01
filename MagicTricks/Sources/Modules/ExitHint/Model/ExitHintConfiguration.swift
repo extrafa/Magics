@@ -7,13 +7,6 @@
 
 import SwiftUI
 
-struct ExitHintRectPreferenceKey: PreferenceKey {
-    static var defaultValue: CGRect = .zero
-    static func reduce(value: inout CGRect, nextValue: () -> CGRect) {
-        value = nextValue()
-    }
-}
-
 @MainActor
 final class ExitHintGestureCoordinator: ObservableObject {
     var isTrainingActive = false
@@ -26,6 +19,8 @@ final class ExitHintGestureCoordinator: ObservableObject {
 
 enum ExitHintZone {
     static let frame = CGSize(width: 250, height: 220)
+    static let topInset: CGFloat = 10
+    static let leadingInset: CGFloat = 12
     static let minimumPressDuration: TimeInterval = 1.5
     static let hitTestMargin: CGFloat = 20
     static let longPressAllowableMovement: CGFloat = 1000
