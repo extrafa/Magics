@@ -40,6 +40,7 @@
 		0AEE00000000000000000019 /* FloatingMotionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000018 /* FloatingMotionModifier.swift */; };
 		0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000001A /* MagicGalleryCropView.swift */; };
 		0AEE0000000000000000001D /* RateAppSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000001C /* RateAppSheet.swift */; };
+		0AEE721D1E7FD163829108F5 /* RateAppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE188C8CC8384A08F96A35 /* RateAppViewModel.swift */; };
 		0AFF00000000000000000002 /* InstructionPhase.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000001 /* InstructionPhase.swift */; };
 		0AFF00000000000000000004 /* AppColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000003 /* AppColors.swift */; };
 		0AFF00000000000000000006 /* PhoneTiltGestureManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */; };
@@ -152,6 +153,7 @@
 		92A000022FC7600000A00001 /* AppPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000062FC7600000A00001 /* AppPreferencesTests.swift */; };
 		92A000032FC7600000A00001 /* HapticTrainingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */; };
 		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
+		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
 		92A000092FC8600000A00001 /* CalculatorPredictionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -199,6 +201,7 @@
 		0AEE00000000000000000018 /* FloatingMotionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMotionModifier.swift; sourceTree = "<group>"; };
 		0AEE0000000000000000001A /* MagicGalleryCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCropView.swift; sourceTree = "<group>"; };
 		0AEE0000000000000000001C /* RateAppSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppSheet.swift; sourceTree = "<group>"; };
+		0AEE188C8CC8384A08F96A35 /* RateAppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModel.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000001 /* InstructionPhase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionPhase.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000003 /* AppColors.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppColors.swift; sourceTree = "<group>"; };
 		0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhoneTiltGestureManager.swift; sourceTree = "<group>"; };
@@ -314,6 +317,7 @@
 		92A000062FC7600000A00001 /* AppPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferencesTests.swift; sourceTree = "<group>"; };
 		92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingViewModelTests.swift; sourceTree = "<group>"; };
 		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
+		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
 		92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModelTests.swift; sourceTree = "<group>"; };
 		E718EB3DEAA25219A8279ECA /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		905BBBF565F9E4E4297D5225 /* Local.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig.example; sourceTree = "<group>"; };
@@ -427,6 +431,7 @@
 			isa = PBXGroup;
 			children = (
 				0AEE0000000000000000001C /* RateAppSheet.swift */,
+				0AEE188C8CC8384A08F96A35 /* RateAppViewModel.swift */,
 			);
 			path = RateApp;
 			sourceTree = "<group>";
@@ -943,6 +948,7 @@
 				92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */,
 				92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */,
 				92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */,
+				92A0000273CB6047599A017B /* RateAppViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1257,6 +1263,7 @@
 				0AEE00000000000000000004 /* MagicGalleryCameraView.swift in Sources */,
 				0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */,
 				0AEE0000000000000000001D /* RateAppSheet.swift in Sources */,
+				0AEE721D1E7FD163829108F5 /* RateAppViewModel.swift in Sources */,
 				0AML00000000000000000002 /* PhantomDrawModels.swift in Sources */,
 				0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */,
 				0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */,
@@ -1295,6 +1302,7 @@
 				92A000032FC7600000A00001 /* HapticTrainingViewModelTests.swift in Sources */,
 				92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */,
 				92A000092FC8600000A00001 /* CalculatorPredictionViewModelTests.swift in Sources */,
+				92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
