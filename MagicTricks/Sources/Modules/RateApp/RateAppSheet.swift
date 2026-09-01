@@ -12,16 +12,11 @@ struct RateAppSheet: View {
 
     @Environment(\.dismiss) private var dismiss
 
-    @State private var phase: Phase = .question
-
-    private enum Phase {
-        case question
-        case disliked
-    }
+    @StateObject private var viewModel = RateAppViewModel()
 
     var body: some View {
         VStack(spacing: 0) {
-            switch phase {
+            switch viewModel.phase {
             case .question:
                 questionView
                     .transition(.asymmetric(
@@ -36,13 +31,14 @@ struct RateAppSheet: View {
                     ))
             }
         }
-        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: phase)
+        .animation(.spring(response: 0.4, dampingFraction: 0.85), value: viewModel.phase)
         .padding(.horizontal, 24)
         .padding(.top, 32)
         .padding(.bottom, 24)
-        
+
         .withPresentationDragIndicator()
         .modifier(RateAppPresentationModifier())
+        .onDisappear { viewModel.markDismissed() }
     }
 
     // MARK: - Question
@@ -125,7 +121,7 @@ struct RateAppSheet: View {
     // MARK: - Actions
 
     private func handleLike() {
-        AppPreferences.shared.hasRespondedToRating = true
+        viewModel.like()
         dismiss()
         Task {
             try? await Task.sleep(milliseconds: 600)
@@ -139,15 +135,11 @@ struct RateAppSheet: View {
     }
 
     private func handleDislike() {
-        withAnimation { phase = .disliked }
+        withAnimation { viewModel.dislike() }
     }
 
     private func handleWriteToUs() {
-        AppPreferences.shared.hasRespondedToRating = true
-        let address = AppConfig.supportEmail
-        let subject = "Magic Tricks Feedback"
-        let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        if let url = URL(string: "mailto:\(address)?subject=\(encodedSubject)") {
+        if let url = viewModel.writeToUs() {
             UIApplication.shared.open(url)
         }
         dismiss()
