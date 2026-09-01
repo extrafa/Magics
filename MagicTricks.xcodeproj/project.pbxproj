@@ -153,6 +153,7 @@
 		92A000022FC7600000A00001 /* AppPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000062FC7600000A00001 /* AppPreferencesTests.swift */; };
 		92A000032FC7600000A00001 /* HapticTrainingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */; };
 		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
+		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
 		92A000092FC8600000A00001 /* CalculatorPredictionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -316,6 +317,7 @@
 		92A000062FC7600000A00001 /* AppPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferencesTests.swift; sourceTree = "<group>"; };
 		92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTrainingViewModelTests.swift; sourceTree = "<group>"; };
 		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
+		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
 		92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModelTests.swift; sourceTree = "<group>"; };
 		E718EB3DEAA25219A8279ECA /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		905BBBF565F9E4E4297D5225 /* Local.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig.example; sourceTree = "<group>"; };
@@ -946,6 +948,7 @@
 				92A000072FC7600000A00001 /* HapticTrainingViewModelTests.swift */,
 				92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */,
 				92A0000A2FC8600000A00001 /* CalculatorPredictionViewModelTests.swift */,
+				92A0000273CB6047599A017B /* RateAppViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1299,6 +1302,7 @@
 				92A000032FC7600000A00001 /* HapticTrainingViewModelTests.swift in Sources */,
 				92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */,
 				92A000092FC8600000A00001 /* CalculatorPredictionViewModelTests.swift in Sources */,
+				92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
