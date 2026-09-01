@@ -34,5 +34,6 @@ struct MagicGalleryPhoto: Identifiable, Equatable {
 
 struct MagicGalleryCaptureSession: Identifiable {
     let number: Int
+    let sourceType: UIImagePickerController.SourceType
     var id: Int { number }
 }

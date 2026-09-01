@@ -11,7 +11,6 @@ struct MagicGalleryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var vm = MagicGalleryViewModel()
 
-    @State private var captureSource: UIImagePickerController.SourceType = .camera
     @State private var showSourceDialog = false
 
     var body: some View {
@@ -40,13 +39,11 @@ struct MagicGalleryView: View {
         .confirmationDialog("", isPresented: $showSourceDialog) {
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
                 Button("Camera") {
-                    captureSource = .camera
-                    vm.startSequentialCapture()
+                    vm.startSequentialCapture(sourceType: .camera)
                 }
             }
             Button("Photo Library") {
-                captureSource = .photoLibrary
-                vm.startSequentialCapture()
+                vm.startSequentialCapture(sourceType: .photoLibrary)
             }
             Button("Cancel", role: .cancel) {}
         }
@@ -55,7 +52,7 @@ struct MagicGalleryView: View {
         }) { session in
             MagicGalleryCameraView(
                 number: session.number,
-                sourceType: captureSource,
+                sourceType: session.sourceType,
                 onCaptured: { vm.handleCapturedImage($0, for: session.number) },
                 onCancel: vm.handleCaptureCancelled
             )
