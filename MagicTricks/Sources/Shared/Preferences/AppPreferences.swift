@@ -34,7 +34,12 @@ protocol MagicGalleryPreferenceManaging {
     var magicGalleryGestureMode: MagicGalleryGestureMode { get set }
 }
 
-struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, MotionPreferenceManaging, MagicGalleryPreferenceManaging {
+protocol RateAppPreferenceManaging {
+    var hasRespondedToRating: Bool { get set }
+    var ratingSnoozedUntil: Date? { get set }
+}
+
+struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, MotionPreferenceManaging, MagicGalleryPreferenceManaging, RateAppPreferenceManaging {
     static let shared = AppPreferences()
 
     private let store: PreferenceStoring
@@ -56,6 +61,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
         static let trickLaunchCount = "trickLaunchCount"
         static let hasRespondedToRating = "hasRespondedToRating"
+        static let ratingSnoozedUntil = "ratingSnoozedUntil"
         static let seenTrickIds = "seenTrickIds"
     }
 
@@ -166,6 +172,11 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     var hasRespondedToRating: Bool {
         get { store.bool(forKey: Key.hasRespondedToRating) }
         nonmutating set { store.set(newValue, forKey: Key.hasRespondedToRating) }
+    }
+
+    var ratingSnoozedUntil: Date? {
+        get { store.object(forKey: Key.ratingSnoozedUntil) as? Date }
+        nonmutating set { store.set(newValue, forKey: Key.ratingSnoozedUntil) }
     }
 
     var seenTrickIds: [String] {

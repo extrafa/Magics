@@ -24,6 +24,7 @@ final class AppFlowCoordinator: ObservableObject {
 
     func recordTrickClose() {
         guard !preferences.hasRespondedToRating else { return }
+        if let until = preferences.ratingSnoozedUntil, until > Date() { return }
         preferences.trickLaunchCount += 1
         if preferences.trickLaunchCount >= Self.ratingTriggerCount {
             preferences.trickLaunchCount = 0
