@@ -57,6 +57,10 @@ struct MagicGalleryPerformView: View {
         .toolbarColorScheme(.dark, for: .navigationBar)
         .magicGalleryAlert(message: $vm.alertMessage)
         .accessDeniedAlert(message: $vm.accessDeniedAlertMessage)
+        .onDisappear {
+            pendingSaveTask?.cancel()
+            pendingSaveTask = nil
+        }
     }
 
     private var swipeDots: some View {
@@ -94,9 +98,11 @@ struct MagicGalleryPerformView: View {
         let number = swipeCount
         swipeCount = 0
         let success = await vm.savePhoto(number: number)
+        guard !Task.isCancelled else { return }
         if success {
             withAnimation { showSaved = true }
             try? await Task.sleep(for: .seconds(1.5))
+            guard !Task.isCancelled else { return }
             withAnimation { showSaved = false }
         } else {
             errorFeedback.notificationOccurred(.error)
