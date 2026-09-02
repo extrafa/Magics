@@ -13,6 +13,7 @@ final class MagicGalleryViewModel: ObservableObject {
     @Published private(set) var customPhotos: [MagicGalleryPhoto] = []
     @Published var activeCaptureSession: MagicGalleryCaptureSession?
     @Published var alertMessage: String?
+    @Published var accessDeniedAlertMessage: String?
     @Published private(set) var usesStandardSet: Bool
     @Published private(set) var gestureMode: MagicGalleryGestureMode
 

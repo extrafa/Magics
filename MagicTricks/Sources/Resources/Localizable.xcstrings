@@ -600,6 +600,23 @@
         }
       }
     },
+    "common.cancel" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancel"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cancelar"
+          }
+        }
+      }
+    },
     "common.error" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -647,6 +664,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "OK"
+          }
+        }
+      }
+    },
+    "common.openSettings" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Open Settings"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Abrir Ajustes"
           }
         }
       }
@@ -2849,6 +2883,23 @@
         }
       }
     },
+    "magicGallery.error.cameraAccessDenied" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Camera access is off. Turn it on in Settings to take photos."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El acceso a la cámara está desactivado. Actívalo en Ajustes para tomar fotos."
+          }
+        }
+      }
+    },
     "magicGallery.error.deletePhotoFailed" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2879,6 +2930,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "No se pudieron cargar las fotos guardadas"
+          }
+        }
+      }
+    },
+    "magicGallery.error.photoLibraryAccessDenied" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Photos access is off. Turn it on in Settings to save this photo."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "El acceso a Fotos está desactivado. Actívalo en Ajustes para guardar esta foto."
           }
         }
       }
