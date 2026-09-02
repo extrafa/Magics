@@ -67,6 +67,7 @@ struct MagicGalleryView: View {
         } message: {
             Text(vm.alertMessage ?? "")
         }
+        .accessDeniedAlert(message: $vm.accessDeniedAlertMessage)
     }
 
     private var capturePanel: some View {
@@ -112,6 +113,27 @@ struct MagicGalleryView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
             .background(Color.background)
+        }
+    }
+}
+
+extension View {
+    func accessDeniedAlert(message: Binding<String?>) -> some View {
+        alert(String(localized: "instruction.magicGallery.title"), isPresented: Binding(
+            get: { message.wrappedValue != nil },
+            set: { if !$0 { message.wrappedValue = nil } }
+        )) {
+            Button(String(localized: "common.cancel"), role: .cancel) {
+                message.wrappedValue = nil
+            }
+            Button(String(localized: "common.openSettings")) {
+                message.wrappedValue = nil
+                if let url = URL(string: UIApplication.openSettingsURLString) {
+                    UIApplication.shared.open(url)
+                }
+            }
+        } message: {
+            Text(message.wrappedValue ?? "")
         }
     }
 }
