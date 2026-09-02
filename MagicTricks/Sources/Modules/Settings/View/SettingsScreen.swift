@@ -149,19 +149,21 @@ private extension SettingsScreen {
         }
     }
 
+    @ViewBuilder
     var appSection: some View {
-        SettingsSection(title: String(localized: "settings.section.app")) {
-            VStack(spacing: 0) {
-                shareButton
+        if let appShareURL = store.appShareURL {
+            SettingsSection(title: String(localized: "settings.section.app")) {
+                VStack(spacing: 0) {
+                    shareButton(url: appShareURL)
+                }
+                .padding(.horizontal, 18)
+                .settingsCard()
             }
-            .padding(.horizontal, 18)
-            .settingsCard()
         }
     }
 
-    var shareButton: some View {
-        let item = store.appShareURL ?? URL(string: "https://apps.apple.com")!
-        return ShareLink(item: item) {
+    func shareButton(url: URL) -> some View {
+        ShareLink(item: url, subject: Text(store.appShareText)) {
             SettingsActionRow(
                 icon: "square.and.arrow.up",
                 title: String(localized: "settings.shareApp")
