@@ -89,7 +89,10 @@ extension MagicGalleryViewModel {
     }
 
     func savePhoto(number: Int) async -> Bool {
-        guard let image = photo(for: number)?.image else { return false }
+        guard let image = photo(for: number)?.image else {
+            alertMessage = String(localized: "magicGallery.selectPhotoFirst")
+            return false
+        }
         guard await hasPhotoLibraryAddAccess() else {
             accessDeniedAlertMessage = String(localized: "magicGallery.error.photoLibraryAccessDenied")
             return false
@@ -99,6 +102,7 @@ extension MagicGalleryViewModel {
             haptics.playSuccessNotification()
             return true
         } catch {
+            alertMessage = String(localized: "magicGallery.error.saveToGalleryFailed")
             return false
         }
     }

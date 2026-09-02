@@ -57,16 +57,7 @@ struct MagicGalleryView: View {
                 onCancel: vm.handleCaptureCancelled
             )
         }
-        .alert(String(localized: "instruction.magicGallery.title"), isPresented: Binding(
-            get: { vm.alertMessage != nil },
-            set: { if !$0 { vm.alertMessage = nil } }
-        )) {
-            Button(String(localized: "common.ok"), role: .cancel) {
-                vm.alertMessage = nil
-            }
-        } message: {
-            Text(vm.alertMessage ?? "")
-        }
+        .magicGalleryAlert(message: $vm.alertMessage)
         .accessDeniedAlert(message: $vm.accessDeniedAlertMessage)
     }
 
@@ -118,6 +109,19 @@ struct MagicGalleryView: View {
 }
 
 extension View {
+    func magicGalleryAlert(message: Binding<String?>) -> some View {
+        alert(String(localized: "instruction.magicGallery.title"), isPresented: Binding(
+            get: { message.wrappedValue != nil },
+            set: { if !$0 { message.wrappedValue = nil } }
+        )) {
+            Button(String(localized: "common.ok"), role: .cancel) {
+                message.wrappedValue = nil
+            }
+        } message: {
+            Text(message.wrappedValue ?? "")
+        }
+    }
+
     func accessDeniedAlert(message: Binding<String?>) -> some View {
         alert(String(localized: "instruction.magicGallery.title"), isPresented: Binding(
             get: { message.wrappedValue != nil },
