@@ -89,7 +89,7 @@ extension MagicGalleryViewModel {
     }
 
     func savePhoto(number: Int) async -> Bool {
-        guard let image = photo(for: number)?.image else {
+        guard let photo = photo(for: number) else {
             alertMessage = String(localized: "magicGallery.selectPhotoFirst")
             return false
         }
@@ -98,6 +98,7 @@ extension MagicGalleryViewModel {
             return false
         }
         do {
+            let image = try await photoLibrary.fullResolutionImage(for: photo)
             try await photoSaver.saveToGallery(image)
             haptics.playSuccessNotification()
             return true
