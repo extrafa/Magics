@@ -32,7 +32,6 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
     private let onConfirm: (UIImage) -> Void
     private let onCancel: () -> Void
 
-    private var normalizedImage: UIImage!
     private var scrollView: UIScrollView!
     private var imageView: UIImageView!
     private var overlayView: CropOverlayView!
@@ -57,7 +56,6 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .black
-        normalizedImage = sourceImage.bakingOrientation()
     }
 
     override func viewDidLayoutSubviews() {
@@ -84,13 +82,13 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
 
     private func setupScrollView() {
         let rect = cropFrame
-        let imgSize = normalizedImage.size
+        let imgSize = sourceImage.size
 
         let fillScale = max(rect.width / imgSize.width, rect.height / imgSize.height)
         let imageViewSize = CGSize(width: imgSize.width * fillScale, height: imgSize.height * fillScale)
 
         imageView = UIImageView(frame: CGRect(origin: .zero, size: imageViewSize))
-        imageView.image = normalizedImage
+        imageView.image = sourceImage
 
         scrollView = UIScrollView(frame: rect)
         scrollView.clipsToBounds = true
@@ -177,7 +175,7 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
             height: visibleSize.height / zoomScale
         )
 
-        guard let cgImg = normalizedImage.cgImage else { return normalizedImage }
+        guard let cgImg = sourceImage.cgImage else { return sourceImage }
         let pixelRatio = CGFloat(cgImg.width) / imageView.bounds.width
         let imageBounds = CGRect(x: 0, y: 0, width: cgImg.width, height: cgImg.height)
         let pixelRect = CGRect(
@@ -188,7 +186,7 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
         ).integral.intersection(imageBounds)
 
         guard let cropped = cgImg.cropping(to: pixelRect) else {
-            return normalizedImage
+            return sourceImage
         }
         return UIImage(cgImage: cropped)
     }
@@ -232,17 +230,5 @@ private final class CropOverlayView: UIView {
         )
         border.lineWidth = 1.5
         border.stroke()
-    }
-}
-
-// MARK: - UIImage helper
-
-private extension UIImage {
-    func bakingOrientation() -> UIImage {
-        guard imageOrientation != .up else { return self }
-        let format = UIGraphicsImageRendererFormat()
-        format.scale = 1.0
-        let renderer = UIGraphicsImageRenderer(size: size, format: format)
-        return renderer.image { _ in draw(in: CGRect(origin: .zero, size: size)) }
     }
 }
