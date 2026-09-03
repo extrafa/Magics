@@ -11,10 +11,11 @@ import UIKit
 protocol MagicGalleryPhotoLibraryManaging {
     var maxPhotos: Int { get }
 
-    func loadCustomPhotos() throws -> [MagicGalleryPhoto]
+    func loadCustomPhotos() async throws -> [MagicGalleryPhoto]
     func standardPhoto(for number: Int) -> MagicGalleryPhoto?
     func saveCustomPhoto(_ image: UIImage, for number: Int) async throws -> MagicGalleryPhoto
     func deleteCustomPhoto(_ photo: MagicGalleryPhoto) async throws
+    func fullResolutionImage(for photo: MagicGalleryPhoto) async throws -> UIImage
 }
 
 @MainActor
@@ -32,27 +33,31 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         self.fileManager = fileManager
     }
 
-    func loadCustomPhotos() throws -> [MagicGalleryPhoto] {
+    func loadCustomPhotos() async throws -> [MagicGalleryPhoto] {
         try ensureStorageDirectoryExists()
+        let directoryURL = try storageDirectoryURL()
 
-        let fileURLs = try fileManager.contentsOfDirectory(
-            at: storageDirectoryURL(),
-            includingPropertiesForKeys: nil,
-            options: [.skipsHiddenFiles]
-        )
+        return try await Task.detached(priority: .userInitiated) {
+            let fileURLs = try FileManager.default.contentsOfDirectory(
+                at: directoryURL,
+                includingPropertiesForKeys: nil,
+                options: [.skipsHiddenFiles]
+            )
 
-        return fileURLs.compactMap { url in
-            guard
-                let data = try? Data(contentsOf: url),
-                let image = UIImage(data: data),
-                let number = Int(url.deletingPathExtension().lastPathComponent)
-            else {
-                return nil
+            return fileURLs.compactMap { url -> MagicGalleryPhoto? in
+                guard
+                    let data = try? Data(contentsOf: url),
+                    let image = UIImage(data: data),
+                    let number = Int(url.deletingPathExtension().lastPathComponent)
+                else {
+                    return nil
+                }
+
+                let thumbnail = Self.thumbnail(of: image)
+                return MagicGalleryPhoto(number: number, image: thumbnail, fileName: url.lastPathComponent, source: .custom)
             }
-
-            return MagicGalleryPhoto(number: number, image: image, fileName: url.lastPathComponent, source: .custom)
-        }
-        .sorted { $0.number < $1.number }
+            .sorted { $0.number < $1.number }
+        }.value
     }
 
     func standardPhoto(for number: Int) -> MagicGalleryPhoto? {
@@ -72,14 +77,15 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         let fileName = "\(number).jpg"
         let url = try storageDirectoryURL().appendingPathComponent(fileName)
 
-        try await Task.detached(priority: .userInitiated) {
+        let thumbnail = try await Task.detached(priority: .userInitiated) {
             guard let data = image.jpegData(compressionQuality: 0.92) else {
                 throw MagicGalleryPhotoLibraryError.imageEncodingFailed
             }
             try data.write(to: url, options: .atomic)
+            return Self.thumbnail(of: image)
         }.value
 
-        return MagicGalleryPhoto(number: number, image: image, fileName: fileName, source: .custom)
+        return MagicGalleryPhoto(number: number, image: thumbnail, fileName: fileName, source: .custom)
     }
 
     func deleteCustomPhoto(_ photo: MagicGalleryPhoto) async throws {
@@ -88,6 +94,22 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         try await Task.detached(priority: .utility) {
             try FileManager.default.removeItem(at: url)
         }.value
+    }
+
+    func fullResolutionImage(for photo: MagicGalleryPhoto) async throws -> UIImage {
+        guard photo.isCustom else { return photo.image }
+        let url = try storageDirectoryURL().appendingPathComponent(photo.fileName)
+
+        return try await Task.detached(priority: .userInitiated) {
+            guard let data = try? Data(contentsOf: url), let image = UIImage(data: data) else {
+                throw MagicGalleryPhotoLibraryError.imageDecodingFailed
+            }
+            return image
+        }.value
+    }
+
+    private nonisolated static func thumbnail(of image: UIImage) -> UIImage {
+        image.preparingThumbnail(of: Self.thumbnailMaxSize) ?? image
     }
 
     private func storageDirectoryURL() throws -> URL {
@@ -104,6 +126,8 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
             try fileManager.createDirectory(at: storageDirectoryURL, withIntermediateDirectories: true)
         }
     }
+
+    private static let thumbnailMaxSize = CGSize(width: 400, height: 400)
 
     private static let standardAssetNames: [Int: String] = [
         1: "one",
@@ -158,6 +182,7 @@ final class MagicGallerySystemPhotoSaver: NSObject, MagicGalleryPhotoSaving {
 enum MagicGalleryPhotoLibraryError: Error {
     case storageDirectoryUnavailable
     case imageEncodingFailed
+    case imageDecodingFailed
 }
 
 enum MagicGalleryPhotoSavingError: Error {
