@@ -29,6 +29,7 @@ struct MagicGalleryView: View {
 
             performButton
         }
+        .task { await vm.loadStoredPhotos() }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button { dismiss() } label: {

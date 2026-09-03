@@ -35,8 +35,6 @@ final class MagicGalleryViewModel: ObservableObject {
         self.photoSaver = photoSaver ?? MagicGallerySystemPhotoSaver()
         self.usesStandardSet = preferences.usesStandardMagicGallerySet
         self.gestureMode = preferences.magicGalleryGestureMode
-
-        loadStoredPhotos()
     }
 
     var nextAvailableNumber: Int? {
@@ -45,9 +43,9 @@ final class MagicGalleryViewModel: ObservableObject {
         }
     }
 
-    func loadStoredPhotos() {
+    func loadStoredPhotos() async {
         do {
-            customPhotos = try photoLibrary.loadCustomPhotos()
+            customPhotos = try await photoLibrary.loadCustomPhotos()
         } catch {
             alertMessage = String(localized: "magicGallery.error.loadPhotosFailed")
         }
