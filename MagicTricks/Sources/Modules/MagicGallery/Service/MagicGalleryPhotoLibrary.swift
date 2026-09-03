@@ -46,8 +46,7 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
 
             return fileURLs.compactMap { url -> MagicGalleryPhoto? in
                 guard
-                    let data = try? Data(contentsOf: url),
-                    let image = UIImage(data: data),
+                    let image = Self.decodeImage(at: url),
                     let number = Int(url.deletingPathExtension().lastPathComponent)
                 else {
                     return nil
@@ -101,11 +100,16 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         let url = try storageDirectoryURL().appendingPathComponent(photo.fileName)
 
         return try await Task.detached(priority: .userInitiated) {
-            guard let data = try? Data(contentsOf: url), let image = UIImage(data: data) else {
+            guard let image = Self.decodeImage(at: url) else {
                 throw MagicGalleryPhotoLibraryError.imageDecodingFailed
             }
             return image
         }.value
+    }
+
+    private nonisolated static func decodeImage(at url: URL) -> UIImage? {
+        guard let data = try? Data(contentsOf: url) else { return nil }
+        return UIImage(data: data)
     }
 
     private nonisolated static func thumbnail(of image: UIImage) -> UIImage {
