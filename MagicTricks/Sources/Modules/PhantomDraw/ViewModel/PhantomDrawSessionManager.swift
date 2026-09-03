@@ -12,6 +12,7 @@ final class PhantomDrawSessionManager: ObservableObject {
 
     private static let bonjourType = "_phantomdraw._tcp"
     private static let pskIdentity = "PhantomDraw"
+    private static let connectionTimeout: TimeInterval = 10
 
     @Published var connectionState: PhantomDrawConnectionState = .idle
     @Published var receivedStrokes: [DrawingStroke] = []
@@ -28,6 +29,7 @@ final class PhantomDrawSessionManager: ObservableObject {
     private var browser: NWBrowser?
     private var connection: NWConnection?
     private var receiverCode: String?
+    private var waitingTimeoutWorkItem: DispatchWorkItem?
 
     // MARK: - Public API
 
@@ -121,19 +123,26 @@ final class PhantomDrawSessionManager: ObservableObject {
 
     private func activate(_ conn: NWConnection) {
         connection = conn
+        cancelWaitingTimeout()
         conn.stateUpdateHandler = { [weak self] state in
             DispatchQueue.main.async { [weak self] in
                 guard let self else { return }
                 switch state {
                 case .ready:
                     guard self.connection === conn else { return }
+                    self.cancelWaitingTimeout()
                     self.isReconnecting = false
                     self.connectionState = .connected(peerName: conn.endpoint.peerName)
                     self.receiveLoop(conn)
                     self.onNewConnection?()
 
+                case .waiting:
+                    guard self.connection === conn else { return }
+                    self.scheduleWaitingTimeout(for: conn)
+
                 case .failed, .cancelled:
                     guard self.connection === conn else { return }
+                    self.cancelWaitingTimeout()
                     self.connection = nil
                     switch self.currentRole {
                     case .sender:
@@ -151,6 +160,23 @@ final class PhantomDrawSessionManager: ObservableObject {
             }
         }
         conn.start(queue: .main)
+    }
+
+    // A connection with no viable path (e.g. AWDL out of range) can sit in .waiting indefinitely on its own.
+    private func scheduleWaitingTimeout(for conn: NWConnection) {
+        guard waitingTimeoutWorkItem == nil else { return }
+        let workItem = DispatchWorkItem { [weak self] in
+            guard let self, self.connection === conn else { return }
+            self.waitingTimeoutWorkItem = nil
+            conn.cancel()
+        }
+        waitingTimeoutWorkItem = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.connectionTimeout, execute: workItem)
+    }
+
+    private func cancelWaitingTimeout() {
+        waitingTimeoutWorkItem?.cancel()
+        waitingTimeoutWorkItem = nil
     }
 
     // MARK: - Framing (4-byte big-endian length prefix)
@@ -212,7 +238,10 @@ final class PhantomDrawSessionManager: ObservableObject {
             }
         }
 
-        let p = NWParameters(tls: tlsOptions, tcp: NWProtocolTCP.Options())
+        let tcpOptions = NWProtocolTCP.Options()
+        tcpOptions.connectionTimeout = Int(Self.connectionTimeout)
+
+        let p = NWParameters(tls: tlsOptions, tcp: tcpOptions)
         p.includePeerToPeer = true
         return p
     }
@@ -221,6 +250,7 @@ final class PhantomDrawSessionManager: ObservableObject {
         browser?.cancel()
         listener?.cancel()
         connection?.cancel()
+        cancelWaitingTimeout()
         browser = nil
         listener = nil
         connection = nil
