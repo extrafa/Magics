@@ -77,11 +77,12 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         let url = try storageDirectoryURL().appendingPathComponent(fileName)
 
         let thumbnail = try await Task.detached(priority: .userInitiated) {
-            guard let data = image.jpegData(compressionQuality: 0.92) else {
+            let stored = Self.resized(image, maxSide: Self.maxStoredSide)
+            guard let data = stored.jpegData(compressionQuality: 0.92) else {
                 throw MagicGalleryPhotoLibraryError.imageEncodingFailed
             }
             try data.write(to: url, options: .atomic)
-            return Self.thumbnail(of: image)
+            return Self.thumbnail(of: stored)
         }.value
 
         return MagicGalleryPhoto(number: number, image: thumbnail, fileName: fileName, source: .custom)
@@ -116,6 +117,11 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         image.preparingThumbnail(of: Self.thumbnailMaxSize) ?? image
     }
 
+    private nonisolated static func resized(_ image: UIImage, maxSide: CGFloat) -> UIImage {
+        guard max(image.size.width, image.size.height) > maxSide else { return image }
+        return image.preparingThumbnail(of: CGSize(width: maxSide, height: maxSide)) ?? image
+    }
+
     private func storageDirectoryURL() throws -> URL {
         guard let baseURL = fileManager.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
             throw MagicGalleryPhotoLibraryError.storageDirectoryUnavailable
@@ -132,6 +138,7 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     }
 
     private static let thumbnailMaxSize = CGSize(width: 400, height: 400)
+    private static let maxStoredSide: CGFloat = 2000
 
     private static let standardAssetNames: [Int: String] = [
         1: "one",
