@@ -51,7 +51,7 @@ struct MagicGalleryCameraView: View {
 
 // MARK: - UIImage helper
 
-extension UIImage {
+private extension UIImage {
     func normalizedForCropping() async -> UIImage {
         guard imageOrientation != .up else { return self }
         return await Task.detached(priority: .userInitiated) {
