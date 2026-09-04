@@ -10,6 +10,7 @@ struct PhantomDrawView: View {
     @StateObject private var viewModel = PhantomDrawViewModel()
     @Environment(\.dismiss) private var dismiss
     @AppStorage("phantomDrawLastCode") private var codeInput = ""
+    @FocusState private var isCodeFieldFocused: Bool
 
     private var state: PhantomDrawConnectionState { viewModel.session.connectionState }
 
@@ -192,23 +193,30 @@ struct PhantomDrawView: View {
                     .padding(.horizontal, 40)
             }
             Spacer().frame(height: 28)
-            TextField("00", text: $codeInput)
-                .keyboardType(.numberPad)
-                .font(.system(size: 34, weight: .black, design: .rounded))
-                .foregroundStyle(.primaryText)
-                .multilineTextAlignment(.center)
-                .frame(width: 120, height: 60)
-                .background {
-                    RoundedRectangle(cornerRadius: 16, style: .continuous)
-                        .fill(Color.grayCard)
-                        .overlay {
-                            RoundedRectangle(cornerRadius: 16, style: .continuous)
-                                .stroke(Color.grayBorder, lineWidth: 1)
-                        }
+            ZStack {
+                if !isCodeFieldFocused && codeInput.isEmpty {
+                    Text("00")
+                        .foregroundStyle(.secondary)
                 }
-                .onChange(of: codeInput) { newValue in
-                    codeInput = String(newValue.filter(\.isNumber).prefix(2))
-                }
+                TextField("", text: $codeInput)
+                    .keyboardType(.numberPad)
+                    .foregroundStyle(.primaryText)
+                    .multilineTextAlignment(.center)
+                    .focused($isCodeFieldFocused)
+            }
+            .font(.system(size: 34, weight: .black, design: .rounded))
+            .frame(width: 120, height: 60)
+            .background {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(Color.grayCard)
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(Color.grayBorder, lineWidth: 1)
+                    }
+            }
+            .onChange(of: codeInput) { newValue in
+                codeInput = String(newValue.filter(\.isNumber).prefix(2))
+            }
             Spacer().frame(height: 28)
             Button {
                 viewModel.submitReceiverCode(codeInput)
