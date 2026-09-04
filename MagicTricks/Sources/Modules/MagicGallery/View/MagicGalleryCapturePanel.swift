@@ -1,26 +1,36 @@
+//
+//  MagicGalleryCapturePanel.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
 
 struct MagicGalleryCapturePanel: View {
     let usesStandardSet: Bool
     let onToggleStandardSet: (Bool) -> Void
-    let captureButtonTitle: String
+    let gestureMode: MagicGalleryGestureMode
+    let onGestureModeChange: (MagicGalleryGestureMode) -> Void
     let canAddMorePhotos: Bool
     let onCapture: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             standardSetControl
+            Divider()
+            gestureModeControl
             captureButton
         }
         .padding(18)
-        .background(
+        .background {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
                 .fill(Color.grayCard)
                 .overlay {
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
                         .stroke(Color.grayBorder, lineWidth: 1)
                 }
-        )
+        }
     }
 
     private var standardSetControl: some View {
@@ -33,13 +43,11 @@ struct MagicGalleryCapturePanel: View {
 
             VStack(alignment: .leading, spacing: 3) {
                 Text(String(localized: "magicGallery.standardSet.title"))
-                    .font(.subheadline)
-                    .fontWeight(.bold)
+                    .font(.subheadline.weight(.bold))
                     .foregroundStyle(Color.primaryText)
 
                 Text(String(localized: "magicGallery.standardSet.description"))
-                    .font(.caption)
-                    .fontWeight(.medium)
+                    .font(.caption.weight(.medium))
                     .foregroundStyle(Color.primaryText.opacity(0.58))
                     .fixedSize(horizontal: false, vertical: true)
             }
@@ -48,16 +56,42 @@ struct MagicGalleryCapturePanel: View {
 
             Toggle("", isOn: Binding(
                 get: { usesStandardSet },
-                set: { onToggleStandardSet($0) }
+                set: onToggleStandardSet
             ))
             .labelsHidden()
             .tint(.indigo)
         }
     }
 
+    private var gestureModeControl: some View {
+        HStack(spacing: 12) {
+            Image(systemName: "hand.tap.fill")
+                .font(.system(size: 17, weight: .bold))
+                .foregroundStyle(.white)
+                .frame(width: 38, height: 38)
+                .background(.indigo, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
+
+            Text(String(localized: "magicGallery.gesture.title"))
+                .font(.subheadline.weight(.bold))
+                .foregroundStyle(Color.primaryText)
+
+            Spacer(minLength: 8)
+
+            Picker("", selection: Binding(
+                get: { gestureMode },
+                set: onGestureModeChange
+            )) {
+                Text(String(localized: "magicGallery.gesture.tap")).tag(MagicGalleryGestureMode.tap)
+                Text(String(localized: "magicGallery.gesture.swipe")).tag(MagicGalleryGestureMode.swipe)
+            }
+            .pickerStyle(.segmented)
+            .frame(width: 120)
+        }
+    }
+
     private var captureButton: some View {
         Button(action: onCapture) {
-            Label(captureButtonTitle, systemImage: "camera.fill")
+            Label(String(localized: "magicGallery.addPhotos"), systemImage: "photo.badge.plus")
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 15)

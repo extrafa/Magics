@@ -7,24 +7,32 @@
 
 import Foundation
 
-enum TrickType {
-    case colorMentalism
-    case mindPattern
+enum TrickType: String, CaseIterable {
+    case colorSense
     case calculatorPrediction
     case timeControl
     case magicGallery
+    case geoMentalism
+    case phantomDraw
+
+    var requiresPro: Bool {
+        switch self {
+        case .geoMentalism: false
+        default: true
+        }
+    }
 }
 
-enum TrickDifficulty: CaseIterable, Hashable {
+enum TrickDifficulty: Hashable {
     case easy
     case medium
     case hard
 
     var localizedTitle: String {
         switch self {
-        case .easy: return String(localized: "difficulty.easy")
-        case .medium: return String(localized: "difficulty.medium")
-        case .hard: return String(localized: "difficulty.hard")
+        case .easy: String(localized: "difficulty.easy")
+        case .medium: String(localized: "difficulty.medium")
+        case .hard: String(localized: "difficulty.hard")
         }
     }
 }
@@ -56,34 +64,36 @@ struct Trick: Identifiable, Hashable {
         self.instruction = instruction
     }
 }
-    
+
 struct TrickCollection {
     static let tricks: [Trick] = [
         Trick(
-            id: .colorMentalism,
+            id: .geoMentalism,
+            title: String(localized: "card.geo.title"),
+            cardTitle: String(localized: "card.geo.cardTitle"),
+            subtitle: String(localized: "card.geo.subtitle"),
+            image: "globe.europe.africa.fill",
+            difficulty: .medium,
+            instruction: .geoMentalism
+        ),
+        Trick(
+            id: .colorSense,
             title: String(localized: "card.color.title"),
             cardTitle: String(localized: "card.color.cardTitle"),
             subtitle: String(localized: "card.color.subtitle"),
             image: "paintpalette",
             difficulty: .easy,
-            instruction: .colorMentalism
+            instruction: .colorSense
         ),
         Trick(
-            id: .mindPattern,
-            title: String(localized: "card.mindPattern.title"),
-            subtitle: String(localized: "card.mindPattern.subtitle"),
-            image: "pawprint.fill",
-            difficulty: .easy,
-            instruction: .mindPattern
+            id: .calculatorPrediction,
+            title: String(localized: "card.calculatorPrediction.title"),
+            cardTitle: String(localized: "card.calculatorPrediction.cardTitle"),
+            subtitle: String(localized: "card.calculatorPrediction.subtitle"),
+            image: "ipad",
+            difficulty: .medium,
+            instruction: .calculatorPrediction
         ),
-//        Trick(
-//            id: .calculatorPrediction,
-//            title: String(localized: "card.calculatorPrediction.title"),
-//            subtitle: String(localized: "card.calculatorPrediction.subtitle"),
-//            image: "ipad",
-//            difficulty: .medium,
-//            instruction: .calculatorPrediction
-//        ),
         Trick(
             id: .timeControl,
             title: String(localized: "card.time.title"),
@@ -99,6 +109,15 @@ struct TrickCollection {
             image: "photo.on.rectangle.angled",
             difficulty: .hard,
             instruction: .magicGallery
+        ),
+        Trick(
+            id: .phantomDraw,
+            title: String(localized: "card.phantomDraw.title"),
+            cardTitle: String(localized: "card.phantomDraw.cardTitle"),
+            subtitle: String(localized: "card.phantomDraw.subtitle"),
+            image: "antenna.radiowaves.left.and.right",
+            difficulty: .easy,
+            instruction: .phantomDraw
         )
     ]
 }

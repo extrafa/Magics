@@ -1,25 +1,56 @@
+//
+//  MagicGalleryViewModel+Actions.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
+import AVFoundation
+import Photos
 import UIKit
 
 extension MagicGalleryViewModel {
-    func startSequentialCapture() {
+    func startSequentialCapture(sourceType: UIImagePickerController.SourceType = .camera) {
         guard let nextAvailableNumber else {
             alertMessage = String(localized: "magicGallery.error.allPhotosReady")
             return
         }
-
-        activeCaptureSession = captureFlow.startSequential(firstNumber: nextAvailableNumber)
+        beginCapture(sourceType: sourceType) { [weak self] in
+            guard let self else { return }
+            self.activeCaptureSession = self.captureFlow.startSequential(firstNumber: nextAvailableNumber, sourceType: sourceType)
+        }
     }
 
-    func startCapture(for number: Int) {
-        activeCaptureSession = captureFlow.startSingle(number: number)
+    func startCapture(for number: Int, sourceType: UIImagePickerController.SourceType = .camera) {
+        beginCapture(sourceType: sourceType) { [weak self] in
+            guard let self else { return }
+            self.activeCaptureSession = self.captureFlow.startSingle(number: number, sourceType: sourceType)
+        }
+    }
+
+    private func beginCapture(sourceType: UIImagePickerController.SourceType, onReady: @escaping () -> Void) {
+        guard sourceType == .camera else {
+            onReady()
+            return
+        }
+        switch AVCaptureDevice.authorizationStatus(for: .video) {
+        case .authorized:
+            onReady()
+        case .notDetermined:
+            Task {
+                if await AVCaptureDevice.requestAccess(for: .video) {
+                    onReady()
+                } else {
+                    accessDeniedAlertMessage = String(localized: "magicGallery.error.cameraAccessDenied")
+                }
+            }
+        default:
+            accessDeniedAlertMessage = String(localized: "magicGallery.error.cameraAccessDenied")
+        }
     }
 
     func handleSlotTap(_ number: Int) {
-        if let photo = photo(for: number) {
-            selectedPhotoNumber = photo.number
-        } else {
-            startCapture(for: number)
-        }
+        startCapture(for: number)
     }
 
     func handleCaptureCancelled() {
@@ -28,49 +59,64 @@ extension MagicGalleryViewModel {
     }
 
     func handleCapturedImage(_ image: UIImage, for number: Int) {
-        do {
-            let photo = try photoLibrary.saveCustomPhoto(image, for: number)
-            upsert(photo)
-            selectedPhotoNumber = photo.number
-        } catch {
-            alertMessage = String(localized: "magicGallery.error.savePhotoFailed")
-            captureFlow.failCapture()
-            activeCaptureSession = nil
-            return
-        }
+        let takenNumbers = Set(customPhotos.map(\.number)).union([number])
+        let nextNumber = (1...photoLibrary.maxPhotos).first { !takenNumbers.contains($0) }
 
-        captureFlow.completeCapture(nextAvailableNumber: nextAvailableNumber)
+        captureFlow.completeCapture(nextAvailableNumber: nextNumber)
         activeCaptureSession = nil
+
+        Task {
+            do {
+                let photo = try await photoLibrary.saveCustomPhoto(image, for: number)
+                upsert(photo)
+            } catch {
+                alertMessage = String(localized: "magicGallery.error.savePhotoFailed")
+            }
+        }
     }
 
     func deletePhoto(_ photo: MagicGalleryPhoto) {
         guard photo.isCustom else { return }
-
-        do {
-            try photoLibrary.deleteCustomPhoto(photo)
-        } catch {
-            alertMessage = String(localized: "magicGallery.error.deletePhotoFailed")
-            return
-        }
-
         removeCustomPhoto(number: photo.number)
 
-        if selectedPhotoNumber == photo.number {
-            selectedPhotoNumber = nil
+        Task {
+            do {
+                try await photoLibrary.deleteCustomPhoto(photo)
+            } catch {
+                alertMessage = String(localized: "magicGallery.error.deletePhotoFailed")
+            }
         }
     }
 
-    func saveSelectedPhotoToGallery() async {
-        guard let image = selectedPhoto?.image else {
+    func savePhoto(number: Int) async -> Bool {
+        guard let photo = photo(for: number) else {
             alertMessage = String(localized: "magicGallery.selectPhotoFirst")
-            return
+            return false
         }
-
+        guard await hasPhotoLibraryAddAccess() else {
+            accessDeniedAlertMessage = String(localized: "magicGallery.error.photoLibraryAccessDenied")
+            return false
+        }
         do {
+            let image = try await photoLibrary.fullResolutionImage(for: photo)
             try await photoSaver.saveToGallery(image)
             haptics.playSuccessNotification()
+            return true
         } catch {
             alertMessage = String(localized: "magicGallery.error.saveToGalleryFailed")
+            return false
+        }
+    }
+
+    private func hasPhotoLibraryAddAccess() async -> Bool {
+        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
+        case .authorized, .limited:
+            return true
+        case .notDetermined:
+            let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+            return status == .authorized || status == .limited
+        default:
+            return false
         }
     }
 
@@ -78,7 +124,6 @@ extension MagicGalleryViewModel {
         guard let pendingSession = captureFlow.pendingSessionIfNeeded(
             isActiveSessionPresent: activeCaptureSession != nil
         ) else { return }
-
         activeCaptureSession = pendingSession
     }
 }

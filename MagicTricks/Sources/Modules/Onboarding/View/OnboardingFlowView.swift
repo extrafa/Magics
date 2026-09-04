@@ -1,3 +1,10 @@
+//
+//  OnboardingFlowView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 struct OnboardingFlowView: View {
@@ -16,8 +23,21 @@ struct OnboardingFlowView: View {
                 .id(viewModel.step)
                 .transition(.opacity)
         }
+        .safeAreaInset(edge: .top, spacing: 0) {
+            Group {
+                if viewModel.step >= 1 && viewModel.step <= 4 {
+                    OnboardingProgressBar(step: viewModel.step, total: 4)
+                        .padding(.horizontal, 24)
+                        .padding(.top, 14)
+                        .padding(.bottom, 10)
+                        .background(Color.background)
+                        .transition(.opacity)
+                }
+            }
+            .animation(.easeOut(duration: 0.3), value: viewModel.step)
+        }
         .offset(y: isDismissing ? 900 : 0)
-        .fontDesign(.rounded)
+        
         .animation(.spring(response: 0.35, dampingFraction: 0.82), value: isDismissing)
         .animation(.easeOut(duration: 0.22), value: viewModel.step)
     }
@@ -37,13 +57,13 @@ struct OnboardingFlowView: View {
         case 0:
             OBWelcomeScreen(onContinue: viewModel.advance)
         case 1:
-            OBGoalScreen(selectedGoal: $viewModel.selectedGoal, onContinue: viewModel.advance)
+            OBGoalScreen(selectedGoals: $viewModel.selectedGoals, onContinue: viewModel.advance)
         case 2:
-            OBFeatureSlideScreen(feature: .noProps, pageIndex: 0, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .noProps, goals: viewModel.selectedGoals, onContinue: viewModel.advance)
         case 3:
-            OBFeatureSlideScreen(feature: .instructions, pageIndex: 1, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .instructions, goals: [], onContinue: viewModel.advance)
         case 4:
-            OBFeatureSlideScreen(feature: .vibrations, pageIndex: 2, onContinue: viewModel.advance)
+            OBFeatureSlideScreen(feature: .vibrations, goals: [], onContinue: viewModel.advance)
         case 5:
             OBProcessingScreen(phases: viewModel.loadingPhases, onComplete: viewModel.advance)
         case 6:
@@ -56,7 +76,7 @@ struct OnboardingFlowView: View {
     private func dismissPaywall() {
         isDismissing = true
         Task {
-            try? await Task.sleep(for: .milliseconds(300))
+            try? await Task.sleep(milliseconds: 300)
             viewModel.complete()
         }
     }

@@ -1,14 +1,14 @@
 import CoreMotion
 import Foundation
 
-/// Detects when the phone is held screen-face-down and held steady for the
-/// required duration (`screenDownHoldDuration` from preferences).
 @MainActor
 final class PhoneTiltGestureManager {
 
     private let motionManager = CMMotionManager()
     private let preferences: MotionPreferenceManaging
     private var monitoringTask: Task<Void, Never>?
+    private var screenDownSince: Date?
+    private var pendingCompletion: (@MainActor (Bool) -> Void)?
 
     // MARK: Init
 
@@ -22,9 +22,6 @@ final class PhoneTiltGestureManager {
 
     // MARK: Public
 
-    /// Suspends until the user holds the phone screen-down for the configured
-    /// duration, then returns `true`. Returns `false` if monitoring is
-    /// cancelled before the gesture is detected.
     func waitForScreenDownGesture() async -> Bool {
         await withTaskCancellationHandler {
             await withCheckedContinuation { continuation in
@@ -41,36 +38,64 @@ final class PhoneTiltGestureManager {
         motionManager.stopDeviceMotionUpdates()
         monitoringTask?.cancel()
         monitoringTask = nil
+        screenDownSince = nil
+        resumePendingCompletion(with: false)
     }
 
     // MARK: Private
 
+    private func resumePendingCompletion(with result: Bool) {
+        let handler = pendingCompletion
+        pendingCompletion = nil
+        handler?(result)
+    }
+
     private func startMonitoring(completion: @escaping @MainActor (Bool) -> Void) {
+        resumePendingCompletion(with: false)
+
         guard motionManager.isDeviceMotionAvailable else {
-            // Motion unavailable — treat as if gesture fired immediately
+            // Simulator has no accelerometer; keep the gesture testable there.
+            #if targetEnvironment(simulator)
             Task { @MainActor in completion(true) }
+            #else
+            Task { @MainActor in completion(false) }
+            #endif
             return
         }
 
+        pendingCompletion = completion
+        screenDownSince = nil
         let holdDuration = preferences.screenDownHoldDuration
-        var screenDownSince: Date?
+
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        queue.qualityOfService = .userInteractive
 
         motionManager.deviceMotionUpdateInterval = 0.05
-        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] motion, _ in
-            guard let self, let motion else { return }
-
-            // Gravity.z < -0.85 means the screen is facing roughly downward
-            let isScreenDown = motion.gravity.z < -0.85
-
-            if isScreenDown {
-                if screenDownSince == nil { screenDownSince = Date() }
-                if let since = screenDownSince, Date().timeIntervalSince(since) >= holdDuration {
-                    self.stopMonitoring()
-                    completion(true)
-                }
-            } else {
-                screenDownSince = nil
+        motionManager.startDeviceMotionUpdates(to: queue) { [weak self] motion, _ in
+            guard let motion else { return }
+            let gravityZ = motion.gravity.z
+            Task { @MainActor [weak self] in
+                self?.handleMotionUpdate(gravityZ: gravityZ, holdDuration: holdDuration)
             }
+        }
+    }
+
+    private func handleMotionUpdate(gravityZ: Double, holdDuration: TimeInterval) {
+        guard pendingCompletion != nil else { return }
+
+        let isScreenDown = gravityZ > 0.85
+
+        if isScreenDown {
+            if screenDownSince == nil { screenDownSince = Date() }
+            if let since = screenDownSince, Date().timeIntervalSince(since) >= holdDuration {
+                let handler = pendingCompletion
+                pendingCompletion = nil
+                stopMonitoring()
+                handler?(true)
+            }
+        } else {
+            screenDownSince = nil
         }
     }
 }

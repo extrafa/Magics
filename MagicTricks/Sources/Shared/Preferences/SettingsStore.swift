@@ -17,12 +17,20 @@ final class SettingsStore: ObservableObject {
         didSet { preferences.isHapticGroupByThreeEnabled = isHapticGroupByThreeEnabled }
     }
 
+    @Published var hapticIntensity: HapticIntensity {
+        didSet { preferences.hapticIntensity = hapticIntensity }
+    }
+
     @Published var isSecretGestureEnabled: Bool {
         didSet { preferences.isSecretGestureEnabled = isSecretGestureEnabled }
     }
 
     @Published var screenDownHoldDuration: TimeInterval {
         didSet { preferences.screenDownHoldDuration = screenDownHoldDuration }
+    }
+
+    @Published var isExitHintEnabled: Bool {
+        didSet { preferences.isExitHintEnabled = isExitHintEnabled }
     }
 
     private let preferences: AppPreferences
@@ -39,19 +47,23 @@ final class SettingsStore: ObservableObject {
         self.preferences = preferences
         self.hapticSpeedMultiplier = preferences.hapticSpeedMultiplier
         self.isHapticGroupByThreeEnabled = preferences.isHapticGroupByThreeEnabled
+        self.hapticIntensity = preferences.hapticIntensity
         self.isSecretGestureEnabled = preferences.isSecretGestureEnabled
         self.screenDownHoldDuration = preferences.screenDownHoldDuration
+        self.isExitHintEnabled = preferences.isExitHintEnabled
     }
 
     func resetHapticSettings() {
         preferences.resetHapticSettings()
         hapticSpeedMultiplier = AppPreferences.Default.hapticSpeedMultiplier
         isHapticGroupByThreeEnabled = AppPreferences.Default.hapticGroupByThreeEnabled
+        hapticIntensity = .heavy
     }
 
     func resetMotionSettings() {
         preferences.resetMotionSettings()
         isSecretGestureEnabled = AppPreferences.Default.secretGestureEnabled
         screenDownHoldDuration = AppPreferences.Default.screenDownHoldDuration
+        isExitHintEnabled = AppPreferences.Default.isExitHintEnabled
     }
 }

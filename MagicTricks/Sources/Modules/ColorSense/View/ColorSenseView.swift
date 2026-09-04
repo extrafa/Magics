@@ -1,0 +1,105 @@
+//
+//  ColorSenseView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 05/04/2026.
+//
+
+import SwiftUI
+
+struct ColorSenseView: View {
+
+    @StateObject private var viewModel: ColorSenseViewModel
+    @State private var isVisible = AppPreferences.shared.isExitHintEnabled
+
+    private static let columns = [
+        GridItem(.flexible(), spacing: 14),
+        GridItem(.flexible(), spacing: 14)
+    ]
+
+    private struct CardLayout {
+        let height: CGFloat
+        let rotation: Double
+    }
+
+    private static let layouts: [CardLayout] = [
+        .init(height: 150, rotation: -2),
+        .init(height: 180, rotation:  2),
+        .init(height: 165, rotation: -1),
+        .init(height: 175, rotation:  1),
+        .init(height: 145, rotation: -2),
+        .init(height: 190, rotation:  2),
+        .init(height: 160, rotation:  1),
+        .init(height: 180, rotation: -1),
+    ]
+
+    init(haptics: CountHapticPlaying? = nil) {
+        _viewModel = StateObject(wrappedValue: ColorSenseViewModel(haptics: haptics ?? HapticManager.shared))
+    }
+
+    var body: some View {
+        ZStack {
+            Color.background.ignoresSafeArea()
+
+            LazyVGrid(columns: Self.columns, spacing: 14) {
+                ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
+                    let layout = Self.layouts[index]
+                    cardView(card, layout: layout)
+                        .rotationEffect(.degrees(layout.rotation))
+                        .modifier(floatingMotionSettings(for: index))
+                        .gesture(
+                            DragGesture(minimumDistance: 0)
+                                .onChanged { _ in viewModel.handleTap(on: card) }
+                        )
+                }
+            }
+            .padding(.horizontal, 20)
+
+            ExitHintView(isVisible: $isVisible)
+        }
+        .onDisappear {
+            viewModel.cancel()
+        }
+    }
+
+    private func cardView(_ card: ColorCard, layout: CardLayout) -> some View {
+        TrickGradientCard(
+            color: card.colorType.color,
+            height: layout.height,
+            isPressed: viewModel.activeTapCardID == card.id
+        ) {
+            VStack(alignment: .leading, spacing: 10) {
+                Spacer()
+                Text(card.title)
+                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.white.opacity(0.35))
+            }
+            .padding(16)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+    }
+
+    private func floatingMotionSettings(for index: Int) -> FloatingMotionModifier {
+        FloatingMotionModifier(
+            phase: Double(index) * 0.18,
+            travel: CGFloat(2.2 + Double(index % 3) * 0.55),
+            rotation: 0.7 + Double(index % 4) * 0.18,
+            duration: 3.4 + Double(index % 3) * 0.45
+        )
+    }
+}
+
+private extension ColorCardType {
+    var color: Color {
+        switch self {
+        case .red:    TrickPalette.ColorSense.red
+        case .blue:   TrickPalette.ColorSense.blue
+        case .green:  TrickPalette.ColorSense.green
+        case .yellow: TrickPalette.ColorSense.yellow
+        }
+    }
+}
+
+#Preview {
+    ColorSenseView()
+}

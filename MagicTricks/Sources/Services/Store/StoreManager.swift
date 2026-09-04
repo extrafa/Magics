@@ -1,15 +1,44 @@
+//
+//  StoreManager.swift
+//  Magic Tricks
+//
+//  Created by Ross on 11/06/2026.
+//
+
 import Foundation
 
-enum StoreProducts {
-    static let lifetime = "magic_lifetime"
-    static let all = [lifetime]
+// MARK: - Phase
+
+enum PurchasePhase: Equatable {
+    case idle
+    case purchasing
+    case restoring
+    case loadingProducts
 }
+
+// MARK: - Manager
 
 @MainActor
 final class StoreManager: ObservableObject {
 
+    private enum StoreProducts {
+        static let lifetime = "magic_lifetime"
+        static let all = [lifetime]
+    }
+
     @Published private(set) var products: [StoreProduct] = []
-    @Published private(set) var hasProAccess: Bool = false
+    @Published private(set) var phase: PurchasePhase = .idle
+    @Published var alertMessage: String?
+    @Published private(set) var productsLoadError: String?
+    @Published private var _hasStoreAccess: Bool = false
+    @Published var isProOverride: Bool {
+        didSet { UserDefaults.standard.set(isProOverride, forKey: "dev.proOverride") }
+    }
+    @Published var isWatermarkHidden: Bool {
+        didSet { UserDefaults.standard.set(isWatermarkHidden, forKey: "dev.watermarkHidden") }
+    }
+
+    var hasProAccess: Bool { _hasStoreAccess || isProOverride }
 
     private let productIDs: [String]
     private let service: StoreServicing
@@ -24,6 +53,19 @@ final class StoreManager: ObservableObject {
     ) {
         self.productIDs = productIDs
         self.service = service
+        self.isProOverride = Self.sandboxGatedFlag(forKey: "dev.proOverride")
+        self.isWatermarkHidden = Self.sandboxGatedFlag(forKey: "dev.watermarkHidden")
+    }
+
+    private static func sandboxGatedFlag(forKey key: String) -> Bool {
+        guard AppBuildEnvironment.isSandboxOrDebug else {
+            if UserDefaults.standard.bool(forKey: key) {
+                // Property observers don't fire during init, so this write is explicit.
+                UserDefaults.standard.set(false, forKey: key)
+            }
+            return false
+        }
+        return UserDefaults.standard.bool(forKey: key)
     }
 
     deinit {
@@ -57,34 +99,62 @@ final class StoreManager: ObservableObject {
 
     // MARK: Actions
 
-    func purchase() async {
-        guard let id = products.first?.id else { return }
+    func purchase(productID: String) async {
+        guard phase == .idle else { return }
+        phase = .purchasing
+        defer { phase = .idle }
         do {
-            let result = try await service.purchase(productID: id)
-            if result == .success {
+            switch try await service.purchase(productID: productID) {
+            case .success:
                 await refreshAccess()
+            case .userCancelled:
+                break
+            case .pending:
+                alertMessage = .paywallError("pending")
             }
         } catch {
-            // Purchase failed — user can retry
+            alertMessage = .paywallError("purchaseFailed")
         }
     }
 
     func restore() async {
+        guard phase == .idle else { return }
+        phase = .restoring
+        defer { phase = .idle }
+
+        await refreshAccess()
+        guard !hasProAccess else { return }
+
         do {
             try await service.sync()
             await refreshAccess()
+            if !hasProAccess {
+                alertMessage = .paywallError("noPurchasesFound")
+            }
         } catch {
-            // Restore failed — user can retry
+            alertMessage = .paywallError("restoreFailed")
         }
+    }
+
+    func retryLoadProducts() async {
+        await loadProducts()
+    }
+
+    func reloadProductsIfNeeded() async {
+        guard products.isEmpty else { return }
+        await loadProducts()
     }
 
     // MARK: Private
 
     private func loadProducts() async {
+        phase = .loadingProducts
+        defer { phase = .idle }
         do {
             products = try await service.loadProducts(for: productIDs)
+            productsLoadError = products.isEmpty ? .paywallError("productsLoadFailed") : nil
         } catch {
-            // Products unavailable — paywall will show disabled state
+            productsLoadError = .paywallError("productsLoadFailed")
         }
     }
 
@@ -95,7 +165,7 @@ final class StoreManager: ObservableObject {
                 found = true
             }
         }
-        hasProAccess = found
+        _hasStoreAccess = found
     }
 
     private func listenForTransactions() async {
@@ -104,5 +174,11 @@ final class StoreManager: ObservableObject {
                 await refreshAccess()
             }
         }
+    }
+}
+
+private extension String {
+    static func paywallError(_ key: String) -> String {
+        NSLocalizedString("onboarding.paywall.error.\(key)", comment: "")
     }
 }

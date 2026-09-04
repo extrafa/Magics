@@ -24,10 +24,8 @@ struct InstructionStepRow: View {
 
     private var phaseColor: Color {
         switch step.phase {
-        case .preparation:
-            return .blue
-        case .demonstration:
-            return .green
+        case .preparation: .blue
+        case .demonstration: .green
         }
     }
 
@@ -45,6 +43,21 @@ struct InstructionStepRow: View {
     private var content: some View {
         VStack(alignment: .leading, spacing: 12) {
             stepText
+
+            if let imageName = step.imageName {
+                Color.clear
+                    .aspectRatio(step.imageRatio.rawValue, contentMode: .fit)
+                    .overlay {
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFill()
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .stroke(Color.grayBorder, lineWidth: 1)
+                    }
+            }
 
             if !step.actions.isEmpty {
                 InstructionStepActionsView(actions: step.actions, onAction: onAction)
@@ -84,5 +97,20 @@ struct InstructionStepRow: View {
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+#Preview {
+    ScrollView {
+        InstructionStepRow(
+            number: 1,
+            step: InstructionStep(
+                title: "Познакомьтесь с вибрациями",
+                description: "Потренируйтесь различать сигналы вибрации.",
+                phase: .preparation,
+                actions: [.hapticTraining]
+            )
+        )
+        .padding()
     }
 }

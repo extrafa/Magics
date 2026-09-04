@@ -17,17 +17,21 @@ extension Instruction {
                 title: String(localized: "instruction.time.step1.title"),
                 description: String(localized: "instruction.time.step1.description"),
                 phase: .preparation,
-                actions: [.hapticNumberTraining]
+                actions: [.hapticTraining]
             ),
             InstructionStep(
                 title: String(localized: "instruction.time.step2.title"),
                 description: String(localized: "instruction.time.step2.description"),
-                phase: .preparation
+                phase: .preparation,
+                actions: [.hapticSettings],
+                imageName: "time.step.faceDown",
+                imageRatio: .compact
             ),
             InstructionStep(
                 title: String(localized: "instruction.time.step3.title"),
                 description: String(localized: "instruction.time.step3.description"),
-                phase: .preparation
+                phase: .demonstration,
+                imageName: "time.step.timer"
             ),
             InstructionStep(
                 title: String(localized: "instruction.time.step4.title"),
@@ -37,17 +41,6 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.time.step5.title"),
                 description: String(localized: "instruction.time.step5.description"),
-                phase: .demonstration,
-                actions: [.motionSettings]
-            ),
-            InstructionStep(
-                title: String(localized: "instruction.time.step6.title"),
-                description: String(localized: "instruction.time.step6.description"),
-                phase: .demonstration
-            ),
-            InstructionStep(
-                title: String(localized: "instruction.time.step7.title"),
-                description: String(localized: "instruction.time.step7.description"),
                 phase: .demonstration
             ),
         ]

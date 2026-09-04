@@ -1,71 +1,27 @@
+//
+//  HapticTrainingMode.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import Foundation
 import SwiftUI
 
 enum HapticTrainingMode {
     case digits
-    case timeValues
 
-    enum SignalStyle {
-        case count
-        case timeValue
-    }
+    var range: ClosedRange<Int> { 0...9 }
 
-    var range: ClosedRange<Int> {
-        switch self {
-        case .digits: return 0...9
-        case .timeValues: return 10...99
-        }
-    }
+    var inputPlaceholder: String { "0–9" }
 
-    var signalStyle: SignalStyle {
-        switch self {
-        case .digits: return .count
-        case .timeValues: return .timeValue
-        }
-    }
+    var navigationTitle: String { String(localized: "training.digits.title") }
 
-    var inputPlaceholder: String { "?" }
+    var subtitle: String { String(localized: "training.digits.subtitle") }
 
-    /// When true, the user submits via an explicit button instead of typing a single digit.
-    var usesExplicitSubmit: Bool {
-        switch self {
-        case .digits: return false
-        case .timeValues: return true
-        }
-    }
+    var playButtonTitle: String { String(localized: "training.digits.playButton") }
 
-    var navigationTitle: String {
-        switch self {
-        case .digits: return String(localized: "training.digits.title")
-        case .timeValues: return String(localized: "training.values.title")
-        }
-    }
+    var accentColor: Color { TrickPalette.accentPrimary }
 
-    var subtitle: String {
-        switch self {
-        case .digits: return String(localized: "training.digits.subtitle")
-        case .timeValues: return String(localized: "training.values.subtitle")
-        }
-    }
-
-    var playButtonTitle: String {
-        switch self {
-        case .digits: return String(localized: "training.digits.playButton")
-        case .timeValues: return String(localized: "training.values.playButton")
-        }
-    }
-
-    var accentColor: Color {
-        switch self {
-        case .digits: return Color.collectionMindPattern
-        case .timeValues: return Color.collectionTimeControl
-        }
-    }
-
-    var systemIcon: String {
-        switch self {
-        case .digits: return "waveform.path.ecg"
-        case .timeValues: return "waveform.path.ecg"
-        }
-    }
+    var systemIcon: String { "waveform.path.ecg" }
 }

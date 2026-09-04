@@ -1,9 +1,19 @@
-import SwiftUI
+//
+//  ExitHintViewModel.swift
+//  Magic Tricks
+//
+//  Created by Ross on 09/04/2026.
+//
+
+import Foundation
 
 @MainActor
 final class ExitHintViewModel: ObservableObject {
-    @Published var hintOpacity = 1.0
-    @Published var isConfirmSheetPresented = false
+    @Published var hintOpacity = ExitHintOpacity.visible
+    @Published var holdScale: CGFloat = ExitHintHoldScale.released
+    @Published var flashBrightness = ExitHintFlash.rest
+    @Published var isConfirmAlertPresented = false
+    @Published var isSwipeAlertPresented = false
 
     private var autoFadeTask: Task<Void, Never>?
     private var flashTask: Task<Void, Never>?
@@ -19,74 +29,74 @@ final class ExitHintViewModel: ObservableObject {
     }
 
     var shouldBlockInteraction: Bool {
-        !didLearnExitHint && !isConfirmSheetPresented
+        !didLearnExitHint && !isConfirmAlertPresented && !isSwipeAlertPresented
     }
 
     func presentConfirmation() {
         guard !didLearnExitHint else { return }
-        isConfirmSheetPresented = true
+        isConfirmAlertPresented = true
     }
 
-    func confirmHintDismiss(onConfirmExit: @escaping () -> Void) {
+    func presentSwipeAlert() {
+        guard !didLearnExitHint else { return }
+        isSwipeAlertPresented = true
+    }
+
+    func confirmHintDismiss() {
         didLearnExitHint = true
-        isConfirmSheetPresented = false
-        withAnimation(.easeOut(duration: 0.22)) {
-            onConfirmExit()
-        }
+        isConfirmAlertPresented = false
     }
 
-    func cancelConfirmation() {
-        isConfirmSheetPresented = false
-    }
-
-    func configurePresentation(isVisible: Bool, isHintVisible: Binding<Bool>) {
+    func configurePresentation(isVisible: Bool, onAutoFadeComplete: @escaping () -> Void) {
         autoFadeTask?.cancel()
-        hintOpacity = 1
+        hintOpacity = ExitHintOpacity.visible
 
         guard isVisible, didLearnExitHint else { return }
 
         autoFadeTask = Task {
-            try? await Task.sleep(nanoseconds: 2_000_000_000)
-            await MainActor.run {
-                withAnimation(.easeOut(duration: 2.2)) {
-                    self.hintOpacity = 0.18
-                }
-            }
+            await pause(ExitHintFadeTiming.initialDelay)
+            guard !Task.isCancelled else { return }
 
-            try? await Task.sleep(nanoseconds: 2_200_000_000)
+            hintOpacity = ExitHintOpacity.dimmed
 
-            await MainActor.run {
-                withAnimation(.easeOut(duration: 0.8)) {
-                    isHintVisible.wrappedValue = false
-                }
-            }
+            await pause(ExitHintFadeTiming.dimDuration)
+            guard !Task.isCancelled else { return }
+
+            hintOpacity = ExitHintOpacity.hidden
+
+            await pause(ExitHintFadeTiming.hideDuration)
+            guard !Task.isCancelled else { return }
+
+            onAutoFadeComplete()
         }
     }
 
     func flashHint() {
         flashTask?.cancel()
         flashTask = Task {
-            for _ in 0..<2 {
-                await MainActor.run {
-                    withAnimation(.easeOut(duration: 0.14)) {
-                        self.hintOpacity = 0.62
-                    }
-                }
-
-                try? await Task.sleep(nanoseconds: 140_000_000)
-
-                await MainActor.run {
-                    withAnimation(.easeInOut(duration: 0.2)) {
-                        self.hintOpacity = 1
-                    }
-                }
-
-                try? await Task.sleep(nanoseconds: 120_000_000)
+            for _ in 0..<ExitHintFlash.repeatCount {
+                flashBrightness = ExitHintFlash.peak
+                await pause(ExitHintFlashTiming.holdAfterPeak)
+                flashBrightness = ExitHintFlash.rest
+                await pause(ExitHintFlashTiming.holdAfterRest)
             }
         }
     }
 
+    func holdStarted() {
+        cancelAutoFade()
+        holdScale = ExitHintHoldScale.pressed
+    }
+
+    func holdCancelled() {
+        holdScale = ExitHintHoldScale.released
+    }
+
     func cancelAutoFade() {
         autoFadeTask?.cancel()
+    }
+
+    private func pause(_ duration: TimeInterval) async {
+        try? await Task.sleep(seconds: duration)
     }
 }

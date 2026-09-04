@@ -10,6 +10,9 @@ import SwiftUI
 struct CollectionView: View {
 
     @EnvironmentObject private var flow: AppFlowCoordinator
+    @EnvironmentObject private var store: StoreManager
+    @State private var showSettings = false
+    @State private var previousActiveFlow: FullScreenFlow? = nil
 
     var body: some View {
         NavigationStack {
@@ -19,40 +22,70 @@ struct CollectionView: View {
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         ForEach(TrickCollection.tricks) { trick in
+                            let isLocked = trick.id.requiresPro && !store.hasProAccess
                             TrickCardView(
                                 trick: trick,
+                                isLocked: isLocked,
                                 onStartTap: {
-                                    flow.open(trick: trick)
+                                    if isLocked {
+                                        flow.openPaywall()
+                                    } else {
+                                        flow.openStartFlow(for: trick)
+                                    }
                                 },
                                 onHowToTap: {
-                                    flow.open(instruction: trick.instruction)
+                                    if isLocked {
+                                        flow.openPaywall()
+                                    } else {
+                                        flow.open(instruction: trick.instruction)
+                                    }
                                 }
                             )
                         }
                     }
                     .padding(16)
                 }
-                .scrollIndicators(.hidden)
+                .hideScrollIndicators()
             }
             .navigationTitle(String(localized: "collection.title"))
             .navigationBarTitleDisplayMode(.large)
-            .fontDesign(.rounded)
+            .navigationDestination(isPresented: $showSettings) {
+                SettingsScreen()
+            }
             .toolbar {
                 ToolbarItem(placement: .topBarTrailing) {
-                    NavigationLink {
-                        SettingsScreen()
-                    } label: {
+                    Button { showSettings = true } label: {
                         Image(systemName: "gearshape")
                     }
                 }
             }
         }
-        .sheet(item: $flow.activeSheet) { activeSheet in
+        .overlay(alignment: .topLeading) {
+            if !store.hasProAccess {
+                ProUpgradeButton(action: flow.openPaywall)
+                    .padding(.leading, 20)
+                    .padding(.top, 4)
+                    .opacity(showSettings ? 0 : 1)
+                    .scaleEffect(showSettings ? 0.85 : 1, anchor: .leading)
+                    .animation(.spring(response: 0.35, dampingFraction: 0.78), value: showSettings)
+            }
+        }
+        .sheet(item: $flow.activeSheet, onDismiss: flow.sheetDidDismiss) { activeSheet in
             AppSheetView(activeSheet: activeSheet)
-                .presentationDragIndicator(.visible)
+                .withPresentationDragIndicator()
+                .environmentObject(store)
+                .environmentObject(flow)
         }
         .fullScreenCover(item: $flow.activeFlow) { activeFlow in
             AppFlowCoverView(activeFlow: activeFlow)
+                .environmentObject(store)
+                .environmentObject(flow)
+        }
+        .onChange(of: flow.activeFlow) { newValue in
+            if case .trick = previousActiveFlow, newValue == nil {
+                flow.recordTrickClose()
+            }
+            previousActiveFlow = newValue
         }
     }
 }
@@ -61,4 +94,5 @@ struct CollectionView: View {
     CollectionView()
         .environmentObject(AppFlowCoordinator())
         .environmentObject(SettingsStore())
+        .environmentObject(StoreManager())
 }

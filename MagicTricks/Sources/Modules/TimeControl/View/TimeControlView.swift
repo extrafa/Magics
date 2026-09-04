@@ -8,10 +8,9 @@
 import SwiftUI
 
 struct TimeControlView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var viewModel = TimeControlViewModel()
-    @State private var isVisible = true
+    @State private var isVisible = AppPreferences.shared.isExitHintEnabled
 
     var body: some View {
         ZStack {
@@ -37,7 +36,7 @@ struct TimeControlView: View {
 
             ExitHintView(isVisible: $isVisible, style: .specialWhite)
         }
-        .onChange(of: scenePhase) { _, newPhase in
+        .onChange(of: scenePhase) { newPhase in
             guard newPhase == .active else { return }
             viewModel.handleSceneBecameActive()
         }
@@ -48,9 +47,7 @@ struct TimeControlView: View {
 
     private var controls: some View {
         HStack {
-            Button {
-                viewModel.reset()
-            } label: {
+            Button(action: viewModel.reset) {
                 controlCircle(
                     title: String(localized: "timeControl.reset"),
                     fill: Color.white.opacity(0.12),
@@ -62,9 +59,7 @@ struct TimeControlView: View {
 
             Spacer()
 
-            Button {
-                viewModel.handlePrimaryAction()
-            } label: {
+            Button(action: viewModel.handlePrimaryAction) {
                 controlCircle(
                     title: viewModel.isRunning ? String(localized: "timeControl.stop") : String(localized: "timeControl.start"),
                     fill: viewModel.isRunning ? Color.red.opacity(0.22) : Color.green.opacity(0.22),
@@ -79,10 +74,7 @@ struct TimeControlView: View {
         ZStack {
             Circle()
                 .fill(fill)
-                .frame(width: 84, height: 84)
-
-            Circle()
-                .stroke(Color.white.opacity(0.08), lineWidth: 1)
+                .overlay { Circle().stroke(Color.white.opacity(0.08), lineWidth: 1) }
                 .frame(width: 84, height: 84)
 
             Text(title)
@@ -90,4 +82,8 @@ struct TimeControlView: View {
                 .foregroundStyle(titleColor)
         }
     }
+}
+
+#Preview {
+    TimeControlView()
 }

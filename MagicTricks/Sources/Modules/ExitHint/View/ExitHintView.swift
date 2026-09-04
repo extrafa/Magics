@@ -1,3 +1,10 @@
+//
+//  ExitHintView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 09/04/2026.
+//
+
 import SwiftUI
 
 struct ExitHintView: View {
@@ -6,6 +13,7 @@ struct ExitHintView: View {
     let style: ExitHintStyle
 
     @StateObject private var viewModel = ExitHintViewModel()
+    @StateObject private var gestureCoordinator = ExitHintGestureCoordinator()
 
     init(isVisible: Binding<Bool>, style: ExitHintStyle = .normal) {
         _isVisible = isVisible
@@ -18,36 +26,58 @@ struct ExitHintView: View {
                 exitHitArea
                 hintOverlay
                     .opacity(isVisible ? viewModel.hintOpacity : 0)
+                    .animation(hintOpacityAnimation, value: viewModel.hintOpacity)
+                    .scaleEffect(viewModel.holdScale)
+                    .animation(holdScaleAnimation, value: viewModel.holdScale)
+                    .brightness(viewModel.flashBrightness)
+                    .animation(flashBrightnessAnimation, value: viewModel.flashBrightness)
             }
-            .padding(.top, 10)
-            .padding(.leading, 12)
+            .padding(.top, ExitHintZone.topInset)
+            .padding(.leading, ExitHintZone.leadingInset)
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .exitHintLongPressEnabled(onExit: dismiss.callAsFunction)
-        .sheet(isPresented: $viewModel.isConfirmSheetPresented) {
-            confirmationSheet
-                .presentationDetents([.height(248)])
-                .presentationDragIndicator(.visible)
+        .environmentObject(gestureCoordinator)
+        .alert(
+            String(localized: "exitHint.confirm.title"),
+            isPresented: $viewModel.isConfirmAlertPresented
+        ) {
+            Button(String(localized: "exitHint.showAgain"), role: .cancel) { }
+            Button(String(localized: "common.gotIt")) {
+                withAnimation(.easeOut(duration: ExitHintConfirmAnimation.duration)) {
+                    viewModel.confirmHintDismiss()
+                    isVisible = false
+                    dismiss()
+                }
+            }
+        } message: {
+            Text(String(localized: "exitHint.confirm.description"))
+        }
+        .alert(
+            String(localized: "exitHint.swipe.title"),
+            isPresented: $viewModel.isSwipeAlertPresented
+        ) {
+            Button(String(localized: "common.gotIt")) { }
+        } message: {
+            Text(String(localized: "exitHint.swipe.description"))
         }
         .onAppear {
-            viewModel.configurePresentation(isVisible: isVisible, isHintVisible: $isVisible)
+            viewModel.configurePresentation(isVisible: isVisible) { isVisible = false }
             syncGestureState()
         }
-        .onChange(of: isVisible) { _, newValue in
+        .onChange(of: isVisible) { newValue in
             if newValue {
-                viewModel.configurePresentation(isVisible: newValue, isHintVisible: $isVisible)
+                viewModel.configurePresentation(isVisible: newValue) { isVisible = false }
             } else {
                 viewModel.cancelAutoFade()
             }
             syncGestureState()
         }
-        .onChange(of: viewModel.isConfirmSheetPresented) { _, _ in
+        .onChange(of: viewModel.isConfirmAlertPresented) { _ in
             syncGestureState()
         }
-        .onDisappear {
-            ExitHintGestureState.shared.isTrainingActive = false
-            ExitHintGestureState.shared.onTrainingHold = nil
-            ExitHintGestureState.shared.onOutsideTap = nil
+        .onChange(of: viewModel.isSwipeAlertPresented) { _ in
+            syncGestureState()
         }
     }
 
@@ -65,10 +95,7 @@ struct ExitHintView: View {
                     style.strokeColor,
                     style: StrokeStyle(lineWidth: 1.4, dash: [7, 5])
                 )
-                .background(
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .fill(style.fillColor)
-                )
+                .background(.ultraThinMaterial, in: RoundedRectangle(cornerRadius: 20, style: .continuous))
                 .overlay {
                     VStack(spacing: 0) {
                         Spacer(minLength: 18)
@@ -92,66 +119,47 @@ struct ExitHintView: View {
                     .padding(.bottom, 18)
                 }
                 .frame(width: ExitHintZone.frame.width, height: ExitHintZone.frame.height)
-                .background {
-                    GeometryReader { proxy in
-                        Color.clear
-                            .onAppear {
-                                ExitHintGestureState.shared.globalRect = proxy.frame(in: .global)
-                            }
-                            .onChange(of: proxy.frame(in: .global)) { _, newValue in
-                                ExitHintGestureState.shared.globalRect = newValue
-                            }
-                    }
-                }
                 .allowsHitTesting(false)
         }
     }
 
-    private var confirmationSheet: some View {
-        VStack(spacing: 16) {
-            Capsule()
-                .fill(Color.secondary.opacity(0.18))
-                .frame(width: 42, height: 5)
-                .padding(.top, 8)
-                .opacity(0)
-
-            Text(String(localized: "exitHint.confirm.title"))
-                .font(.system(size: 19, weight: .semibold, design: .rounded))
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 24)
-
-            Text(String(localized: "exitHint.confirm.description"))
-                .font(.system(size: 14, weight: .medium, design: .rounded))
-                .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
-                .padding(.horizontal, 28)
-
-            HStack(spacing: 12) {
-                Button(String(localized: "exitHint.showAgain")) {
-                    viewModel.cancelConfirmation()
-                }
-                .buttonStyle(.bordered)
-
-                Button(String(localized: "common.gotIt")) {
-                    viewModel.confirmHintDismiss {
-                        isVisible = false
-                        dismiss()
-                    }
-                }
-                .buttonStyle(.borderedProminent)
-            }
-            .tint(.blue)
-            .padding(.bottom, 12)
+    private var hintOpacityAnimation: Animation? {
+        switch viewModel.hintOpacity {
+        case ExitHintOpacity.visible: nil
+        case ExitHintOpacity.dimmed: .easeOut(duration: ExitHintFadeTiming.dimDuration)
+        default:                     .easeOut(duration: ExitHintFadeTiming.hideDuration)
         }
     }
 
+    private var holdScaleAnimation: Animation {
+        let pressDuration = ExitHintZone.minimumPressDuration * ExitHintHoldAnimation.pressDurationMultiplier
+        return viewModel.holdScale == ExitHintHoldScale.pressed
+            ? .easeInOut(duration: pressDuration)
+            : .spring(response: ExitHintHoldAnimation.releaseSpringResponse, dampingFraction: ExitHintHoldAnimation.releaseSpringDamping)
+    }
+
+    private var flashBrightnessAnimation: Animation {
+        viewModel.flashBrightness == ExitHintFlash.peak
+            ? .easeOut(duration: ExitHintFlashAnimation.fadeInDuration)
+            : .easeIn(duration: ExitHintFlashAnimation.fadeOutDuration)
+    }
+
     private func syncGestureState() {
-        ExitHintGestureState.shared.isTrainingActive = isVisible && viewModel.shouldBlockInteraction
-        ExitHintGestureState.shared.onTrainingHold = {
+        gestureCoordinator.isTrainingActive = isVisible && viewModel.shouldBlockInteraction
+        gestureCoordinator.onTrainingHold = {
             viewModel.presentConfirmation()
         }
-        ExitHintGestureState.shared.onOutsideTap = {
+        gestureCoordinator.onOutsideTap = {
             viewModel.flashHint()
+        }
+        gestureCoordinator.onHoldStarted = {
+            viewModel.holdStarted()
+        }
+        gestureCoordinator.onHoldCancelled = {
+            viewModel.holdCancelled()
+        }
+        gestureCoordinator.onSwipe = {
+            viewModel.presentSwipeAlert()
         }
     }
 }

@@ -9,9 +9,11 @@ import Foundation
 
 @MainActor
 final class TimeControlViewModel: ObservableObject {
-    @Published private(set) var displayedElapsed: TimeInterval = 0
+    @Published private(set) var displayedHundredths = 0
     @Published private(set) var isRunning = false
     @Published private(set) var isTransmitting = false
+
+    private static let tickIntervalMilliseconds = 16 // matches the display's refresh rate
 
     private let signalTransmitter: TimeControlSignalTransmitting
     private let hapticEngineManager: HapticEngineManaging
@@ -19,7 +21,7 @@ final class TimeControlViewModel: ObservableObject {
     private var startDate: Date?
     private var timerTask: Task<Void, Never>?
     private var transmissionTask: Task<Void, Never>?
-    private var transmissionPhase: TimeControlTransmissionPhase?
+    @Published private var transmissionPhase: TimeControlTransmissionPhase?
 
     init(
         signalTransmitter: TimeControlSignalTransmitting? = nil,
@@ -30,20 +32,14 @@ final class TimeControlViewModel: ObservableObject {
     }
 
     var formattedTime: String {
-        let totalHundredths: Int
-        if isRunning {
-            totalHundredths = Int((displayedElapsed * 100).rounded(.down))
-        } else {
-            totalHundredths = Int((displayedElapsed * 100).rounded())
-        }
-        let minutes = totalHundredths / 6000
-        let seconds = (totalHundredths / 100) % 60
-        let hundredths = totalHundredths % 100
+        let minutes = displayedHundredths / 6000
+        let seconds = (displayedHundredths / 100) % 60
+        let hundredths = displayedHundredths % 100
         return String(format: "%02d:%02d.%02d", minutes, seconds, hundredths)
     }
 
     var canReset: Bool {
-        !isRunning && displayedElapsed > 0
+        !isRunning && displayedHundredths > 0
     }
 
     var canUsePrimaryAction: Bool {
@@ -66,7 +62,7 @@ final class TimeControlViewModel: ObservableObject {
 
     func reset() {
         guard !isRunning else { return }
-        displayedElapsed = 0
+        displayedHundredths = 0
         accumulatedElapsed = 0
         startDate = nil
     }
@@ -90,15 +86,18 @@ final class TimeControlViewModel: ObservableObject {
         timerTask = Task { [weak self] in
             guard let self else { return }
             while !Task.isCancelled {
-                await self.tick()
-                try? await Task.sleep(nanoseconds: 10_000_000)
+                self.tick()
+                try? await Task.sleep(milliseconds: Self.tickIntervalMilliseconds)
             }
         }
     }
 
-    private func tick() async {
+    private func tick() {
         guard isRunning, let startDate else { return }
-        displayedElapsed = accumulatedElapsed + Date().timeIntervalSince(startDate)
+        let elapsed = accumulatedElapsed + Date().timeIntervalSince(startDate)
+        let hundredths = Int((elapsed * 100).rounded(.down))
+        guard hundredths != displayedHundredths else { return }
+        displayedHundredths = hundredths
     }
 
     private func stop() {
@@ -106,11 +105,10 @@ final class TimeControlViewModel: ObservableObject {
         isRunning = false
 
         let currentElapsed = accumulatedElapsed + (startDate.map { Date().timeIntervalSince($0) } ?? 0)
-        let frozenElapsed = floor(currentElapsed * 100) / 100
-        let totalHundredths = Int(frozenElapsed * 100)
+        let totalHundredths = Int((currentElapsed * 100).rounded(.down))
 
-        accumulatedElapsed = frozenElapsed
-        displayedElapsed = frozenElapsed
+        accumulatedElapsed = TimeInterval(totalHundredths) / 100
+        displayedHundredths = totalHundredths
         startDate = nil
 
         transmit(second: (totalHundredths / 100) % 60, hundredths: totalHundredths % 100)

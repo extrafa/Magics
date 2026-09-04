@@ -157,7 +157,7 @@ final class MagicGalleryViewModelTests: XCTestCase {
         photoLibrary: MockMagicGalleryPhotoLibrary? = nil,
         photoSaver: MockMagicGalleryPhotoSaver? = nil,
         storedPhotos: [MagicGalleryPhoto] = [],
-        usesStandardSet: Bool = true
+        usesStandardSet: Bool = false
     ) -> MagicGalleryViewModel {
         let haptics = haptics ?? MockNotificationHaptics()
         let photoLibrary = photoLibrary ?? MockMagicGalleryPhotoLibrary()
@@ -200,14 +200,14 @@ private final class MockMagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManagi
         MagicGalleryPhoto(number: number, image: MagicGalleryViewModelTests.image(), fileName: "\(number).jpg", source: .standard)
     }
 
-    func saveCustomPhoto(_ image: UIImage, for number: Int) throws -> MagicGalleryPhoto {
+    func saveCustomPhoto(_ image: UIImage, for number: Int) async throws -> MagicGalleryPhoto {
         savedNumbers.append(number)
         let photo = MagicGalleryPhoto(number: number, image: image, fileName: "\(number).jpg", source: .custom)
         storedPhotos.append(photo)
         return photo
     }
 
-    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) throws {
+    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) async throws {
         deletedNumbers.append(photo.number)
         if shouldFailDelete {
             throw MockMagicGalleryError.requestedFailure
@@ -240,6 +240,7 @@ private final class MockNotificationHaptics: HapticNotificationPlaying {
 
 private struct MockMagicGalleryPreferences: MagicGalleryPreferenceManaging {
     var usesStandardMagicGallerySet: Bool = true
+    var magicGalleryGestureMode: MagicGalleryGestureMode = .tap
 }
 
 private enum MockMagicGalleryError: Error {
