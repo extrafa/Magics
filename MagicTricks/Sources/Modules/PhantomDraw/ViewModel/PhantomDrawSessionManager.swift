@@ -227,7 +227,7 @@ final class PhantomDrawSessionManager: ObservableObject {
         let tlsOptions = NWProtocolTLS.Options()
         let secOptions = tlsOptions.securityProtocolOptions
 
-        // Don't pin min TLS version — with the PSK below it forces TLS 1.3 anyway, but pinning it explicitly breaks the handshake.
+        // Don't pin min TLS version - with the PSK below it forces TLS 1.3 anyway, but pinning it explicitly breaks the handshake.
         let keyBytes = Array(code.utf8)
         let identityBytes = Array(Self.pskIdentity.utf8)
         keyBytes.withUnsafeBytes { rawKey in
