@@ -57,9 +57,16 @@ struct PhantomDrawReceiverView: View {
             Circle()
                 .fill(Color.green)
                 .frame(width: 7, height: 7)
-            Text("Connected")
+            Text(peerName)
                 .font(.system(size: 13, weight: .medium, design: .rounded))
                 .foregroundStyle(.secondary)
         }
+        .padding(.horizontal, 10)
+        .padding(.vertical, 6)
+    }
+
+    private var peerName: String {
+        guard case .connected(let peerName) = viewModel.session.connectionState else { return "Connected" }
+        return peerName
     }
 }
