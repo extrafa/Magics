@@ -9,6 +9,7 @@ struct PhantomDrawSenderView: View {
 
     @ObservedObject var viewModel: PhantomDrawViewModel
     @State private var exitHintVisible = AppPreferences.shared.isExitHintEnabled
+    @State private var statusBarHeight: CGFloat = 59
 
     var body: some View {
         ZStack {
@@ -43,17 +44,23 @@ struct PhantomDrawSenderView: View {
                 }
             }
             .ignoresSafeArea()
-        }
-        .overlay(alignment: .topLeading) {
+
             ExitHintView(isVisible: $exitHintVisible, style: .specialWhite)
+                .padding(.top, statusBarHeight)
+                .ignoresSafeArea(edges: .top)
         }
-        .navigationBarTitleDisplayMode(.inline)
+        .onAppear {
+            // Nested inside PhantomDrawView's titled nav bar, so the inherited safe area is taller than just the status bar - same workaround as GeoMentalismView.
+            statusBarHeight = UIApplication.shared.connectedScenes
+                .compactMap { $0 as? UIWindowScene }
+                .first?.keyWindow?.safeAreaInsets.top ?? 59
+        }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 Button(action: viewModel.clearDrawing) {
                     Image(systemName: "trash")
+                        .foregroundStyle(.black)
                 }
-                .disabled(viewModel.completedStrokes.isEmpty && viewModel.currentStroke.isEmpty)
             }
         }
     }
