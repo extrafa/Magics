@@ -4,26 +4,27 @@
 //
 
 import SwiftUI
-import Combine
 
 @MainActor
 final class PhantomDrawViewModel: ObservableObject {
+
+    private static let minPointDistance: CGFloat = 2
+    private static let progressSendInterval: TimeInterval = 0.05
 
     @Published var role: PhantomDrawRole?
     @Published var currentStroke: [CGPoint] = []
     @Published var completedStrokes: [DrawingStroke] = []
     @Published private(set) var totalDrawnLength: CGFloat = 0
 
-    let session = PhantomDrawSessionManager()
+    let session: PhantomDrawSessionManager
 
     private var canvasSize: CGSize = .zero
-    private var sessionCancellable: AnyCancellable?
     private var lastStrokePoint: CGPoint?
+    private var currentStrokeID = UUID()
+    private var lastProgressSentAt: Date?
 
-    init() {
-        sessionCancellable = session.objectWillChange
-            .sink { [weak self] _ in self?.objectWillChange.send() }
-
+    init(session: PhantomDrawSessionManager) {
+        self.session = session
         session.onNewConnection = { [weak self] in
             guard let self, self.role == .sender, !self.completedStrokes.isEmpty else { return }
             self.session.send(.sync(self.completedStrokes))
@@ -47,23 +48,41 @@ final class PhantomDrawViewModel: ObservableObject {
     }
 
     func addPoint(_ point: CGPoint) {
+        if currentStroke.isEmpty {
+            currentStrokeID = UUID()
+            lastProgressSentAt = nil
+        }
         if let last = lastStrokePoint {
             let dx = point.x - last.x
             let dy = point.y - last.y
-            totalDrawnLength += sqrt(dx * dx + dy * dy)
+            let distance = sqrt(dx * dx + dy * dy)
+            guard distance >= Self.minPointDistance else { return }
+            totalDrawnLength += distance
         }
         lastStrokePoint = point
         currentStroke.append(point)
+        sendProgressIfNeeded()
     }
 
     func commitStroke() {
         guard !currentStroke.isEmpty else { return }
         let normalized = currentStroke.map { DrawingPoint(normalizing: $0, in: canvasSize) }
-        let stroke = DrawingStroke(id: UUID(), points: normalized)
+        let stroke = DrawingStroke(id: currentStrokeID, points: normalized)
         completedStrokes.append(stroke)
         session.send(.stroke(stroke))
         currentStroke = []
         lastStrokePoint = nil
+        lastProgressSentAt = nil
+    }
+
+    private func sendProgressIfNeeded() {
+        let now = Date()
+        if let lastProgressSentAt, now.timeIntervalSince(lastProgressSentAt) < Self.progressSendInterval {
+            return
+        }
+        lastProgressSentAt = now
+        let normalized = currentStroke.map { DrawingPoint(normalizing: $0, in: canvasSize) }
+        session.send(.strokeProgress(DrawingStroke(id: currentStrokeID, points: normalized)))
     }
 
     func clearDrawing() {

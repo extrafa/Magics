@@ -40,6 +40,7 @@ struct DrawingStroke: Codable, Identifiable, Equatable {
 
 enum PhantomDrawMessage: Codable {
     case stroke(DrawingStroke)
+    case strokeProgress(DrawingStroke)
     case clear
     case sync([DrawingStroke])
 }
