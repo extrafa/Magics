@@ -7,7 +7,7 @@ import SwiftUI
 
 struct PhantomDrawReceiverView: View {
 
-    @ObservedObject var viewModel: PhantomDrawViewModel
+    @ObservedObject var session: PhantomDrawSessionManager
 
     var body: some View {
         ZStack {
@@ -19,12 +19,15 @@ struct PhantomDrawReceiverView: View {
                         .fill(Color.white)
                         .padding(24)
 
-                    if viewModel.session.receivedStrokes.isEmpty {
+                    if session.receivedStrokes.isEmpty && session.inProgressStroke == nil {
                         placeholder
                     }
 
                     Canvas { context, size in
-                        context.drawStrokes(viewModel.session.receivedStrokes, canvasSize: size)
+                        context.drawStrokes(session.receivedStrokes, canvasSize: size)
+                        if let inProgressStroke = session.inProgressStroke {
+                            context.drawStrokes([inProgressStroke], canvasSize: size)
+                        }
                     }
                     .padding(24)
                     .allowsHitTesting(false)
@@ -66,7 +69,7 @@ struct PhantomDrawReceiverView: View {
     }
 
     private var peerName: String {
-        guard case .connected(let peerName) = viewModel.session.connectionState else { return "Connected" }
+        guard case .connected(let peerName) = session.connectionState else { return "Connected" }
         return peerName
     }
 }
