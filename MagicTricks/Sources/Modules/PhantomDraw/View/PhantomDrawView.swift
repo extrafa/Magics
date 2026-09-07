@@ -7,12 +7,19 @@ import SwiftUI
 
 struct PhantomDrawView: View {
 
-    @StateObject private var viewModel = PhantomDrawViewModel()
+    @StateObject private var session = PhantomDrawSessionManager()
+    @StateObject private var viewModel: PhantomDrawViewModel
     @Environment(\.dismiss) private var dismiss
     @AppStorage("phantomDrawLastCode") private var codeInput = ""
     @FocusState private var isCodeFieldFocused: Bool
 
-    private var state: PhantomDrawConnectionState { viewModel.session.connectionState }
+    init() {
+        let session = PhantomDrawSessionManager()
+        _session = StateObject(wrappedValue: session)
+        _viewModel = StateObject(wrappedValue: PhantomDrawViewModel(session: session))
+    }
+
+    private var state: PhantomDrawConnectionState { session.connectionState }
 
     private var isSenderCanvas: Bool {
         guard viewModel.role == .sender, case .connected = state else { return false }
@@ -24,8 +31,6 @@ struct PhantomDrawView: View {
             Color.background.ignoresSafeArea()
             contentView
         }
-        .navigationTitle("Phantom Draw")
-        .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarLeading) {
                 if !isSenderCanvas {
@@ -88,7 +93,7 @@ struct PhantomDrawView: View {
     @ViewBuilder
     private var connectedView: some View {
         if viewModel.role == .receiver {
-            PhantomDrawReceiverView(viewModel: viewModel)
+            PhantomDrawReceiverView(session: session)
         } else {
             PhantomDrawSenderView(viewModel: viewModel)
         }
@@ -218,17 +223,9 @@ struct PhantomDrawView: View {
                 codeInput = String(newValue.filter(\.isNumber).prefix(2))
             }
             Spacer().frame(height: 28)
-            Button {
+            primaryButton("Connect", disabled: codeInput.count != 2) {
                 viewModel.submitReceiverCode(codeInput)
-            } label: {
-                Text("Connect")
-                    .font(.headline)
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 54)
             }
-            .buttonStyle(PrimaryTrickButtonStyle(color: TrickPalette.Collection.phantomDraw))
-            .disabled(codeInput.count != 2)
-            .padding(.horizontal, 32)
             Spacer()
             Button("Cancel", action: stop)
                 .font(.system(size: 16, weight: .medium, design: .rounded))
@@ -255,7 +252,7 @@ struct PhantomDrawView: View {
                  : "Keep both phones close together.")
                 .font(.system(size: 15, design: .rounded))
                 .foregroundStyle(.secondary)
-            if viewModel.role == .sender, let code = viewModel.session.pairingCode {
+            if viewModel.role == .sender, let code = session.pairingCode {
                 Spacer().frame(height: 20)
                 Text(code)
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
@@ -275,7 +272,7 @@ struct PhantomDrawView: View {
 
     // MARK: - Status
 
-    private func statusView(icon: String, title: String, subtitle: String, buttonTitle: String, action: @escaping () -> Void) -> some View {
+    private func statusView(icon: String, title: String, subtitle: String, buttonTitle: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         VStack(spacing: 0) {
             Spacer()
             Image(systemName: icon)
@@ -292,12 +289,22 @@ struct PhantomDrawView: View {
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
             Spacer()
-            Button(buttonTitle, action: action)
-                .buttonStyle(PrimaryTrickButtonStyle(color: TrickPalette.Collection.phantomDraw))
-                .padding(.horizontal, 32)
+            primaryButton(buttonTitle, action: action)
                 .padding(.bottom, 32)
         }
         .frame(maxWidth: .infinity)
+    }
+
+    private func primaryButton(_ title: LocalizedStringKey, disabled: Bool = false, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .frame(height: 54)
+        }
+        .buttonStyle(PrimaryTrickButtonStyle(color: TrickPalette.Collection.phantomDraw))
+        .disabled(disabled)
+        .padding(.horizontal, 32)
     }
 
     // MARK: - Helpers
