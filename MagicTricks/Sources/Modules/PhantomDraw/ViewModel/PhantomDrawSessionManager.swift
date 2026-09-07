@@ -16,26 +16,25 @@ final class PhantomDrawSessionManager: ObservableObject {
 
     @Published var connectionState: PhantomDrawConnectionState = .idle
     @Published var receivedStrokes: [DrawingStroke] = []
+    @Published var inProgressStroke: DrawingStroke?
     @Published private(set) var pairingCode: String?
 
     @Published var isReconnecting = false
 
     var onNewConnection: (() -> Void)?
 
-    private enum CurrentRole { case sender, receiver }
-    private var currentRole: CurrentRole = .receiver
-
     private var listener: NWListener?
     private var browser: NWBrowser?
     private var connection: NWConnection?
     private var receiverCode: String?
     private var waitingTimeoutWorkItem: DispatchWorkItem?
+    private var candidateConnections: [NWConnection] = []
+    private var candidateTimeouts: [ObjectIdentifier: DispatchWorkItem] = [:]
 
     // MARK: - Public API
 
     func startAsReceiver(code: String) {
         teardown()
-        currentRole = .receiver
         isReconnecting = false
         receiverCode = code
         connectionState = .searching
@@ -44,7 +43,6 @@ final class PhantomDrawSessionManager: ObservableObject {
 
     func startAsSender() {
         teardown()
-        currentRole = .sender
         isReconnecting = false
         let code = String(format: "%02d", Int.random(in: 0..<100))
         pairingCode = code
@@ -88,7 +86,7 @@ final class PhantomDrawSessionManager: ObservableObject {
                     return
                 }
                 self.connection?.cancel()
-                self.activate(conn)
+                self.activateIncomingConnection(conn)
             }
         }
         listener = l
@@ -103,11 +101,10 @@ final class PhantomDrawSessionManager: ObservableObject {
         let b = NWBrowser(for: .bonjour(type: Self.bonjourType, domain: nil), using: params)
         b.browseResultsChangedHandler = { [weak self] results, _ in
             DispatchQueue.main.async { [weak self] in
-                guard let self, self.connection == nil, let result = results.first else { return }
+                guard let self, self.connection == nil, !results.isEmpty else { return }
                 self.browser?.cancel()
                 self.browser = nil
-                let conn = NWConnection(to: result.endpoint, using: params)
-                self.activate(conn)
+                self.raceConnections(to: results.map(\.endpoint), params: params)
             }
         }
         b.stateUpdateHandler = { [weak self] state in
@@ -119,9 +116,77 @@ final class PhantomDrawSessionManager: ObservableObject {
         b.start(queue: .main)
     }
 
-    // MARK: - Connection lifecycle
+    // The pairing code is only checked at the TLS/PSK handshake, not visible via Bonjour discovery - if more than one sender is nearby, connect to every candidate and keep whichever one's code actually matches.
+    private func raceConnections(to endpoints: [NWEndpoint], params: NWParameters) {
+        let connections = endpoints.map { NWConnection(to: $0, using: params) }
+        candidateConnections = connections
+        for conn in connections {
+            conn.stateUpdateHandler = { [weak self] state in
+                DispatchQueue.main.async { [weak self] in
+                    self?.handleCandidateState(state, for: conn)
+                }
+            }
+            conn.start(queue: .main)
+        }
+    }
 
-    private func activate(_ conn: NWConnection) {
+    private func handleCandidateState(_ state: NWConnection.State, for conn: NWConnection) {
+        switch state {
+        case .ready:
+            guard connection == nil else { conn.cancel(); return }
+            cancelCandidateTimeout(for: conn)
+            for loser in candidateConnections where loser !== conn { loser.cancel() }
+            candidateConnections = []
+            connection = conn
+            isReconnecting = false
+            connectionState = .connected(peerName: conn.endpoint.peerName)
+            receiveLoop(conn)
+            onNewConnection?()
+
+        case .waiting:
+            scheduleCandidateTimeout(for: conn)
+
+        case .failed, .cancelled:
+            cancelCandidateTimeout(for: conn)
+            if connection === conn {
+                // The connection was already established and then dropped - back to role selection
+                // instead of silently re-searching forever (there's no timeout for "found nothing").
+                connection = nil
+                connectionState = .idle
+                return
+            }
+            // A stale callback from a candidate teardown() already cancelled and dropped - ignore it.
+            guard candidateConnections.contains(where: { $0 === conn }) else { return }
+            candidateConnections.removeAll { $0 === conn }
+            guard connection == nil, candidateConnections.isEmpty else { return }
+            connectionState = .searching
+            if let receiverCode { startBrowsing(code: receiverCode) }
+
+        default:
+            break
+        }
+    }
+
+    private func scheduleCandidateTimeout(for conn: NWConnection) {
+        let key = ObjectIdentifier(conn)
+        guard candidateTimeouts[key] == nil else { return }
+        let workItem = DispatchWorkItem { [weak self] in
+            self?.candidateTimeouts[key] = nil
+            conn.cancel()
+        }
+        candidateTimeouts[key] = workItem
+        DispatchQueue.main.asyncAfter(deadline: .now() + Self.connectionTimeout, execute: workItem)
+    }
+
+    private func cancelCandidateTimeout(for conn: NWConnection) {
+        let key = ObjectIdentifier(conn)
+        candidateTimeouts[key]?.cancel()
+        candidateTimeouts[key] = nil
+    }
+
+    // MARK: - Sender: incoming connection lifecycle
+
+    private func activateIncomingConnection(_ conn: NWConnection) {
         connection = conn
         cancelWaitingTimeout()
         conn.stateUpdateHandler = { [weak self] state in
@@ -144,15 +209,7 @@ final class PhantomDrawSessionManager: ObservableObject {
                     guard self.connection === conn else { return }
                     self.cancelWaitingTimeout()
                     self.connection = nil
-                    switch self.currentRole {
-                    case .sender:
-                        self.isReconnecting = true
-                    case .receiver:
-                        self.connectionState = .searching
-                        if let receiverCode = self.receiverCode {
-                            self.startBrowsing(code: receiverCode)
-                        }
-                    }
+                    self.isReconnecting = true
 
                 default:
                     break
@@ -211,9 +268,17 @@ final class PhantomDrawSessionManager: ObservableObject {
                 DispatchQueue.main.async { [weak self] in
                     guard let self else { return }
                     switch msg {
-                    case .stroke(let s):    self.receivedStrokes.append(s)
-                    case .clear:            self.receivedStrokes = []
-                    case .sync(let all):    self.receivedStrokes = all
+                    case .stroke(let s):
+                        self.receivedStrokes.append(s)
+                        self.inProgressStroke = nil
+                    case .strokeProgress(let s):
+                        self.inProgressStroke = s
+                    case .clear:
+                        self.receivedStrokes = []
+                        self.inProgressStroke = nil
+                    case .sync(let all):
+                        self.receivedStrokes = all
+                        self.inProgressStroke = nil
                     }
                 }
                 DispatchQueue.main.async { [weak self] in self?.receiveLoop(conn) }
@@ -250,11 +315,15 @@ final class PhantomDrawSessionManager: ObservableObject {
         browser?.cancel()
         listener?.cancel()
         connection?.cancel()
+        candidateConnections.forEach { $0.cancel() }
+        candidateTimeouts.values.forEach { $0.cancel() }
+        candidateTimeouts.removeAll()
         cancelWaitingTimeout()
         browser = nil
         listener = nil
         connection = nil
         receiverCode = nil
+        candidateConnections = []
     }
 }
 
