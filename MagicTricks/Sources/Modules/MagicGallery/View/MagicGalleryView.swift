@@ -9,9 +9,13 @@ import SwiftUI
 
 struct MagicGalleryView: View {
     @Environment(\.dismiss) private var dismiss
-    @StateObject private var vm = MagicGalleryViewModel()
+    @StateObject private var vm: MagicGalleryViewModel
 
     @State private var showSourceDialog = false
+
+    init(vm: MagicGalleryViewModel? = nil) {
+        _vm = StateObject(wrappedValue: vm ?? MagicGalleryViewModel())
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {

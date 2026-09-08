@@ -9,9 +9,13 @@ import SwiftUI
 
 struct CalculatorPredictionView: View {
     
-    @StateObject private var vm = CalculatorPredictionViewModel()
+    @StateObject private var vm: CalculatorPredictionViewModel
 
     private static let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 4)
+
+    init(vm: CalculatorPredictionViewModel? = nil) {
+        _vm = StateObject(wrappedValue: vm ?? CalculatorPredictionViewModel())
+    }
 
     var body: some View {
         GeometryReader { geometry in
