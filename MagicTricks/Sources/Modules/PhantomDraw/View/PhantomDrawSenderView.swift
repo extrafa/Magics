@@ -8,8 +8,13 @@ import SwiftUI
 struct PhantomDrawSenderView: View {
 
     @ObservedObject var viewModel: PhantomDrawViewModel
-    @State private var exitHintVisible = AppPreferences.shared.isExitHintEnabled
+    @State private var isExitHintVisible: Bool
     @State private var statusBarHeight: CGFloat = 59
+
+    init(viewModel: PhantomDrawViewModel, preferences: ExitHintPreferenceManaging = AppPreferences.shared) {
+        self.viewModel = viewModel
+        _isExitHintVisible = State(initialValue: preferences.isExitHintEnabled)
+    }
 
     var body: some View {
         ZStack {
@@ -45,7 +50,7 @@ struct PhantomDrawSenderView: View {
             }
             .ignoresSafeArea()
 
-            ExitHintView(isVisible: $exitHintVisible, style: .specialWhite)
+            ExitHintView(isExitHintVisible: $isExitHintVisible, style: .specialWhite)
                 .padding(.top, statusBarHeight)
                 .ignoresSafeArea(edges: .top)
         }

@@ -8,15 +8,15 @@
 import SwiftUI
 
 struct ExitHintView: View {
-    @Binding var isVisible: Bool
+    @Binding var isExitHintVisible: Bool
     @Environment(\.dismiss) private var dismiss
     let style: ExitHintStyle
 
     @StateObject private var viewModel = ExitHintViewModel()
     @StateObject private var gestureCoordinator = ExitHintGestureCoordinator()
 
-    init(isVisible: Binding<Bool>, style: ExitHintStyle = .normal) {
-        _isVisible = isVisible
+    init(isExitHintVisible: Binding<Bool>, style: ExitHintStyle = .normal) {
+        _isExitHintVisible = isExitHintVisible
         self.style = style
     }
 
@@ -25,7 +25,7 @@ struct ExitHintView: View {
             ZStack(alignment: .topLeading) {
                 exitHitArea
                 hintOverlay
-                    .opacity(isVisible ? viewModel.hintOpacity : 0)
+                    .opacity(isExitHintVisible ? viewModel.hintOpacity : 0)
                     .animation(hintOpacityAnimation, value: viewModel.hintOpacity)
                     .scaleEffect(viewModel.holdScale)
                     .animation(holdScaleAnimation, value: viewModel.holdScale)
@@ -46,7 +46,7 @@ struct ExitHintView: View {
             Button(String(localized: "common.gotIt")) {
                 withAnimation(.easeOut(duration: ExitHintConfirmAnimation.duration)) {
                     viewModel.confirmHintDismiss()
-                    isVisible = false
+                    isExitHintVisible = false
                     dismiss()
                 }
             }
@@ -62,12 +62,12 @@ struct ExitHintView: View {
             Text(String(localized: "exitHint.swipe.description"))
         }
         .onAppear {
-            viewModel.configurePresentation(isVisible: isVisible) { isVisible = false }
+            viewModel.configurePresentation(isVisible: isExitHintVisible) { isExitHintVisible = false }
             syncGestureState()
         }
-        .onChange(of: isVisible) { newValue in
+        .onChange(of: isExitHintVisible) { newValue in
             if newValue {
-                viewModel.configurePresentation(isVisible: newValue) { isVisible = false }
+                viewModel.configurePresentation(isVisible: newValue) { isExitHintVisible = false }
             } else {
                 viewModel.cancelAutoFade()
             }
@@ -145,7 +145,7 @@ struct ExitHintView: View {
     }
 
     private func syncGestureState() {
-        gestureCoordinator.isTrainingActive = isVisible && viewModel.shouldBlockInteraction
+        gestureCoordinator.isTrainingActive = isExitHintVisible && viewModel.shouldBlockInteraction
         gestureCoordinator.onTrainingHold = {
             viewModel.presentConfirmation()
         }
@@ -165,5 +165,30 @@ struct ExitHintView: View {
 }
 
 #Preview {
-    ExitHintView(isVisible: .constant(true))
+    ExitHintView(isExitHintVisible: .constant(true))
+}
+
+// MARK: - Overlay modifier
+
+// For screens that don't need to share isExitHintVisible elsewhere - use ExitHintView directly otherwise.
+private struct ExitHintOverlay: ViewModifier {
+    let style: ExitHintStyle
+    @State private var isExitHintVisible: Bool
+
+    init(style: ExitHintStyle, preferences: ExitHintPreferenceManaging) {
+        self.style = style
+        _isExitHintVisible = State(initialValue: preferences.isExitHintEnabled)
+    }
+
+    func body(content: Content) -> some View {
+        content.overlay {
+            ExitHintView(isExitHintVisible: $isExitHintVisible, style: style)
+        }
+    }
+}
+
+extension View {
+    func exitHint(style: ExitHintStyle = .normal, preferences: ExitHintPreferenceManaging = AppPreferences.shared) -> some View {
+        modifier(ExitHintOverlay(style: style, preferences: preferences))
+    }
 }
