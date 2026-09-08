@@ -16,14 +16,14 @@ final class PhantomDrawViewModel: ObservableObject {
     @Published var completedStrokes: [DrawingStroke] = []
     @Published private(set) var totalDrawnLength: CGFloat = 0
 
-    let session: PhantomDrawSessionManager
+    let session: PhantomDrawSessioning
 
     private var canvasSize: CGSize = .zero
     private var lastStrokePoint: CGPoint?
     private var currentStrokeID = UUID()
     private var lastProgressSentAt: Date?
 
-    init(session: PhantomDrawSessionManager) {
+    init(session: PhantomDrawSessioning) {
         self.session = session
         session.onNewConnection = { [weak self] in
             guard let self, self.role == .sender, !self.completedStrokes.isEmpty else { return }
