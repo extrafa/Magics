@@ -19,8 +19,6 @@
 		0A000600000000000000001B /* OBWelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000600000000000000001A /* OBWelcomeScreen.swift */; };
 		0A000700000000000000001B /* OBGoalScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000700000000000000001A /* OBGoalScreen.swift */; };
 		0A000800000000000000001B /* OBPainPointsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000800000000000000001A /* OBPainPointsScreen.swift */; };
-		0A000900000000000000001B /* OBSocialProofScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000900000000000000001A /* OBSocialProofScreen.swift */; };
-		0A000A00000000000000001B /* OBSolutionScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000A00000000000000001A /* OBSolutionScreen.swift */; };
 		0A000C00000000000000001B /* OBProcessingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000C00000000000000001A /* OBProcessingScreen.swift */; };
 		0A00FE000000000000000002 /* StoreProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000001 /* StoreProduct.swift */; };
 		0A00FE000000000000000004 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000003 /* StoreService.swift */; };
@@ -129,6 +127,7 @@
 		912B258C2F2EDABE00B32AF1 /* CalculatorPrediction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 912B258B2F2EDABE00B32AF1 /* CalculatorPrediction.swift */; };
 		913878222F89732600CA371E /* InstructionModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913878212F89732600CA371E /* InstructionModels.swift */; };
 		913878242F89732E00CA371E /* InstructionComponents.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913878232F89732E00CA371E /* InstructionComponents.swift */; };
+		0AML00000000000000000032 /* CardSurface.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000031 /* CardSurface.swift */; };
 		913878262F89733200CA371E /* InstructionView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913878252F89733200CA371E /* InstructionView.swift */; };
 		913AE9A22F54939D0061F75A /* AppConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = 913AE9A12F54939D0061F75A /* AppConfig.swift */; };
 		1F45D054A04AEEB39784C0E1 /* AppBuildEnvironment.swift in Sources */ = {isa = PBXBuildFile; fileRef = 14BF4DFBBF5D58E49EC0AAB3 /* AppBuildEnvironment.swift */; };
@@ -180,8 +179,6 @@
 		0A000600000000000000001A /* OBWelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBWelcomeScreen.swift; sourceTree = "<group>"; };
 		0A000700000000000000001A /* OBGoalScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBGoalScreen.swift; sourceTree = "<group>"; };
 		0A000800000000000000001A /* OBPainPointsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPainPointsScreen.swift; sourceTree = "<group>"; };
-		0A000900000000000000001A /* OBSocialProofScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBSocialProofScreen.swift; sourceTree = "<group>"; };
-		0A000A00000000000000001A /* OBSolutionScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBSolutionScreen.swift; sourceTree = "<group>"; };
 		0A000C00000000000000001A /* OBProcessingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBProcessingScreen.swift; sourceTree = "<group>"; };
 		0A00FE000000000000000001 /* StoreProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreProduct.swift; sourceTree = "<group>"; };
 		0A00FE000000000000000003 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
@@ -291,6 +288,7 @@
 		912B258B2F2EDABE00B32AF1 /* CalculatorPrediction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPrediction.swift; sourceTree = "<group>"; };
 		913878212F89732600CA371E /* InstructionModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionModels.swift; sourceTree = "<group>"; };
 		913878232F89732E00CA371E /* InstructionComponents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionComponents.swift; sourceTree = "<group>"; };
+		0AML00000000000000000031 /* CardSurface.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CardSurface.swift; sourceTree = "<group>"; };
 		913878252F89733200CA371E /* InstructionView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionView.swift; sourceTree = "<group>"; };
 		913AE9A12F54939D0061F75A /* AppConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppConfig.swift; sourceTree = "<group>"; };
 		14BF4DFBBF5D58E49EC0AAB3 /* AppBuildEnvironment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppBuildEnvironment.swift; sourceTree = "<group>"; };
@@ -390,8 +388,6 @@
 				0A000600000000000000001A /* OBWelcomeScreen.swift */,
 				0A000700000000000000001A /* OBGoalScreen.swift */,
 				0A000800000000000000001A /* OBPainPointsScreen.swift */,
-				0A000900000000000000001A /* OBSocialProofScreen.swift */,
-				0A000A00000000000000001A /* OBSolutionScreen.swift */,
 				28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */,
 				0A000C00000000000000001A /* OBProcessingScreen.swift */,
 				0A0002000000000000000025 /* OnboardingCTAButton.swift */,
@@ -691,6 +687,7 @@
 				0AML00000000000000000024 /* ProUpgradeButton.swift */,
 				0A0002000000000000000023 /* TrickGradientCard.swift */,
 				0A0002000000000000000029 /* WatermarkView.swift */,
+				0AML00000000000000000031 /* CardSurface.swift */,
 			);
 			path = Components;
 			sourceTree = "<group>";
@@ -1192,6 +1189,7 @@
 				28960C5D2FABD6D2003268CD /* ExitHintViewModel.swift in Sources */,
 				28960C602FABD7A0003268CD /* ExitHintGestureCaptureView.swift in Sources */,
 				913878242F89732E00CA371E /* InstructionComponents.swift in Sources */,
+				0AML00000000000000000032 /* CardSurface.swift in Sources */,
 				912B25882F2ED96300B32AF1 /* CalculatorPredictionViewModel.swift in Sources */,
 				287D7905302DEBD8009E75EE /* MotionSettingsScreen.swift in Sources */,
 				287D7906302DEBD8009E75EE /* HapticHelpSection.swift in Sources */,
@@ -1263,8 +1261,6 @@
 				0A000600000000000000001B /* OBWelcomeScreen.swift in Sources */,
 				0A000700000000000000001B /* OBGoalScreen.swift in Sources */,
 				0A000800000000000000001B /* OBPainPointsScreen.swift in Sources */,
-				0A000900000000000000001B /* OBSocialProofScreen.swift in Sources */,
-				0A000A00000000000000001B /* OBSolutionScreen.swift in Sources */,
 				0A000C00000000000000001B /* OBProcessingScreen.swift in Sources */,
 				0AFF00000000000000000002 /* InstructionPhase.swift in Sources */,
 				0AEE00000000000000000002 /* MagicGalleryPhoto.swift in Sources */,

@@ -44,14 +44,7 @@ struct TrickCardView: View {
         }
         .padding(22)
         .frame(maxWidth: .infinity, minHeight: 208, alignment: .topLeading)
-        .background {
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color.grayCard)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .stroke(Color.grayBorder, lineWidth: 1)
-                }
-        }
+        .cardSurface(cornerRadius: 22)
         .shadow(color: Color.black.opacity(isLocked ? 0.03 : 0.06), radius: 18, x: 0, y: 8)
     }
 

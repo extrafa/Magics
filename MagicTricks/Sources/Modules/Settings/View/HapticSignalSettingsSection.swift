@@ -60,7 +60,7 @@ struct HapticSignalSettingsSection: View {
                 format: "%.1fx"
             )
             .padding(18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
     }
 
@@ -80,7 +80,7 @@ struct HapticSignalSettingsSection: View {
             }
             .tint(TrickPalette.Collection.timeControl)
             .padding(18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
     }
 }

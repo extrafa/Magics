@@ -93,7 +93,7 @@ private extension SettingsScreen {
                 .tint(.orange)
                 .padding(18)
             }
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
     }
 
@@ -113,7 +113,7 @@ private extension SettingsScreen {
             }
             .tint(TrickPalette.Collection.timeControl)
             .padding(18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
     }
 
@@ -145,7 +145,7 @@ private extension SettingsScreen {
                 .buttonStyle(.plain)
             }
             .padding(.horizontal, 18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
     }
 
@@ -157,7 +157,7 @@ private extension SettingsScreen {
                     shareButton(url: appShareURL)
                 }
                 .padding(.horizontal, 18)
-                .settingsCard()
+                .cardSurface(cornerRadius: 20)
             }
         }
     }

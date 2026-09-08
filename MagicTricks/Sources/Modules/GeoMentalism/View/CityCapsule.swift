@@ -17,14 +17,7 @@ struct CityCapsule: View {
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
             .padding(.horizontal, 12)
-            .background {
-                Capsule()
-                    .fill(Color.grayCard)
-                    .overlay {
-                        Capsule()
-                            .stroke(Color.grayBorder, lineWidth: 1)
-                    }
-            }
+            .cardSurface(Capsule())
     }
 }
 
