@@ -59,7 +59,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
         case .decimal:
             appendDecimal()
         case .negative:
-            appendOperator("−")
+            toggleSign()
         default:
             appendNum(button.rawValue)
         }
@@ -85,6 +85,19 @@ final class CalculatorPredictionViewModel: ObservableObject {
         if String(last) == decimalSeparator { return }
         if Self.operators.contains(String(last)) { raw.removeLast() }
         raw.append(op)
+        display = formatExpression(raw)
+    }
+
+    private func toggleSign() {
+        var raw = rawDisplay
+        guard !raw.isEmpty else { return }
+        let lastOperatorIndex = raw.lastIndex { Self.operators.contains(String($0)) }
+        let numberStart = lastOperatorIndex.map { raw.index(after: $0) } ?? raw.startIndex
+        if raw[numberStart...].hasPrefix("-") {
+            raw.remove(at: numberStart)
+        } else {
+            raw.insert("-", at: numberStart)
+        }
         display = formatExpression(raw)
     }
 
