@@ -28,7 +28,7 @@ final class CalculatorPredictionEngine: CalculatorExpressionEvaluating {
 
 private enum Token: Equatable {
     case number(Double)
-    case plus, minus, multiply, divide, modulo
+    case plus, minus, multiply, divide
 }
 
 private func tokenize(_ input: String) throws -> [Token] {
@@ -50,7 +50,6 @@ private func tokenize(_ input: String) throws -> [Token] {
         case "-": tokens.append(.minus);    i = input.index(after: i)
         case "*": tokens.append(.multiply); i = input.index(after: i)
         case "/": tokens.append(.divide);   i = input.index(after: i)
-        case "%": tokens.append(.modulo);   i = input.index(after: i)
         default:  throw CalculatorExpressionError.evaluationFailed
         }
     }
@@ -84,7 +83,7 @@ private struct Parser {
 
     mutating func parseTerm() throws -> Double {
         var lhs = try parseFactor()
-        while let t = current, t == .multiply || t == .divide || t == .modulo {
+        while let t = current, t == .multiply || t == .divide {
             advance()
             let rhs = try parseFactor()
             switch t {
@@ -93,9 +92,6 @@ private struct Parser {
             case .divide:
                 guard rhs != 0 else { throw CalculatorExpressionError.evaluationFailed }
                 lhs /= rhs
-            case .modulo:
-                guard rhs != 0 else { throw CalculatorExpressionError.evaluationFailed }
-                lhs = lhs.truncatingRemainder(dividingBy: rhs)
             default:
                 break
             }
