@@ -12,6 +12,7 @@ extension UserDefaults: PreferenceStoring {}
 
 protocol ExitHintPreferenceManaging {
     var didLearnExitHint: Bool { get set }
+    var isExitHintEnabled: Bool { get }
 }
 
 protocol HapticPreferenceManaging {

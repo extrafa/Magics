@@ -10,7 +10,6 @@ import SwiftUI
 struct CalculatorPredictionView: View {
     
     @StateObject private var vm = CalculatorPredictionViewModel()
-    @State private var isVisible = AppPreferences.shared.isExitHintEnabled
 
     private static let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 4)
 
@@ -57,9 +56,8 @@ struct CalculatorPredictionView: View {
                 }
                 .padding(.horizontal, horizontalPadding)
                 .padding(.bottom, 20)
-                
-                ExitHintView(isVisible: $isVisible, style: .specialWhite)
             }
+            .exitHint(style: .specialWhite)
         }
     }
 }

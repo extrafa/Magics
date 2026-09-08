@@ -8,7 +8,11 @@
 import SwiftUI
 
 struct GeoMentalismView: View {
-    @State private var isVisible = AppPreferences.shared.isExitHintEnabled
+    @State private var isExitHintVisible: Bool
+
+    init(preferences: ExitHintPreferenceManaging = AppPreferences.shared) {
+        _isExitHintVisible = State(initialValue: preferences.isExitHintEnabled)
+    }
 
     private var statusBarHeight: CGFloat {
         UIApplication.shared.connectedScenes
@@ -23,7 +27,7 @@ struct GeoMentalismView: View {
             List {
                 ForEach(GeoMentalismCities.all, id: \.self) { city in
                     NavigationLink {
-                        GeoMentalismCitiesView(city: city, isVisible: $isVisible)
+                        GeoMentalismCitiesView(city: city, isExitHintVisible: $isExitHintVisible)
                     } label: {
                         Text(city)
                             .font(.system(size: 17, weight: .medium, design: .rounded))
@@ -37,7 +41,7 @@ struct GeoMentalismView: View {
             .listStyle(.plain)
             .hideScrollContentBackground()
 
-            ExitHintView(isVisible: $isVisible)
+            ExitHintView(isExitHintVisible: $isExitHintVisible)
                 .padding(.top, statusBarHeight)
                 .ignoresSafeArea(edges: .top)
         }

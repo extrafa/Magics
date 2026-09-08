@@ -10,7 +10,6 @@ import SwiftUI
 struct ColorSenseView: View {
 
     @StateObject private var viewModel: ColorSenseViewModel
-    @State private var isVisible = AppPreferences.shared.isExitHintEnabled
 
     private static let columns = [
         GridItem(.flexible(), spacing: 14),
@@ -54,9 +53,8 @@ struct ColorSenseView: View {
                 }
             }
             .padding(.horizontal, 20)
-
-            ExitHintView(isVisible: $isVisible)
         }
+        .exitHint()
         .onDisappear {
             viewModel.cancel()
         }

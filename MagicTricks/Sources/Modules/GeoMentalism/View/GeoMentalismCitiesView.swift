@@ -10,7 +10,7 @@ import SwiftUI
 struct GeoMentalismCitiesView: View {
     @StateObject private var viewModel = GeoMentalismViewModel()
     let city: String
-    @Binding var isVisible: Bool
+    @Binding var isExitHintVisible: Bool
 
     private static let columns = [
         GridItem(.flexible()),
@@ -41,7 +41,7 @@ struct GeoMentalismCitiesView: View {
             }
         }
         .onAppear {
-            isVisible = false
+            isExitHintVisible = false
             viewModel.generateList(for: city)
             Task {
                 try? await Task.sleep(milliseconds: 550)
@@ -79,10 +79,10 @@ struct GeoMentalismCitiesView: View {
 
 #Preview {
     struct Preview: View {
-        @State var isVisible = false
+        @State var isExitHintVisible = false
         var body: some View {
             NavigationStack {
-                GeoMentalismCitiesView(city: "Barcelona", isVisible: $isVisible)
+                GeoMentalismCitiesView(city: "Barcelona", isExitHintVisible: $isExitHintVisible)
             }
             .environmentObject(StoreManager())
         }
