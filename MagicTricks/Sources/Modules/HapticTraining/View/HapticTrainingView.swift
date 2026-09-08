@@ -77,7 +77,7 @@ struct HapticTrainingView: View {
         }
         .padding(22)
         .frame(maxWidth: .infinity)
-        .background(deckBackground)
+        .cardSurface(cornerRadius: 30)
     }
 
     private var hintLegend: some View {
@@ -105,15 +105,6 @@ struct HapticTrainingView: View {
             }
         }
         .padding(.vertical, 6)
-    }
-
-    private var deckBackground: some View {
-        RoundedRectangle(cornerRadius: 30, style: .continuous)
-            .fill(Color.grayCard)
-            .overlay {
-                RoundedRectangle(cornerRadius: 30, style: .continuous)
-                    .stroke(Color.grayBorder, lineWidth: 1)
-            }
     }
 
     private var answerSection: some View {

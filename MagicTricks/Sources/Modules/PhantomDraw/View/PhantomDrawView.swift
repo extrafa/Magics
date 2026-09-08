@@ -167,14 +167,7 @@ struct PhantomDrawView: View {
                     .foregroundStyle(.secondary.opacity(0.5))
             }
             .padding(18)
-            .background {
-                RoundedRectangle(cornerRadius: 18, style: .continuous)
-                    .fill(Color.grayCard)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 18, style: .continuous)
-                            .stroke(Color.grayBorder, lineWidth: 1)
-                    }
-            }
+            .cardSurface(cornerRadius: 18)
         }
         .buttonStyle(.plain)
     }
@@ -211,14 +204,7 @@ struct PhantomDrawView: View {
             }
             .font(.system(size: 34, weight: .black, design: .rounded))
             .frame(width: 120, height: 60)
-            .background {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.grayCard)
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(Color.grayBorder, lineWidth: 1)
-                    }
-            }
+            .cardSurface(cornerRadius: 16)
             .onChange(of: codeInput) { newValue in
                 codeInput = String(newValue.filter(\.isNumber).prefix(2))
             }

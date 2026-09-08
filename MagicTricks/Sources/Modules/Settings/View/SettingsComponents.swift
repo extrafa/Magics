@@ -80,7 +80,7 @@ struct SettingsResetButton: View {
                 isBold: true
             )
             .padding(.horizontal, 18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
         .buttonStyle(.plain)
     }
@@ -173,20 +173,5 @@ struct SettingsStepper: View {
 
     private func decrement() {
         value = max(range.lowerBound, ((value - step) * 100).rounded() / 100)
-    }
-}
-
-// MARK: - Card background modifier
-
-extension View {
-    func settingsCard() -> some View {
-        self.background {
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color.grayCard)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(Color.grayBorder, lineWidth: 1)
-                }
-        }
     }
 }

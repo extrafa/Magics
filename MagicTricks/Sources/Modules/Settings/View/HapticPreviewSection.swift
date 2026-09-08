@@ -47,7 +47,7 @@ struct HapticPreviewSection: View {
                 .animation(.easeInOut(duration: 0.2), value: isWaitingForGesture)
             }
             .padding(18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
     }
 }

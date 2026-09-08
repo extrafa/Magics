@@ -28,7 +28,7 @@ struct HapticHelpSection: View {
                     HelpItem(question: item.question, answer: item.answer)
                 }
             }
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
     }
 }

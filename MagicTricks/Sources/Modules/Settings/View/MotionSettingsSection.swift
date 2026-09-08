@@ -59,7 +59,7 @@ struct MotionSettingsSection: View {
                     .padding(18)
                 }
             }
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
     }
 }

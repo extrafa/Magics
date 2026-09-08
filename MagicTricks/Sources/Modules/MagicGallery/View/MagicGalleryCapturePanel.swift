@@ -23,14 +23,7 @@ struct MagicGalleryCapturePanel: View {
             captureButton
         }
         .padding(18)
-        .background {
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color.grayCard)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .stroke(Color.grayBorder, lineWidth: 1)
-                }
-        }
+        .cardSurface(cornerRadius: 22)
     }
 
     private var standardSetControl: some View {
