@@ -75,6 +75,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
     private func appendNum(_ num: String) {
         let raw = rawDisplay
+        guard !raw.hasSuffix("%") else { return }
         let newRaw = raw == "0" ? num : raw + num
         display = formatExpression(newRaw)
     }
@@ -130,10 +131,9 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
         let lastStr = String(last)
         if lastStr == "%" {
-            let base = String(raw.dropLast())
-            guard !base.isEmpty else { return }
+            guard raw.count > 1 else { return }
             do {
-                let result = try expressionEvaluator.evaluate(base + "/100")
+                let result = try evaluatePercent(raw)
                 display = formatResult(result)
             } catch { }
             return
@@ -144,6 +144,33 @@ final class CalculatorPredictionViewModel: ObservableObject {
             let result = try expressionEvaluator.evaluate(raw)
             display = formatResult(result)
         } catch { }
+    }
+
+    // "%" isn't a real operator for the evaluator - resolve it into a number before evaluating.
+    // Standalone "b%" -> b/100. After +/-, "%" is a percentage of the left side: "a+b%" -> a + a*b/100.
+    // After ×/÷, it's a plain percentage value: "a×b%" -> a×(b/100). The engine has no parentheses,
+    // so the +/- case evaluates the left side up front instead of splicing its text back in.
+    private func evaluatePercent(_ raw: String) throws -> Double {
+        let base = String(raw.dropLast())
+        guard !base.isEmpty else { throw CalculatorExpressionError.evaluationFailed }
+
+        guard let opIndex = base.indices.dropFirst().last(where: { Self.operators.contains(String(base[$0])) }) else {
+            return try expressionEvaluator.evaluate(base) / 100
+        }
+
+        let op = base[opIndex]
+        let left = String(base[base.startIndex..<opIndex])
+        let right = String(base[base.index(after: opIndex)...])
+
+        switch op {
+        case "+", "−":
+            let leftValue = try expressionEvaluator.evaluate(left)
+            let rightValue = try expressionEvaluator.evaluate(right)
+            let percentOfLeft = leftValue * rightValue / 100
+            return op == "+" ? leftValue + percentOfLeft : leftValue - percentOfLeft
+        default:
+            return try expressionEvaluator.evaluate("\(left)\(op)\(right)/100")
+        }
     }
 
     private func formatResult(_ value: Double) -> String {
