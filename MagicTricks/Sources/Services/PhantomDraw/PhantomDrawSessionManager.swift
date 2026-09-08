@@ -7,8 +7,20 @@ import Foundation
 import Network
 import Security
 
+// What PhantomDrawViewModel needs from the session, not the full Views-facing surface.
 @MainActor
-final class PhantomDrawSessionManager: ObservableObject {
+protocol PhantomDrawSessioning: AnyObject {
+    var connectionState: PhantomDrawConnectionState { get set }
+    var onNewConnection: Completion? { get set }
+
+    func startAsReceiver(code: String)
+    func startAsSender()
+    func send(_ message: PhantomDrawMessage)
+    func stop()
+}
+
+@MainActor
+final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
     private static let bonjourType = "_phantomdraw._tcp"
     private static let pskIdentity = "PhantomDraw"
@@ -21,7 +33,7 @@ final class PhantomDrawSessionManager: ObservableObject {
 
     @Published var isReconnecting = false
 
-    var onNewConnection: (() -> Void)?
+    var onNewConnection: Completion?
 
     private var listener: NWListener?
     private var browser: NWBrowser?

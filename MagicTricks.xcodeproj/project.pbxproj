@@ -458,7 +458,6 @@
 		0AML00000000000000000016 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				0AML00000000000000000005 /* PhantomDrawSessionManager.swift */,
 				0AML00000000000000000007 /* PhantomDrawViewModel.swift */,
 			);
 			path = ViewModel;
@@ -870,8 +869,17 @@
 			isa = PBXGroup;
 			children = (
 				0A00FE000000000000000007 /* Store */,
+				0AML00000000000000000030 /* PhantomDraw */,
 			);
 			path = Services;
+			sourceTree = "<group>";
+		};
+		0AML00000000000000000030 /* PhantomDraw */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000005 /* PhantomDrawSessionManager.swift */,
+			);
+			path = PhantomDraw;
 			sourceTree = "<group>";
 		};
 		913FDE0B2EBEDB5300B05D99 /* Resources */ = {
