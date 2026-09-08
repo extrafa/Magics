@@ -8,7 +8,7 @@
 import SwiftUI
 
 struct GeoMentalismCitiesView: View {
-    @StateObject private var viewModel = GeoMentalismViewModel()
+    @StateObject private var viewModel: GeoMentalismViewModel
     let city: String
     @Binding var isExitHintVisible: Bool
 
@@ -16,6 +16,12 @@ struct GeoMentalismCitiesView: View {
         GridItem(.flexible()),
         GridItem(.flexible())
     ]
+
+    init(city: String, isExitHintVisible: Binding<Bool>, viewModel: GeoMentalismViewModel? = nil) {
+        self.city = city
+        _isExitHintVisible = isExitHintVisible
+        _viewModel = StateObject(wrappedValue: viewModel ?? GeoMentalismViewModel())
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {

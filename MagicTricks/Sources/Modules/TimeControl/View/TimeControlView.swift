@@ -9,7 +9,11 @@ import SwiftUI
 
 struct TimeControlView: View {
     @Environment(\.scenePhase) private var scenePhase
-    @StateObject private var viewModel = TimeControlViewModel()
+    @StateObject private var viewModel: TimeControlViewModel
+
+    init(viewModel: TimeControlViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? TimeControlViewModel())
+    }
 
     var body: some View {
         ZStack {
