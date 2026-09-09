@@ -138,6 +138,7 @@
 		915CE57C2F9285DA00C5B32A /* InstructionShareFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915CE57B2F9285DA00C5B32A /* InstructionShareFormatter.swift */; };
 		918359822F2719DB0068D5BC /* AppFlowCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918359812F2719DB0068D5BC /* AppFlowCoverView.swift */; };
 		918FC1D22F13EB4600621893 /* AppFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FC1D12F13EB4600621893 /* AppFlowCoordinator.swift */; };
+		0AML00000000000000000040 /* DelayedActionScheduling.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000039 /* DelayedActionScheduling.swift */; };
 		918FC1D62F1417C300621893 /* TrickRouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FC1D52F1417C300621893 /* TrickRouterView.swift */; };
 		9191CE162F549A7400D5BAE8 /* TrickIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9191CE152F549A7400D5BAE8 /* TrickIcon.swift */; };
 		91A793CF2F0E14B1009CA8A3 /* FullScreenFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91A793CE2F0E14B1009CA8A3 /* FullScreenFlow.swift */; };
@@ -150,6 +151,7 @@
 		0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */; };
 		0AML00000000000000000038 /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000037 /* StoreManagerTests.swift */; };
 		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
+		0AML00000000000000000042 /* AppFlowCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */; };
 		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -298,6 +300,7 @@
 		918359812F2719DB0068D5BC /* AppFlowCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoverView.swift; sourceTree = "<group>"; };
 		918C353F2F16B06800EAF6D9 /* Magics.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Magics.storekit; sourceTree = "<group>"; };
 		918FC1D12F13EB4600621893 /* AppFlowCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinator.swift; sourceTree = "<group>"; };
+		0AML00000000000000000039 /* DelayedActionScheduling.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DelayedActionScheduling.swift; sourceTree = "<group>"; };
 		918FC1D52F1417C300621893 /* TrickRouterView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickRouterView.swift; sourceTree = "<group>"; };
 		9191CE152F549A7400D5BAE8 /* TrickIcon.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickIcon.swift; sourceTree = "<group>"; };
 		9191CE1E2F549D7E00D5BAE8 /* MagicTricksTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MagicTricksTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -311,6 +314,7 @@
 		0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000037 /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
 		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
+		0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinatorTests.swift; sourceTree = "<group>"; };
 		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
 		E718EB3DEAA25219A8279ECA /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		905BBBF565F9E4E4297D5225 /* Local.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig.example; sourceTree = "<group>"; };
@@ -947,6 +951,7 @@
 			children = (
 				92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */,
 				92A0000273CB6047599A017B /* RateAppViewModelTests.swift */,
+				0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -982,6 +987,7 @@
 				0AEE0000000000000000000F /* SheetFlow */,
 				919FC1DD2F8E91B3002AE18C /* FullScreenFlow */,
 				918FC1D12F13EB4600621893 /* AppFlowCoordinator.swift */,
+				0AML00000000000000000039 /* DelayedActionScheduling.swift */,
 			);
 			path = Navigation;
 			sourceTree = "<group>";
@@ -1211,6 +1217,7 @@
 				91AFB5772F8FDC3C00AAF6B7 /* ColorSenseView.swift in Sources */,
 				28C4F25C2FAB7ADA002BB78D /* HapticManager.swift in Sources */,
 				918FC1D22F13EB4600621893 /* AppFlowCoordinator.swift in Sources */,
+				0AML00000000000000000040 /* DelayedActionScheduling.swift in Sources */,
 				913878222F89732600CA371E /* InstructionModels.swift in Sources */,
 				911502142F873B1800071C0C /* ExitHintView.swift in Sources */,
 				9100D5882F89343C005B0BC0 /* TrickCardView.swift in Sources */,
@@ -1296,6 +1303,7 @@
 				91C7F5472FCE7B0000A00001 /* HapticManagerTests.swift in Sources */,
 				91C7F5452FC9EC0000A00001 /* SettingsStoreTests.swift in Sources */,
 				92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */,
+				0AML00000000000000000042 /* AppFlowCoordinatorTests.swift in Sources */,
 				92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

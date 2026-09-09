@@ -16,10 +16,12 @@ final class AppFlowCoordinator: ObservableObject {
 
     private var pendingFlow: FullScreenFlow?
     private let preferences: AppPreferences
+    private let scheduler: DelayedActionScheduling
     private static let ratingTriggerCount = 3
 
-    init(preferences: AppPreferences = .shared) {
+    init(preferences: AppPreferences = .shared, scheduler: DelayedActionScheduling = DispatchQueueScheduler()) {
         self.preferences = preferences
+        self.scheduler = scheduler
     }
 
     func recordTrickClose() {
@@ -28,7 +30,7 @@ final class AppFlowCoordinator: ObservableObject {
         preferences.trickLaunchCount += 1
         if preferences.trickLaunchCount >= Self.ratingTriggerCount {
             preferences.trickLaunchCount = 0
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) { [weak self] in
+            scheduler.schedule(after: 0.7) { [weak self] in
                 guard let self, self.activeFlow == nil, self.activeSheet == nil else { return }
                 self.activeSheet = .rateApp
             }
