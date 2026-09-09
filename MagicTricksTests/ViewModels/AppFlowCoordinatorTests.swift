@@ -40,6 +40,34 @@ final class AppFlowCoordinatorTests: XCTestCase {
         XCTAssertNil(coordinator.activeSheet)
     }
 
+    func test_recordTrickClose_whenSnoozed_doesNotIncrementOrShowSheet() {
+        let store = MockPreferenceStore()
+        let preferences = AppPreferences(store: store)
+        preferences.ratingSnoozedUntil = Date().addingTimeInterval(3600)
+        let coordinator = AppFlowCoordinator(preferences: preferences, scheduler: ImmediateScheduler())
+
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+
+        XCTAssertEqual(preferences.trickLaunchCount, 0)
+        XCTAssertNil(coordinator.activeSheet)
+    }
+
+    func test_recordTrickClose_threeTimes_whenAnotherFlowIsActive_doesNotShowSheet() {
+        let coordinator = AppFlowCoordinator(
+            preferences: AppPreferences(store: MockPreferenceStore()),
+            scheduler: ImmediateScheduler()
+        )
+        coordinator.open(trick: trick)
+
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+
+        XCTAssertNotEqual(coordinator.activeSheet, .rateApp)
+    }
+
     func test_openStartFlow_forUnseenTrick_showsInstructionFirstLaunch() {
         let coordinator = AppFlowCoordinator(preferences: AppPreferences(store: MockPreferenceStore()))
 
