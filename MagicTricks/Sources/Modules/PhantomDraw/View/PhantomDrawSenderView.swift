@@ -75,7 +75,7 @@ struct PhantomDrawSenderView: View {
             Image(systemName: "hand.draw")
                 .font(.system(size: 44, weight: .light))
                 .foregroundStyle(Color.black.opacity(0.18))
-            Text("Draw anything")
+            Text(String(localized: "phantomDraw.drawAnythingPlaceholder"))
                 .font(.system(size: 17, weight: .regular, design: .rounded))
                 .foregroundStyle(Color.black.opacity(0.28))
         }

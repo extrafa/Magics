@@ -93,7 +93,7 @@ struct TrickCardView: View {
         HStack(spacing: 4) {
             Image(systemName: "lock.fill")
                 .font(.system(size: 9, weight: .bold))
-            Text("PRO")
+            Text(String(localized: "trick.proBadge"))
                 .font(.system(size: 11, weight: .bold, design: .rounded))
                 .tracking(0.4)
         }

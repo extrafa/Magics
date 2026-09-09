@@ -109,8 +109,8 @@ struct PhantomDrawView: View {
                     .foregroundStyle(TrickPalette.Collection.phantomDraw)
 
                 VStack(spacing: 3) {
-                    Text("Open this trick on both phones.")
-                    Text("Then choose a role on each.")
+                    Text(String(localized: "phantomDraw.intro.line1"))
+                    Text(String(localized: "phantomDraw.intro.line2"))
                 }
                 .font(.system(size: 15, weight: .regular, design: .rounded))
                 .foregroundStyle(.secondary)
@@ -121,14 +121,14 @@ struct PhantomDrawView: View {
 
             VStack(spacing: 14) {
                 roleButton(
-                    title: "This phone is mine",
-                    subtitle: "I will watch the drawing here",
+                    title: String(localized: "phantomDraw.role.receiver.title"),
+                    subtitle: String(localized: "phantomDraw.role.receiver.subtitle"),
                     icon: "eye",
                     role: .receiver
                 )
                 roleButton(
-                    title: "Give to spectator",
-                    subtitle: "They draw on this phone",
+                    title: String(localized: "phantomDraw.role.sender.title"),
+                    subtitle: String(localized: "phantomDraw.role.sender.subtitle"),
                     icon: "hand.draw",
                     role: .sender
                 )
@@ -181,10 +181,10 @@ struct PhantomDrawView: View {
                 Image(systemName: "number")
                     .font(.system(size: 44, weight: .light))
                     .foregroundStyle(TrickPalette.Collection.phantomDraw)
-                Text("Enter the Code")
+                Text(String(localized: "phantomDraw.enterCode.title"))
                     .font(.system(size: 20, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primaryText)
-                Text("Type the code shown on the spectator's phone.")
+                Text(String(localized: "phantomDraw.enterCode.description"))
                     .font(.system(size: 15, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -193,7 +193,7 @@ struct PhantomDrawView: View {
             Spacer().frame(height: 28)
             ZStack {
                 if !isCodeFieldFocused && codeInput.isEmpty {
-                    Text("00")
+                    Text(String(localized: "phantomDraw.codePlaceholder"))
                         .foregroundStyle(.secondary)
                 }
                 TextField("", text: $codeInput)
@@ -229,13 +229,13 @@ struct PhantomDrawView: View {
             PulsingSignalView(color: TrickPalette.Collection.phantomDraw)
                 .frame(width: 120, height: 120)
             Spacer().frame(height: 28)
-            Text(viewModel.role == .sender ? "Waiting..." : "Connecting...")
+            Text(viewModel.role == .sender ? "phantomDraw.status.waiting" : "phantomDraw.status.connecting")
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                 .foregroundStyle(.primaryText)
             Spacer().frame(height: 8)
             Text(viewModel.role == .sender
-                 ? "Waiting for the magician to connect."
-                 : "Keep both phones close together.")
+                 ? "phantomDraw.status.waitingDescription"
+                 : "phantomDraw.status.connectingDescription")
                 .font(.system(size: 15, design: .rounded))
                 .foregroundStyle(.secondary)
             if viewModel.role == .sender, let code = session.pairingCode {
@@ -243,7 +243,7 @@ struct PhantomDrawView: View {
                 Text(code)
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
                     .foregroundStyle(TrickPalette.Collection.phantomDraw)
-                Text("Enter this code on the other device")
+                Text(String(localized: "phantomDraw.enterCodeOnOtherDevice"))
                     .font(.system(size: 13, weight: .medium, design: .rounded))
                     .foregroundStyle(.secondary)
             }

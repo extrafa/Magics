@@ -13,7 +13,7 @@ struct ProUpgradeButton: View {
 
     var body: some View {
         Button(action: action) {
-            Text("Get Pro")
+            Text(String(localized: "pro.upgradeButton.title"))
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(.white)
                 .padding(.horizontal, 16)

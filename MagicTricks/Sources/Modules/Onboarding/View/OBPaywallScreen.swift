@@ -251,7 +251,7 @@ struct OBPaywallScreen: View {
 
             HStack(spacing: 16) {
                 Link(String.paywall("terms"), destination: AppConfig.termsOfUseURL)
-                Text("·")
+                Text(String(localized: "common.dotSeparator"))
                 Link(String.paywall("privacy"), destination: AppConfig.privacyPolicyURL)
             }
             .font(.system(size: 11, weight: .regular, design: .rounded))

@@ -19,7 +19,7 @@ struct WatermarkView: View {
                     HStack(spacing: 6) {
                         Image(systemName: "sparkles")
                             .font(.system(size: 11, weight: .semibold))
-                        Text("Magic Tricks · Free Trial")
+                        Text(String(localized: "watermark.freeTrialBadge"))
                             .font(.system(size: 13, weight: .semibold, design: .rounded))
                     }
                     .foregroundStyle(Color.primaryText)

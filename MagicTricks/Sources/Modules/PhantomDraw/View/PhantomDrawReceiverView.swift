@@ -34,7 +34,7 @@ struct PhantomDrawReceiverView: View {
                 }
             }
         }
-        .navigationTitle("Phantom Draw")
+        .navigationTitle(String(localized: "card.phantomDraw.title"))
         .navigationBarTitleDisplayMode(.inline)
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
@@ -48,7 +48,7 @@ struct PhantomDrawReceiverView: View {
             Image(systemName: "waveform")
                 .font(.system(size: 36, weight: .light))
                 .foregroundStyle(Color.secondary.opacity(0.4))
-            Text("Waiting for drawing...")
+            Text(String(localized: "phantomDraw.waitingForDrawing"))
                 .font(.system(size: 15, weight: .regular, design: .rounded))
                 .foregroundStyle(.secondary)
         }
@@ -69,7 +69,9 @@ struct PhantomDrawReceiverView: View {
     }
 
     private var peerName: String {
-        guard case .connected(let peerName) = session.connectionState else { return "Connected" }
+        guard case .connected(let peerName) = session.connectionState else {
+            return String(localized: "phantomDraw.connectedFallback")
+        }
         return peerName
     }
 }

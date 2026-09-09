@@ -46,18 +46,26 @@ struct RateAppSheet: View {
     private var questionView: some View {
         VStack(spacing: 20) {
             VStack(spacing: 6) {
-                Text("Do you enjoy the app?")
+                Text(String(localized: "rateApp.question.title"))
                     .font(.title3.weight(.bold))
                     .foregroundStyle(.primaryText)
-                Text("Your feedback helps us improve.")
+                Text(String(localized: "rateApp.question.subtitle"))
                     .font(.subheadline)
                     .foregroundStyle(.secondaryText)
             }
             .multilineTextAlignment(.center)
 
             HStack(spacing: 12) {
-                reactionButton(emoji: "👍", label: "I love it", action: handleLike)
-                reactionButton(emoji: "👎", label: "Not really", action: handleDislike)
+                reactionButton(
+                    emoji: String(localized: "rateApp.reaction.likeIcon"),
+                    label: String(localized: "rateApp.reaction.like"),
+                    action: handleLike
+                )
+                reactionButton(
+                    emoji: String(localized: "rateApp.reaction.dislikeIcon"),
+                    label: String(localized: "rateApp.reaction.dislike"),
+                    action: handleDislike
+                )
             }
         }
     }
@@ -88,12 +96,12 @@ struct RateAppSheet: View {
     private var dislikedView: some View {
         VStack(spacing: 20) {
             VStack(spacing: 6) {
-                Text("✉️")
+                Text(String(localized: "rateApp.disliked.icon"))
                     .font(.system(size: 44))
-                Text("We'd love to hear from you.")
+                Text(String(localized: "rateApp.disliked.title"))
                     .font(.title3.weight(.bold))
                     .foregroundStyle(.primaryText)
-                Text("Tell us what could be better.")
+                Text(String(localized: "rateApp.disliked.subtitle"))
                     .font(.subheadline)
                     .foregroundStyle(.secondaryText)
             }
@@ -101,7 +109,7 @@ struct RateAppSheet: View {
 
             VStack(spacing: 12) {
                 Button(action: handleWriteToUs) {
-                    Text("Write to us")
+                    Text(String(localized: "rateApp.disliked.writeButton"))
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -109,7 +117,7 @@ struct RateAppSheet: View {
                 .buttonStyle(PrimaryTrickButtonStyle(color: .button))
 
                 Button(action: handleMaybeLater) {
-                    Text("Maybe later")
+                    Text(String(localized: "rateApp.disliked.laterButton"))
                         .font(.subheadline)
                         .foregroundStyle(.secondaryText)
                 }
