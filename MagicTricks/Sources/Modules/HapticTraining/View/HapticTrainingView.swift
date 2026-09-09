@@ -83,10 +83,10 @@ struct HapticTrainingView: View {
     private var hintLegend: some View {
         HStack(spacing: 20) {
             VStack(spacing: 2) {
-                Text("0")
+                Text(String(localized: "training.legend.zero"))
                     .font(.system(size: 17, weight: .black, design: .rounded))
                     .foregroundStyle(mode.accentColor)
-                Text("long vibration")
+                Text(String(localized: "training.legend.longVibration"))
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(Color.primaryText.opacity(0.45))
             }
@@ -96,10 +96,10 @@ struct HapticTrainingView: View {
                 .frame(width: 1, height: 30)
 
             VStack(spacing: 2) {
-                Text("1–9")
+                Text(String(localized: "training.legend.oneToNine"))
                     .font(.system(size: 17, weight: .black, design: .rounded))
                     .foregroundStyle(mode.accentColor)
-                Text("that many vibrations")
+                Text(String(localized: "training.legend.thatManyVibrations"))
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(Color.primaryText.opacity(0.45))
             }

@@ -6,7 +6,7 @@ struct OBFirstScreen: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Text("Step-by-step instructions for every trick.")
+            Text(String(localized: "onboarding.first.headline"))
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundStyle(.primaryText)
                 .padding(.horizontal, 24)

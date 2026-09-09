@@ -51,11 +51,11 @@ private extension SettingsScreen {
             VStack(spacing: 0) {
                 Toggle(isOn: $storeManager.isProOverride) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Pro Access Override")
+                        Text(String(localized: "settings.proOverride.title"))
                             .font(.system(size: 17, weight: .bold, design: .rounded))
                             .foregroundStyle(.primaryText)
 
-                        Text("Unlocks all tricks.")
+                        Text(String(localized: "settings.proOverride.description"))
                             .font(.system(size: 13, weight: .medium, design: .rounded))
                             .foregroundStyle(Color.primaryText.opacity(0.58))
                             .fixedSize(horizontal: false, vertical: true)
@@ -71,7 +71,7 @@ private extension SettingsScreen {
                     AppPreferences.shared.trickLaunchCount = 0
                     flow.activeSheet = .rateApp
                 } label: {
-                    SettingsActionRow(icon: "star.bubble", title: "Show Rate App Sheet")
+                    SettingsActionRow(icon: "star.bubble", title: String(localized: "settings.showRateAppSheet"))
                 }
                 .buttonStyle(.plain)
                 .padding(.horizontal, 18)
@@ -80,11 +80,11 @@ private extension SettingsScreen {
 
                 Toggle(isOn: $storeManager.isWatermarkHidden) {
                     VStack(alignment: .leading, spacing: 4) {
-                        Text("Hide Watermark")
+                        Text(String(localized: "settings.hideWatermark.title"))
                             .font(.system(size: 17, weight: .bold, design: .rounded))
                             .foregroundStyle(.primaryText)
 
-                        Text("Hides the free trial banner.")
+                        Text(String(localized: "settings.hideWatermark.description"))
                             .font(.system(size: 13, weight: .medium, design: .rounded))
                             .foregroundStyle(Color.primaryText.opacity(0.58))
                             .fixedSize(horizontal: false, vertical: true)
