@@ -35,18 +35,14 @@ struct OBWelcomeScreen: View {
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 12)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.8).delay(0.42), value: appeared)
+                    .onboardingAppear(appeared, offset: 12, delay: 0.42)
 
                 Text(String(localized: "onboarding.welcome.subheadline"))
                     .font(.system(size: 17, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 10)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.8).delay(0.52), value: appeared)
+                    .onboardingAppear(appeared, offset: 10, delay: 0.52)
             }
 
             Spacer()

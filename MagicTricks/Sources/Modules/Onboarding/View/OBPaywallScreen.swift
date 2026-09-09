@@ -176,7 +176,7 @@ struct OBPaywallScreen: View {
         }
         .scaleEffect(appeared ? 1 : 0.65)
         .opacity(appeared ? 1 : 0)
-        .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.06), value: appeared)
+        .animation(.onboardingAppear.delay(0.06), value: appeared)
         .onAppear { heroPulse = true }
     }
 
@@ -187,16 +187,12 @@ struct OBPaywallScreen: View {
             Text(String.paywall("title"))
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundStyle(.primaryText)
-                .opacity(appeared ? 1 : 0)
-                .offset(y: appeared ? 0 : 14)
-                .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.2), value: appeared)
+                .onboardingAppear(appeared, offset: 14, delay: 0.2)
 
             Text(String.paywall("subtitle"))
                 .font(.system(size: 16, weight: .regular, design: .rounded))
                 .foregroundStyle(.secondary)
-                .opacity(appeared ? 1 : 0)
-                .offset(y: appeared ? 0 : 10)
-                .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.27), value: appeared)
+                .onboardingAppear(appeared, offset: 10, delay: 0.27)
         }
         .multilineTextAlignment(.center)
     }
@@ -225,12 +221,7 @@ struct OBPaywallScreen: View {
                             .foregroundStyle(.secondary)
                     }
                 }
-                .opacity(appeared ? 1 : 0)
-                .offset(y: appeared ? 0 : 10)
-                .animation(
-                    .spring(response: 0.55, dampingFraction: 0.82).delay(0.34 + Double(i) * 0.07),
-                    value: appeared
-                )
+                .onboardingAppear(appeared, offset: 10, delay: 0.34 + Double(i) * 0.07)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -267,9 +258,7 @@ struct OBPaywallScreen: View {
             .foregroundStyle(.tertiary)
         }
         .frame(maxWidth: .infinity)
-        .opacity(appeared ? 1 : 0)
-        .offset(y: appeared ? 0 : 16)
-        .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.58 + Double(benefits.count - 1) * 0.08), value: appeared)
+        .onboardingAppear(appeared, offset: 16, delay: 0.58 + Double(benefits.count - 1) * 0.08)
     }
 
     // MARK: Purchase
