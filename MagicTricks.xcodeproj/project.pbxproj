@@ -137,7 +137,6 @@
 		915B2A3E2F120A32002917D7 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 915B2A3D2F120A32002917D7 /* Localizable.xcstrings */; };
 		915CE57C2F9285DA00C5B32A /* InstructionShareFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915CE57B2F9285DA00C5B32A /* InstructionShareFormatter.swift */; };
 		918359822F2719DB0068D5BC /* AppFlowCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918359812F2719DB0068D5BC /* AppFlowCoverView.swift */; };
-		918C35402F16B06800EAF6D9 /* Magics.storekit in Resources */ = {isa = PBXBuildFile; fileRef = 918C353F2F16B06800EAF6D9 /* Magics.storekit */; };
 		918FC1D22F13EB4600621893 /* AppFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FC1D12F13EB4600621893 /* AppFlowCoordinator.swift */; };
 		918FC1D62F1417C300621893 /* TrickRouterView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FC1D52F1417C300621893 /* TrickRouterView.swift */; };
 		9191CE162F549A7400D5BAE8 /* TrickIcon.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9191CE152F549A7400D5BAE8 /* TrickIcon.swift */; };
@@ -1144,7 +1143,6 @@
 				280ECC5F30387FF300269CC6 /* MagicTricksIcon.icon in Resources */,
 				283618DF303475D2000111EB /* MagicTricksIconThird.icon in Resources */,
 				282AC7622FCF09E400315861 /* MagicTricksIconOLD.icon in Resources */,
-				918C35402F16B06800EAF6D9 /* Magics.storekit in Resources */,
 				913FDE052EBED98800B05D99 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
