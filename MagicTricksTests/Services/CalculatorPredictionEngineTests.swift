@@ -24,8 +24,9 @@ final class CalculatorPredictionEngineTests: XCTestCase {
         XCTAssertThrowsError(try engine.evaluate("5÷0"))
     }
 
-    func test_evaluate_moduloReturnsRemainder() throws {
-        XCTAssertEqual(try engine.evaluate("7%3"), 1)
+    // The engine no longer tokenizes "%" - percent lives in CalculatorPredictionViewModel.
+    func test_evaluate_percentSignThrows() {
+        XCTAssertThrowsError(try engine.evaluate("7%3"))
     }
 
     func test_evaluate_garbageInputThrows() {
