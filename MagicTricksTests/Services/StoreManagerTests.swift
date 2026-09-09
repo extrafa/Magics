@@ -56,6 +56,17 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertTrue(manager.hasProAccess)
     }
 
+    func test_restore_whenSyncFails_showsAlertAndDoesNotGrantAccess() async {
+        let service = MockStoreService()
+        service.syncError = MockStoreServiceError.requestedFailure
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        await manager.restore()
+
+        XCTAssertFalse(manager.hasProAccess)
+        XCTAssertNotNil(manager.alertMessage)
+    }
+
     func test_isProOverride_writesThroughInjectedDefaultsNotUserDefaultsStandard() {
         let store = MockPreferenceStore()
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: store)
@@ -100,6 +111,10 @@ private final class MockStoreService: StoreServicing {
         syncCallCount += 1
         if let syncError { throw syncError }
     }
+}
+
+private enum MockStoreServiceError: Error {
+    case requestedFailure
 }
 
 private final class MockPreferenceStore: PreferenceStoring {
