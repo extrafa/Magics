@@ -148,6 +148,7 @@
 		92A000012FC7600000A00001 /* CalculatorPredictionEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */; };
 		EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */; };
 		0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */; };
+		0AML00000000000000000038 /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000037 /* StoreManagerTests.swift */; };
 		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
 		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -308,6 +309,7 @@
 		92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionEngineTests.swift; sourceTree = "<group>"; };
 		32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTimingsTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
+		0AML00000000000000000037 /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
 		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
 		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
 		E718EB3DEAA25219A8279ECA /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
@@ -935,6 +937,7 @@
 				91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */,
 				91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */,
 				0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */,
+				0AML00000000000000000037 /* StoreManagerTests.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1289,6 +1292,7 @@
 				92A000012FC7600000A00001 /* CalculatorPredictionEngineTests.swift in Sources */,
 				EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */,
 				0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */,
+				0AML00000000000000000038 /* StoreManagerTests.swift in Sources */,
 				91C7F5472FCE7B0000A00001 /* HapticManagerTests.swift in Sources */,
 				91C7F5452FC9EC0000A00001 /* SettingsStoreTests.swift in Sources */,
 				92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */,

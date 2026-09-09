@@ -26,22 +26,28 @@ final class StoreManager: ObservableObject {
         static let all = [lifetime]
     }
 
+    private enum Key {
+        static let proOverride = "dev.proOverride"
+        static let watermarkHidden = "dev.watermarkHidden"
+    }
+
     @Published private(set) var products: [StoreProduct] = []
     @Published private(set) var phase: PurchasePhase = .idle
     @Published var alertMessage: String?
     @Published private(set) var productsLoadError: String?
     @Published private var _hasStoreAccess: Bool = false
     @Published var isProOverride: Bool {
-        didSet { UserDefaults.standard.set(isProOverride, forKey: "dev.proOverride") }
+        didSet { defaults.set(isProOverride, forKey: Key.proOverride) }
     }
     @Published var isWatermarkHidden: Bool {
-        didSet { UserDefaults.standard.set(isWatermarkHidden, forKey: "dev.watermarkHidden") }
+        didSet { defaults.set(isWatermarkHidden, forKey: Key.watermarkHidden) }
     }
 
     var hasProAccess: Bool { _hasStoreAccess || isProOverride }
 
     private let productIDs: [String]
     private let service: StoreServicing
+    private let defaults: PreferenceStoring
 
     private var startupTask: Task<Void, Never>?
     private var listenerTask: Task<Void, Never>?
@@ -49,23 +55,25 @@ final class StoreManager: ObservableObject {
 
     init(
         productIDs: [String] = StoreProducts.all,
-        service: StoreServicing = StoreKitStoreService()
+        service: StoreServicing = StoreKitStoreService(),
+        defaults: PreferenceStoring = UserDefaults.standard
     ) {
         self.productIDs = productIDs
         self.service = service
-        self.isProOverride = Self.sandboxGatedFlag(forKey: "dev.proOverride")
-        self.isWatermarkHidden = Self.sandboxGatedFlag(forKey: "dev.watermarkHidden")
+        self.defaults = defaults
+        self.isProOverride = Self.sandboxGatedFlag(forKey: Key.proOverride, defaults: defaults)
+        self.isWatermarkHidden = Self.sandboxGatedFlag(forKey: Key.watermarkHidden, defaults: defaults)
     }
 
-    private static func sandboxGatedFlag(forKey key: String) -> Bool {
+    private static func sandboxGatedFlag(forKey key: String, defaults: PreferenceStoring) -> Bool {
         guard AppBuildEnvironment.isSandboxOrDebug else {
-            if UserDefaults.standard.bool(forKey: key) {
+            if defaults.bool(forKey: key) {
                 // Property observers don't fire during init, so this write is explicit.
-                UserDefaults.standard.set(false, forKey: key)
+                defaults.set(false, forKey: key)
             }
             return false
         }
-        return UserDefaults.standard.bool(forKey: key)
+        return defaults.bool(forKey: key)
     }
 
     deinit {
