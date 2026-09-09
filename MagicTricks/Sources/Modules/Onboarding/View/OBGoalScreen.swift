@@ -25,17 +25,13 @@ struct OBGoalScreen: View {
                         .font(.system(size: 28, weight: .bold, design: .rounded))
                         .foregroundStyle(.primaryText)
                         .padding(.bottom, 4)
-                        .opacity(appeared ? 1 : 0)
-                        .offset(y: appeared ? 0 : 14)
-                        .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.06), value: appeared)
+                        .onboardingAppear(appeared, offset: 14, delay: 0.06)
 
                     Text(String(localized: "onboarding.goal.subheadline"))
                         .font(.system(size: 16, weight: .regular, design: .rounded))
                         .foregroundStyle(.secondary)
                         .padding(.bottom, 20)
-                        .opacity(appeared ? 1 : 0)
-                        .offset(y: appeared ? 0 : 10)
-                        .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.14), value: appeared)
+                        .onboardingAppear(appeared, offset: 10, delay: 0.14)
 
                     ForEach(Array(OnboardingGoal.allCases.enumerated()), id: \.element) { i, goal in
                         let isSelected = goal == .everywhere
@@ -52,12 +48,7 @@ struct OBGoalScreen: View {
                         .contentShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                         .onTapGesture { handleTap(goal) }
                         .padding(.bottom, 8)
-                        .opacity(appeared ? 1 : 0)
-                        .offset(y: appeared ? 0 : 12)
-                        .animation(
-                            .spring(response: 0.5, dampingFraction: 0.82).delay(0.2 + Double(i) * 0.05),
-                            value: appeared
-                        )
+                        .onboardingAppear(appeared, offset: 12, delay: 0.2 + Double(i) * 0.05)
                     }
                 }
                 .padding(.horizontal, 24)

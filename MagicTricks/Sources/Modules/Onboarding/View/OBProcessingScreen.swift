@@ -23,9 +23,7 @@ struct OBProcessingScreen: View {
             Spacer()
 
             processingIcon
-                .opacity(appeared ? 1 : 0)
-                .offset(y: appeared ? 0 : 18)
-                .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.06), value: appeared)
+                .onboardingAppear(appeared, offset: 18, delay: 0.06)
 
             Spacer()
 
@@ -35,9 +33,7 @@ struct OBProcessingScreen: View {
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 28)
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 12)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.18), value: appeared)
+                    .onboardingAppear(appeared, offset: 12, delay: 0.18)
 
                 Text(isDone ? String(localized: "onboarding.processing.done") : phases[phaseIndex])
                     .font(.system(size: 16, weight: .regular, design: .rounded))
@@ -47,8 +43,7 @@ struct OBProcessingScreen: View {
                     .id(isDone ? -1 : phaseIndex)
                     .transition(.opacity)
                     .frame(minHeight: 44, alignment: .top)
-                    .opacity(appeared ? 1 : 0)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.25), value: appeared)
+                    .onboardingAppear(appeared, offset: 10, delay: 0.25)
             }
 
             progressBar

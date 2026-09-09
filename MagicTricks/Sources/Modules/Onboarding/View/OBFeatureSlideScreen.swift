@@ -64,9 +64,7 @@ struct OBFeatureSlideScreen: View {
             Spacer()
 
             featureVisual
-                .opacity(appeared ? 1 : 0)
-                .offset(y: appeared ? 0 : 18)
-                .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.06), value: appeared)
+                .onboardingAppear(appeared, offset: 18, delay: 0.06)
 
             Spacer()
 
@@ -76,18 +74,14 @@ struct OBFeatureSlideScreen: View {
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 28)
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 12)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.18), value: appeared)
+                    .onboardingAppear(appeared, offset: 12, delay: 0.18)
 
                 Text(feature.subtitle(for: goals))
                     .font(.system(size: 16, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 8)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.25), value: appeared)
+                    .onboardingAppear(appeared, offset: 8, delay: 0.25)
             }
 
             Spacer().frame(height: 24)
