@@ -50,7 +50,7 @@ struct PhantomDrawSenderView: View {
             }
             .ignoresSafeArea()
 
-            ExitHintView(isExitHintVisible: $isExitHintVisible, style: .specialWhite)
+            ExitHintView(isExitHintVisible: $isExitHintVisible, style: .specialWhite, skipsTraining: true)
                 .padding(.top, statusBarHeight)
                 .ignoresSafeArea(edges: .top)
         }

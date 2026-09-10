@@ -18,13 +18,15 @@ final class ExitHintViewModel: ObservableObject {
     private var autoFadeTask: Task<Void, Never>?
     private var flashTask: Task<Void, Never>?
     private var preferences: ExitHintPreferenceManaging
+    private let skipsTraining: Bool
 
-    init(preferences: ExitHintPreferenceManaging = AppPreferences.shared) {
+    init(preferences: ExitHintPreferenceManaging = AppPreferences.shared, skipsTraining: Bool = false) {
         self.preferences = preferences
+        self.skipsTraining = skipsTraining
     }
 
     var didLearnExitHint: Bool {
-        get { preferences.didLearnExitHint }
+        get { skipsTraining || preferences.didLearnExitHint }
         set { preferences.didLearnExitHint = newValue }
     }
 
