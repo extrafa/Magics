@@ -107,20 +107,10 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
             guard store.object(forKey: Key.hapticIntensity) != nil else {
                 return Default.hapticIntensity
             }
-            switch Int(store.double(forKey: Key.hapticIntensity)) {
-            case 0: return .light
-            case 2: return .heavy
-            default: return .medium
-            }
+            return HapticIntensity(storageValue: store.double(forKey: Key.hapticIntensity))
         }
         nonmutating set {
-            let raw: Double
-            switch newValue {
-            case .light: raw = 0
-            case .medium: raw = 1
-            case .heavy: raw = 2
-            }
-            store.set(raw, forKey: Key.hapticIntensity)
+            store.set(newValue.storageValue, forKey: Key.hapticIntensity)
         }
     }
 
@@ -206,7 +196,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     func resetHapticSettings() {
         store.set(Default.hapticSpeedMultiplier, forKey: Key.hapticSpeedMultiplier)
         store.set(Default.hapticGroupByThreeEnabled, forKey: Key.hapticGroupByThreeEnabled)
-        store.set(2.0, forKey: Key.hapticIntensity)
+        store.set(Default.hapticIntensity.storageValue, forKey: Key.hapticIntensity)
     }
 
     func resetMotionSettings() {

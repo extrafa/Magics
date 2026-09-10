@@ -15,15 +15,19 @@ final class SettingsStoreTests: XCTestCase {
         let store = MockSettingsPreferenceStore()
         store.doubles[AppPreferences.Key.hapticSpeedMultiplier] = 1.35
         store.bools[AppPreferences.Key.hapticGroupByThreeEnabled] = true
+        store.doubles[AppPreferences.Key.hapticIntensity] = HapticIntensity.light.storageValue
         store.bools[AppPreferences.Key.secretGestureEnabled] = true
         store.doubles[AppPreferences.Key.screenDownHoldDuration] = 0.75
+        store.bools[AppPreferences.Key.isExitHintEnabled] = false
 
         let settings = SettingsStore(preferences: AppPreferences(store: store))
 
         XCTAssertEqual(settings.hapticSpeedMultiplier, 1.35)
         XCTAssertTrue(settings.isHapticGroupByThreeEnabled)
+        XCTAssertEqual(settings.hapticIntensity, .light)
         XCTAssertTrue(settings.isSecretGestureEnabled)
         XCTAssertEqual(settings.screenDownHoldDuration, 0.75)
+        XCTAssertFalse(settings.isExitHintEnabled)
     }
 
     func test_assigningValues_writesThroughPreferencesLayer() {
@@ -32,13 +36,17 @@ final class SettingsStoreTests: XCTestCase {
 
         settings.hapticSpeedMultiplier = 1.5
         settings.isHapticGroupByThreeEnabled = true
+        settings.hapticIntensity = .light
         settings.isSecretGestureEnabled = true
         settings.screenDownHoldDuration = 0.9
+        settings.isExitHintEnabled = false
 
         XCTAssertEqual(store.doubles[AppPreferences.Key.hapticSpeedMultiplier], 1.5)
         XCTAssertEqual(store.bools[AppPreferences.Key.hapticGroupByThreeEnabled], true)
+        XCTAssertEqual(store.doubles[AppPreferences.Key.hapticIntensity], HapticIntensity.light.storageValue)
         XCTAssertEqual(store.bools[AppPreferences.Key.secretGestureEnabled], true)
         XCTAssertEqual(store.doubles[AppPreferences.Key.screenDownHoldDuration], 0.9)
+        XCTAssertEqual(store.bools[AppPreferences.Key.isExitHintEnabled], false)
     }
 
     func test_resetMethods_restoreStateFromPreferencesDefaults() {
@@ -47,16 +55,20 @@ final class SettingsStoreTests: XCTestCase {
 
         settings.hapticSpeedMultiplier = 1.5
         settings.isHapticGroupByThreeEnabled = true
+        settings.hapticIntensity = .light
         settings.isSecretGestureEnabled = true
         settings.screenDownHoldDuration = 0.9
+        settings.isExitHintEnabled = false
 
         settings.resetHapticSettings()
         settings.resetMotionSettings()
 
         XCTAssertEqual(settings.hapticSpeedMultiplier, AppPreferences.Default.hapticSpeedMultiplier)
         XCTAssertEqual(settings.isHapticGroupByThreeEnabled, AppPreferences.Default.hapticGroupByThreeEnabled)
+        XCTAssertEqual(settings.hapticIntensity, AppPreferences.Default.hapticIntensity)
         XCTAssertEqual(settings.isSecretGestureEnabled, AppPreferences.Default.secretGestureEnabled)
         XCTAssertEqual(settings.screenDownHoldDuration, AppPreferences.Default.screenDownHoldDuration)
+        XCTAssertEqual(settings.isExitHintEnabled, AppPreferences.Default.isExitHintEnabled)
     }
 
     func test_appShareFallbackText_usesDisplayNameWhenURLIsNotConfigured() {

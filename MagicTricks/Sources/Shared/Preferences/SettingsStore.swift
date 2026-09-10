@@ -57,7 +57,7 @@ final class SettingsStore: ObservableObject {
         preferences.resetHapticSettings()
         hapticSpeedMultiplier = AppPreferences.Default.hapticSpeedMultiplier
         isHapticGroupByThreeEnabled = AppPreferences.Default.hapticGroupByThreeEnabled
-        hapticIntensity = .heavy
+        hapticIntensity = AppPreferences.Default.hapticIntensity
     }
 
     func resetMotionSettings() {
