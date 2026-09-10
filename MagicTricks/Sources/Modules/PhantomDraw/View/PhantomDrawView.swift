@@ -10,7 +10,8 @@ struct PhantomDrawView: View {
     @StateObject private var session = PhantomDrawSessionManager()
     @StateObject private var viewModel: PhantomDrawViewModel
     @Environment(\.dismiss) private var dismiss
-    @AppStorage("phantomDrawLastCode") private var codeInput = ""
+    @State private var codeInput = ""
+    @AppStorage("phantomDrawLastCode") private var lastCode = ""
     @FocusState private var isCodeFieldFocused: Bool
 
     init() {
@@ -41,6 +42,11 @@ struct PhantomDrawView: View {
             }
         }
         .onDisappear { viewModel.stop() }
+        .onChange(of: state) { newState in
+            if case .connected = newState, viewModel.role == .receiver, codeInput.count == 2 {
+                lastCode = codeInput
+            }
+        }
     }
 
     // MARK: - Content
@@ -207,6 +213,12 @@ struct PhantomDrawView: View {
             .cardSurface(cornerRadius: 16)
             .onChange(of: codeInput) { newValue in
                 codeInput = String(newValue.filter(\.isNumber).prefix(2))
+            }
+            if !lastCode.isEmpty {
+                Spacer().frame(height: 12)
+                Text(String(format: String(localized: "phantomDraw.lastCodeHint"), lastCode))
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
             }
             Spacer().frame(height: 28)
             primaryButton("Connect", disabled: codeInput.count != 2) {

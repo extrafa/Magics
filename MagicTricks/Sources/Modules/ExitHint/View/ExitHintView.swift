@@ -12,12 +12,13 @@ struct ExitHintView: View {
     @Environment(\.dismiss) private var dismiss
     let style: ExitHintStyle
 
-    @StateObject private var viewModel = ExitHintViewModel()
+    @StateObject private var viewModel: ExitHintViewModel
     @StateObject private var gestureCoordinator = ExitHintGestureCoordinator()
 
-    init(isExitHintVisible: Binding<Bool>, style: ExitHintStyle = .normal) {
+    init(isExitHintVisible: Binding<Bool>, style: ExitHintStyle = .normal, skipsTraining: Bool = false) {
         _isExitHintVisible = isExitHintVisible
         self.style = style
+        _viewModel = StateObject(wrappedValue: ExitHintViewModel(skipsTraining: skipsTraining))
     }
 
     var body: some View {
