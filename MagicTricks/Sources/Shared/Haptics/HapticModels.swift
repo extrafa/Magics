@@ -39,6 +39,23 @@ enum HapticIntensity: Equatable, Hashable {
         }
     }
 
+    // How the value is persisted in preferences.
+    var storageValue: Double {
+        switch self {
+        case .light: 0
+        case .medium: 1
+        case .heavy: 2
+        }
+    }
+
+    init(storageValue: Double) {
+        switch Int(storageValue) {
+        case 0: self = .light
+        case 2: self = .heavy
+        default: self = .medium
+        }
+    }
+
     var localizedTitle: String {
         switch self {
         case .light: String(localized: "settings.haptics.intensity.weak")
