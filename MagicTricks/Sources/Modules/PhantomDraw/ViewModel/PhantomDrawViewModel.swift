@@ -26,7 +26,7 @@ final class PhantomDrawViewModel: ObservableObject {
     init(session: PhantomDrawSessioning) {
         self.session = session
         session.onNewConnection = { [weak self] in
-            guard let self, self.role == .sender, !self.completedStrokes.isEmpty else { return }
+            guard let self, self.role == .sender else { return }
             self.session.send(.sync(self.completedStrokes))
         }
     }
