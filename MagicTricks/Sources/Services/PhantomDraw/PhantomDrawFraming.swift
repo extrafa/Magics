@@ -9,13 +9,8 @@ import Foundation
 enum PhantomDrawFraming {
     static let maxBodyLength: UInt32 = 1_000_000
 
-    enum FramingError: Error {
-        case bodyTooLarge
-    }
-
     static func encode(_ message: PhantomDrawMessage) throws -> Data {
         let body = try JSONEncoder().encode(message)
-        guard body.count < Int(maxBodyLength) else { throw FramingError.bodyTooLarge }
         var length = UInt32(body.count).bigEndian
         return Data(bytes: &length, count: 4) + body
     }
