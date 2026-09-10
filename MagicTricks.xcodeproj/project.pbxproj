@@ -47,6 +47,7 @@
 		0AML00000000000000000002 /* PhantomDrawModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000001 /* PhantomDrawModels.swift */; };
 		0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000003 /* PhantomDrawInstruction.swift */; };
 		0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000005 /* PhantomDrawSessionManager.swift */; };
+		0AML00000000000000000044 /* PhantomDrawFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000043 /* PhantomDrawFraming.swift */; };
 		0AML00000000000000000008 /* PhantomDrawViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000007 /* PhantomDrawViewModel.swift */; };
 		0AML0000000000000000000A /* PhantomDrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000009 /* PhantomDrawView.swift */; };
 		0AML0000000000000000000C /* PhantomDrawSenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000B /* PhantomDrawSenderView.swift */; };
@@ -147,6 +148,7 @@
 		91C7F5452FC9EC0000A00001 /* SettingsStoreTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */; };
 		91C7F5472FCE7B0000A00001 /* HapticManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */; };
 		92A000012FC7600000A00001 /* CalculatorPredictionEngineTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */; };
+		0AML00000000000000000046 /* PhantomDrawFramingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000045 /* PhantomDrawFramingTests.swift */; };
 		EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */; };
 		0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */; };
 		0AML00000000000000000038 /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000037 /* StoreManagerTests.swift */; };
@@ -206,6 +208,7 @@
 		0AML00000000000000000001 /* PhantomDrawModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawModels.swift; sourceTree = "<group>"; };
 		0AML00000000000000000003 /* PhantomDrawInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawInstruction.swift; sourceTree = "<group>"; };
 		0AML00000000000000000005 /* PhantomDrawSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawSessionManager.swift; sourceTree = "<group>"; };
+		0AML00000000000000000043 /* PhantomDrawFraming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawFraming.swift; sourceTree = "<group>"; };
 		0AML00000000000000000007 /* PhantomDrawViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawViewModel.swift; sourceTree = "<group>"; };
 		0AML00000000000000000009 /* PhantomDrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawView.swift; sourceTree = "<group>"; };
 		0AML0000000000000000000B /* PhantomDrawSenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawSenderView.swift; sourceTree = "<group>"; };
@@ -310,6 +313,7 @@
 		91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStoreTests.swift; sourceTree = "<group>"; };
 		91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManagerTests.swift; sourceTree = "<group>"; };
 		92A000052FC7600000A00001 /* CalculatorPredictionEngineTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionEngineTests.swift; sourceTree = "<group>"; };
+		0AML00000000000000000045 /* PhantomDrawFramingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawFramingTests.swift; sourceTree = "<group>"; };
 		32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTimingsTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000037 /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
@@ -875,6 +879,7 @@
 			isa = PBXGroup;
 			children = (
 				0AML00000000000000000005 /* PhantomDrawSessionManager.swift */,
+				0AML00000000000000000043 /* PhantomDrawFraming.swift */,
 			);
 			path = PhantomDraw;
 			sourceTree = "<group>";
@@ -942,6 +947,7 @@
 				91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */,
 				0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */,
 				0AML00000000000000000037 /* StoreManagerTests.swift */,
+				0AML00000000000000000045 /* PhantomDrawFramingTests.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -1271,6 +1277,7 @@
 				0AML00000000000000000002 /* PhantomDrawModels.swift in Sources */,
 				0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */,
 				0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */,
+				0AML00000000000000000044 /* PhantomDrawFraming.swift in Sources */,
 				0AML00000000000000000008 /* PhantomDrawViewModel.swift in Sources */,
 				0AML0000000000000000000A /* PhantomDrawView.swift in Sources */,
 				0AML0000000000000000000C /* PhantomDrawSenderView.swift in Sources */,
@@ -1297,6 +1304,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				92A000012FC7600000A00001 /* CalculatorPredictionEngineTests.swift in Sources */,
+				0AML00000000000000000046 /* PhantomDrawFramingTests.swift in Sources */,
 				EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */,
 				0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */,
 				0AML00000000000000000038 /* StoreManagerTests.swift in Sources */,
