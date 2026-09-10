@@ -38,7 +38,7 @@ struct DrawingStroke: Codable, Identifiable, Equatable {
     let points: [DrawingPoint]
 }
 
-enum PhantomDrawMessage: Codable {
+enum PhantomDrawMessage: Codable, Equatable {
     case stroke(DrawingStroke)
     case strokeProgress(DrawingStroke)
     case clear

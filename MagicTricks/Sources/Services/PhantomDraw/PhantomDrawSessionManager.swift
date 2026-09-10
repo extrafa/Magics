@@ -64,8 +64,8 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
     func send(_ message: PhantomDrawMessage) {
         guard let connection,
-              let data = try? JSONEncoder().encode(message) else { return }
-        sendFramed(data, over: connection)
+              let frame = try? PhantomDrawFraming.encode(message) else { return }
+        connection.send(content: frame, completion: .idempotent)
     }
 
     func stop() {
@@ -248,22 +248,15 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         waitingTimeoutWorkItem = nil
     }
 
-    // MARK: - Framing (4-byte big-endian length prefix)
-
-    private func sendFramed(_ data: Data, over conn: NWConnection) {
-        var len = UInt32(data.count).bigEndian
-        let frame = Data(bytes: &len, count: 4) + data
-        conn.send(content: frame, completion: .idempotent)
-    }
+    // MARK: - Framing
 
     private func receiveLoop(_ conn: NWConnection) {
         conn.receive(minimumIncompleteLength: 4, maximumLength: 4) { [weak self] header, _, done, error in
-            guard let self, let header, header.count == 4, error == nil, !done else {
+            guard let self, let header, error == nil, !done else {
                 if done || error != nil { conn.cancel() }
                 return
             }
-            let length = header.withUnsafeBytes { $0.loadUnaligned(as: UInt32.self).bigEndian }
-            guard length > 0, length < 1_000_000 else {
+            guard let length = PhantomDrawFraming.bodyLength(header: header) else {
                 conn.cancel()
                 return
             }
@@ -273,7 +266,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
                     if done2 || error2 != nil { conn.cancel() }
                     return
                 }
-                guard let msg = try? JSONDecoder().decode(PhantomDrawMessage.self, from: body) else {
+                guard let msg = try? PhantomDrawFraming.decode(body) else {
                     conn.cancel()
                     return
                 }
