@@ -44,11 +44,10 @@ final class AppPreferencesTests: XCTestCase {
     func test_hapticIntensity_roundTripsThroughStore() {
         let preferences = AppPreferences(store: MockPreferenceStore())
 
-        preferences.hapticIntensity = .medium
-        XCTAssertEqual(preferences.hapticIntensity, .medium)
-
-        preferences.hapticIntensity = .light
-        XCTAssertEqual(preferences.hapticIntensity, .light)
+        for intensity: HapticIntensity in [.light, .medium, .heavy] {
+            preferences.hapticIntensity = intensity
+            XCTAssertEqual(preferences.hapticIntensity, intensity)
+        }
     }
 }
 
