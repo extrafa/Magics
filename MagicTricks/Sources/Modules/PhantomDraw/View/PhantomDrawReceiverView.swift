@@ -36,6 +36,7 @@ struct PhantomDrawReceiverView: View {
         }
         .navigationTitle(String(localized: "card.phantomDraw.title"))
         .navigationBarTitleDisplayMode(.inline)
+        .keepsScreenAwake()
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
                 connectionBadge

@@ -57,6 +57,7 @@ struct MagicGalleryPerformView: View {
         .toolbarColorScheme(.dark, for: .navigationBar)
         .magicGalleryAlert(message: $vm.alertMessage)
         .accessDeniedAlert(message: $vm.accessDeniedAlertMessage)
+        .keepsScreenAwake()
         .onDisappear {
             pendingSaveTask?.cancel()
             pendingSaveTask = nil
