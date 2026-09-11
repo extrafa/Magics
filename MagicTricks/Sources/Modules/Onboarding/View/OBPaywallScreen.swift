@@ -75,8 +75,6 @@ struct OBPaywallScreen: View {
 
                         benefitsList
                             .padding(.horizontal, 24)
-
-                        Spacer(minLength: 0)
                     }
                     .frame(minWidth: proxy.size.width, minHeight: proxy.size.height)
                 }
