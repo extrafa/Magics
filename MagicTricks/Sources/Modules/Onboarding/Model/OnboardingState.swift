@@ -7,8 +7,11 @@
 
 import Foundation
 
-enum OnboardingGoal: CaseIterable, Hashable {
+enum OnboardingGoal: String, CaseIterable, Hashable {
     case parties, dates, work, family, everywhere
+
+    // The goals that combine into a joint phrase (.everywhere is its own dedicated case), in a fixed display order.
+    static let combinable: [OnboardingGoal] = [.parties, .dates, .work, .family]
 
     var emoji: String {
         switch self {
@@ -28,6 +31,14 @@ enum OnboardingGoal: CaseIterable, Hashable {
         case .family: String(localized: "onboarding.goal.family")
         case .everywhere: String(localized: "onboarding.goal.everywhere")
         }
+    }
+}
+
+extension Set where Element == OnboardingGoal {
+    // The combinable goals actually in this set, in the fixed display order - e.g. for building a
+    // "onboarding.foo.<parties>.<dates>" catalog key or a list of per-goal fragments to join.
+    var orderedCombinableGoals: [OnboardingGoal] {
+        OnboardingGoal.combinable.filter(contains)
     }
 }
 
