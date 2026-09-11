@@ -60,18 +60,27 @@ struct OBPaywallScreen: View {
         VStack(spacing: 0) {
             closeButton
 
-            Spacer()
+            GeometryReader { proxy in
+                ScrollView(showsIndicators: false) {
+                    VStack(spacing: 0) {
+                        Spacer(minLength: 0)
 
-            heroIcon
-                .padding(.bottom, 16)
+                        heroIcon
+                            .padding(.bottom, 16)
 
-            titleBlock
-                .padding(.horizontal, 24)
-                .padding(.bottom, 24)
-                .padding(.top, 4)
+                        titleBlock
+                            .padding(.horizontal, 24)
+                            .padding(.bottom, 24)
+                            .padding(.top, 4)
 
-            benefitsList
-                .padding(.horizontal, 24)
+                        benefitsList
+                            .padding(.horizontal, 24)
+
+                        Spacer(minLength: 0)
+                    }
+                    .frame(minWidth: proxy.size.width, minHeight: proxy.size.height)
+                }
+            }
 
             bottomBlock
                 .padding(.top, 28)
