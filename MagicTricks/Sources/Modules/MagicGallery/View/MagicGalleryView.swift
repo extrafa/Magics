@@ -43,14 +43,14 @@ struct MagicGalleryView: View {
         }
         .confirmationDialog("", isPresented: $showSourceDialog) {
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                Button("Camera") {
+                Button(String(localized: "magicGallery.source.camera")) {
                     vm.startSequentialCapture(sourceType: .camera)
                 }
             }
-            Button("Photo Library") {
+            Button(String(localized: "magicGallery.source.photoLibrary")) {
                 vm.startSequentialCapture(sourceType: .photoLibrary)
             }
-            Button("Cancel", role: .cancel) {}
+            Button(String(localized: "common.cancel"), role: .cancel) {}
         }
         .fullScreenCover(item: $vm.activeCaptureSession, onDismiss: {
             vm.presentPendingCaptureIfNeeded()

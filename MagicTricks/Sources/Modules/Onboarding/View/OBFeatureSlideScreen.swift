@@ -30,23 +30,19 @@ enum OBFeatureType {
         }
     }
 
+    // Each goal combination keeps its own hand-written copy (unlike the onboarding loading phrase,
+    // these aren't generic enough to synthesize from per-goal fragments) - the key is just the
+    // matched goals' raw values joined by ".", built once instead of listing all 15 combinations.
     private func noPropsSubtitle(for goals: Set<OnboardingGoal>) -> String {
-        if goals.contains(.everywhere) { return String(localized: "onboarding.feature.noprops.subtitle.everywhere") }
-        if goals == Set([.parties])                              { return String(localized: "onboarding.feature.noprops.subtitle.parties") }
-        if goals == Set([.dates])                                { return String(localized: "onboarding.feature.noprops.subtitle.dates") }
-        if goals == Set([.work])                                 { return String(localized: "onboarding.feature.noprops.subtitle.work") }
-        if goals == Set([.family])                               { return String(localized: "onboarding.feature.noprops.subtitle.family") }
-        if goals == Set([.parties, .dates])                      { return String(localized: "onboarding.feature.noprops.subtitle.parties.dates") }
-        if goals == Set([.parties, .work])                       { return String(localized: "onboarding.feature.noprops.subtitle.parties.work") }
-        if goals == Set([.parties, .family])                     { return String(localized: "onboarding.feature.noprops.subtitle.parties.family") }
-        if goals == Set([.dates, .work])                         { return String(localized: "onboarding.feature.noprops.subtitle.dates.work") }
-        if goals == Set([.dates, .family])                       { return String(localized: "onboarding.feature.noprops.subtitle.dates.family") }
-        if goals == Set([.work, .family])                        { return String(localized: "onboarding.feature.noprops.subtitle.work.family") }
-        if goals == Set([.parties, .dates, .work])               { return String(localized: "onboarding.feature.noprops.subtitle.parties.dates.work") }
-        if goals == Set([.parties, .dates, .family])             { return String(localized: "onboarding.feature.noprops.subtitle.parties.dates.family") }
-        if goals == Set([.parties, .work, .family])              { return String(localized: "onboarding.feature.noprops.subtitle.parties.work.family") }
-        if goals == Set([.dates, .work, .family])                { return String(localized: "onboarding.feature.noprops.subtitle.dates.work.family") }
-        return String(localized: "onboarding.feature.noprops.subtitle")
+        if goals.contains(.everywhere) {
+            return String(localized: "onboarding.feature.noprops.subtitle.everywhere")
+        }
+        let matched = goals.orderedCombinableGoals
+        guard !matched.isEmpty else {
+            return String(localized: "onboarding.feature.noprops.subtitle")
+        }
+        let suffix = matched.map(\.rawValue).joined(separator: ".")
+        return String(localized: String.LocalizationValue("onboarding.feature.noprops.subtitle.\(suffix)"))
     }
 }
 

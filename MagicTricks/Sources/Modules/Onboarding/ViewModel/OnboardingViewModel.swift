@@ -39,21 +39,23 @@ final class OnboardingViewModel: ObservableObject {
     }
 
     private var loadingPhase1: String {
-        if selectedGoals.contains(.everywhere) { return String(localized: "onboarding.processing.phase1.everywhere") }
-        if selectedGoals == Set([.parties])                              { return String(localized: "onboarding.processing.phase1.parties") }
-        if selectedGoals == Set([.dates])                                { return String(localized: "onboarding.processing.phase1.dates") }
-        if selectedGoals == Set([.work])                                 { return String(localized: "onboarding.processing.phase1.work") }
-        if selectedGoals == Set([.family])                               { return String(localized: "onboarding.processing.phase1.family") }
-        if selectedGoals == Set([.parties, .dates])                      { return String(localized: "onboarding.processing.phase1.parties.dates") }
-        if selectedGoals == Set([.parties, .work])                       { return String(localized: "onboarding.processing.phase1.parties.work") }
-        if selectedGoals == Set([.parties, .family])                     { return String(localized: "onboarding.processing.phase1.parties.family") }
-        if selectedGoals == Set([.dates, .work])                         { return String(localized: "onboarding.processing.phase1.dates.work") }
-        if selectedGoals == Set([.dates, .family])                       { return String(localized: "onboarding.processing.phase1.dates.family") }
-        if selectedGoals == Set([.work, .family])                        { return String(localized: "onboarding.processing.phase1.work.family") }
-        if selectedGoals == Set([.parties, .dates, .work])               { return String(localized: "onboarding.processing.phase1.parties.dates.work") }
-        if selectedGoals == Set([.parties, .dates, .family])             { return String(localized: "onboarding.processing.phase1.parties.dates.family") }
-        if selectedGoals == Set([.parties, .work, .family])              { return String(localized: "onboarding.processing.phase1.parties.work.family") }
-        if selectedGoals == Set([.dates, .work, .family])                { return String(localized: "onboarding.processing.phase1.dates.work.family") }
-        return String(localized: "onboarding.processing.phase1")
+        if selectedGoals.contains(.everywhere) {
+            return String(localized: "onboarding.processing.phase1.everywhere")
+        }
+        let matched = selectedGoals.orderedCombinableGoals
+        switch matched.count {
+        case 0:
+            return String(localized: "onboarding.processing.phase1")
+        case 1:
+            return String(localized: String.LocalizationValue("onboarding.processing.phase1.\(matched[0].rawValue)"))
+        default:
+            // Each goal contributes a short noun phrase; ListFormatter joins them with
+            // correct per-locale grammar ("A, B and C") instead of a phrase per goal combination.
+            let fragments = matched.map {
+                String(localized: String.LocalizationValue("onboarding.processing.goalFragment.\($0.rawValue)"))
+            }
+            let joined = ListFormatter().string(from: fragments) ?? fragments.joined(separator: ", ")
+            return String(format: String(localized: "onboarding.processing.phase1.combined"), joined)
+        }
     }
 }
