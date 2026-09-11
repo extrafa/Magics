@@ -5,9 +5,13 @@ import Foundation
 final class PhoneTiltGestureManager {
 
     private let motionManager = CMMotionManager()
+    private let motionQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        queue.qualityOfService = .userInteractive
+        return queue
+    }()
     private let preferences: MotionPreferenceManaging
-    private var monitoringTask: Task<Void, Never>?
-    private var screenDownSince: Date?
     private var pendingCompletion: (@MainActor (Bool) -> Void)?
 
     // MARK: Init
@@ -35,10 +39,7 @@ final class PhoneTiltGestureManager {
     }
 
     func stopMonitoring() {
-        motionManager.stopDeviceMotionUpdates()
-        monitoringTask?.cancel()
-        monitoringTask = nil
-        screenDownSince = nil
+        motionManager.stopAccelerometerUpdates()
         resumePendingCompletion(with: false)
     }
 
@@ -53,7 +54,7 @@ final class PhoneTiltGestureManager {
     private func startMonitoring(completion: @escaping @MainActor (Bool) -> Void) {
         resumePendingCompletion(with: false)
 
-        guard motionManager.isDeviceMotionAvailable else {
+        guard motionManager.isAccelerometerAvailable else {
             // Simulator has no accelerometer; keep the gesture testable there.
             #if targetEnvironment(simulator)
             Task { @MainActor in completion(true) }
@@ -64,38 +65,35 @@ final class PhoneTiltGestureManager {
         }
 
         pendingCompletion = completion
-        screenDownSince = nil
         let holdDuration = preferences.screenDownHoldDuration
 
-        let queue = OperationQueue()
-        queue.maxConcurrentOperationCount = 1
-        queue.qualityOfService = .userInteractive
+        // Raw accelerometer at rest tracks gravity closely enough for a hold
+        // gesture, without the gyro+magnetometer fusion cost of device motion.
+        var screenDownSince: Date?
+        var didFire = false
 
-        motionManager.deviceMotionUpdateInterval = 0.05
-        motionManager.startDeviceMotionUpdates(to: queue) { [weak self] motion, _ in
-            guard let motion else { return }
-            let gravityZ = motion.gravity.z
-            Task { @MainActor [weak self] in
-                self?.handleMotionUpdate(gravityZ: gravityZ, holdDuration: holdDuration)
+        motionManager.accelerometerUpdateInterval = 0.1
+        motionManager.startAccelerometerUpdates(to: motionQueue) { [weak self] data, _ in
+            guard let data, !didFire else { return }
+
+            guard data.acceleration.z > 0.85 else {
+                screenDownSince = nil
+                return
             }
+
+            let since = screenDownSince ?? Date()
+            screenDownSince = since
+            guard Date().timeIntervalSince(since) >= holdDuration else { return }
+
+            didFire = true
+            Task { @MainActor [weak self] in self?.handleGestureDetected() }
         }
     }
 
-    private func handleMotionUpdate(gravityZ: Double, holdDuration: TimeInterval) {
-        guard pendingCompletion != nil else { return }
-
-        let isScreenDown = gravityZ > 0.85
-
-        if isScreenDown {
-            if screenDownSince == nil { screenDownSince = Date() }
-            if let since = screenDownSince, Date().timeIntervalSince(since) >= holdDuration {
-                let handler = pendingCompletion
-                pendingCompletion = nil
-                stopMonitoring()
-                handler?(true)
-            }
-        } else {
-            screenDownSince = nil
-        }
+    private func handleGestureDetected() {
+        let handler = pendingCompletion
+        pendingCompletion = nil
+        stopMonitoring()
+        handler?(true)
     }
 }
