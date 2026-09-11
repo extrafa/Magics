@@ -106,31 +106,7 @@ struct OBPaywallScreen: View {
             if store.hasProAccess { onDismiss() }
         }
         .tint(.primary)
-        .alert(
-            String(localized: "common.error"),
-            isPresented: isAlertPresented,
-            actions: errorAlertActions,
-            message: errorAlertMessage
-        )
-    }
-
-    // MARK: Alert
-
-    private var isAlertPresented: Binding<Bool> {
-        Binding(
-            get: { store.alertMessage != nil },
-            set: { if !$0 { store.alertMessage = nil } }
-        )
-    }
-
-    @ViewBuilder
-    private func errorAlertActions() -> some View {
-        Button(String(localized: "common.ok")) { store.alertMessage = nil }
-    }
-
-    @ViewBuilder
-    private func errorAlertMessage() -> some View {
-        Text(store.alertMessage ?? "")
+        .storeErrorAlert(store)
     }
 
     // MARK: Close

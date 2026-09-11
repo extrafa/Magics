@@ -23,6 +23,7 @@ struct SettingsScreen: View {
                     exitHintSection
                     vibrationsSection
                     appSection
+                    aboutSection
                     HapticHelpSection()
                     if showsTestFlightSection {
                         testFlightSection
@@ -36,7 +37,7 @@ struct SettingsScreen: View {
         }
         .navigationTitle(String(localized: "settings.title"))
         .navigationBarTitleDisplayMode(.inline)
-        
+        .storeErrorAlert(storeManager)
     }
 }
 
@@ -169,6 +170,67 @@ private extension SettingsScreen {
                 title: String(localized: "settings.shareApp")
             )
         }
+    }
+
+    var aboutSection: some View {
+        SettingsSection(title: String(localized: "settings.section.about")) {
+            VStack(spacing: 0) {
+                Link(destination: AppConfig.privacyPolicyURL) {
+                    SettingsActionRow(
+                        icon: "hand.raised",
+                        title: String(localized: "settings.privacyPolicy"),
+                        showsChevron: true
+                    )
+                }
+
+                SettingsDivider()
+
+                Link(destination: AppConfig.termsOfUseURL) {
+                    SettingsActionRow(
+                        icon: "doc.text",
+                        title: String(localized: "settings.termsOfUse"),
+                        showsChevron: true
+                    )
+                }
+
+                if let supportURL = AppConfig.supportMailURL(subject: "Magic Tricks Support") {
+                    SettingsDivider()
+
+                    Link(destination: supportURL) {
+                        SettingsActionRow(
+                            icon: "envelope",
+                            title: String(localized: "settings.contactSupport"),
+                            showsChevron: true
+                        )
+                    }
+                }
+
+                SettingsDivider()
+
+                restoreButton
+            }
+            .padding(.horizontal, 18)
+            .cardSurface(cornerRadius: 20)
+        }
+    }
+
+    var restoreButton: some View {
+        Button {
+            Task { await storeManager.restore() }
+        } label: {
+            if storeManager.phase == .restoring {
+                HStack {
+                    Spacer()
+                    ProgressView()
+                    Spacer()
+                }
+                .frame(height: 58)
+            } else {
+                SettingsActionRow(icon: "arrow.clockwise", title: String(localized: "settings.restorePurchases"))
+            }
+        }
+        .buttonStyle(.plain)
+        .disabled(storeManager.phase != .idle)
     }
 }
 

@@ -34,10 +34,7 @@ final class RateAppViewModel: ObservableObject {
 
     func writeToUs() -> URL? {
         preferences.hasRespondedToRating = true
-        let address = AppConfig.supportEmail
-        let subject = "Magic Tricks Feedback"
-        let encodedSubject = subject.addingPercentEncoding(withAllowedCharacters: .urlQueryAllowed) ?? ""
-        return URL(string: "mailto:\(address)?subject=\(encodedSubject)")
+        return AppConfig.supportMailURL(subject: "Magic Tricks Feedback")
     }
 
     func markDismissed() {
