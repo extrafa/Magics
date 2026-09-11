@@ -48,6 +48,7 @@
 		0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000003 /* PhantomDrawInstruction.swift */; };
 		0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000005 /* PhantomDrawSessionManager.swift */; };
 		0AML00000000000000000044 /* PhantomDrawFraming.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000043 /* PhantomDrawFraming.swift */; };
+		0AAA00000000000000000002 /* IdleTimerLock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAA00000000000000000001 /* IdleTimerLock.swift */; };
 		0AML00000000000000000008 /* PhantomDrawViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000007 /* PhantomDrawViewModel.swift */; };
 		0AML0000000000000000000A /* PhantomDrawView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000009 /* PhantomDrawView.swift */; };
 		0AML0000000000000000000C /* PhantomDrawSenderView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML0000000000000000000B /* PhantomDrawSenderView.swift */; };
@@ -210,6 +211,7 @@
 		0AML00000000000000000003 /* PhantomDrawInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawInstruction.swift; sourceTree = "<group>"; };
 		0AML00000000000000000005 /* PhantomDrawSessionManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawSessionManager.swift; sourceTree = "<group>"; };
 		0AML00000000000000000043 /* PhantomDrawFraming.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawFraming.swift; sourceTree = "<group>"; };
+		0AAA00000000000000000001 /* IdleTimerLock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = IdleTimerLock.swift; sourceTree = "<group>"; };
 		0AML00000000000000000007 /* PhantomDrawViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawViewModel.swift; sourceTree = "<group>"; };
 		0AML00000000000000000009 /* PhantomDrawView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawView.swift; sourceTree = "<group>"; };
 		0AML0000000000000000000B /* PhantomDrawSenderView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawSenderView.swift; sourceTree = "<group>"; };
@@ -506,6 +508,7 @@
 			isa = PBXGroup;
 			children = (
 				0AFF00000000000000000005 /* PhoneTiltGestureManager.swift */,
+				0AAA00000000000000000001 /* IdleTimerLock.swift */,
 			);
 			path = Motion;
 			sourceTree = "<group>";
@@ -1281,6 +1284,7 @@
 				0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */,
 				0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */,
 				0AML00000000000000000044 /* PhantomDrawFraming.swift in Sources */,
+				0AAA00000000000000000002 /* IdleTimerLock.swift in Sources */,
 				0AML00000000000000000008 /* PhantomDrawViewModel.swift in Sources */,
 				0AML0000000000000000000A /* PhantomDrawView.swift in Sources */,
 				0AML0000000000000000000C /* PhantomDrawSenderView.swift in Sources */,
