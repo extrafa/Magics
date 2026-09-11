@@ -130,10 +130,13 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
         cancelButton.layer.cornerCurve = .continuous
         cancelButton.translatesAutoresizingMaskIntoConstraints = false
         cancelButton.addTarget(self, action: #selector(handleCancel), for: .touchUpInside)
+        cancelButton.accessibilityLabel = String(localized: "common.cancel")
         view.addSubview(cancelButton)
 
         let confirmButton = UIButton(type: .system)
-        confirmButton.setTitle("Use Photo", for: .normal)
+        let usePhotoTitle = String(localized: "magicGallery.crop.usePhoto")
+        confirmButton.setTitle(usePhotoTitle, for: .normal)
+        confirmButton.accessibilityLabel = usePhotoTitle
         confirmButton.titleLabel?.font = .systemFont(ofSize: 17, weight: .semibold)
         confirmButton.tintColor = .white
         confirmButton.backgroundColor = .systemIndigo

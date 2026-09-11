@@ -85,9 +85,9 @@ struct PhantomDrawView: View {
             if case .failed = state {
                 statusView(
                     icon: "exclamationmark.triangle",
-                    title: "Could Not Connect",
-                    subtitle: "Make sure both phones are nearby and have the app open.",
-                    buttonTitle: "Try Again",
+                    title: "phantomDraw.status.failed.title",
+                    subtitle: "phantomDraw.status.failed.subtitle",
+                    buttonTitle: "phantomDraw.status.failed.retry",
                     action: retry
                 )
                 .transition(.opacity)
@@ -225,7 +225,7 @@ struct PhantomDrawView: View {
                 viewModel.submitReceiverCode(codeInput)
             }
             Spacer()
-            Button("Cancel", action: stop)
+            Button(String(localized: "common.cancel"), action: stop)
                 .font(.system(size: 16, weight: .medium, design: .rounded))
                 .foregroundStyle(.secondary)
                 .padding(.bottom, 32)
@@ -260,7 +260,7 @@ struct PhantomDrawView: View {
                     .foregroundStyle(.secondary)
             }
             Spacer()
-            Button("Cancel", action: stop)
+            Button(String(localized: "common.cancel"), action: stop)
                 .font(.system(size: 16, weight: .medium, design: .rounded))
                 .foregroundStyle(.secondary)
                 .padding(.bottom, 32)
@@ -270,7 +270,7 @@ struct PhantomDrawView: View {
 
     // MARK: - Status
 
-    private func statusView(icon: String, title: String, subtitle: String, buttonTitle: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+    private func statusView(icon: String, title: LocalizedStringKey, subtitle: LocalizedStringKey, buttonTitle: LocalizedStringKey, action: @escaping () -> Void) -> some View {
         VStack(spacing: 0) {
             Spacer()
             Image(systemName: icon)
