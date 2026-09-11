@@ -178,7 +178,8 @@ private extension SettingsScreen {
                 Link(destination: AppConfig.privacyPolicyURL) {
                     SettingsActionRow(
                         icon: "hand.raised",
-                        title: String(localized: "settings.privacyPolicy"),
+                        // Same key as the paywall's link - one canonical translation for the same label.
+                        title: String(localized: "onboarding.paywall.privacy"),
                         showsChevron: true
                     )
                 }
@@ -188,7 +189,7 @@ private extension SettingsScreen {
                 Link(destination: AppConfig.termsOfUseURL) {
                     SettingsActionRow(
                         icon: "doc.text",
-                        title: String(localized: "settings.termsOfUse"),
+                        title: String(localized: "onboarding.paywall.terms"),
                         showsChevron: true
                     )
                 }

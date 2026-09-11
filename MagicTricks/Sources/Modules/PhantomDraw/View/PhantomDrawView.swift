@@ -221,7 +221,7 @@ struct PhantomDrawView: View {
                     .foregroundStyle(.secondary)
             }
             Spacer().frame(height: 28)
-            primaryButton("Connect", disabled: codeInput.count != 2) {
+            primaryButton("phantomDraw.connect", disabled: codeInput.count != 2) {
                 viewModel.submitReceiverCode(codeInput)
             }
             Spacer()

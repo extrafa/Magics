@@ -181,6 +181,39 @@ python-скрипт по образцу `migrate_xcstrings.py` из PR #58
 (`onboarding.demo.reveal.count.one/.other` — не в списке, уже переведён)
 сохраняю плейсхолдеры без изменений.
 
+## Чанк 4 (по перепроверке) — дубликаты ключей
+
+Прогнал скрипт сравнения EN-значений по всему каталогу. Нашёл и почистил то,
+что прямо относится к этому PR:
+
+- `settings.privacyPolicy` / `settings.termsOfUse` — дубли `onboarding.
+  paywall.privacy` / `.terms` (тот же текст "Privacy Policy"/"Terms of Use"),
+  сам завёл их в предыдущем PR (#69). Удалил, `SettingsScreen` теперь
+  ссылается на существующие paywall-ключи — один канонический перевод на
+  оба места.
+- Голый `"Phantom Draw"` — не используется нигде в коде (проверил grep'ом),
+  дубль `card.phantomDraw.title`/`instruction.phantomDraw.title`. Удалил
+  вместо того, чтобы переводить мёртвый дубль (как сделал по ошибке в
+  чанке 3).
+- `instruction.magicGallery.step6.title`/`.description` — байт-в-байт
+  дубликат step5, но используется в коде **только step5**
+  (`MagicGalleryInstruction.swift:38-39`) — step6 мёртвый код с рождения.
+  Удалил.
+- Голый `"“%@”"` — нигде не используется (grep по всему проекту, включая
+  варианты с экранированием). Удалил.
+- Голый `"Connect"` — переименовал в `phantomDraw.connect` (тот же файл уже
+  трогаю в этом PR под другую правку) для единообразия с остальными
+  `phantomDraw.*`.
+
+**Найдены, но НЕ трогаю** (вне скоупа этого PR — не мой код, не относится к
+ревью, риск зацепить чужой модуль без явного запроса): ещё ~20 групп
+дублирующихся EN-значений в каталоге — `"Medium"`, `"Start"`, `"Tap"`,
+`"Vibrations"`/`"Vibration Settings"`, `"Get Started"`, `"Learn the
+signals"`/`"Hold the phone"`/`"Get the signals"` (общие для ColorSense/
+CalculatorPrediction/GeoMentalism/TimeControl/MindPattern-инструкций),
+описания paywall-бенефитов дублируют card-subtitle трюков и т.п. Это
+отдельная задача по всему каталогу, не про испанскую локализацию.
+
 ## Чанки
 
 1. `PhantomDrawView.swift` / `MagicGalleryView.swift` /
