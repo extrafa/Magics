@@ -53,11 +53,11 @@ private extension SettingsScreen {
                 Toggle(isOn: $storeManager.isProOverride) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(String(localized: "settings.proOverride.title"))
-                            .font(.system(size: 17, weight: .bold, design: .rounded))
+                            .font(.system(.body, design: .rounded, weight: .bold))
                             .foregroundStyle(.primaryText)
 
                         Text(String(localized: "settings.proOverride.description"))
-                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .font(.system(.footnote, design: .rounded, weight: .medium))
                             .foregroundStyle(Color.primaryText.opacity(0.58))
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -82,11 +82,11 @@ private extension SettingsScreen {
                 Toggle(isOn: $storeManager.isWatermarkHidden) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(String(localized: "settings.hideWatermark.title"))
-                            .font(.system(size: 17, weight: .bold, design: .rounded))
+                            .font(.system(.body, design: .rounded, weight: .bold))
                             .foregroundStyle(.primaryText)
 
                         Text(String(localized: "settings.hideWatermark.description"))
-                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .font(.system(.footnote, design: .rounded, weight: .medium))
                             .foregroundStyle(Color.primaryText.opacity(0.58))
                             .fixedSize(horizontal: false, vertical: true)
                     }
@@ -103,11 +103,11 @@ private extension SettingsScreen {
             Toggle(isOn: $store.isExitHintEnabled) {
                 VStack(alignment: .leading, spacing: 4) {
                     Text(String(localized: "settings.exitHint"))
-                        .font(.system(size: 17, weight: .bold, design: .rounded))
+                        .font(.system(.body, design: .rounded, weight: .bold))
                         .foregroundStyle(.primaryText)
 
                     Text(String(localized: "settings.exitHint.description"))
-                        .font(.system(size: 13, weight: .medium, design: .rounded))
+                        .font(.system(.footnote, design: .rounded, weight: .medium))
                         .foregroundStyle(Color.primaryText.opacity(0.58))
                         .fixedSize(horizontal: false, vertical: true)
                 }
