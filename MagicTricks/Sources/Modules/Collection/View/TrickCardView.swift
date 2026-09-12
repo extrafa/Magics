@@ -30,7 +30,7 @@ struct TrickCardView: View {
                         }
                         .buttonStyle(.plain)
                         .accessibilityLabel(
-                            String(format: String(localized: "collection.locked.accessibilityLabel"), trick.title)
+                            String(format: String(localized: "collection.locked.accessibilityLabel"), String(localized: trick.title))
                         )
                     }
                 }
@@ -50,7 +50,7 @@ struct TrickCardView: View {
         VStack(alignment: .leading, spacing: 0) {
             header
             Spacer(minLength: 16)
-            TrickCardActions(trickName: trick.title, onStartTap: onStartTap, onHowToTap: onHowToTap)
+            TrickCardActions(trickName: String(localized: trick.title), onStartTap: onStartTap, onHowToTap: onHowToTap)
                 // The locked overlay above exposes one combined element instead - avoid VoiceOver
                 // landing on two redundant "Start"/"Learn" buttons that do the same thing.
                 .accessibilityHidden(isLocked)
