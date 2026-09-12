@@ -6,28 +6,27 @@
 //
 
 import Foundation
-import SwiftUI
 
 @MainActor
 final class OnboardingViewModel: ObservableObject {
     @Published var step: OnboardingStep = .welcome
     @Published var selectedGoals: Set<OnboardingGoal> = []
 
+    private var preferences: OnboardingPreferenceManaging
     private let onComplete: () -> Void
 
-    init(onComplete: @escaping () -> Void) {
+    init(preferences: OnboardingPreferenceManaging = AppPreferences.shared, onComplete: @escaping () -> Void) {
+        self.preferences = preferences
         self.onComplete = onComplete
     }
 
     func advance() {
         guard let next = step.next else { return }
-        withAnimation(.easeOut(duration: 0.22)) {
-            step = next
-        }
+        step = next
     }
 
     func complete() {
-        AppPreferences.shared.hasCompletedOnboarding = true
+        preferences.hasCompletedOnboarding = true
         onComplete()
     }
 
