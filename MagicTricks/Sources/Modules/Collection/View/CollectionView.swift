@@ -45,7 +45,7 @@ struct CollectionView: View {
                     }
                     .padding(16)
                 }
-                .hideScrollIndicators()
+                .scrollIndicators(.hidden)
             }
             .navigationTitle(String(localized: "collection.title"))
             .navigationBarTitleDisplayMode(.large)
@@ -73,7 +73,7 @@ struct CollectionView: View {
         }
         .sheet(item: $flow.activeSheet, onDismiss: flow.sheetDidDismiss) { activeSheet in
             AppSheetView(activeSheet: activeSheet)
-                .withPresentationDragIndicator()
+                .presentationDragIndicator(.visible)
                 .environmentObject(store)
                 .environmentObject(flow)
         }

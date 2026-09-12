@@ -36,7 +36,7 @@ struct RateAppSheet: View {
         .padding(.top, 32)
         .padding(.bottom, 24)
 
-        .withPresentationDragIndicator()
+        .presentationDragIndicator(.visible)
         .modifier(RateAppPresentationModifier())
         .onDisappear { viewModel.markDismissed() }
     }

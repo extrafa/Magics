@@ -25,7 +25,6 @@
 		0A00FE000000000000000002 /* StoreProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000001 /* StoreProduct.swift */; };
 		0A00FE000000000000000004 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000003 /* StoreService.swift */; };
 		0A00FE000000000000000006 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000005 /* StoreManager.swift */; };
-		0A15C0MP00000000000002 /* iOS15Compat.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A15C0MP00000000000001 /* iOS15Compat.swift */; };
 		0A6E00000000000000000004 /* GeoMentalismInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A6E00000000000000000003 /* GeoMentalismInstruction.swift */; };
 		0AEE00000000000000000002 /* MagicGalleryPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000001 /* MagicGalleryPhoto.swift */; };
 		0AEE00000000000000000004 /* MagicGalleryCameraView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000003 /* MagicGalleryCameraView.swift */; };
@@ -189,7 +188,6 @@
 		0A00FE000000000000000001 /* StoreProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreProduct.swift; sourceTree = "<group>"; };
 		0A00FE000000000000000003 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		0A00FE000000000000000005 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
-		0A15C0MP00000000000001 /* iOS15Compat.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iOS15Compat.swift; sourceTree = "<group>"; };
 		0A6E00000000000000000003 /* GeoMentalismInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismInstruction.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000001 /* MagicGalleryPhoto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryPhoto.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000003 /* MagicGalleryCameraView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCameraView.swift; sourceTree = "<group>"; };
@@ -990,7 +988,6 @@
 				28D000022FC7350000AA0001 /* Preferences */,
 				28C4F25A2FAB7A92002BB78D /* Haptics */,
 				0A0002000000000000000027 /* AsyncUtilities.swift */,
-				0A15C0MP00000000000001 /* iOS15Compat.swift */,
 				2875DE8D2FBA738B00B9298C /* Motion */,
 			);
 			path = Shared;
@@ -1270,7 +1267,6 @@
 				0A0002000000000000000026 /* OnboardingCTAButton.swift in Sources */,
 				0AML00000000000000000034 /* OnboardingAppearTransition.swift in Sources */,
 				0A0002000000000000000028 /* AsyncUtilities.swift in Sources */,
-				0A15C0MP00000000000002 /* iOS15Compat.swift in Sources */,
 				0A000300000000000000001B /* OnboardingFlowView.swift in Sources */,
 				0A000400000000000000001B /* OnboardingProgressBar.swift in Sources */,
 				0A000500000000000000001B /* OBOptionRow.swift in Sources */,

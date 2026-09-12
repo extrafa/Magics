@@ -40,7 +40,7 @@ struct InstructionView: View {
             NavigationStack {
                 InstructionActionSheetDestination(sheet: sheet)
             }
-            .withPresentationDragIndicator()
+            .presentationDragIndicator(.visible)
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
