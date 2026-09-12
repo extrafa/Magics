@@ -135,7 +135,9 @@ final class CalculatorPredictionViewModel: ObservableObject {
             do {
                 let result = try evaluatePercent(raw)
                 display = formatResult(result)
-            } catch { }
+            } catch {
+                display = String(localized: "common.error")
+            }
             return
         }
         if Self.operators.contains(lastStr) { return }
@@ -143,7 +145,9 @@ final class CalculatorPredictionViewModel: ObservableObject {
         do {
             let result = try expressionEvaluator.evaluate(raw)
             display = formatResult(result)
-        } catch { }
+        } catch {
+            display = String(localized: "common.error")
+        }
     }
 
     // "%" isn't evaluable directly: resolved to a number first, as a fraction of the left operand after +/- (no parentheses to group it).
@@ -171,7 +175,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
     }
 
     private func formatResult(_ value: Double) -> String {
-        guard value.isFinite else { return "Error" }
+        guard value.isFinite else { return String(localized: "common.error") }
         if value.truncatingRemainder(dividingBy: 1) == 0 {
             if let whole = Int(exactly: value) {
                 return formatExpression(String(whole))
