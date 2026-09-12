@@ -10,7 +10,7 @@ import SwiftUI
 
 @MainActor
 final class OnboardingViewModel: ObservableObject {
-    @Published var step: Int = 0
+    @Published var step: OnboardingStep = .welcome
     @Published var selectedGoals: Set<OnboardingGoal> = []
 
     private let onComplete: () -> Void
@@ -20,8 +20,9 @@ final class OnboardingViewModel: ObservableObject {
     }
 
     func advance() {
+        guard let next = step.next else { return }
         withAnimation(.easeOut(duration: 0.22)) {
-            step += 1
+            step = next
         }
     }
 

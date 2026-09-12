@@ -7,6 +7,24 @@
 
 import Foundation
 
+enum OnboardingStep: Int, CaseIterable {
+    case welcome, goal, noProps, instructions, vibrations, processing, paywall
+
+    // The steps that show the progress bar, in order - screens outside this
+    // list (welcome, processing, paywall) don't get one.
+    static let progressSteps: [OnboardingStep] = [.goal, .noProps, .instructions, .vibrations]
+
+    // 1-based position and total count among `progressSteps`, or nil if this step has no progress bar.
+    var progress: (step: Int, total: Int)? {
+        guard let index = Self.progressSteps.firstIndex(of: self) else { return nil }
+        return (index + 1, Self.progressSteps.count)
+    }
+
+    var next: OnboardingStep? {
+        OnboardingStep(rawValue: rawValue + 1)
+    }
+}
+
 enum OnboardingGoal: String, CaseIterable, Hashable {
     case parties, dates, work, family, everywhere
 
