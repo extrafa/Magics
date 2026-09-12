@@ -25,8 +25,8 @@ struct OnboardingFlowView: View {
         }
         .safeAreaInset(edge: .top, spacing: 0) {
             Group {
-                if viewModel.step >= 1 && viewModel.step <= 4 {
-                    OnboardingProgressBar(step: viewModel.step, total: 4)
+                if let progress = viewModel.step.progress {
+                    OnboardingProgressBar(step: progress.step, total: progress.total)
                         .padding(.horizontal, 24)
                         .padding(.top, 14)
                         .padding(.bottom, 10)
@@ -43,33 +43,24 @@ struct OnboardingFlowView: View {
     }
 
     // MARK: Flow
-    // 0 — Welcome
-    // 1 — Goal
-    // 2 — Feature: No props
-    // 3 — Feature: Instructions
-    // 4 — Feature: Vibrations
-    // 5 — Processing
-    // 6 — Paywall
 
     @ViewBuilder
     private var currentScreen: some View {
         switch viewModel.step {
-        case 0:
+        case .welcome:
             OBWelcomeScreen(onContinue: viewModel.advance)
-        case 1:
+        case .goal:
             OBGoalScreen(selectedGoals: $viewModel.selectedGoals, onContinue: viewModel.advance)
-        case 2:
+        case .noProps:
             OBFeatureSlideScreen(feature: .noProps, goals: viewModel.selectedGoals, onContinue: viewModel.advance)
-        case 3:
+        case .instructions:
             OBFeatureSlideScreen(feature: .instructions, goals: [], onContinue: viewModel.advance)
-        case 4:
+        case .vibrations:
             OBFeatureSlideScreen(feature: .vibrations, goals: [], onContinue: viewModel.advance)
-        case 5:
+        case .processing:
             OBProcessingScreen(phases: viewModel.loadingPhases, onComplete: viewModel.advance)
-        case 6:
+        case .paywall:
             OBPaywallScreen(onDismiss: dismissPaywall)
-        default:
-            EmptyView()
         }
     }
 
