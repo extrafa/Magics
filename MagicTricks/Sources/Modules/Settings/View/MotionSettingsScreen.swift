@@ -23,7 +23,7 @@ struct MotionSettingsScreen: View {
                 .padding(.top, 28)
                 .padding(.bottom, 36)
             }
-            .hideScrollIndicators()
+            .scrollIndicators(.hidden)
         }
         .navigationTitle(String(localized: "settings.motion.title"))
         .navigationBarTitleDisplayMode(.inline)

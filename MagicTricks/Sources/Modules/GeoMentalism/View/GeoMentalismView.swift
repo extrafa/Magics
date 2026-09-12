@@ -39,7 +39,7 @@ struct GeoMentalismView: View {
                 }
             }
             .listStyle(.plain)
-            .hideScrollContentBackground()
+            .scrollContentBackground(.hidden)
 
             ExitHintView(isExitHintVisible: $isExitHintVisible)
                 .padding(.top, statusBarHeight)
