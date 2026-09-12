@@ -22,8 +22,7 @@ struct TrickCardView: View {
                 .animation(.easeInOut(duration: 0.2), value: isLocked)
                 .overlay {
                     if isLocked {
-                        // A real Button (not a bare tap gesture) so VoiceOver gets the same
-                        // single, whole-card activation target sighted users tap anywhere on.
+                        // A real Button, not a bare tap gesture, so VoiceOver gets one whole-card activation target.
                         Button(action: onStartTap) {
                             Color.clear
                                 .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
@@ -39,8 +38,7 @@ struct TrickCardView: View {
                 .padding(.top, 16)
                 .padding(.trailing, 16)
         }
-        // The badge and the title's reserved trailing padding (see `header`) are sized
-        // for the badge's default point size - cap growth so they don't collide.
+        // Caps growth so the badge doesn't collide with the title's reserved trailing padding (see `header`).
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
@@ -51,8 +49,7 @@ struct TrickCardView: View {
             header
             Spacer(minLength: 16)
             TrickCardActions(trickName: String(localized: trick.title), onStartTap: onStartTap, onHowToTap: onHowToTap)
-                // The locked overlay above exposes one combined element instead - avoid VoiceOver
-                // landing on two redundant "Start"/"Learn" buttons that do the same thing.
+                // The locked overlay above exposes one combined element - avoid duplicate "Start"/"Learn" VoiceOver targets.
                 .accessibilityHidden(isLocked)
         }
         .padding(22)

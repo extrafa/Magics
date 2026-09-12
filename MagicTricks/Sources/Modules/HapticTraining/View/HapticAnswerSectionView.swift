@@ -25,8 +25,7 @@ struct HapticAnswerSectionView: View {
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(Color.primaryText.opacity(0.58))
 
-            // Keyboard appears programmatically after the signal; direct taps are blocked so the
-            // user can't open the keyboard before playing.
+            // Keyboard appears after the signal plays; direct taps are blocked until then.
             TextField(isAnswerFocused.wrappedValue ? "" : mode.inputPlaceholder, text: $answerText)
                 .font(.system(size: 24, weight: .black, design: .rounded))
                 .foregroundStyle(Color.primaryText)

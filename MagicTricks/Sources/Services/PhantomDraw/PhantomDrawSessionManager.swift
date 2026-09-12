@@ -161,8 +161,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         case .failed, .cancelled:
             cancelCandidateTimeout(for: conn)
             if connection === conn {
-                // The connection was already established and then dropped - back to role selection
-                // instead of silently re-searching forever (there's no timeout for "found nothing").
+                // Already connected then dropped - back to role selection instead of re-searching forever (no "found nothing" timeout).
                 connection = nil
                 connectionState = .idle
                 return

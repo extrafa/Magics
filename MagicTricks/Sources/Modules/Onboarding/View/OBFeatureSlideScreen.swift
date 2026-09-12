@@ -30,9 +30,7 @@ enum OBFeatureType {
         }
     }
 
-    // Each goal combination keeps its own hand-written copy (unlike the onboarding loading phrase,
-    // these aren't generic enough to synthesize from per-goal fragments) - the key is just the
-    // matched goals' raw values joined by ".", built once instead of listing all 15 combinations.
+    // Key is the matched goals' raw values joined by "." - one hand-written string per combination instead of listing all 15.
     private func noPropsSubtitle(for goals: Set<OnboardingGoal>) -> String {
         if goals.contains(.everywhere) {
             return String(localized: "onboarding.feature.noprops.subtitle.everywhere")
@@ -42,9 +40,7 @@ enum OBFeatureType {
             return String(localized: "onboarding.feature.noprops.subtitle")
         }
         let suffix = matched.map(\.rawValue).joined(separator: ".")
-        // Build the full key as a plain String first - interpolating suffix directly into a
-        // String.LocalizationValue literal turns it into a %@ format argument instead of part
-        // of the key, so the catalog lookup misses and falls back to showing the raw key text.
+        // Built as a String first - interpolating into a LocalizationValue literal makes it a %@ argument, not part of the key.
         let key: String = "onboarding.feature.noprops.subtitle.\(suffix)"
         return String(localized: String.LocalizationValue(key))
     }

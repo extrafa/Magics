@@ -68,10 +68,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             self.onExit = onExit
         }
 
-        // The hint zone is drawn at a fixed offset/size within the capture view's
-        // own bounds (see ExitHintView.body), so its screen rect is derived from
-        // UIKit layout directly instead of round-tripping through SwiftUI's
-        // GeometryReader/.global coordinate space, which reported stale values here.
+        // Derived via UIKit layout, not SwiftUI's GeometryReader/.global, which reported stale values here.
         private var rect: CGRect {
             guard let installerView, let window = installerView.window else { return .zero }
             let localRect = CGRect(

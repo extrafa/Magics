@@ -146,10 +146,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
         } catch { }
     }
 
-    // "%" isn't a real operator for the evaluator - resolve it into a number before evaluating.
-    // Standalone "b%" -> b/100. After +/-, "%" is a percentage of the left side: "a+b%" -> a + a*b/100.
-    // After ×/÷, it's a plain percentage value: "a×b%" -> a×(b/100). The engine has no parentheses,
-    // so the +/- case evaluates the left side up front instead of splicing its text back in.
+    // "%" isn't evaluable directly: resolved to a number first, as a fraction of the left operand after +/- (no parentheses to group it).
     private func evaluatePercent(_ raw: String) throws -> Double {
         let base = String(raw.dropLast())
         guard !base.isEmpty else { throw CalculatorExpressionError.evaluationFailed }
