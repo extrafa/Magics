@@ -65,8 +65,7 @@ struct Trick: Identifiable, Hashable {
         self.instruction = instruction
     }
 
-    // LocalizedStringResource isn't Hashable, and each Trick is uniquely
-    // identified by its id anyway, so equality/hashing is id-based.
+    // LocalizedStringResource isn't Hashable, so equality/hashing is id-based (each Trick maps 1:1 to its id anyway).
     static func == (lhs: Trick, rhs: Trick) -> Bool {
         lhs.id == rhs.id
     }

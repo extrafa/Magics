@@ -63,8 +63,7 @@ final class PhoneTiltGestureManager {
         pendingCompletion = completion
         let holdDuration = preferences.screenDownHoldDuration
 
-        // Raw accelerometer at rest tracks gravity closely enough for a hold
-        // gesture, without the gyro+magnetometer fusion cost of device motion.
+        // Raw accelerometer at rest tracks gravity closely enough for a hold gesture, without the gyro+magnetometer fusion cost of device motion.
         var screenDownSince: Date?
         var didFire = false
 
