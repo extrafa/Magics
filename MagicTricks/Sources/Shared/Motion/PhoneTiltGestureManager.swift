@@ -20,10 +20,6 @@ final class PhoneTiltGestureManager {
         self.preferences = preferences
     }
 
-    convenience init() {
-        self.init(preferences: AppPreferences.shared)
-    }
-
     // MARK: Public
 
     func waitForScreenDownGesture() async -> Bool {
