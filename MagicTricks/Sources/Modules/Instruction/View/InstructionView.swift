@@ -11,6 +11,7 @@ struct InstructionView: View {
     @State private var presentedSheet: InstructionPresentedSheet?
     let instruction: Instruction
     var onStart: (() -> Void)? = nil
+    @ScaledMetric(relativeTo: .largeTitle) private var headerTitleSize: CGFloat = 32
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -63,7 +64,7 @@ struct InstructionView: View {
 
             Button(action: action) {
                 Text(String(localized: "instruction.startTrick"))
-                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                    .font(.system(.body, design: .rounded, weight: .bold))
                     .frame(maxWidth: .infinity)
                     .frame(height: 54)
             }
@@ -78,7 +79,7 @@ struct InstructionView: View {
 private extension InstructionView {
     var headerSection: some View {
         Text(instruction.title)
-            .font(.system(size: 32, weight: .bold, design: .rounded))
+            .font(.system(size: headerTitleSize, weight: .bold, design: .rounded))
             .foregroundStyle(.primaryText)
             .multilineTextAlignment(.leading)
             .fixedSize(horizontal: false, vertical: true)

@@ -26,6 +26,7 @@ struct InstructionStepActionsView: View {
 private struct InstructionStepActionButton: View {
     let action: InstructionStepAction
     let onTap: () -> Void
+    @ScaledMetric(relativeTo: .footnote) private var titleSize: CGFloat = 14
 
     private var presentation: InstructionStepActionPresentation {
         InstructionStepActionPresentation(action: action)
@@ -54,12 +55,12 @@ private struct InstructionStepActionButton: View {
     private var labels: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(presentation.title)
-                .font(.system(size: 14, weight: .bold, design: .rounded))
+                .font(.system(size: titleSize, weight: .bold, design: .rounded))
                 .lineLimit(1)
                 .minimumScaleFactor(0.82)
 
             Text(presentation.subtitle)
-                .font(.system(size: 12, weight: .regular, design: .rounded))
+                .font(.system(.caption, design: .rounded))
                 .foregroundStyle(.primaryText.opacity(0.58))
                 .lineLimit(1)
                 .minimumScaleFactor(0.78)
