@@ -48,12 +48,17 @@ final class OnboardingViewModel: ObservableObject {
         case 0:
             return String(localized: "onboarding.processing.phase1")
         case 1:
-            return String(localized: String.LocalizationValue("onboarding.processing.phase1.\(matched[0].rawValue)"))
+            // Interpolating directly into a String.LocalizationValue literal turns the
+            // interpolated part into a %@ format argument instead of part of the key, so the
+            // key is built as a plain String first (see OBFeatureSlideScreen.noPropsSubtitle(for:)).
+            let key: String = "onboarding.processing.phase1.\(matched[0].rawValue)"
+            return String(localized: String.LocalizationValue(key))
         default:
             // Each goal contributes a short noun phrase; ListFormatter joins them with
             // correct per-locale grammar ("A, B and C") instead of a phrase per goal combination.
-            let fragments = matched.map {
-                String(localized: String.LocalizationValue("onboarding.processing.goalFragment.\($0.rawValue)"))
+            let fragments = matched.map { goal -> String in
+                let key: String = "onboarding.processing.goalFragment.\(goal.rawValue)"
+                return String(localized: String.LocalizationValue(key))
             }
             let joined = ListFormatter().string(from: fragments) ?? fragments.joined(separator: ", ")
             return String(format: String(localized: "onboarding.processing.phase1.combined"), joined)
