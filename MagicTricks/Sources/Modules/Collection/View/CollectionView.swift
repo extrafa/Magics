@@ -57,6 +57,7 @@ struct CollectionView: View {
                     Button { showSettings = true } label: {
                         Image(systemName: "gearshape")
                     }
+                    .accessibilityLabel(String(localized: "settings.title"))
                 }
             }
         }

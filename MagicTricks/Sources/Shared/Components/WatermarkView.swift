@@ -19,6 +19,7 @@ struct WatermarkView: View {
                     HStack(spacing: 6) {
                         Image(systemName: "sparkles")
                             .font(.system(size: 11, weight: .semibold))
+                            .accessibilityHidden(true)
                         Text(String(localized: "watermark.freeTrialBadge"))
                             .font(.system(size: 13, weight: .semibold, design: .rounded))
                     }
@@ -47,6 +48,7 @@ struct WatermarkView: View {
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
+                .accessibilityLabel(String(localized: "common.close"))
             }
             .background {
                 if #available(iOS 26, *) {

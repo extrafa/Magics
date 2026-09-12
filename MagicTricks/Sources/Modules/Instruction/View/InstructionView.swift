@@ -47,6 +47,7 @@ struct InstructionView: View {
                     Image(systemName: "square.and.arrow.up")
                         .foregroundStyle(.primaryText)
                 }
+                .accessibilityLabel(String(localized: "common.share"))
             }
         }
     }

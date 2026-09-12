@@ -22,9 +22,16 @@ struct TrickCardView: View {
                 .animation(.easeInOut(duration: 0.2), value: isLocked)
                 .overlay {
                     if isLocked {
-                        Color.clear
-                            .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
-                            .onTapGesture { onStartTap() }
+                        // A real Button (not a bare tap gesture) so VoiceOver gets the same
+                        // single, whole-card activation target sighted users tap anywhere on.
+                        Button(action: onStartTap) {
+                            Color.clear
+                                .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(
+                            String(format: String(localized: "collection.locked.accessibilityLabel"), trick.title)
+                        )
                     }
                 }
 
@@ -40,7 +47,10 @@ struct TrickCardView: View {
         VStack(alignment: .leading, spacing: 0) {
             header
             Spacer(minLength: 16)
-            TrickCardActions(onStartTap: onStartTap, onHowToTap: onHowToTap)
+            TrickCardActions(trickName: trick.title, onStartTap: onStartTap, onHowToTap: onHowToTap)
+                // The locked overlay above exposes one combined element instead - avoid VoiceOver
+                // landing on two redundant "Start"/"Learn" buttons that do the same thing.
+                .accessibilityHidden(isLocked)
         }
         .padding(22)
         .frame(maxWidth: .infinity, minHeight: 208, alignment: .topLeading)
@@ -93,6 +103,7 @@ struct TrickCardView: View {
         HStack(spacing: 4) {
             Image(systemName: "lock.fill")
                 .font(.system(size: 9, weight: .bold))
+                .accessibilityHidden(true)
             Text(String(localized: "trick.proBadge"))
                 .font(.system(size: 11, weight: .bold, design: .rounded))
                 .tracking(0.4)

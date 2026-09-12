@@ -13,6 +13,8 @@ struct MagicGallerySlotCard: View {
     let onTap: (() -> Void)?
     let onDelete: () -> Void
 
+    @State private var isConfirmingDelete = false
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
             ZStack {
@@ -47,6 +49,14 @@ struct MagicGallerySlotCard: View {
                 deleteButton
             }
         }
+        .confirmationDialog(
+            String(localized: "magicGallery.deletePhoto.confirm"),
+            isPresented: $isConfirmingDelete,
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "magicGallery.deletePhoto"), role: .destructive, action: onDelete)
+            Button(String(localized: "common.cancel"), role: .cancel) {}
+        }
     }
 
     private var numberBadge: some View {
@@ -59,7 +69,7 @@ struct MagicGallerySlotCard: View {
     }
 
     private var deleteButton: some View {
-        Button(action: onDelete) {
+        Button { isConfirmingDelete = true } label: {
             Image(systemName: "trash")
                 .font(.system(size: 12, weight: .semibold))
                 .foregroundStyle(.white)
@@ -68,6 +78,7 @@ struct MagicGallerySlotCard: View {
         }
         .buttonStyle(.plain)
         .padding(10)
+        .accessibilityLabel(String(localized: "magicGallery.deletePhoto"))
     }
 
     private func sourceBadge(for photo: MagicGalleryPhoto) -> some View {

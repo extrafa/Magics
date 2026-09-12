@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct TrickCardActions: View {
+    let trickName: String
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
 
@@ -22,6 +23,7 @@ struct TrickCardActions: View {
             }
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .buttonStyle(SecondaryTrickButtonStyle())
+            .accessibilityLabel(String(format: String(localized: "collection.howTo.accessibilityLabel"), trickName))
 
             Button(action: onStartTap) {
                 Text(String(localized: "collection.start"))
@@ -32,6 +34,7 @@ struct TrickCardActions: View {
                     .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
             .buttonStyle(PrimaryTrickButtonStyle(color: .button))
+            .accessibilityLabel(String(format: String(localized: "collection.start.accessibilityLabel"), trickName))
         }
     }
 }

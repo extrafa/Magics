@@ -121,6 +121,7 @@ struct OBPaywallScreen: View {
                     .frame(width: 28, height: 28)
                     .background(Circle().fill(Color.primary.opacity(0.08)))
             }
+            .accessibilityLabel(String(localized: "common.close"))
         }
         .padding(.horizontal, 20)
         .padding(.top, topInset + 8)
@@ -303,6 +304,7 @@ struct OBPaywallScreen: View {
         HStack(spacing: 5) {
             Image(systemName: "checkmark.seal.fill")
                 .font(.system(size: 11))
+                .accessibilityHidden(true)
             Text(String.paywall("onetime"))
                 .font(.system(size: 12, weight: .semibold, design: .rounded))
         }

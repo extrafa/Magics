@@ -38,6 +38,7 @@ struct PhantomDrawView: View {
                     Button { stop() } label: {
                         Image(systemName: "xmark")
                     }
+                    .accessibilityLabel(String(localized: "common.close"))
                 }
             }
         }
@@ -187,6 +188,7 @@ struct PhantomDrawView: View {
                 Image(systemName: "number")
                     .font(.system(size: 44, weight: .light))
                     .foregroundStyle(TrickPalette.Collection.phantomDraw)
+                    .accessibilityHidden(true)
                 Text(String(localized: "phantomDraw.enterCode.title"))
                     .font(.system(size: 20, weight: .semibold, design: .rounded))
                     .foregroundStyle(.primaryText)
@@ -276,6 +278,7 @@ struct PhantomDrawView: View {
             Image(systemName: icon)
                 .font(.system(size: 44, weight: .light))
                 .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
             Spacer().frame(height: 20)
             Text(title)
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
