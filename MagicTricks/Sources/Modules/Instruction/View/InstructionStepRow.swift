@@ -70,7 +70,7 @@ struct InstructionStepRow: View {
     private var stepText: some View {
         HStack(alignment: .top, spacing: 14) {
             Text("\(number).")
-                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .font(.system(.callout, design: .rounded, weight: .bold))
                 .foregroundStyle(.primaryText.opacity(0.9))
                 .frame(width: 32, alignment: .leading)
                 .padding(.top, 2)
@@ -86,12 +86,12 @@ struct InstructionStepRow: View {
     private var titleAndDescription: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(step.title)
-                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                .font(.system(.body, design: .rounded, weight: .semibold))
                 .foregroundStyle(.primaryText)
                 .fixedSize(horizontal: false, vertical: true)
 
             Text(step.description)
-                .font(.system(size: 15, weight: .regular, design: .rounded))
+                .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(.primaryText.opacity(0.72))
                 .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)

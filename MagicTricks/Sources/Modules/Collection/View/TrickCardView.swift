@@ -39,6 +39,9 @@ struct TrickCardView: View {
                 .padding(.top, 16)
                 .padding(.trailing, 16)
         }
+        // The badge and the title's reserved trailing padding (see `header`) are sized
+        // for the badge's default point size - cap growth so they don't collide.
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     // MARK: Card
@@ -105,7 +108,7 @@ struct TrickCardView: View {
                 .font(.system(size: 9, weight: .bold))
                 .accessibilityHidden(true)
             Text(String(localized: "trick.proBadge"))
-                .font(.system(size: 11, weight: .bold, design: .rounded))
+                .font(.system(.caption2, design: .rounded, weight: .bold))
                 .tracking(0.4)
         }
         .foregroundStyle(Color.primary.opacity(0.45))
