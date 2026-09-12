@@ -42,7 +42,11 @@ enum OBFeatureType {
             return String(localized: "onboarding.feature.noprops.subtitle")
         }
         let suffix = matched.map(\.rawValue).joined(separator: ".")
-        return String(localized: String.LocalizationValue("onboarding.feature.noprops.subtitle.\(suffix)"))
+        // Build the full key as a plain String first - interpolating suffix directly into a
+        // String.LocalizationValue literal turns it into a %@ format argument instead of part
+        // of the key, so the catalog lookup misses and falls back to showing the raw key text.
+        let key: String = "onboarding.feature.noprops.subtitle.\(suffix)"
+        return String(localized: String.LocalizationValue(key))
     }
 }
 
