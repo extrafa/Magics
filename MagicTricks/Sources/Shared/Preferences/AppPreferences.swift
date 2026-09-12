@@ -40,7 +40,11 @@ protocol RateAppPreferenceManaging {
     var ratingSnoozedUntil: Date? { get set }
 }
 
-struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, MotionPreferenceManaging, MagicGalleryPreferenceManaging, RateAppPreferenceManaging {
+protocol OnboardingPreferenceManaging {
+    var hasCompletedOnboarding: Bool { get set }
+}
+
+struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, MotionPreferenceManaging, MagicGalleryPreferenceManaging, RateAppPreferenceManaging, OnboardingPreferenceManaging {
     static let shared = AppPreferences()
 
     private let store: PreferenceStoring
