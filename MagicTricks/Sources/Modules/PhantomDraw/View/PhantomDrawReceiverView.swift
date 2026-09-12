@@ -49,6 +49,7 @@ struct PhantomDrawReceiverView: View {
             Image(systemName: "waveform")
                 .font(.system(size: 36, weight: .light))
                 .foregroundStyle(Color.secondary.opacity(0.4))
+                .accessibilityHidden(true)
             Text(String(localized: "phantomDraw.waitingForDrawing"))
                 .font(.system(size: 15, weight: .regular, design: .rounded))
                 .foregroundStyle(.secondary)
