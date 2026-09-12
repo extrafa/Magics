@@ -1,25 +1,32 @@
+//
+//  MagicGallerySlotGrid.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
 
 struct MagicGallerySlotGrid: View {
+    let customPhotos: [MagicGalleryPhoto]
     let usesStandardSet: Bool
-    let selectedPhotoNumber: Int?
     let photoProvider: (Int) -> MagicGalleryPhoto?
     let onSlotTap: (Int) -> Void
     let onDelete: (MagicGalleryPhoto) -> Void
 
-    private let columns = [
+    private static let columns = [
         GridItem(.flexible(), spacing: 12),
         GridItem(.flexible(), spacing: 12)
     ]
 
     var body: some View {
-        LazyVGrid(columns: columns, spacing: 12) {
+        LazyVGrid(columns: Self.columns, spacing: 12) {
             ForEach(1...10, id: \.self) { number in
+                let photo = photoProvider(number)
                 MagicGallerySlotCard(
                     number: number,
-                    photo: photoProvider(number),
-                    isSelected: selectedPhotoNumber == number,
-                    onTap: { onSlotTap(number) },
+                    photo: photo,
+                    onTap: photo == nil ? { onSlotTap(number) } : nil,
                     onDelete: { deletePhoto(for: number) }
                 )
             }

@@ -16,14 +16,14 @@ extension HapticManager {
         enginePlayer.restartEngineIfNeeded()
     }
 
-    func schedule(after delay: TimeInterval, action: @escaping () -> Void) {
+    func schedule(after delay: TimeInterval, action: @escaping Completion) {
         scheduler.schedule(after: delay, action: action)
     }
 
     func scheduleCompletion(
         initialDelay: TimeInterval,
         signalDuration: TimeInterval,
-        completion: (() -> Void)?
+        completion: Completion?
     ) {
         scheduler.scheduleCompletion(
             initialDelay: initialDelay,
@@ -32,7 +32,7 @@ extension HapticManager {
         )
     }
 
-    func playCoreHapticEvents(_ events: [CHHapticEvent], fallback: () -> Void) {
+    func playCoreHapticEvents(_ events: [CHHapticEvent], fallback: Completion) {
         enginePlayer.playEvents(events, fallback: fallback)
     }
 
@@ -42,22 +42,17 @@ extension HapticManager {
         _ count: Int,
         initialDelay: TimeInterval = HapticTiming.initialDelay,
         generator: UIImpactFeedbackGenerator,
-        completion: (() -> Void)? = nil
+        timings: HapticTimings,
+        completion: Completion? = nil
     ) {
-        generator.prepare()
         guard count > 0 else {
-            scheduler.scheduleImpact(using: generator, after: initialDelay, intensity: 1.0)
-            scheduler.scheduleCompletion(
-                initialDelay: initialDelay,
-                signalDuration: HapticPreferences.longDuration,
-                completion: completion
-            )
+            playZeroBuzz(initialDelay: initialDelay, generator: generator, timings: timings, completion: completion)
             return
         }
         scheduler.scheduleImpactSequence(
             count: count,
             initialDelay: initialDelay,
-            interval: HapticPreferences.pulseGap,
+            interval: timings.pulseGap,
             generator: generator,
             completion: completion
         )
@@ -69,29 +64,31 @@ extension HapticManager {
         _ count: Int,
         initialDelay: TimeInterval = HapticTiming.initialDelay,
         generator: UIImpactFeedbackGenerator,
-        completion: (() -> Void)? = nil
+        timings: HapticTimings,
+        completion: Completion? = nil
     ) {
-        generator.prepare()
         guard count > 0 else {
-            scheduler.scheduleImpact(using: generator, after: initialDelay, intensity: 1.0)
-            scheduler.scheduleCompletion(
-                initialDelay: initialDelay,
-                signalDuration: HapticPreferences.longDuration,
-                completion: completion
-            )
+            playZeroBuzz(initialDelay: initialDelay, generator: generator, timings: timings, completion: completion)
             return
         }
 
-        let chunkSize = HapticPreferences.groupedChunkSize
+        let chunkSize = HapticTiming.groupedChunkSize
         var time = initialDelay
         var remaining = count
+
+        var isFirstGroup = true
 
         while remaining > 0 {
             let groupCount = min(chunkSize, remaining)
             let isLastGroup = remaining == groupCount
             let pulseGap = groupCount < chunkSize
-                ? HapticPreferences.groupedRemainderPulseGap
-                : HapticPreferences.groupedPulseGap
+                ? timings.grouped.remainderPulseGap
+                : timings.grouped.pulseGap
+
+            if !isFirstGroup {
+                let prepareTime = max(time - 0.1, 0)
+                scheduler.schedule(after: prepareTime) { generator.prepare() }
+            }
 
             scheduler.scheduleImpactSequence(
                 count: groupCount,
@@ -101,8 +98,36 @@ extension HapticManager {
                 completion: isLastGroup ? completion : nil
             )
 
-            time += Double(groupCount - 1) * pulseGap + HapticPreferences.groupedGroupGap
+            time += Double(groupCount - 1) * pulseGap + timings.grouped.groupGap
             remaining -= groupCount
+            isFirstGroup = false
         }
+    }
+
+    // MARK: - Zero buzz
+
+    private func playZeroBuzz(
+        initialDelay: TimeInterval,
+        generator: UIImpactFeedbackGenerator,
+        timings: HapticTimings,
+        completion: Completion?
+    ) {
+        let event = CHHapticEvent(
+            eventType: .hapticContinuous,
+            parameters: [
+                CHHapticEventParameter(parameterID: .hapticIntensity, value: timings.intensity.coreHapticsValue),
+                CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.35)
+            ],
+            relativeTime: initialDelay,
+            duration: timings.longDuration
+        )
+        enginePlayer.playEvents([event]) {
+            self.scheduler.scheduleImpact(using: generator, after: initialDelay, intensity: timings.intensity.impactIntensity)
+        }
+        scheduler.scheduleCompletion(
+            initialDelay: initialDelay,
+            signalDuration: timings.longDuration,
+            completion: completion
+        )
     }
 }

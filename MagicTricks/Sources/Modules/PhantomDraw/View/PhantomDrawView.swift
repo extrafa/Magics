@@ -1,0 +1,357 @@
+//
+//  PhantomDrawView.swift
+//  Magic Tricks
+//
+
+import SwiftUI
+
+struct PhantomDrawView: View {
+
+    @StateObject private var session = PhantomDrawSessionManager()
+    @StateObject private var viewModel: PhantomDrawViewModel
+    @Environment(\.dismiss) private var dismiss
+    @State private var codeInput = ""
+    @AppStorage("phantomDrawLastCode") private var lastCode = ""
+    @FocusState private var isCodeFieldFocused: Bool
+
+    init() {
+        let session = PhantomDrawSessionManager()
+        _session = StateObject(wrappedValue: session)
+        _viewModel = StateObject(wrappedValue: PhantomDrawViewModel(session: session))
+    }
+
+    private var state: PhantomDrawConnectionState { session.connectionState }
+
+    private var isSenderCanvas: Bool {
+        guard viewModel.role == .sender, case .connected = state else { return false }
+        return true
+    }
+
+    var body: some View {
+        ZStack {
+            Color.background.ignoresSafeArea()
+            contentView
+        }
+        .toolbar {
+            ToolbarItem(placement: .topBarLeading) {
+                if !isSenderCanvas {
+                    Button { stop() } label: {
+                        Image(systemName: "xmark")
+                    }
+                    .accessibilityLabel(String(localized: "common.close"))
+                }
+            }
+        }
+        .onDisappear { viewModel.stop() }
+        .onChange(of: state) { newState in
+            if case .connected = newState, viewModel.role == .receiver, codeInput.count == 2 {
+                lastCode = codeInput
+            }
+        }
+    }
+
+    // MARK: - Content
+
+    private var contentView: some View {
+        ZStack {
+            if case .idle = state {
+                roleSelectionView
+                    .transition(.asymmetric(
+                        insertion: .opacity,
+                        removal: .opacity.combined(with: .offset(y: 24))
+                    ))
+            }
+
+            if case .enteringCode = state {
+                enteringCodeView
+                    .transition(.asymmetric(
+                        insertion: .opacity,
+                        removal: .opacity.combined(with: .offset(y: 24))
+                    ))
+            }
+
+            if case .searching = state {
+                searchingView
+                    .transition(.asymmetric(
+                        insertion: .opacity.combined(with: .offset(y: -16)),
+                        removal: .opacity.combined(with: .offset(y: 16))
+                    ))
+            }
+
+            if case .connected = state {
+                connectedView
+                    .transition(.opacity)
+            }
+
+            if case .failed = state {
+                statusView(
+                    icon: "exclamationmark.triangle",
+                    title: "phantomDraw.status.failed.title",
+                    subtitle: "phantomDraw.status.failed.subtitle",
+                    buttonTitle: "phantomDraw.status.failed.retry",
+                    action: retry
+                )
+                .transition(.opacity)
+            }
+        }
+        .animation(.spring(response: 0.42, dampingFraction: 0.88), value: state)
+    }
+
+    @ViewBuilder
+    private var connectedView: some View {
+        if viewModel.role == .receiver {
+            PhantomDrawReceiverView(session: session)
+        } else {
+            PhantomDrawSenderView(viewModel: viewModel)
+        }
+    }
+
+    // MARK: - Role Selection
+
+    private var roleSelectionView: some View {
+        VStack(spacing: 0) {
+            VStack(spacing: 10) {
+                Image(systemName: "antenna.radiowaves.left.and.right")
+                    .font(.system(size: 48, weight: .light))
+                    .foregroundStyle(TrickPalette.Collection.phantomDraw)
+
+                VStack(spacing: 3) {
+                    Text(String(localized: "phantomDraw.intro.line1"))
+                    Text(String(localized: "phantomDraw.intro.line2"))
+                }
+                .font(.system(size: 15, weight: .regular, design: .rounded))
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+            }
+            .padding(.top, 40)
+            .padding(.bottom, 36)
+
+            VStack(spacing: 14) {
+                roleButton(
+                    title: String(localized: "phantomDraw.role.receiver.title"),
+                    subtitle: String(localized: "phantomDraw.role.receiver.subtitle"),
+                    icon: "eye",
+                    role: .receiver
+                )
+                roleButton(
+                    title: String(localized: "phantomDraw.role.sender.title"),
+                    subtitle: String(localized: "phantomDraw.role.sender.subtitle"),
+                    icon: "hand.draw",
+                    role: .sender
+                )
+            }
+            .padding(.horizontal, 24)
+
+            Spacer()
+
+        }
+    }
+
+    private func roleButton(title: String, subtitle: String, icon: String, role: PhantomDrawRole) -> some View {
+        Button {
+            viewModel.selectRole(role)
+        } label: {
+            HStack(spacing: 16) {
+                ZStack {
+                    Circle()
+                        .fill(TrickPalette.Collection.phantomDraw.opacity(0.15))
+                        .frame(width: 48, height: 48)
+                    Image(systemName: icon)
+                        .font(.system(size: 20, weight: .medium))
+                        .foregroundStyle(TrickPalette.Collection.phantomDraw)
+                }
+                VStack(alignment: .leading, spacing: 3) {
+                    Text(title)
+                        .font(.system(size: 16, weight: .semibold, design: .rounded))
+                        .foregroundStyle(.primaryText)
+                    Text(subtitle)
+                        .font(.system(size: 13, weight: .regular, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
+                Spacer()
+                Image(systemName: "chevron.right")
+                    .font(.system(size: 14, weight: .semibold))
+                    .foregroundStyle(.secondary.opacity(0.5))
+            }
+            .padding(18)
+            .cardSurface(cornerRadius: 18)
+        }
+        .buttonStyle(.plain)
+    }
+
+    // MARK: - Entering Code
+
+    private var enteringCodeView: some View {
+        VStack(spacing: 0) {
+            Spacer()
+            VStack(spacing: 10) {
+                Image(systemName: "number")
+                    .font(.system(size: 44, weight: .light))
+                    .foregroundStyle(TrickPalette.Collection.phantomDraw)
+                    .accessibilityHidden(true)
+                Text(String(localized: "phantomDraw.enterCode.title"))
+                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                    .foregroundStyle(.primaryText)
+                Text(String(localized: "phantomDraw.enterCode.description"))
+                    .font(.system(size: 15, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+            }
+            Spacer().frame(height: 28)
+            ZStack {
+                if !isCodeFieldFocused && codeInput.isEmpty {
+                    Text(String(localized: "phantomDraw.codePlaceholder"))
+                        .foregroundStyle(.secondary)
+                }
+                TextField("", text: $codeInput)
+                    .keyboardType(.numberPad)
+                    .foregroundStyle(.primaryText)
+                    .multilineTextAlignment(.center)
+                    .focused($isCodeFieldFocused)
+            }
+            .font(.system(size: 34, weight: .black, design: .rounded))
+            .frame(width: 120, height: 60)
+            .cardSurface(cornerRadius: 16)
+            .onChange(of: codeInput) { newValue in
+                codeInput = String(newValue.filter(\.isNumber).prefix(2))
+            }
+            if !lastCode.isEmpty {
+                Spacer().frame(height: 12)
+                Text(String(format: String(localized: "phantomDraw.lastCodeHint"), lastCode))
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
+            Spacer().frame(height: 28)
+            primaryButton("phantomDraw.connect", disabled: codeInput.count != 2) {
+                viewModel.submitReceiverCode(codeInput)
+            }
+            Spacer()
+            Button(String(localized: "common.cancel"), action: stop)
+                .font(.system(size: 16, weight: .medium, design: .rounded))
+                .foregroundStyle(.secondary)
+                .padding(.bottom, 32)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Searching
+
+    private var searchingView: some View {
+        VStack(spacing: 0) {
+            Spacer()
+            PulsingSignalView(color: TrickPalette.Collection.phantomDraw)
+                .frame(width: 120, height: 120)
+            Spacer().frame(height: 28)
+            Text(viewModel.role == .sender ? "phantomDraw.status.waiting" : "phantomDraw.status.connecting")
+                .font(.system(size: 20, weight: .semibold, design: .rounded))
+                .foregroundStyle(.primaryText)
+            Spacer().frame(height: 8)
+            Text(viewModel.role == .sender
+                 ? "phantomDraw.status.waitingDescription"
+                 : "phantomDraw.status.connectingDescription")
+                .font(.system(size: 15, design: .rounded))
+                .foregroundStyle(.secondary)
+            if viewModel.role == .sender, let code = session.pairingCode {
+                Spacer().frame(height: 20)
+                Text(code)
+                    .font(.system(size: 44, weight: .heavy, design: .rounded))
+                    .foregroundStyle(TrickPalette.Collection.phantomDraw)
+                Text(String(localized: "phantomDraw.enterCodeOnOtherDevice"))
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+            }
+            Spacer()
+            Button(String(localized: "common.cancel"), action: stop)
+                .font(.system(size: 16, weight: .medium, design: .rounded))
+                .foregroundStyle(.secondary)
+                .padding(.bottom, 32)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    // MARK: - Status
+
+    private func statusView(icon: String, title: LocalizedStringKey, subtitle: LocalizedStringKey, buttonTitle: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+        VStack(spacing: 0) {
+            Spacer()
+            Image(systemName: icon)
+                .font(.system(size: 44, weight: .light))
+                .foregroundStyle(.secondary)
+                .accessibilityHidden(true)
+            Spacer().frame(height: 20)
+            Text(title)
+                .font(.system(size: 20, weight: .semibold, design: .rounded))
+                .foregroundStyle(.primaryText)
+            Spacer().frame(height: 8)
+            Text(subtitle)
+                .font(.system(size: 15, design: .rounded))
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+                .padding(.horizontal, 40)
+            Spacer()
+            primaryButton(buttonTitle, action: action)
+                .padding(.bottom, 32)
+        }
+        .frame(maxWidth: .infinity)
+    }
+
+    private func primaryButton(_ title: LocalizedStringKey, disabled: Bool = false, action: @escaping () -> Void) -> some View {
+        Button(action: action) {
+            Text(title)
+                .font(.headline)
+                .frame(maxWidth: .infinity)
+                .frame(height: 54)
+        }
+        .buttonStyle(PrimaryTrickButtonStyle(color: TrickPalette.Collection.phantomDraw))
+        .disabled(disabled)
+        .padding(.horizontal, 32)
+    }
+
+    // MARK: - Helpers
+
+    private func retry() {
+        guard let role = viewModel.role else { return }
+        viewModel.selectRole(role)
+    }
+
+    private func stop() {
+        viewModel.stop()
+        codeInput = ""
+        dismiss()
+    }
+}
+
+// MARK: - PulsingSignalView
+
+private struct PulsingSignalView: View {
+
+    let color: Color
+    @State private var animating = false
+
+    var body: some View {
+        ZStack {
+            ForEach(0..<3, id: \.self) { i in
+                Circle()
+                    .stroke(color, lineWidth: 1.5)
+                    .frame(width: 120, height: 120)
+                    .scaleEffect(animating ? 1.0 : 0.25)
+                    .opacity(animating ? 0 : 0.35 - Double(i) * 0.08)
+                    .animation(
+                        .easeOut(duration: 1.6)
+                        .repeatForever(autoreverses: false)
+                        .delay(Double(i) * 0.45),
+                        value: animating
+                    )
+            }
+            Circle()
+                .fill(color.opacity(0.15))
+                .overlay(Circle().stroke(color, lineWidth: 2))
+                .frame(width: 48, height: 48)
+            Image(systemName: "wifi")
+                .font(.system(size: 22, weight: .medium))
+                .foregroundStyle(color)
+        }
+        .onAppear { animating = true }
+    }
+}

@@ -1,3 +1,10 @@
+//
+//  MotionSettingsScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 01/06/2026.
+//
+
 import SwiftUI
 
 struct MotionSettingsScreen: View {
@@ -9,11 +16,8 @@ struct MotionSettingsScreen: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
-                    MotionSettingsSection(
-                        settings: settings,
-                        copy: .motion,
-                        resetAction: settings.resetMotionSettings
-                    )
+                    MotionSettingsSection(settings: settings)
+                    SettingsResetButton(action: settings.resetMotionSettings)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 28)
@@ -23,7 +27,7 @@ struct MotionSettingsScreen: View {
         }
         .navigationTitle(String(localized: "settings.motion.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .fontDesign(.rounded)
+        
     }
 }
 

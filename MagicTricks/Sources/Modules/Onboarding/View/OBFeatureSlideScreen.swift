@@ -1,3 +1,10 @@
+//
+//  OBFeatureSlideScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 // MARK: - Feature type
@@ -15,12 +22,27 @@ enum OBFeatureType {
         }
     }
 
-    var subtitle: String {
+    func subtitle(for goals: Set<OnboardingGoal>) -> String {
         switch self {
-        case .instructions: String(localized: "onboarding.feature.instructions.subtitle")
-        case .noProps:      String(localized: "onboarding.feature.noprops.subtitle")
-        case .vibrations:   String(localized: "onboarding.feature.vibrations.subtitle")
+        case .instructions: return String(localized: "onboarding.feature.instructions.subtitle")
+        case .vibrations:   return String(localized: "onboarding.feature.vibrations.subtitle")
+        case .noProps:      return noPropsSubtitle(for: goals)
         }
+    }
+
+    // Key is the matched goals' raw values joined by "." - one hand-written string per combination instead of listing all 15.
+    private func noPropsSubtitle(for goals: Set<OnboardingGoal>) -> String {
+        if goals.contains(.everywhere) {
+            return String(localized: "onboarding.feature.noprops.subtitle.everywhere")
+        }
+        let matched = goals.orderedCombinableGoals
+        guard !matched.isEmpty else {
+            return String(localized: "onboarding.feature.noprops.subtitle")
+        }
+        let suffix = matched.map(\.rawValue).joined(separator: ".")
+        // Built as a String first - interpolating into a LocalizationValue literal makes it a %@ argument, not part of the key.
+        let key: String = "onboarding.feature.noprops.subtitle.\(suffix)"
+        return String(localized: String.LocalizationValue(key))
     }
 }
 
@@ -28,21 +50,17 @@ enum OBFeatureType {
 
 struct OBFeatureSlideScreen: View {
     let feature: OBFeatureType
-    let pageIndex: Int
+    let goals: Set<OnboardingGoal>
     let onContinue: () -> Void
 
     @State private var appeared = false
-
-    private let totalPages = 3
 
     var body: some View {
         VStack(spacing: 0) {
             Spacer()
 
             featureVisual
-                .opacity(appeared ? 1 : 0)
-                .offset(y: appeared ? 0 : 18)
-                .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.06), value: appeared)
+                .onboardingAppear(appeared, offset: 18, delay: 0.06)
 
             Spacer()
 
@@ -52,24 +70,15 @@ struct OBFeatureSlideScreen: View {
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 28)
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 12)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.18), value: appeared)
+                    .onboardingAppear(appeared, offset: 12, delay: 0.18)
 
-                Text(feature.subtitle)
+                Text(feature.subtitle(for: goals))
                     .font(.system(size: 16, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 8)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.82).delay(0.25), value: appeared)
+                    .onboardingAppear(appeared, offset: 8, delay: 0.25)
             }
-
-            pageDots
-                .padding(.top, 28)
-                .opacity(appeared ? 1 : 0)
-                .animation(.easeOut(duration: 0.3).delay(0.32), value: appeared)
 
             Spacer().frame(height: 24)
 
@@ -83,17 +92,9 @@ struct OBFeatureSlideScreen: View {
             .animation(.easeOut(duration: 0.3).delay(0.38), value: appeared)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.24) { appeared = true }
-        }
-    }
-
-    private var pageDots: some View {
-        HStack(spacing: 6) {
-            ForEach(0..<totalPages, id: \.self) { i in
-                Capsule()
-                    .fill(i == pageIndex ? Color.primaryText : Color.primaryText.opacity(0.2))
-                    .frame(width: i == pageIndex ? 20 : 6, height: 6)
-                    .animation(.spring(response: 0.4, dampingFraction: 0.8), value: pageIndex)
+            Task { @MainActor in
+                try? await Task.sleep(milliseconds: 240)
+                appeared = true
             }
         }
     }
@@ -133,8 +134,6 @@ private struct TricksPreviewVisual: View {
 }
 
 // MARK: - Visual: Vibrations
-// Three concentric rings expanding outward — the phone as the silent conductor.
-// Rings use decreasing line weights for depth. Center uses the phone icon.
 
 private struct VibrationsVisual: View {
     var body: some View {

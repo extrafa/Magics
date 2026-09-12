@@ -1,14 +1,18 @@
 import CoreMotion
 import Foundation
 
-/// Detects when the phone is held screen-face-down and held steady for the
-/// required duration (`screenDownHoldDuration` from preferences).
 @MainActor
 final class PhoneTiltGestureManager {
 
     private let motionManager = CMMotionManager()
+    private let motionQueue: OperationQueue = {
+        let queue = OperationQueue()
+        queue.maxConcurrentOperationCount = 1
+        queue.qualityOfService = .userInteractive
+        return queue
+    }()
     private let preferences: MotionPreferenceManaging
-    private var monitoringTask: Task<Void, Never>?
+    private var pendingCompletion: (@MainActor (Bool) -> Void)?
 
     // MARK: Init
 
@@ -16,15 +20,8 @@ final class PhoneTiltGestureManager {
         self.preferences = preferences
     }
 
-    convenience init() {
-        self.init(preferences: AppPreferences.shared)
-    }
-
     // MARK: Public
 
-    /// Suspends until the user holds the phone screen-down for the configured
-    /// duration, then returns `true`. Returns `false` if monitoring is
-    /// cancelled before the gesture is detected.
     func waitForScreenDownGesture() async -> Bool {
         await withTaskCancellationHandler {
             await withCheckedContinuation { continuation in
@@ -38,39 +35,60 @@ final class PhoneTiltGestureManager {
     }
 
     func stopMonitoring() {
-        motionManager.stopDeviceMotionUpdates()
-        monitoringTask?.cancel()
-        monitoringTask = nil
+        motionManager.stopAccelerometerUpdates()
+        resumePendingCompletion(with: false)
     }
 
     // MARK: Private
 
+    private func resumePendingCompletion(with result: Bool) {
+        let handler = pendingCompletion
+        pendingCompletion = nil
+        handler?(result)
+    }
+
     private func startMonitoring(completion: @escaping @MainActor (Bool) -> Void) {
-        guard motionManager.isDeviceMotionAvailable else {
-            // Motion unavailable — treat as if gesture fired immediately
+        resumePendingCompletion(with: false)
+
+        guard motionManager.isAccelerometerAvailable else {
+            // Simulator has no accelerometer; keep the gesture testable there.
+            #if targetEnvironment(simulator)
             Task { @MainActor in completion(true) }
+            #else
+            Task { @MainActor in completion(false) }
+            #endif
             return
         }
 
+        pendingCompletion = completion
         let holdDuration = preferences.screenDownHoldDuration
+
+        // Raw accelerometer at rest tracks gravity closely enough for a hold gesture, without the gyro+magnetometer fusion cost of device motion.
         var screenDownSince: Date?
+        var didFire = false
 
-        motionManager.deviceMotionUpdateInterval = 0.05
-        motionManager.startDeviceMotionUpdates(to: .main) { [weak self] motion, _ in
-            guard let self, let motion else { return }
+        motionManager.accelerometerUpdateInterval = 0.1
+        motionManager.startAccelerometerUpdates(to: motionQueue) { [weak self] data, _ in
+            guard let data, !didFire else { return }
 
-            // Gravity.z < -0.85 means the screen is facing roughly downward
-            let isScreenDown = motion.gravity.z < -0.85
-
-            if isScreenDown {
-                if screenDownSince == nil { screenDownSince = Date() }
-                if let since = screenDownSince, Date().timeIntervalSince(since) >= holdDuration {
-                    self.stopMonitoring()
-                    completion(true)
-                }
-            } else {
+            guard data.acceleration.z > 0.85 else {
                 screenDownSince = nil
+                return
             }
+
+            let since = screenDownSince ?? Date()
+            screenDownSince = since
+            guard Date().timeIntervalSince(since) >= holdDuration else { return }
+
+            didFire = true
+            Task { @MainActor [weak self] in self?.handleGestureDetected() }
         }
+    }
+
+    private func handleGestureDetected() {
+        let handler = pendingCompletion
+        pendingCompletion = nil
+        stopMonitoring()
+        handler?(true)
     }
 }

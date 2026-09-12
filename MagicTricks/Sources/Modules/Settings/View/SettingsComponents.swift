@@ -80,9 +80,52 @@ struct SettingsResetButton: View {
                 isBold: true
             )
             .padding(.horizontal, 18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
         .buttonStyle(.plain)
+    }
+}
+
+// MARK: - Snap Slider
+
+struct SettingsSnapSlider: View {
+
+    @Binding var value: Double
+    let range: ClosedRange<Double>
+    let step: Double
+    let format: String
+
+    @State private var generator = UISelectionFeedbackGenerator()
+    @State private var lastHapticStep: Int?
+
+    var body: some View {
+        VStack(spacing: 12) {
+            Text(String(format: format, value))
+                .font(.system(size: 26, weight: .bold, design: .rounded))
+                .foregroundStyle(TrickPalette.Collection.timeControl)
+                .animation(.easeInOut(duration: 0.12), value: value)
+
+            Slider(value: $value, in: range, step: step)
+                .tint(TrickPalette.Collection.timeControl)
+                .onChange(of: value) { newValue in
+                    let currentStep = Int(round((newValue - range.lowerBound) / step))
+                    guard currentStep != lastHapticStep else { return }
+                    lastHapticStep = currentStep
+                    generator.selectionChanged()
+                }
+
+            HStack {
+                Text(String(format: format, range.lowerBound))
+                Spacer()
+                Text(String(format: format, range.upperBound))
+            }
+            .font(.system(size: 12, weight: .semibold, design: .rounded))
+            .foregroundStyle(.secondary.opacity(0.7))
+        }
+        .onAppear {
+            lastHapticStep = Int(round((value - range.lowerBound) / step))
+            generator.prepare()
+        }
     }
 }
 
@@ -93,7 +136,7 @@ struct SettingsStepper: View {
     @Binding var value: Double
     let range: ClosedRange<Double>
     let step: Double
-    let format: String  // e.g. "%.2fx" or "%.2fs"
+    let format: String
 
     var body: some View {
         HStack(spacing: 0) {
@@ -130,20 +173,5 @@ struct SettingsStepper: View {
 
     private func decrement() {
         value = max(range.lowerBound, ((value - step) * 100).rounded() / 100)
-    }
-}
-
-// MARK: - Card background modifier
-
-extension View {
-    func settingsCard() -> some View {
-        self.background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color.grayCard)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(Color.grayBorder, lineWidth: 1)
-                }
-        )
     }
 }

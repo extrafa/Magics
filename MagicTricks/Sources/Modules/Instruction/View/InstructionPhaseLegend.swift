@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct InstructionPhaseLegend: View {
+    @ScaledMetric(relativeTo: .footnote) private var titleSize: CGFloat = 14
+
     var body: some View {
         HStack(spacing: 18) {
             legendItem(color: .blue, title: String(localized: "instruction.phase.preparation"))
@@ -23,7 +25,7 @@ struct InstructionPhaseLegend: View {
                 .frame(width: 8, height: 8)
 
             Text(title)
-                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .font(.system(size: titleSize, weight: .semibold, design: .rounded))
                 .foregroundStyle(color)
         }
     }

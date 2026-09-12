@@ -1,3 +1,10 @@
+//
+//  HapticManager.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
 import UIKit
 
@@ -5,18 +12,20 @@ import UIKit
 final class HapticManager {
     static let shared = HapticManager()
 
-    let mediumImpactGenerator = UIImpactFeedbackGenerator(style: .medium)
-    let heavyImpactGenerator = UIImpactFeedbackGenerator(style: .heavy)
+    let impactGenerator = UIImpactFeedbackGenerator(style: .heavy)
     private let notificationGenerator = UINotificationFeedbackGenerator()
     let enginePlayer: HapticEnginePlaying
     let scheduler: HapticScheduling
+    let preferences: HapticPreferenceManaging
 
     init(
         enginePlayer: HapticEnginePlaying? = nil,
-        scheduler: HapticScheduling? = nil
+        scheduler: HapticScheduling? = nil,
+        preferences: HapticPreferenceManaging = AppPreferences.shared
     ) {
+        self.preferences = preferences
         self.enginePlayer = enginePlayer ?? HapticEnginePlayer()
-        self.scheduler = scheduler ?? HapticScheduler()
+        self.scheduler = scheduler ?? HapticScheduler(preferences: preferences)
     }
 
     func handleScenePhase(_ phase: ScenePhase) {
@@ -28,28 +37,33 @@ final class HapticManager {
         notificationGenerator.notificationOccurred(.success)
     }
 
-    func playColorCode(_ count: Int, completion: (() -> Void)? = nil) {
-        playCountSignal(count, generator: mediumImpactGenerator, completion: completion)
+    func cancelPendingHaptics() {
+        scheduler.cancelAll()
+        enginePlayer.stop()
     }
 
-    func playTrainingDigit(_ digit: Int, completion: (() -> Void)? = nil) {
-        playCountSignal(digit, generator: heavyImpactGenerator, completion: completion)
-    }
-
-    func playDigitSignal(_ digit: Int, initialDelay: TimeInterval = HapticTiming.initialDelay, completion: (() -> Void)? = nil) {
-        playCountSignal(digit, initialDelay: initialDelay, generator: heavyImpactGenerator, completion: completion)
+    func playCount(_ count: Int, completion: Completion? = nil) {
+        cancelPendingHaptics()
+        let timings = HapticTimings(preferences: preferences)
+        if timings.isGroupByThreeEnabled {
+            playGroupedCountSignal(count, generator: impactGenerator, timings: timings, completion: completion)
+        } else {
+            playCountSignal(count, generator: impactGenerator, timings: timings, completion: completion)
+        }
     }
 
     func playTimeValue(
         _ value: Int,
         initialDelay: TimeInterval = 0,
         usesGrouping: Bool = true,
-        completion: (() -> Void)? = nil
+        completion: Completion? = nil
     ) {
-        if usesGrouping && HapticPreferences.isGroupByThreeEnabled {
-            playGroupedTimeValue(value, initialDelay: initialDelay, completion: completion)
+        cancelPendingHaptics()
+        let timings = HapticTimings(preferences: preferences)
+        if usesGrouping && timings.isGroupByThreeEnabled {
+            playGroupedTimeValue(value, initialDelay: initialDelay, timings: timings, completion: completion)
         } else {
-            playClassicTimeValue(value, initialDelay: initialDelay, completion: completion)
+            playClassicTimeValue(value, initialDelay: initialDelay, timings: timings, completion: completion)
         }
     }
 }

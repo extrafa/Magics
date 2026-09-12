@@ -12,7 +12,8 @@ import XCTest
 @MainActor
 final class MagicGalleryViewModelTests: XCTestCase {
 
-    func test_init_loadsStoredPhotosAndDefaultPreferences() {
+    // loadStoredPhotos() is called explicitly from the view's .task, not from init.
+    func test_loadStoredPhotos_loadsPhotosAndDefaultPreferences() async {
         let storedPhoto = MagicGalleryPhoto(number: 3, image: Self.image(), fileName: "3.jpg", source: .custom)
         let library = MockMagicGalleryPhotoLibrary(storedPhotos: [storedPhoto])
         let preferences = MockMagicGalleryPreferences()
@@ -23,50 +24,43 @@ final class MagicGalleryViewModelTests: XCTestCase {
             photoLibrary: library,
             photoSaver: MockMagicGalleryPhotoSaver()
         )
+        await viewModel.loadStoredPhotos()
 
         XCTAssertEqual(viewModel.customPhotos.map(\.number), [3])
         XCTAssertTrue(viewModel.usesStandardSet)
     }
 
-    func test_handleSlotTap_selectsExistingPhoto() {
-        let photo = MagicGalleryPhoto(number: 4, image: Self.image(), fileName: "4.jpg", source: .custom)
-        let viewModel = makeViewModel(storedPhotos: [photo], usesStandardSet: false)
+    // .photoLibrary skips the real AVCaptureDevice permission check .camera would hit.
+    func test_startCapture_startsSessionForGivenNumber() async {
+        let viewModel = await makeViewModel(usesStandardSet: false)
 
-        viewModel.handleSlotTap(4)
-
-        XCTAssertEqual(viewModel.selectedPhotoNumber, 4)
-        XCTAssertNil(viewModel.activeCaptureSession)
-    }
-
-    func test_handleSlotTap_startsCaptureForEmptySlot() {
-        let viewModel = makeViewModel(usesStandardSet: false)
-
-        viewModel.handleSlotTap(5)
+        viewModel.startCapture(for: 5, sourceType: .photoLibrary)
 
         XCTAssertEqual(viewModel.activeCaptureSession?.number, 5)
     }
 
-    func test_handleCapturedImage_savesPhotoAndSelectsIt() {
+    func test_handleCapturedImage_savesPhoto() async {
         let library = MockMagicGalleryPhotoLibrary()
-        let viewModel = makeViewModel(photoLibrary: library, usesStandardSet: false)
+        let viewModel = await makeViewModel(photoLibrary: library, usesStandardSet: false)
 
         viewModel.handleCapturedImage(Self.image(), for: 6)
+        await flushPendingTasks()
 
         XCTAssertEqual(library.savedNumbers, [6])
         XCTAssertEqual(viewModel.customPhotos.map(\.number), [6])
-        XCTAssertEqual(viewModel.selectedPhotoNumber, 6)
         XCTAssertNil(viewModel.alertMessage)
     }
 
-    func test_sequentialCapture_continuesWithNextAvailableNumberAfterDismiss() {
+    func test_sequentialCapture_continuesWithNextAvailableNumberAfterDismiss() async {
         let library = MockMagicGalleryPhotoLibrary()
-        let viewModel = makeViewModel(photoLibrary: library, usesStandardSet: false)
+        let viewModel = await makeViewModel(photoLibrary: library, usesStandardSet: false)
 
-        viewModel.startSequentialCapture()
+        viewModel.startSequentialCapture(sourceType: .photoLibrary)
         XCTAssertEqual(viewModel.activeCaptureSession?.number, 1)
 
         viewModel.handleCapturedImage(Self.image(), for: 1)
         XCTAssertNil(viewModel.activeCaptureSession)
+        await flushPendingTasks()
 
         viewModel.presentPendingCaptureIfNeeded()
 
@@ -74,79 +68,78 @@ final class MagicGalleryViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.activeCaptureSession?.number, 2)
     }
 
-    func test_startSequentialCapture_whenAllCustomPhotosReady_showsAlert() {
+    func test_startSequentialCapture_whenAllCustomPhotosReady_showsAlert() async {
         let storedPhotos = (1...10).map {
             MagicGalleryPhoto(number: $0, image: Self.image(), fileName: "\($0).jpg", source: .custom)
         }
-        let viewModel = makeViewModel(storedPhotos: storedPhotos, usesStandardSet: false)
+        let viewModel = await makeViewModel(storedPhotos: storedPhotos, usesStandardSet: false)
 
-        viewModel.startSequentialCapture()
+        viewModel.startSequentialCapture(sourceType: .photoLibrary)
 
         XCTAssertNil(viewModel.activeCaptureSession)
         XCTAssertEqual(viewModel.alertMessage, String(localized: "magicGallery.error.allPhotosReady"))
     }
 
-    func test_deletePhoto_removesCustomPhotoAndClearsSelection() {
+    func test_deletePhoto_removesCustomPhoto() async {
         let photo = MagicGalleryPhoto(number: 2, image: Self.image(), fileName: "2.jpg", source: .custom)
         let library = MockMagicGalleryPhotoLibrary(storedPhotos: [photo])
-        let viewModel = makeViewModel(photoLibrary: library, storedPhotos: [photo], usesStandardSet: false)
-        viewModel.handleSlotTap(2)
+        let viewModel = await makeViewModel(photoLibrary: library, storedPhotos: [photo], usesStandardSet: false)
 
         viewModel.deletePhoto(photo)
+        XCTAssertTrue(viewModel.customPhotos.isEmpty)
+        await flushPendingTasks()
 
         XCTAssertEqual(library.deletedNumbers, [2])
-        XCTAssertTrue(viewModel.customPhotos.isEmpty)
-        XCTAssertNil(viewModel.selectedPhotoNumber)
     }
 
-    func test_deletePhoto_whenStorageDeleteFails_keepsPhotoAndShowsAlert() {
+    func test_deletePhoto_whenStorageDeleteFails_stillRemovesLocallyAndShowsAlert() async {
+        // deletePhoto removes locally right away and doesn't roll back on failure.
         let photo = MagicGalleryPhoto(number: 2, image: Self.image(), fileName: "2.jpg", source: .custom)
         let library = MockMagicGalleryPhotoLibrary(storedPhotos: [photo])
         library.shouldFailDelete = true
-        let viewModel = makeViewModel(photoLibrary: library, storedPhotos: [photo], usesStandardSet: false)
-        viewModel.handleSlotTap(2)
+        let viewModel = await makeViewModel(photoLibrary: library, storedPhotos: [photo], usesStandardSet: false)
 
         viewModel.deletePhoto(photo)
+        XCTAssertTrue(viewModel.customPhotos.isEmpty)
+        await flushPendingTasks()
 
         XCTAssertEqual(library.deletedNumbers, [2])
-        XCTAssertEqual(viewModel.customPhotos.map(\.number), [2])
-        XCTAssertEqual(viewModel.selectedPhotoNumber, 2)
         XCTAssertEqual(viewModel.alertMessage, String(localized: "magicGallery.error.deletePhotoFailed"))
     }
 
-    func test_saveSelectedPhotoToGallery_savesImageAndPlaysSuccess() async {
+    func test_savePhoto_savesImageAndPlaysSuccess() async {
         let photo = MagicGalleryPhoto(number: 1, image: Self.image(), fileName: "1.jpg", source: .custom)
         let saver = MockMagicGalleryPhotoSaver()
         let haptics = MockNotificationHaptics()
-        let viewModel = makeViewModel(
+        let viewModel = await makeViewModel(
             haptics: haptics,
             photoSaver: saver,
             storedPhotos: [photo],
             usesStandardSet: false
         )
-        viewModel.handleSlotTap(1)
 
-        await viewModel.saveSelectedPhotoToGallery()
+        let success = await viewModel.savePhoto(number: 1)
 
+        XCTAssertTrue(success)
         XCTAssertEqual(saver.savedImagesCount, 1)
         XCTAssertEqual(haptics.successCount, 1)
     }
 
-    func test_saveSelectedPhotoToGallery_whenSaveFails_doesNotPlaySuccessAndShowsAlert() async {
+    func test_savePhoto_whenSaveFails_doesNotPlaySuccessAndShowsAlert() async {
         let photo = MagicGalleryPhoto(number: 1, image: Self.image(), fileName: "1.jpg", source: .custom)
         let saver = MockMagicGalleryPhotoSaver()
         saver.shouldFailSave = true
         let haptics = MockNotificationHaptics()
-        let viewModel = makeViewModel(
+        let viewModel = await makeViewModel(
             haptics: haptics,
             photoSaver: saver,
             storedPhotos: [photo],
             usesStandardSet: false
         )
-        viewModel.handleSlotTap(1)
 
-        await viewModel.saveSelectedPhotoToGallery()
+        let success = await viewModel.savePhoto(number: 1)
 
+        XCTAssertFalse(success)
         XCTAssertEqual(saver.savedImagesCount, 1)
         XCTAssertEqual(haptics.successCount, 0)
         XCTAssertEqual(viewModel.alertMessage, String(localized: "magicGallery.error.saveToGalleryFailed"))
@@ -157,19 +150,26 @@ final class MagicGalleryViewModelTests: XCTestCase {
         photoLibrary: MockMagicGalleryPhotoLibrary? = nil,
         photoSaver: MockMagicGalleryPhotoSaver? = nil,
         storedPhotos: [MagicGalleryPhoto] = [],
-        usesStandardSet: Bool = true
-    ) -> MagicGalleryViewModel {
+        usesStandardSet: Bool = false
+    ) async -> MagicGalleryViewModel {
         let haptics = haptics ?? MockNotificationHaptics()
         let photoLibrary = photoLibrary ?? MockMagicGalleryPhotoLibrary()
         let photoSaver = photoSaver ?? MockMagicGalleryPhotoSaver()
         photoLibrary.storedPhotos = storedPhotos
 
-        return MagicGalleryViewModel(
+        let viewModel = MagicGalleryViewModel(
             haptics: haptics,
             preferences: MockMagicGalleryPreferences(usesStandardMagicGallerySet: usesStandardSet),
             photoLibrary: photoLibrary,
             photoSaver: photoSaver
         )
+        await viewModel.loadStoredPhotos()
+        return viewModel
+    }
+
+    // Lets fire-and-forget Task {} blocks under test finish before we assert on them.
+    private func flushPendingTasks() async {
+        for _ in 0..<10 { await Task.yield() }
     }
 
     fileprivate static func image() -> UIImage {
@@ -200,19 +200,23 @@ private final class MockMagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManagi
         MagicGalleryPhoto(number: number, image: MagicGalleryViewModelTests.image(), fileName: "\(number).jpg", source: .standard)
     }
 
-    func saveCustomPhoto(_ image: UIImage, for number: Int) throws -> MagicGalleryPhoto {
+    func saveCustomPhoto(_ image: UIImage, for number: Int) async throws -> MagicGalleryPhoto {
         savedNumbers.append(number)
         let photo = MagicGalleryPhoto(number: number, image: image, fileName: "\(number).jpg", source: .custom)
         storedPhotos.append(photo)
         return photo
     }
 
-    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) throws {
+    func deleteCustomPhoto(_ photo: MagicGalleryPhoto) async throws {
         deletedNumbers.append(photo.number)
         if shouldFailDelete {
             throw MockMagicGalleryError.requestedFailure
         }
         storedPhotos.removeAll { $0.number == photo.number }
+    }
+
+    func fullResolutionImage(for photo: MagicGalleryPhoto) async throws -> UIImage {
+        photo.image
     }
 }
 
@@ -240,6 +244,7 @@ private final class MockNotificationHaptics: HapticNotificationPlaying {
 
 private struct MockMagicGalleryPreferences: MagicGalleryPreferenceManaging {
     var usesStandardMagicGallerySet: Bool = true
+    var magicGalleryGestureMode: MagicGalleryGestureMode = .tap
 }
 
 private enum MockMagicGalleryError: Error {
