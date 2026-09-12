@@ -69,7 +69,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     enum Default {
         static let hapticSpeedMultiplier = 1.5
         static let hapticGroupByThreeEnabled = false
-        static let hapticIntensity = HapticIntensity.heavy
+        static let hapticIntensity = HapticIntensity.defaultValue
         static let secretGestureEnabled = false
         static let screenDownHoldDuration = 0.30
         static let isExitHintEnabled = true
