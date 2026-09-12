@@ -14,6 +14,7 @@ enum HapticIntensity: Equatable, Hashable {
     case heavy
 
     static let allCases: [HapticIntensity] = [.light, .medium, .heavy]
+    static let defaultValue: HapticIntensity = .heavy
 
     var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle {
         switch self {
@@ -51,8 +52,9 @@ enum HapticIntensity: Equatable, Hashable {
     init(storageValue: Double) {
         switch Int(storageValue) {
         case 0: self = .light
+        case 1: self = .medium
         case 2: self = .heavy
-        default: self = .medium
+        default: self = .defaultValue
         }
     }
 
