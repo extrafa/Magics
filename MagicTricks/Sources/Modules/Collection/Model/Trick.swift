@@ -8,11 +8,12 @@
 import Foundation
 
 enum TrickType: String, CaseIterable {
+    // Declaration order is also the Collection screen's display order (allCases).
+    case geoMentalism
     case colorSense
     case calculatorPrediction
     case timeControl
     case magicGallery
-    case geoMentalism
     case phantomDraw
 
     var requiresPro: Bool {
@@ -39,18 +40,18 @@ enum TrickDifficulty: Hashable {
 
 struct Trick: Identifiable, Hashable {
     let id: TrickType
-    let title: String
-    let cardTitle: String?
-    let subtitle: String
+    let title: LocalizedStringResource
+    let cardTitle: LocalizedStringResource?
+    let subtitle: LocalizedStringResource
     let image: String
     let difficulty: TrickDifficulty
     let instruction: Instruction
 
     init(
         id: TrickType,
-        title: String,
-        cardTitle: String? = nil,
-        subtitle: String,
+        title: LocalizedStringResource,
+        cardTitle: LocalizedStringResource? = nil,
+        subtitle: LocalizedStringResource,
         image: String,
         difficulty: TrickDifficulty,
         instruction: Instruction
@@ -63,61 +64,83 @@ struct Trick: Identifiable, Hashable {
         self.difficulty = difficulty
         self.instruction = instruction
     }
+
+    // LocalizedStringResource isn't Hashable, and each Trick is uniquely
+    // identified by its id anyway, so equality/hashing is id-based.
+    static func == (lhs: Trick, rhs: Trick) -> Bool {
+        lhs.id == rhs.id
+    }
+
+    func hash(into hasher: inout Hasher) {
+        hasher.combine(id)
+    }
 }
 
-struct TrickCollection {
-    static let tricks: [Trick] = [
-        Trick(
-            id: .geoMentalism,
-            title: String(localized: "card.geo.title"),
-            cardTitle: String(localized: "card.geo.cardTitle"),
-            subtitle: String(localized: "card.geo.subtitle"),
-            image: "globe.europe.africa.fill",
-            difficulty: .medium,
-            instruction: .geoMentalism
-        ),
-        Trick(
-            id: .colorSense,
-            title: String(localized: "card.color.title"),
-            cardTitle: String(localized: "card.color.cardTitle"),
-            subtitle: String(localized: "card.color.subtitle"),
-            image: "paintpalette",
-            difficulty: .easy,
-            instruction: .colorSense
-        ),
-        Trick(
-            id: .calculatorPrediction,
-            title: String(localized: "card.calculatorPrediction.title"),
-            cardTitle: String(localized: "card.calculatorPrediction.cardTitle"),
-            subtitle: String(localized: "card.calculatorPrediction.subtitle"),
-            image: "ipad",
-            difficulty: .medium,
-            instruction: .calculatorPrediction
-        ),
-        Trick(
-            id: .timeControl,
-            title: String(localized: "card.time.title"),
-            subtitle: String(localized: "card.time.subtitle"),
-            image: "stopwatch.fill",
-            difficulty: .medium,
-            instruction: .timeControl
-        ),
-        Trick(
-            id: .magicGallery,
-            title: String(localized: "card.magicGallery.title"),
-            subtitle: String(localized: "card.magicGallery.subtitle"),
-            image: "photo.on.rectangle.angled",
-            difficulty: .hard,
-            instruction: .magicGallery
-        ),
-        Trick(
-            id: .phantomDraw,
-            title: String(localized: "card.phantomDraw.title"),
-            cardTitle: String(localized: "card.phantomDraw.cardTitle"),
-            subtitle: String(localized: "card.phantomDraw.subtitle"),
-            image: "antenna.radiowaves.left.and.right",
-            difficulty: .easy,
-            instruction: .phantomDraw
-        )
-    ]
+extension TrickType {
+    var trick: Trick {
+        switch self {
+        case .geoMentalism:
+            Trick(
+                id: .geoMentalism,
+                title: "card.geo.title",
+                cardTitle: "card.geo.cardTitle",
+                subtitle: "card.geo.subtitle",
+                image: "globe.europe.africa.fill",
+                difficulty: .medium,
+                instruction: .geoMentalism
+            )
+        case .colorSense:
+            Trick(
+                id: .colorSense,
+                title: "card.color.title",
+                cardTitle: "card.color.cardTitle",
+                subtitle: "card.color.subtitle",
+                image: "paintpalette",
+                difficulty: .easy,
+                instruction: .colorSense
+            )
+        case .calculatorPrediction:
+            Trick(
+                id: .calculatorPrediction,
+                title: "card.calculatorPrediction.title",
+                cardTitle: "card.calculatorPrediction.cardTitle",
+                subtitle: "card.calculatorPrediction.subtitle",
+                image: "ipad",
+                difficulty: .medium,
+                instruction: .calculatorPrediction
+            )
+        case .timeControl:
+            Trick(
+                id: .timeControl,
+                title: "card.time.title",
+                subtitle: "card.time.subtitle",
+                image: "stopwatch.fill",
+                difficulty: .medium,
+                instruction: .timeControl
+            )
+        case .magicGallery:
+            Trick(
+                id: .magicGallery,
+                title: "card.magicGallery.title",
+                subtitle: "card.magicGallery.subtitle",
+                image: "photo.on.rectangle.angled",
+                difficulty: .hard,
+                instruction: .magicGallery
+            )
+        case .phantomDraw:
+            Trick(
+                id: .phantomDraw,
+                title: "card.phantomDraw.title",
+                cardTitle: "card.phantomDraw.cardTitle",
+                subtitle: "card.phantomDraw.subtitle",
+                image: "antenna.radiowaves.left.and.right",
+                difficulty: .easy,
+                instruction: .phantomDraw
+            )
+        }
+    }
+}
+
+enum TrickCollection {
+    static let tricks: [Trick] = TrickType.allCases.map(\.trick)
 }
