@@ -121,6 +121,7 @@ struct OBPaywallScreen: View {
                     .frame(width: 28, height: 28)
                     .background(Circle().fill(Color.primary.opacity(0.08)))
             }
+            .accessibilityLabel(String(localized: "common.close"))
         }
         .padding(.horizontal, 20)
         .padding(.top, topInset + 8)

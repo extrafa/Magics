@@ -67,6 +67,7 @@ struct GeoMentalismCitiesView: View {
             HStack(spacing: 8) {
                 Image(systemName: "shuffle")
                     .font(.system(size: 17, weight: .semibold))
+                    .accessibilityHidden(true)
                 Text(String(localized: "geo.shuffle"))
                     .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
