@@ -9,6 +9,7 @@ import Foundation
 
 extension Instruction {
     static let timeControl = Instruction(
+        trickType: .timeControl,
         title: String(localized: "instruction.time.title"),
         effect: String(localized: "instruction.time.effect"),
         secret: String(localized: "instruction.time.secret"),

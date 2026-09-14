@@ -9,6 +9,7 @@ import Foundation
 
 extension Instruction {
     static let colorSense = Instruction(
+        trickType: .colorSense,
         title: String(localized: "instruction.color.title"),
         effect: String(localized: "instruction.color.effect"),
         secret: String(localized: "instruction.color.secret"),

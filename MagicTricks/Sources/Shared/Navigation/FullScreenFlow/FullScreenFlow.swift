@@ -14,7 +14,7 @@ enum FullScreenFlow: Identifiable, Equatable {
 
     var id: String {
         switch self {
-        case .trick(let trick): return "trick_\(trick.id)"
+        case .trick(let trick): return "trick_\(trick.id.rawValue)"
         case .paywall: return "paywall"
         }
     }

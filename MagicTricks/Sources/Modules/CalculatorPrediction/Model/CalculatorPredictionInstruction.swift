@@ -2,6 +2,7 @@ import Foundation
 
 extension Instruction {
     static let calculatorPrediction = Instruction(
+        trickType: .calculatorPrediction,
         title: String(localized: "instruction.calculatorPrediction.title"),
         effect: String(localized: "instruction.calculatorPrediction.effect"),
         secret: String(localized: "instruction.calculatorPrediction.secret"),
