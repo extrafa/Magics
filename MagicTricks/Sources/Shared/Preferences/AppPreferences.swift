@@ -78,6 +78,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         static let screenDownHoldDuration = 0.30
         static let isExitHintEnabled = true
         static let usesStandardMagicGallerySet = true
+        static let magicGalleryGestureMode = MagicGalleryGestureMode.tap
     }
 
     enum Range {
@@ -102,7 +103,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     }
 
     var isHapticGroupByThreeEnabled: Bool {
-        get { store.bool(forKey: Key.hapticGroupByThreeEnabled) }
+        get { boolValue(forKey: Key.hapticGroupByThreeEnabled, default: Default.hapticGroupByThreeEnabled) }
         nonmutating set { store.set(newValue, forKey: Key.hapticGroupByThreeEnabled) }
     }
 
@@ -119,7 +120,7 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     }
 
     var isSecretGestureEnabled: Bool {
-        get { store.bool(forKey: Key.secretGestureEnabled) }
+        get { boolValue(forKey: Key.secretGestureEnabled, default: Default.secretGestureEnabled) }
         nonmutating set { store.set(newValue, forKey: Key.secretGestureEnabled) }
     }
 
@@ -191,8 +192,8 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
 
     var magicGalleryGestureMode: MagicGalleryGestureMode {
         get {
-            guard store.object(forKey: Key.magicGalleryGestureMode) != nil else { return .tap }
-            return MagicGalleryGestureMode(rawValue: Int(store.double(forKey: Key.magicGalleryGestureMode))) ?? .tap
+            guard store.object(forKey: Key.magicGalleryGestureMode) != nil else { return Default.magicGalleryGestureMode }
+            return MagicGalleryGestureMode(rawValue: Int(store.double(forKey: Key.magicGalleryGestureMode))) ?? Default.magicGalleryGestureMode
         }
         nonmutating set { store.set(Double(newValue.rawValue), forKey: Key.magicGalleryGestureMode) }
     }
@@ -207,6 +208,11 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         store.set(Default.secretGestureEnabled, forKey: Key.secretGestureEnabled)
         store.set(Default.screenDownHoldDuration, forKey: Key.screenDownHoldDuration)
         store.set(Default.isExitHintEnabled, forKey: Key.isExitHintEnabled)
+    }
+
+    private func boolValue(forKey key: String, default defaultValue: Bool) -> Bool {
+        guard store.object(forKey: key) != nil else { return defaultValue }
+        return store.bool(forKey: key)
     }
 
     private func clampedDouble(
