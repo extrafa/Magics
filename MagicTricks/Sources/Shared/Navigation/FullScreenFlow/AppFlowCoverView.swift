@@ -17,7 +17,7 @@ struct AppFlowCoverView: View {
         switch activeFlow {
         case .trick(let trick):
             NavigationStack {
-                TrickRouterView(trick: trick)
+                TrickRouterView(type: trick.id)
             }
             .fullScreenCover(isPresented: $flow.isPaywallOverlayPresented) {
                 OBPaywallScreen(onDismiss: flow.dismissPaywallOverlay)

@@ -9,10 +9,10 @@ import SwiftUI
 
 struct TrickRouterView: View {
 
-    let trick: Trick
+    let type: TrickType
 
     var body: some View {
-        switch trick.id {
+        switch type {
         case .calculatorPrediction:
             CalculatorPredictionView()
         case .colorSense:
