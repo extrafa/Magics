@@ -81,7 +81,9 @@ extension HapticManager {
         playCoreHapticEvents(events) {
             self.playGroupedCountFallback(count, initialDelay: initialDelay, generator: generator, timings: timings)
         }
-        scheduleCompletion(initialDelay: initialDelay, signalDuration: duration, completion: completion)
+
+        guard let completion else { return }
+        schedule(after: initialDelay + duration, action: completion)
     }
 
     private func playGroupedCountFallback(
