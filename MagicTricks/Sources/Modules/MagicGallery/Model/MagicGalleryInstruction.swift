@@ -9,6 +9,7 @@ import Foundation
 
 extension Instruction {
     static let magicGallery = Instruction(
+        trickType: .magicGallery,
         title: String(localized: "instruction.magicGallery.title"),
         effect: String(localized: "instruction.magicGallery.effect"),
         secret: String(localized: "instruction.magicGallery.secret"),

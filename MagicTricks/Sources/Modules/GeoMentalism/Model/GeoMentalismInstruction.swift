@@ -9,6 +9,7 @@ import Foundation
 
 extension Instruction {
     static let geoMentalism = Instruction(
+        trickType: .geoMentalism,
         title: String(localized: "instruction.geo.title"),
         effect: String(localized: "instruction.geo.effect"),
         secret: String(localized: "instruction.geo.secret"),

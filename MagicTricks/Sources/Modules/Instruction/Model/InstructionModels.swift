@@ -8,6 +8,7 @@
 import Foundation
 
 struct Instruction: Equatable, Hashable {
+    let trickType: TrickType
     let title: String
     let effect: String
     let secret: String

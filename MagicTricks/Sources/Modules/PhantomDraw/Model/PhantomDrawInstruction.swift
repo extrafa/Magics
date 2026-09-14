@@ -7,6 +7,7 @@ import Foundation
 
 extension Instruction {
     static let phantomDraw = Instruction(
+        trickType: .phantomDraw,
         title: String(localized: "instruction.phantomDraw.title"),
         effect: String(localized: "instruction.phantomDraw.effect"),
         secret: String(localized: "instruction.phantomDraw.secret"),
