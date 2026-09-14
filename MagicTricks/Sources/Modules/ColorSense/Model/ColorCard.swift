@@ -11,6 +11,8 @@ struct ColorCard: Identifiable {
     let id = UUID()
     let colorType: ColorCardType
     let title: String
+    let height: CGFloat
+    let rotation: Double
 }
 
 enum ColorCardType {
