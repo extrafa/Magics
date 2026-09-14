@@ -23,9 +23,11 @@ final class AppFlowCoordinator: ObservableObject {
     private var pendingFlow: FullScreenFlow?
     private let preferences: AppPreferences
     private let scheduler: DelayedActionScheduling
+    private let store: StoreManager
     private static let ratingTriggerCount = 3
 
-    init(preferences: AppPreferences = .shared, scheduler: DelayedActionScheduling = DispatchQueueScheduler()) {
+    init(store: StoreManager, preferences: AppPreferences = .shared, scheduler: DelayedActionScheduling = DispatchQueueScheduler()) {
+        self.store = store
         self.preferences = preferences
         self.scheduler = scheduler
     }

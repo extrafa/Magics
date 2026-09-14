@@ -85,8 +85,9 @@ struct CollectionView: View {
 }
 
 #Preview {
+    let store = StoreManager()
     CollectionView()
-        .environmentObject(AppFlowCoordinator())
+        .environmentObject(AppFlowCoordinator(store: store))
         .environmentObject(SettingsStore())
-        .environmentObject(StoreManager())
+        .environmentObject(store)
 }
