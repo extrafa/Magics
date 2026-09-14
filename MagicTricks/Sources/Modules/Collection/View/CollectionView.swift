@@ -12,7 +12,6 @@ struct CollectionView: View {
     @EnvironmentObject private var flow: AppFlowCoordinator
     @EnvironmentObject private var store: StoreManager
     @State private var showSettings = false
-    @State private var previousActiveFlow: FullScreenFlow? = nil
 
     var body: some View {
         NavigationStack {
@@ -81,12 +80,6 @@ struct CollectionView: View {
             AppFlowCoverView(activeFlow: activeFlow)
                 .environmentObject(store)
                 .environmentObject(flow)
-        }
-        .onChange(of: flow.activeFlow) { newValue in
-            if case .trick = previousActiveFlow, newValue == nil {
-                flow.recordTrickClose()
-            }
-            previousActiveFlow = newValue
         }
     }
 }

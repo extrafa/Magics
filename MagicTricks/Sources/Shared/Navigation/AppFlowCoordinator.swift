@@ -10,7 +10,13 @@ import Foundation
 @MainActor
 final class AppFlowCoordinator: ObservableObject {
 
-    @Published var activeFlow: FullScreenFlow?
+    @Published var activeFlow: FullScreenFlow? {
+        didSet {
+            if case .trick = oldValue, activeFlow == nil {
+                recordTrickClose()
+            }
+        }
+    }
     @Published var activeSheet: SheetFlow?
     @Published var isPaywallOverlayPresented = false
 
