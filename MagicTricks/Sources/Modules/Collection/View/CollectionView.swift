@@ -25,20 +25,8 @@ struct CollectionView: View {
                             TrickCardView(
                                 trick: trick,
                                 isLocked: isLocked,
-                                onStartTap: {
-                                    if isLocked {
-                                        flow.openPaywall()
-                                    } else {
-                                        flow.openStartFlow(for: trick)
-                                    }
-                                },
-                                onHowToTap: {
-                                    if isLocked {
-                                        flow.openPaywall()
-                                    } else {
-                                        flow.open(instruction: trick)
-                                    }
-                                }
+                                onStartTap: { flow.openStartFlow(for: trick) },
+                                onHowToTap: { flow.open(instruction: trick) }
                             )
                         }
                     }
