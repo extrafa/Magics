@@ -45,8 +45,12 @@ final class AppFlowCoordinator: ObservableObject {
         }
     }
 
-    func open(instruction: Instruction) {
-        activeSheet = .instruction(instruction: instruction)
+    func open(instruction trick: Trick) {
+        if isLocked(trick) {
+            openPaywall()
+        } else {
+            activeSheet = .instruction(instruction: trick.instruction)
+        }
     }
 
     func openPaywall() {
@@ -62,6 +66,10 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     func openStartFlow(for trick: Trick) {
+        guard !isLocked(trick) else {
+            openPaywall()
+            return
+        }
         if hasSeenTrick(trick) {
             activeFlow = .trick(trick: trick)
         } else {
@@ -91,5 +99,9 @@ final class AppFlowCoordinator: ObservableObject {
 
     private func hasSeenTrick(_ trick: Trick) -> Bool {
         preferences.seenTrickIds.contains(trick.id.rawValue)
+    }
+
+    private func isLocked(_ trick: Trick) -> Bool {
+        trick.id.requiresPro && !store.hasProAccess
     }
 }

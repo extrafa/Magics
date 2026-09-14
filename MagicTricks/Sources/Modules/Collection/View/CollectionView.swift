@@ -36,7 +36,7 @@ struct CollectionView: View {
                                     if isLocked {
                                         flow.openPaywall()
                                     } else {
-                                        flow.open(instruction: trick.instruction)
+                                        flow.open(instruction: trick)
                                     }
                                 }
                             )
