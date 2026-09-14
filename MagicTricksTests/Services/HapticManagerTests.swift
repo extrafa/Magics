@@ -66,6 +66,8 @@ private final class MockHapticEnginePlayer: HapticEnginePlaying {
     }
 
     func stop() {}
+
+    func stopEngine() {}
 }
 
 @MainActor

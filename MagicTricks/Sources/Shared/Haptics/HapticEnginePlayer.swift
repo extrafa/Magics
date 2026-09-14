@@ -57,6 +57,10 @@ final class HapticEnginePlayer {
         self.currentPlayer = nil
     }
 
+    func stopEngine() {
+        engine?.stop()
+    }
+
     private func configureEngine() {
         guard supportsHaptics else { return }
 
@@ -73,6 +77,7 @@ final class HapticEnginePlayer {
                     self?.restartEngineIfNeeded()
                 }
             }
+            engine.isAutoShutdownEnabled = true
             try engine.start()
             self.engine = engine
         } catch {
