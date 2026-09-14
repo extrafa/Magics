@@ -43,10 +43,6 @@ final class AppFlowCoordinator: ObservableObject {
         }
     }
 
-    func open(trick: Trick) {
-        activeFlow = .trick(trick: trick)
-    }
-
     func open(instruction: Instruction) {
         activeSheet = .instruction(instruction: instruction)
     }
