@@ -29,9 +29,9 @@ final class AppFlowCoordinator: ObservableObject {
         if let until = preferences.ratingSnoozedUntil, until > Date() { return }
         preferences.trickLaunchCount += 1
         if preferences.trickLaunchCount >= Self.ratingTriggerCount {
-            preferences.trickLaunchCount = 0
             scheduler.schedule(after: 0.7) { [weak self] in
                 guard let self, self.activeFlow == nil, self.activeSheet == nil else { return }
+                self.preferences.trickLaunchCount = 0
                 self.activeSheet = .rateApp
             }
         }

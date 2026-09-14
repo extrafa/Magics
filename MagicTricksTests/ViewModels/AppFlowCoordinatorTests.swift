@@ -54,11 +54,10 @@ final class AppFlowCoordinatorTests: XCTestCase {
         XCTAssertNil(coordinator.activeSheet)
     }
 
-    func test_recordTrickClose_threeTimes_whenAnotherFlowIsActive_doesNotShowSheet() {
-        let coordinator = AppFlowCoordinator(
-            preferences: AppPreferences(store: MockPreferenceStore()),
-            scheduler: ImmediateScheduler()
-        )
+    func test_recordTrickClose_threeTimes_whenAnotherFlowIsActive_doesNotShowSheetAndKeepsCount() {
+        let store = MockPreferenceStore()
+        let preferences = AppPreferences(store: store)
+        let coordinator = AppFlowCoordinator(preferences: preferences, scheduler: ImmediateScheduler())
         coordinator.open(trick: trick)
 
         coordinator.recordTrickClose()
@@ -66,6 +65,7 @@ final class AppFlowCoordinatorTests: XCTestCase {
         coordinator.recordTrickClose()
 
         XCTAssertNotEqual(coordinator.activeSheet, .rateApp)
+        XCTAssertEqual(preferences.trickLaunchCount, 3)
     }
 
     func test_openStartFlow_forUnseenTrick_showsInstructionFirstLaunch() {
