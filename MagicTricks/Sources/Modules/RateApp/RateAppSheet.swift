@@ -180,6 +180,6 @@ private struct RateAppPresentationModifier: ViewModifier {
     Color.clear
         .sheet(isPresented: .constant(true)) {
             RateAppSheet()
-                .environmentObject(AppFlowCoordinator())
+                .environmentObject(AppFlowCoordinator(store: StoreManager()))
         }
 }

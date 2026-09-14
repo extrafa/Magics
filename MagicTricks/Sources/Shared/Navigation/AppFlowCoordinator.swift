@@ -23,9 +23,11 @@ final class AppFlowCoordinator: ObservableObject {
     private var pendingFlow: FullScreenFlow?
     private let preferences: AppPreferences
     private let scheduler: DelayedActionScheduling
+    private let store: StoreManager
     private static let ratingTriggerCount = 3
 
-    init(preferences: AppPreferences = .shared, scheduler: DelayedActionScheduling = DispatchQueueScheduler()) {
+    init(store: StoreManager, preferences: AppPreferences = .shared, scheduler: DelayedActionScheduling = DispatchQueueScheduler()) {
+        self.store = store
         self.preferences = preferences
         self.scheduler = scheduler
     }
@@ -43,12 +45,12 @@ final class AppFlowCoordinator: ObservableObject {
         }
     }
 
-    func open(trick: Trick) {
-        activeFlow = .trick(trick: trick)
-    }
-
-    func open(instruction: Instruction) {
-        activeSheet = .instruction(instruction: instruction)
+    func open(instruction trick: Trick) {
+        if isLocked(trick) {
+            openPaywall()
+        } else {
+            activeSheet = .instruction(instruction: trick.instruction)
+        }
     }
 
     func openPaywall() {
@@ -64,6 +66,10 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     func openStartFlow(for trick: Trick) {
+        guard !isLocked(trick) else {
+            openPaywall()
+            return
+        }
         if hasSeenTrick(trick) {
             activeFlow = .trick(trick: trick)
         } else {
@@ -93,5 +99,9 @@ final class AppFlowCoordinator: ObservableObject {
 
     private func hasSeenTrick(_ trick: Trick) -> Bool {
         preferences.seenTrickIds.contains(trick.id.rawValue)
+    }
+
+    private func isLocked(_ trick: Trick) -> Bool {
+        trick.id.requiresPro && !store.hasProAccess
     }
 }

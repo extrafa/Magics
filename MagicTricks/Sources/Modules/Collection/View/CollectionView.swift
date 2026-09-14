@@ -25,20 +25,8 @@ struct CollectionView: View {
                             TrickCardView(
                                 trick: trick,
                                 isLocked: isLocked,
-                                onStartTap: {
-                                    if isLocked {
-                                        flow.openPaywall()
-                                    } else {
-                                        flow.openStartFlow(for: trick)
-                                    }
-                                },
-                                onHowToTap: {
-                                    if isLocked {
-                                        flow.openPaywall()
-                                    } else {
-                                        flow.open(instruction: trick.instruction)
-                                    }
-                                }
+                                onStartTap: { flow.openStartFlow(for: trick) },
+                                onHowToTap: { flow.open(instruction: trick) }
                             )
                         }
                     }
@@ -85,8 +73,9 @@ struct CollectionView: View {
 }
 
 #Preview {
+    let store = StoreManager()
     CollectionView()
-        .environmentObject(AppFlowCoordinator())
+        .environmentObject(AppFlowCoordinator(store: store))
         .environmentObject(SettingsStore())
-        .environmentObject(StoreManager())
+        .environmentObject(store)
 }
