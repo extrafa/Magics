@@ -72,6 +72,24 @@ extension HapticManager {
             return
         }
 
+        let (events, duration) = GroupedHapticPatternBuilder.groupedCountEvents(
+            count: count,
+            initialDelay: initialDelay,
+            timings: timings
+        )
+
+        playCoreHapticEvents(events) {
+            self.playGroupedCountFallback(count, initialDelay: initialDelay, generator: generator, timings: timings)
+        }
+        scheduleCompletion(initialDelay: initialDelay, signalDuration: duration, completion: completion)
+    }
+
+    private func playGroupedCountFallback(
+        _ count: Int,
+        initialDelay: TimeInterval,
+        generator: UIImpactFeedbackGenerator,
+        timings: HapticTimings
+    ) {
         let chunkSize = HapticTiming.groupedChunkSize
         var time = initialDelay
         var remaining = count
@@ -80,7 +98,6 @@ extension HapticManager {
 
         while remaining > 0 {
             let groupCount = min(chunkSize, remaining)
-            let isLastGroup = remaining == groupCount
             let pulseGap = groupCount < chunkSize
                 ? timings.grouped.remainderPulseGap
                 : timings.grouped.pulseGap
@@ -95,7 +112,7 @@ extension HapticManager {
                 initialDelay: time,
                 interval: pulseGap,
                 generator: generator,
-                completion: isLastGroup ? completion : nil
+                completion: nil
             )
 
             time += Double(groupCount - 1) * pulseGap + timings.grouped.groupGap
