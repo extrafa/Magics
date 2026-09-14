@@ -95,6 +95,7 @@
 		289123F12FC880000051759C /* HapticScheduler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123F02FC880000051759C /* HapticScheduler.swift */; };
 		289123F32FC880000051759C /* HapticProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123F22FC880000051759C /* HapticProtocols.swift */; };
 		289123F72FC880000051759C /* TimeHapticPatternBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123F62FC880000051759C /* TimeHapticPatternBuilder.swift */; };
+		63CFE047B79B1D380E83FC1A /* GroupedHapticPatternBuilder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5223FA78DC1A5B2EC7C4CD2C /* GroupedHapticPatternBuilder.swift */; };
 		28960C5B2FABD6D1003268CD /* ExitHintConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5A2FABD6D1003268CD /* ExitHintConfiguration.swift */; };
 		28960C5D2FABD6D2003268CD /* ExitHintViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5C2FABD6D2003268CD /* ExitHintViewModel.swift */; };
 		28960C602FABD7A0003268CD /* ExitHintGestureCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5F2FABD7A0003268CD /* ExitHintGestureCaptureView.swift */; };
@@ -259,6 +260,7 @@
 		289123F02FC880000051759C /* HapticScheduler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticScheduler.swift; sourceTree = "<group>"; };
 		289123F22FC880000051759C /* HapticProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticProtocols.swift; sourceTree = "<group>"; };
 		289123F62FC880000051759C /* TimeHapticPatternBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHapticPatternBuilder.swift; sourceTree = "<group>"; };
+		5223FA78DC1A5B2EC7C4CD2C /* GroupedHapticPatternBuilder.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedHapticPatternBuilder.swift; sourceTree = "<group>"; };
 		28960C5A2FABD6D1003268CD /* ExitHintConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintConfiguration.swift; sourceTree = "<group>"; };
 		28960C5C2FABD6D2003268CD /* ExitHintViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintViewModel.swift; sourceTree = "<group>"; };
 		28960C5F2FABD7A0003268CD /* ExitHintGestureCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintGestureCaptureView.swift; sourceTree = "<group>"; };
@@ -663,6 +665,7 @@
 				289123EE2FC880000051759C /* HapticEnginePlayer.swift */,
 				289123F02FC880000051759C /* HapticScheduler.swift */,
 				289123F62FC880000051759C /* TimeHapticPatternBuilder.swift */,
+				5223FA78DC1A5B2EC7C4CD2C /* GroupedHapticPatternBuilder.swift */,
 				289123EC2FBDCF230051759C /* HapticManager+TimeControl.swift */,
 				0AEE00000000000000000016 /* HapticManager+CountSignal.swift */,
 			);
@@ -1186,6 +1189,7 @@
 				289123F12FC880000051759C /* HapticScheduler.swift in Sources */,
 				289123F32FC880000051759C /* HapticProtocols.swift in Sources */,
 				289123F72FC880000051759C /* TimeHapticPatternBuilder.swift in Sources */,
+				63CFE047B79B1D380E83FC1A /* GroupedHapticPatternBuilder.swift in Sources */,
 				28E935822FF2BEEC00AEF6EC /* OBFirstScreen.swift in Sources */,
 				913878262F89733200CA371E /* InstructionView.swift in Sources */,
 				28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */,
