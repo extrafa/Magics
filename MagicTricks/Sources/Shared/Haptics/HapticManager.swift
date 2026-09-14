@@ -29,8 +29,14 @@ final class HapticManager {
     }
 
     func handleScenePhase(_ phase: ScenePhase) {
-        guard phase == .active else { return }
-        restartEngineIfNeeded()
+        switch phase {
+        case .active:
+            restartEngineIfNeeded()
+        case .background:
+            enginePlayer.stopEngine()
+        default:
+            break
+        }
     }
 
     func playSuccessNotification() {

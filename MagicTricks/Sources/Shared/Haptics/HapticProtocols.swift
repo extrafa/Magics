@@ -14,6 +14,7 @@ protocol HapticEnginePlaying {
     func restartEngineIfNeeded()
     func playEvents(_ events: [CHHapticEvent], fallback: Completion)
     func stop()
+    func stopEngine()
 }
 
 @MainActor
