@@ -5,7 +5,13 @@
 //  Created by Ross on 28/05/2026.
 //
 
+import Photos
 import UIKit
+
+@MainActor
+protocol PhotoLibraryAuthorizing {
+    func hasAddAccess() async -> Bool
+}
 
 @MainActor
 protocol MagicGalleryPhotoLibraryManaging {
@@ -186,6 +192,21 @@ final class MagicGallerySystemPhotoSaver: NSObject, MagicGalleryPhotoSaving {
             continuation.resume(throwing: error)
         } else {
             continuation.resume()
+        }
+    }
+}
+
+@MainActor
+final class SystemPhotoLibraryAuthorizer: PhotoLibraryAuthorizing {
+    func hasAddAccess() async -> Bool {
+        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
+        case .authorized, .limited:
+            return true
+        case .notDetermined:
+            let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
+            return status == .authorized || status == .limited
+        default:
+            return false
         }
     }
 }

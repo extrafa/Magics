@@ -19,6 +19,7 @@ final class MagicGalleryViewModel: ObservableObject {
 
     let photoLibrary: MagicGalleryPhotoLibraryManaging
     let photoSaver: MagicGalleryPhotoSaving
+    let photoLibraryAuthorizer: PhotoLibraryAuthorizing
     let haptics: HapticNotificationPlaying
     private var preferences: MagicGalleryPreferenceManaging
     var captureFlow = MagicGalleryCaptureFlow()
@@ -27,12 +28,14 @@ final class MagicGalleryViewModel: ObservableObject {
         haptics: HapticNotificationPlaying? = nil,
         preferences: MagicGalleryPreferenceManaging = AppPreferences.shared,
         photoLibrary: MagicGalleryPhotoLibraryManaging? = nil,
-        photoSaver: MagicGalleryPhotoSaving? = nil
+        photoSaver: MagicGalleryPhotoSaving? = nil,
+        photoLibraryAuthorizer: PhotoLibraryAuthorizing? = nil
     ) {
         self.haptics = haptics ?? HapticManager.shared
         self.preferences = preferences
         self.photoLibrary = photoLibrary ?? MagicGalleryPhotoLibrary()
         self.photoSaver = photoSaver ?? MagicGallerySystemPhotoSaver()
+        self.photoLibraryAuthorizer = photoLibraryAuthorizer ?? SystemPhotoLibraryAuthorizer()
         self.usesStandardSet = preferences.usesStandardMagicGallerySet
         self.gestureMode = preferences.magicGalleryGestureMode
     }
