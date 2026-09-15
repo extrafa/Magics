@@ -1,7 +1,15 @@
+//
+//  AppSheetView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 11/01/2026.
+//
+
 import SwiftUI
 
 struct AppSheetView: View {
     let activeSheet: SheetFlow
+    @EnvironmentObject private var flow: AppFlowCoordinator
 
     var body: some View {
         switch activeSheet {
@@ -9,6 +17,15 @@ struct AppSheetView: View {
             NavigationStack {
                 InstructionView(instruction: instruction)
             }
+        case .instructionFirstLaunch(let instruction, let trick):
+            NavigationStack {
+                InstructionView(instruction: instruction) {
+                    flow.startTrickAfterInstruction(trick)
+                }
+            }
+        case .rateApp:
+            RateAppSheet()
+                .environmentObject(flow)
         }
     }
 }

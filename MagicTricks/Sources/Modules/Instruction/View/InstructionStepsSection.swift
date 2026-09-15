@@ -10,11 +10,12 @@ import SwiftUI
 struct InstructionStepsSection: View {
     let steps: [InstructionStep]
     let onAction: (InstructionStepAction) -> Void
+    @ScaledMetric(relativeTo: .title) private var titleSize: CGFloat = 26
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             Text(String(localized: "instruction.section.steps"))
-                .font(.system(size: 26, weight: .bold, design: .rounded))
+                .font(.system(size: titleSize, weight: .bold, design: .rounded))
                 .foregroundStyle(.primaryText)
 
             InstructionPhaseLegend()

@@ -4,19 +4,21 @@ protocol PreferenceStoring {
     func object(forKey defaultName: String) -> Any?
     func bool(forKey defaultName: String) -> Bool
     func double(forKey defaultName: String) -> Double
-    func set(_ value: Bool, forKey defaultName: String)
-    func set(_ value: Double, forKey defaultName: String)
+    func stringArray(forKey defaultName: String) -> [String]?
+    func set(_ value: Any?, forKey defaultName: String)
 }
 
 extension UserDefaults: PreferenceStoring {}
 
 protocol ExitHintPreferenceManaging {
     var didLearnExitHint: Bool { get set }
+    var isExitHintEnabled: Bool { get }
 }
 
 protocol HapticPreferenceManaging {
     var hapticSpeedMultiplier: Double { get set }
     var isHapticGroupByThreeEnabled: Bool { get set }
+    var hapticIntensity: HapticIntensity { get set }
 
     func resetHapticSettings()
 }
@@ -30,10 +32,35 @@ protocol MotionPreferenceManaging {
 
 protocol MagicGalleryPreferenceManaging {
     var usesStandardMagicGallerySet: Bool { get set }
+    var magicGalleryGestureMode: MagicGalleryGestureMode { get set }
 }
 
-struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, MotionPreferenceManaging, MagicGalleryPreferenceManaging {
-    static let shared = AppPreferences()
+protocol RateAppPreferenceManaging {
+    var hasRespondedToRating: Bool { get set }
+    var ratingSnoozedUntil: Date? { get set }
+    var trickLaunchCount: Int { get set }
+}
+
+protocol OnboardingPreferenceManaging {
+    var hasCompletedOnboarding: Bool { get set }
+    var seenTrickIds: [String] { get set }
+}
+
+typealias AppPreferencesProviding = ExitHintPreferenceManaging
+    & HapticPreferenceManaging
+    & MotionPreferenceManaging
+    & MagicGalleryPreferenceManaging
+    & RateAppPreferenceManaging
+    & OnboardingPreferenceManaging
+
+typealias FlowPreferenceManaging = RateAppPreferenceManaging & OnboardingPreferenceManaging
+
+struct AppPreferences: AppPreferencesProviding {
+    static let shared: AppPreferences = {
+        let preferences = AppPreferences()
+        preferences.migrateIfNeeded()
+        return preferences
+    }()
 
     private let store: PreferenceStoring
 
@@ -41,26 +68,73 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         self.store = store
     }
 
+    // Legacy keys from before a rename, kept only so migrateIfNeeded() can read them once.
+    private enum LegacyKey {
+        static let usesStandardMagicGallerySet = "ImpossibleGalleryUsesStandardSet"
+    }
+
+    private enum SchemaVersion {
+        static let current = 1
+    }
+
+    // Runs once per store (gated by SchemaVersion.current) so renaming a key here doesn't
+    // silently reset it to its default for people who already have the old key set.
+    func migrateIfNeeded() {
+        guard Int(store.double(forKey: Key.preferencesSchemaVersion)) < SchemaVersion.current else { return }
+
+        if store.object(forKey: LegacyKey.usesStandardMagicGallerySet) != nil {
+            store.set(
+                store.bool(forKey: LegacyKey.usesStandardMagicGallerySet),
+                forKey: Key.usesStandardMagicGallerySet
+            )
+        }
+
+        store.set(Double(SchemaVersion.current), forKey: Key.preferencesSchemaVersion)
+    }
+
     enum Key {
+        static let preferencesSchemaVersion = "preferencesSchemaVersion"
+
+        // Haptic
         static let hapticSpeedMultiplier = "hapticSpeedMultiplier"
         static let hapticGroupByThreeEnabled = "hapticGroupByThreeEnabled"
+        static let hapticIntensity = "hapticIntensity"
+
+        // Motion
         static let secretGestureEnabled = "secretGestureEnabled"
         static let screenDownHoldDuration = "screenDownHoldDuration"
+
+        // ExitHint
         static let didLearnExitHint = "didLearnExitHint"
-        static let usesStandardMagicGallerySet = "ImpossibleGalleryUsesStandardSet"
+        static let isExitHintEnabled = "isExitHintEnabled"
+
+        // MagicGallery
+        static let usesStandardMagicGallerySet = "usesStandardMagicGallerySet"
+        static let magicGalleryGestureMode = "magicGalleryGestureMode"
+
+        // RateApp
+        static let hasRespondedToRating = "hasRespondedToRating"
+        static let ratingSnoozedUntil = "ratingSnoozedUntil"
+        static let trickLaunchCount = "trickLaunchCount"
+
+        // Onboarding
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
+        static let seenTrickIds = "seenTrickIds"
     }
 
     enum Default {
-        static let hapticSpeedMultiplier = 1.0
+        static let hapticSpeedMultiplier = 1.5
         static let hapticGroupByThreeEnabled = false
+        static let hapticIntensity = HapticIntensity.defaultValue
         static let secretGestureEnabled = false
         static let screenDownHoldDuration = 0.30
+        static let isExitHintEnabled = true
         static let usesStandardMagicGallerySet = true
+        static let magicGalleryGestureMode = MagicGalleryGestureMode.tap
     }
 
     enum Range {
-        static let hapticSpeedMultiplier = 0.7...2.0
+        static let hapticSpeedMultiplier = 1.0...2.5
         static let screenDownHoldDuration = 0.10...1.50
     }
 
@@ -81,12 +155,24 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
     }
 
     var isHapticGroupByThreeEnabled: Bool {
-        get { store.bool(forKey: Key.hapticGroupByThreeEnabled) }
+        get { boolValue(forKey: Key.hapticGroupByThreeEnabled, default: Default.hapticGroupByThreeEnabled) }
         nonmutating set { store.set(newValue, forKey: Key.hapticGroupByThreeEnabled) }
     }
 
+    var hapticIntensity: HapticIntensity {
+        get {
+            guard store.object(forKey: Key.hapticIntensity) != nil else {
+                return Default.hapticIntensity
+            }
+            return HapticIntensity(storageValue: store.double(forKey: Key.hapticIntensity))
+        }
+        nonmutating set {
+            store.set(newValue.storageValue, forKey: Key.hapticIntensity)
+        }
+    }
+
     var isSecretGestureEnabled: Bool {
-        get { store.bool(forKey: Key.secretGestureEnabled) }
+        get { boolValue(forKey: Key.secretGestureEnabled, default: Default.secretGestureEnabled) }
         nonmutating set { store.set(newValue, forKey: Key.secretGestureEnabled) }
     }
 
@@ -111,9 +197,39 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         nonmutating set { store.set(newValue, forKey: Key.didLearnExitHint) }
     }
 
+    var isExitHintEnabled: Bool {
+        get {
+            guard store.object(forKey: Key.isExitHintEnabled) != nil else {
+                return Default.isExitHintEnabled
+            }
+            return store.bool(forKey: Key.isExitHintEnabled)
+        }
+        nonmutating set { store.set(newValue, forKey: Key.isExitHintEnabled) }
+    }
+
     var hasCompletedOnboarding: Bool {
         get { store.bool(forKey: Key.hasCompletedOnboarding) }
         nonmutating set { store.set(newValue, forKey: Key.hasCompletedOnboarding) }
+    }
+
+    var trickLaunchCount: Int {
+        get { Int(store.double(forKey: Key.trickLaunchCount)) }
+        nonmutating set { store.set(Double(newValue), forKey: Key.trickLaunchCount) }
+    }
+
+    var hasRespondedToRating: Bool {
+        get { store.bool(forKey: Key.hasRespondedToRating) }
+        nonmutating set { store.set(newValue, forKey: Key.hasRespondedToRating) }
+    }
+
+    var ratingSnoozedUntil: Date? {
+        get { store.object(forKey: Key.ratingSnoozedUntil) as? Date }
+        nonmutating set { store.set(newValue, forKey: Key.ratingSnoozedUntil) }
+    }
+
+    var seenTrickIds: [String] {
+        get { store.stringArray(forKey: Key.seenTrickIds) ?? [] }
+        nonmutating set { store.set(newValue, forKey: Key.seenTrickIds) }
     }
 
     var usesStandardMagicGallerySet: Bool {
@@ -126,14 +242,29 @@ struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, Mot
         nonmutating set { store.set(newValue, forKey: Key.usesStandardMagicGallerySet) }
     }
 
+    var magicGalleryGestureMode: MagicGalleryGestureMode {
+        get {
+            guard store.object(forKey: Key.magicGalleryGestureMode) != nil else { return Default.magicGalleryGestureMode }
+            return MagicGalleryGestureMode(rawValue: Int(store.double(forKey: Key.magicGalleryGestureMode))) ?? Default.magicGalleryGestureMode
+        }
+        nonmutating set { store.set(Double(newValue.rawValue), forKey: Key.magicGalleryGestureMode) }
+    }
+
     func resetHapticSettings() {
         store.set(Default.hapticSpeedMultiplier, forKey: Key.hapticSpeedMultiplier)
         store.set(Default.hapticGroupByThreeEnabled, forKey: Key.hapticGroupByThreeEnabled)
+        store.set(Default.hapticIntensity.storageValue, forKey: Key.hapticIntensity)
     }
 
     func resetMotionSettings() {
         store.set(Default.secretGestureEnabled, forKey: Key.secretGestureEnabled)
         store.set(Default.screenDownHoldDuration, forKey: Key.screenDownHoldDuration)
+        store.set(Default.isExitHintEnabled, forKey: Key.isExitHintEnabled)
+    }
+
+    private func boolValue(forKey key: String, default defaultValue: Bool) -> Bool {
+        guard store.object(forKey: key) != nil else { return defaultValue }
+        return store.bool(forKey: key)
     }
 
     private func clampedDouble(

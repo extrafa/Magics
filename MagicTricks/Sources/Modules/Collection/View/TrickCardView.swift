@@ -8,35 +8,54 @@
 import SwiftUI
 
 struct TrickCardView: View {
-    
+
     let trick: Trick
+    let isLocked: Bool
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
-    
+
     var body: some View {
-        VStack(alignment: .leading, spacing: 18) {
-            header
-            
-            buttons
-        }
-        .padding(22)
-        .frame(maxWidth: .infinity, minHeight: 208, alignment: .topLeading)
-        .background(cardBackground)
-        .shadow(color: Color.black.opacity(0.06), radius: 18, x: 0, y: 8)
-        .overlay(alignment: .topTrailing) {
-            TrickDifficultyBadge(difficulty: trick.difficulty)
+        ZStack(alignment: .topTrailing) {
+            cardBody
+                .grayscale(isLocked ? 1.0 : 0)
+                .opacity(isLocked ? 0.52 : 1.0)
+                .animation(.easeInOut(duration: 0.2), value: isLocked)
+                .overlay {
+                    if isLocked {
+                        // A real Button, not a bare tap gesture, so VoiceOver gets one whole-card activation target.
+                        Button(action: onStartTap) {
+                            Color.clear
+                                .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                        }
+                        .buttonStyle(.plain)
+                        .accessibilityLabel(
+                            String(format: String(localized: "collection.locked.accessibilityLabel"), String(localized: trick.title))
+                        )
+                    }
+                }
+
+            badge
                 .padding(.top, 16)
                 .padding(.trailing, 16)
         }
+        // Caps growth so the badge doesn't collide with the title's reserved trailing padding (see `header`).
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
-    
-    private var cardBackground: some View {
-        RoundedRectangle(cornerRadius: 22, style: .continuous)
-            .fill(Color.grayCard)
-            .overlay(
-                RoundedRectangle(cornerRadius: 22, style: .continuous)
-                    .stroke(Color.grayBorder, lineWidth: 1)
-            )
+
+    // MARK: Card
+
+    private var cardBody: some View {
+        VStack(alignment: .leading, spacing: 0) {
+            header
+            Spacer(minLength: 16)
+            TrickCardActions(trickName: String(localized: trick.title), onStartTap: onStartTap, onHowToTap: onHowToTap)
+                // The locked overlay above exposes one combined element - avoid duplicate "Start"/"Learn" VoiceOver targets.
+                .accessibilityHidden(isLocked)
+        }
+        .padding(22)
+        .frame(maxWidth: .infinity, minHeight: 208, alignment: .topLeading)
+        .cardSurface(cornerRadius: 22)
+        .shadow(color: Color.black.opacity(isLocked ? 0.03 : 0.06), radius: 18, x: 0, y: 8)
     }
 
     private var header: some View {
@@ -49,8 +68,7 @@ struct TrickCardView: View {
 
             VStack(alignment: .leading, spacing: 6) {
                 Text(trick.cardTitle ?? trick.title)
-                    .font(.title3)
-                    .fontWeight(.bold)
+                    .font(.title3.weight(.bold))
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
@@ -69,8 +87,52 @@ struct TrickCardView: View {
             Spacer(minLength: 8)
         }
     }
-    
-    private var buttons: some View {
-        TrickCardActions(onStartTap: onStartTap, onHowToTap: onHowToTap)
+
+    // MARK: Badge
+
+    @ViewBuilder
+    private var badge: some View {
+        if isLocked {
+            proBadge
+        } else {
+            TrickDifficultyBadge(difficulty: trick.difficulty)
+        }
     }
+
+    private var proBadge: some View {
+        HStack(spacing: 4) {
+            Image(systemName: "lock.fill")
+                .font(.system(size: 9, weight: .bold))
+                .accessibilityHidden(true)
+            Text(String(localized: "trick.proBadge"))
+                .font(.system(.caption2, design: .rounded, weight: .bold))
+                .tracking(0.4)
+        }
+        .foregroundStyle(Color.primary.opacity(0.45))
+        .padding(.horizontal, 10)
+        .padding(.vertical, 7)
+        .background(Capsule(style: .continuous).fill(Color.primary.opacity(0.07)))
+        .overlay {
+            Capsule(style: .continuous)
+                .stroke(Color.primary.opacity(0.22), lineWidth: 1.2)
+        }
+    }
+}
+
+#Preview {
+    VStack(spacing: 16) {
+        TrickCardView(
+            trick: TrickCollection.tricks[0],
+            isLocked: false,
+            onStartTap: {},
+            onHowToTap: {}
+        )
+        TrickCardView(
+            trick: TrickCollection.tricks[1],
+            isLocked: true,
+            onStartTap: {},
+            onHowToTap: {}
+        )
+    }
+    .padding()
 }

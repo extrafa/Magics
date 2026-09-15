@@ -24,10 +24,8 @@ struct InstructionStepRow: View {
 
     private var phaseColor: Color {
         switch step.phase {
-        case .preparation:
-            return .blue
-        case .demonstration:
-            return .green
+        case .preparation: .blue
+        case .demonstration: .green
         }
     }
 
@@ -46,6 +44,21 @@ struct InstructionStepRow: View {
         VStack(alignment: .leading, spacing: 12) {
             stepText
 
+            if let imageName = step.imageName {
+                Color.clear
+                    .aspectRatio(step.imageRatio.rawValue, contentMode: .fit)
+                    .overlay {
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFill()
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .stroke(Color.grayBorder, lineWidth: 1)
+                    }
+            }
+
             if !step.actions.isEmpty {
                 InstructionStepActionsView(actions: step.actions, onAction: onAction)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -57,7 +70,7 @@ struct InstructionStepRow: View {
     private var stepText: some View {
         HStack(alignment: .top, spacing: 14) {
             Text("\(number).")
-                .font(.system(size: 16, weight: .bold, design: .rounded))
+                .font(.system(.callout, design: .rounded, weight: .bold))
                 .foregroundStyle(.primaryText.opacity(0.9))
                 .frame(width: 32, alignment: .leading)
                 .padding(.top, 2)
@@ -73,16 +86,31 @@ struct InstructionStepRow: View {
     private var titleAndDescription: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(step.title)
-                .font(.system(size: 17, weight: .semibold, design: .rounded))
+                .font(.system(.body, design: .rounded, weight: .semibold))
                 .foregroundStyle(.primaryText)
                 .fixedSize(horizontal: false, vertical: true)
 
             Text(step.description)
-                .font(.system(size: 15, weight: .regular, design: .rounded))
+                .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(.primaryText.opacity(0.72))
                 .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+#Preview {
+    ScrollView {
+        InstructionStepRow(
+            number: 1,
+            step: InstructionStep(
+                title: "Познакомьтесь с вибрациями",
+                description: "Потренируйтесь различать сигналы вибрации.",
+                phase: .preparation,
+                actions: [.hapticTraining]
+            )
+        )
+        .padding()
     }
 }

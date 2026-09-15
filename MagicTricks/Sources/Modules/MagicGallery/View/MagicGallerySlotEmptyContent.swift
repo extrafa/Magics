@@ -1,3 +1,10 @@
+//
+//  MagicGallerySlotEmptyContent.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
 
 struct MagicGallerySlotEmptyContent: View {
@@ -8,8 +15,7 @@ struct MagicGallerySlotEmptyContent: View {
                 .foregroundStyle(.indigo)
 
             Text(String(localized: "magicGallery.emptySlot"))
-                .font(.subheadline)
-                .fontWeight(.semibold)
+                .font(.subheadline.weight(.semibold))
                 .foregroundStyle(Color.primaryText)
 
             Text(String(localized: "magicGallery.tapToCapture"))

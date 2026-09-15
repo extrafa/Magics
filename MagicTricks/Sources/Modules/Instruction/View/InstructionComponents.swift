@@ -57,24 +57,24 @@ private struct InstructionInfoCard: View {
                     .frame(width: 22, alignment: .leading)
 
                 Text(title)
-                    .font(.system(size: 22, weight: .bold, design: .rounded))
+                    .font(.system(.title2, design: .rounded, weight: .bold))
                     .foregroundStyle(.primaryText)
             }
 
             Text(text)
-                .font(.system(size: 16, weight: .regular, design: .rounded))
+                .font(.system(.callout, design: .rounded))
                 .foregroundStyle(.primaryText.opacity(textOpacity))
                 .lineSpacing(5)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
-        .background(
+        .background {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
                 .fill(Color.primaryText.opacity(fillOpacity))
-                .overlay(
+                .overlay {
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
                         .stroke(Color.primaryText.opacity(strokeOpacity), lineWidth: 1)
-                )
-        )
+                }
+        }
     }
 }

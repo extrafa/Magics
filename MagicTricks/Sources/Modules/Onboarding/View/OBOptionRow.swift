@@ -1,3 +1,10 @@
+//
+//  OBOptionRow.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 struct OBOptionRow: View {
@@ -21,14 +28,14 @@ struct OBOptionRow: View {
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
-        .background(
+        .background {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
                 .fill(isSelected ? Color.primaryText.opacity(0.06) : Color.grayCard)
-                .overlay(
+                .overlay {
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
                         .stroke(isSelected ? Color.primaryText.opacity(0.35) : Color.grayBorder, lineWidth: 1)
-                )
-        )
+                }
+        }
         .animation(.easeOut(duration: 0.15), value: isSelected)
     }
 

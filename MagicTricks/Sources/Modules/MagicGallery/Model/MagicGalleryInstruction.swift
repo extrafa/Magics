@@ -9,6 +9,7 @@ import Foundation
 
 extension Instruction {
     static let magicGallery = Instruction(
+        trickType: .magicGallery,
         title: String(localized: "instruction.magicGallery.title"),
         effect: String(localized: "instruction.magicGallery.effect"),
         secret: String(localized: "instruction.magicGallery.secret"),
@@ -16,7 +17,8 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.magicGallery.step1.title"),
                 description: String(localized: "instruction.magicGallery.step1.description"),
-                phase: .preparation
+                phase: .preparation,
+                imageName: "gallery.step.collection"
             ),
             InstructionStep(
                 title: String(localized: "instruction.magicGallery.step2.title"),
@@ -36,11 +38,6 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.magicGallery.step5.title"),
                 description: String(localized: "instruction.magicGallery.step5.description"),
-                phase: .demonstration
-            ),
-            InstructionStep(
-                title: String(localized: "instruction.magicGallery.step6.title"),
-                description: String(localized: "instruction.magicGallery.step6.description"),
                 phase: .demonstration
             ),
         ]

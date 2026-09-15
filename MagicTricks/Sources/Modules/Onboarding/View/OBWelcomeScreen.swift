@@ -1,3 +1,10 @@
+//
+//  OBWelcomeScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
 import SwiftUI
 
 struct OBWelcomeScreen: View {
@@ -7,7 +14,6 @@ struct OBWelcomeScreen: View {
 
     private let topRow: [(String, Color)] = [
         ("paintpalette",             TrickPalette.Collection.colorSense),
-        ("pawprint.fill",            TrickPalette.Collection.mindPattern),
         ("ipad",                     TrickPalette.Collection.calculatorPrediction),
     ]
 
@@ -29,18 +35,14 @@ struct OBWelcomeScreen: View {
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 12)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.8).delay(0.42), value: appeared)
+                    .onboardingAppear(appeared, offset: 12, delay: 0.42)
 
                 Text(String(localized: "onboarding.welcome.subheadline"))
                     .font(.system(size: 17, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
-                    .opacity(appeared ? 1 : 0)
-                    .offset(y: appeared ? 0 : 10)
-                    .animation(.spring(response: 0.55, dampingFraction: 0.8).delay(0.52), value: appeared)
+                    .onboardingAppear(appeared, offset: 10, delay: 0.52)
             }
 
             Spacer()
@@ -55,7 +57,10 @@ struct OBWelcomeScreen: View {
             .animation(.easeOut(duration: 0.35).delay(0.65), value: appeared)
         }
         .onAppear {
-            DispatchQueue.main.asyncAfter(deadline: .now() + 0.15) { appeared = true }
+            Task { @MainActor in
+                try? await Task.sleep(milliseconds: 150)
+                appeared = true
+            }
         }
     }
 
@@ -99,7 +104,7 @@ struct OBWelcomeScreen: View {
                 }
             }
         }
-        .fontDesign(.rounded)
+        
     }
 }
 

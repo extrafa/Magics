@@ -1,3 +1,12 @@
+//
+//  TrickCardButtonStyle.swift
+//  Magic Tricks
+//
+//  Created by Ross on 05/04/2026.
+//
+// Unused — TrickGradientCard handles press state via its `isPressed` parameter directly.
+// Safe to delete this file from the project.
+
 import SwiftUI
 
 struct TrickCardButtonStyle: ButtonStyle {
