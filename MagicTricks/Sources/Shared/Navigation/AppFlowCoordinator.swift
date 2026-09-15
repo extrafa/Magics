@@ -21,14 +21,14 @@ final class AppFlowCoordinator: ObservableObject {
     @Published var isPaywallOverlayPresented = false
 
     private var pendingFlow: FullScreenFlow?
-    private var preferences: RateAppPreferenceManaging & OnboardingPreferenceManaging
+    private var preferences: FlowPreferenceManaging
     private let scheduler: DelayedActionScheduling
     private let store: StoreManager
     private static let ratingTriggerCount = 3
 
     init(
         store: StoreManager,
-        preferences: RateAppPreferenceManaging & OnboardingPreferenceManaging = AppPreferences.shared,
+        preferences: FlowPreferenceManaging = AppPreferences.shared,
         scheduler: DelayedActionScheduling = DispatchQueueScheduler()
     ) {
         self.store = store

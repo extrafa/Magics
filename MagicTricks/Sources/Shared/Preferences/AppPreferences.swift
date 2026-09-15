@@ -53,6 +53,8 @@ typealias AppPreferencesProviding = ExitHintPreferenceManaging
     & RateAppPreferenceManaging
     & OnboardingPreferenceManaging
 
+typealias FlowPreferenceManaging = RateAppPreferenceManaging & OnboardingPreferenceManaging
+
 struct AppPreferences: AppPreferencesProviding {
     static let shared = AppPreferences()
 
