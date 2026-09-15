@@ -84,8 +84,6 @@
 		287D56322FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56312FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift */; };
 		287D56342FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56332FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift */; };
 		287D56362FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56352FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift */; };
-		287D56382FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56372FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift */; };
-		287D563A2FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D56392FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift */; };
 		287D563C2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D563B2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift */; };
 		287D7906302DEBD8009E75EE /* HapticHelpSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 287D7903302DEBD8009E75EE /* HapticHelpSection.swift */; };
 		289123E52FBDCEC80051759C /* HapticModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 289123E42FBDCEC80051759C /* HapticModels.swift */; };
@@ -248,8 +246,6 @@
 		287D56312FCE700000ECCE14 /* MagicGallerySlotPhotoContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotPhotoContent.swift; sourceTree = "<group>"; };
 		287D56332FCE700000ECCE14 /* MagicGallerySlotEmptyContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotEmptyContent.swift; sourceTree = "<group>"; };
 		287D56352FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCaptureFlow.swift; sourceTree = "<group>"; };
-		287D56372FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicGalleryViewModel+Actions.swift"; sourceTree = "<group>"; };
-		287D56392FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MagicGalleryViewModel+Presentation.swift"; sourceTree = "<group>"; };
 		287D563B2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGallerySlotGrid.swift; sourceTree = "<group>"; };
 		287D7903302DEBD8009E75EE /* HapticHelpSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticHelpSection.swift; sourceTree = "<group>"; };
 		289123E42FBDCEC80051759C /* HapticModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticModels.swift; sourceTree = "<group>"; };
@@ -580,8 +576,6 @@
 			isa = PBXGroup;
 			children = (
 				287D56352FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift */,
-				287D56372FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift */,
-				287D56392FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift */,
 				287D56222FACD63D00ECCE14 /* MagicGalleryViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1218,8 +1212,6 @@
 				9100D58A2FCE720000B0BC0 /* TrickCardActions.swift in Sources */,
 				912B25832F2EA2D800B32AF1 /* CalculatorPredictionView.swift in Sources */,
 				287D56232FACD63D00ECCE14 /* MagicGalleryViewModel.swift in Sources */,
-				287D56382FCE770000ECCE14 /* MagicGalleryViewModel+Actions.swift in Sources */,
-				287D563A2FCE770000ECCE14 /* MagicGalleryViewModel+Presentation.swift in Sources */,
 				28062325301A8E06003F0C44 /* CityCapsule.swift in Sources */,
 				287D563C2FCE7A0000ECCE14 /* MagicGallerySlotGrid.swift in Sources */,
 				289123ED2FBDCF230051759C /* HapticManager+TimeControl.swift in Sources */,
