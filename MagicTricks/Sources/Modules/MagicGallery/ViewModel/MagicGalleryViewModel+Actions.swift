@@ -6,7 +6,6 @@
 //
 
 import AVFoundation
-import Photos
 import UIKit
 
 extension MagicGalleryViewModel {
@@ -93,7 +92,7 @@ extension MagicGalleryViewModel {
             alertMessage = String(localized: "magicGallery.selectPhotoFirst")
             return false
         }
-        guard await hasPhotoLibraryAddAccess() else {
+        guard await photoLibraryAuthorizer.hasAddAccess() else {
             accessDeniedAlertMessage = String(localized: "magicGallery.error.photoLibraryAccessDenied")
             return false
         }
@@ -104,18 +103,6 @@ extension MagicGalleryViewModel {
             return true
         } catch {
             alertMessage = String(localized: "magicGallery.error.saveToGalleryFailed")
-            return false
-        }
-    }
-
-    private func hasPhotoLibraryAddAccess() async -> Bool {
-        switch PHPhotoLibrary.authorizationStatus(for: .addOnly) {
-        case .authorized, .limited:
-            return true
-        case .notDetermined:
-            let status = await PHPhotoLibrary.requestAuthorization(for: .addOnly)
-            return status == .authorized || status == .limited
-        default:
             return false
         }
     }

@@ -114,6 +114,7 @@ final class MagicGalleryViewModelTests: XCTestCase {
         let viewModel = await makeViewModel(
             haptics: haptics,
             photoSaver: saver,
+            photoLibraryAuthorizer: MockPhotoLibraryAuthorizer(),
             storedPhotos: [photo],
             usesStandardSet: false
         )
@@ -133,6 +134,7 @@ final class MagicGalleryViewModelTests: XCTestCase {
         let viewModel = await makeViewModel(
             haptics: haptics,
             photoSaver: saver,
+            photoLibraryAuthorizer: MockPhotoLibraryAuthorizer(),
             storedPhotos: [photo],
             usesStandardSet: false
         )
@@ -149,19 +151,22 @@ final class MagicGalleryViewModelTests: XCTestCase {
         haptics: MockNotificationHaptics? = nil,
         photoLibrary: MockMagicGalleryPhotoLibrary? = nil,
         photoSaver: MockMagicGalleryPhotoSaver? = nil,
+        photoLibraryAuthorizer: MockPhotoLibraryAuthorizer? = nil,
         storedPhotos: [MagicGalleryPhoto] = [],
         usesStandardSet: Bool = false
     ) async -> MagicGalleryViewModel {
         let haptics = haptics ?? MockNotificationHaptics()
         let photoLibrary = photoLibrary ?? MockMagicGalleryPhotoLibrary()
         let photoSaver = photoSaver ?? MockMagicGalleryPhotoSaver()
+        let photoLibraryAuthorizer = photoLibraryAuthorizer ?? MockPhotoLibraryAuthorizer()
         photoLibrary.storedPhotos = storedPhotos
 
         let viewModel = MagicGalleryViewModel(
             haptics: haptics,
             preferences: MockMagicGalleryPreferences(usesStandardMagicGallerySet: usesStandardSet),
             photoLibrary: photoLibrary,
-            photoSaver: photoSaver
+            photoSaver: photoSaver,
+            photoLibraryAuthorizer: photoLibraryAuthorizer
         )
         await viewModel.loadStoredPhotos()
         return viewModel
@@ -231,6 +236,13 @@ private final class MockMagicGalleryPhotoSaver: MagicGalleryPhotoSaving {
             throw MockMagicGalleryError.requestedFailure
         }
     }
+}
+
+@MainActor
+private final class MockPhotoLibraryAuthorizer: PhotoLibraryAuthorizing {
+    var hasAccess = true
+
+    func hasAddAccess() async -> Bool { hasAccess }
 }
 
 @MainActor
