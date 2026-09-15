@@ -26,6 +26,10 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     private static let pskIdentity = "PhantomDraw"
     private static let connectionTimeout: TimeInterval = 10
 
+    // Peer-sent strokes are untrusted network input.
+    static let maxStrokes = 500
+    static let maxPointsPerStroke = 5_000
+
     @Published var connectionState: PhantomDrawConnectionState = .idle
     @Published var receivedStrokes: [DrawingStroke] = []
     @Published var inProgressStroke: DrawingStroke?
@@ -273,15 +277,16 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
                     guard let self else { return }
                     switch msg {
                     case .stroke(let s):
-                        self.receivedStrokes.append(s)
                         self.inProgressStroke = nil
+                        guard self.receivedStrokes.count < Self.maxStrokes, let sanitized = self.sanitized(s) else { break }
+                        self.receivedStrokes.append(sanitized)
                     case .strokeProgress(let s):
-                        self.inProgressStroke = s
+                        self.inProgressStroke = self.sanitized(s)
                     case .clear:
                         self.receivedStrokes = []
                         self.inProgressStroke = nil
                     case .sync(let all):
-                        self.receivedStrokes = all
+                        self.receivedStrokes = Array(all.compactMap(self.sanitized).prefix(Self.maxStrokes))
                         self.inProgressStroke = nil
                     }
                 }
@@ -291,6 +296,15 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     }
 
     // MARK: - Helpers
+
+    // Clamps a peer-sent stroke to sane bounds; nil if it's malformed enough to just drop.
+    func sanitized(_ stroke: DrawingStroke) -> DrawingStroke? {
+        guard (1...Self.maxPointsPerStroke).contains(stroke.points.count) else { return nil }
+        let clampedPoints = stroke.points.map {
+            DrawingPoint(x: min(max($0.x, 0), 1), y: min(max($0.y, 0), 1))
+        }
+        return DrawingStroke(id: stroke.id, points: clampedPoints)
+    }
 
     private func makeParams(code: String) -> NWParameters {
         let tlsOptions = NWProtocolTLS.Options()
