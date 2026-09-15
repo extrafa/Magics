@@ -13,6 +13,7 @@ final class AppFlowCoordinatorTests: XCTestCase {
 
     func test_recordTrickClose_threeTimes_showsRateAppSheet() {
         let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
             preferences: AppPreferences(store: MockPreferenceStore()),
             scheduler: ImmediateScheduler()
         )
@@ -30,7 +31,11 @@ final class AppFlowCoordinatorTests: XCTestCase {
         let store = MockPreferenceStore()
         let preferences = AppPreferences(store: store)
         preferences.hasRespondedToRating = true
-        let coordinator = AppFlowCoordinator(preferences: preferences, scheduler: ImmediateScheduler())
+        let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: preferences,
+            scheduler: ImmediateScheduler()
+        )
 
         coordinator.recordTrickClose()
         coordinator.recordTrickClose()
@@ -44,7 +49,11 @@ final class AppFlowCoordinatorTests: XCTestCase {
         let store = MockPreferenceStore()
         let preferences = AppPreferences(store: store)
         preferences.ratingSnoozedUntil = Date().addingTimeInterval(3600)
-        let coordinator = AppFlowCoordinator(preferences: preferences, scheduler: ImmediateScheduler())
+        let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: preferences,
+            scheduler: ImmediateScheduler()
+        )
 
         coordinator.recordTrickClose()
         coordinator.recordTrickClose()
@@ -57,8 +66,12 @@ final class AppFlowCoordinatorTests: XCTestCase {
     func test_recordTrickClose_threeTimes_whenAnotherFlowIsActive_doesNotShowSheetAndKeepsCount() {
         let store = MockPreferenceStore()
         let preferences = AppPreferences(store: store)
-        let coordinator = AppFlowCoordinator(preferences: preferences, scheduler: ImmediateScheduler())
-        coordinator.open(trick: trick)
+        let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: preferences,
+            scheduler: ImmediateScheduler()
+        )
+        coordinator.activeFlow = .trick(trick: trick)
 
         coordinator.recordTrickClose()
         coordinator.recordTrickClose()
@@ -69,7 +82,10 @@ final class AppFlowCoordinatorTests: XCTestCase {
     }
 
     func test_openStartFlow_forUnseenTrick_showsInstructionFirstLaunch() {
-        let coordinator = AppFlowCoordinator(preferences: AppPreferences(store: MockPreferenceStore()))
+        let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: AppPreferences(store: MockPreferenceStore())
+        )
 
         coordinator.openStartFlow(for: trick)
 
@@ -80,7 +96,10 @@ final class AppFlowCoordinatorTests: XCTestCase {
     }
 
     func test_openStartFlow_forSeenTrick_opensTrickDirectly() {
-        let coordinator = AppFlowCoordinator(preferences: AppPreferences(store: MockPreferenceStore()))
+        let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: AppPreferences(store: MockPreferenceStore())
+        )
         coordinator.markTrickAsSeen(trick)
 
         coordinator.openStartFlow(for: trick)
