@@ -81,6 +81,12 @@ final class MagicGalleryViewModel: ObservableObject {
         customPhotos.count < photoLibrary.maxPhotos
     }
 
+    var photosByNumber: [Int: MagicGalleryPhoto] {
+        Dictionary(uniqueKeysWithValues: (1...photoLibrary.maxPhotos).compactMap { number in
+            photo(for: number).map { (number, $0) }
+        })
+    }
+
     func photo(for number: Int) -> MagicGalleryPhoto? {
         if usesStandardSet {
             return photoLibrary.standardPhoto(for: number)

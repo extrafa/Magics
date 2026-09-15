@@ -8,9 +8,7 @@
 import SwiftUI
 
 struct MagicGallerySlotGrid: View {
-    let customPhotos: [MagicGalleryPhoto]
-    let usesStandardSet: Bool
-    let photoProvider: (Int) -> MagicGalleryPhoto?
+    let photos: [Int: MagicGalleryPhoto]
     let onSlotTap: (Int) -> Void
     let onDelete: (MagicGalleryPhoto) -> Void
 
@@ -22,7 +20,7 @@ struct MagicGallerySlotGrid: View {
     var body: some View {
         LazyVGrid(columns: Self.columns, spacing: 12) {
             ForEach(1...10, id: \.self) { number in
-                let photo = photoProvider(number)
+                let photo = photos[number]
                 MagicGallerySlotCard(
                     number: number,
                     photo: photo,
@@ -34,7 +32,7 @@ struct MagicGallerySlotGrid: View {
     }
 
     private func deletePhoto(for number: Int) {
-        guard let photo = photoProvider(number) else { return }
+        guard let photo = photos[number] else { return }
         onDelete(photo)
     }
 }

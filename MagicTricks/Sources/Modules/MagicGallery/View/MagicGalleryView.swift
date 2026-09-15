@@ -79,9 +79,7 @@ struct MagicGalleryView: View {
 
     private var slotGrid: some View {
         MagicGallerySlotGrid(
-            customPhotos: vm.customPhotos,
-            usesStandardSet: vm.usesStandardSet,
-            photoProvider: vm.photo(for:),
+            photos: vm.photosByNumber,
             onSlotTap: vm.handleSlotTap,
             onDelete: vm.deletePhoto
         )
