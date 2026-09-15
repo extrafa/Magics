@@ -58,6 +58,31 @@ struct SettingsActionRow: View {
     }
 }
 
+struct SettingsToggleRow: View {
+
+    let title: String
+    let subtitle: String
+    var tint: Color = TrickPalette.Collection.timeControl
+    @Binding var isOn: Bool
+
+    var body: some View {
+        Toggle(isOn: $isOn) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                    .foregroundStyle(.primaryText)
+
+                Text(subtitle)
+                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .foregroundStyle(Color.primaryText.opacity(0.58))
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .tint(tint)
+        .padding(18)
+    }
+}
+
 struct SettingsDivider: View {
 
     var body: some View {
