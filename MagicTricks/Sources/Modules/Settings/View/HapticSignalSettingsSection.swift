@@ -66,20 +66,11 @@ struct HapticSignalSettingsSection: View {
 
     private var groupingSection: some View {
         SettingsSection(title: String(localized: "settings.haptics.grouping")) {
-            Toggle(isOn: $settings.isHapticGroupByThreeEnabled) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(String(localized: "settings.haptics.groupVibrations"))
-                        .font(.system(size: 17, weight: .bold, design: .rounded))
-                        .foregroundStyle(.primaryText)
-
-                    Text(String(localized: "settings.haptics.groupingDescription"))
-                        .font(.system(size: 13, weight: .medium, design: .rounded))
-                        .foregroundStyle(Color.primaryText.opacity(0.58))
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-            .tint(TrickPalette.Collection.timeControl)
-            .padding(18)
+            SettingsToggleRow(
+                title: String(localized: "settings.haptics.groupVibrations"),
+                subtitle: String(localized: "settings.haptics.groupingDescription"),
+                isOn: $settings.isHapticGroupByThreeEnabled
+            )
             .cardSurface(cornerRadius: 20)
         }
     }
