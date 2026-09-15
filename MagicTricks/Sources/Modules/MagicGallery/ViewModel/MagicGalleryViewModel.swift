@@ -42,9 +42,11 @@ final class MagicGalleryViewModel: ObservableObject {
     }
 
     var nextAvailableNumber: Int? {
-        (1...photoLibrary.maxPhotos).first { number in
-            customPhotos.contains { $0.number == number } == false
-        }
+        firstAvailableNumber(excluding: Set(customPhotos.map(\.number)))
+    }
+
+    private func firstAvailableNumber(excluding takenNumbers: Set<Int>) -> Int? {
+        (1...photoLibrary.maxPhotos).first { !takenNumbers.contains($0) }
     }
 
     func loadStoredPhotos() async {
@@ -136,7 +138,7 @@ final class MagicGalleryViewModel: ObservableObject {
 
     func handleCapturedImage(_ image: UIImage, for number: Int) {
         let takenNumbers = Set(customPhotos.map(\.number)).union([number])
-        let nextNumber = (1...photoLibrary.maxPhotos).first { !takenNumbers.contains($0) }
+        let nextNumber = firstAvailableNumber(excluding: takenNumbers)
 
         captureFlow.completeCapture(nextAvailableNumber: nextNumber)
         activeCaptureSession = nil
