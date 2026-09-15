@@ -7011,23 +7011,6 @@
         }
       }
     },
-    "settings.motion.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gestures"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gestos"
-          }
-        }
-      }
-    },
     "settings.preview" : {
       "extractionState" : "manual",
       "localizations" : {
