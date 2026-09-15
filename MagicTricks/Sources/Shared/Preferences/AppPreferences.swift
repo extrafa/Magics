@@ -56,7 +56,11 @@ typealias AppPreferencesProviding = ExitHintPreferenceManaging
 typealias FlowPreferenceManaging = RateAppPreferenceManaging & OnboardingPreferenceManaging
 
 struct AppPreferences: AppPreferencesProviding {
-    static let shared = AppPreferences()
+    static let shared: AppPreferences = {
+        let preferences = AppPreferences()
+        preferences.migrateIfNeeded()
+        return preferences
+    }()
 
     private let store: PreferenceStoring
 
@@ -64,20 +68,57 @@ struct AppPreferences: AppPreferencesProviding {
         self.store = store
     }
 
+    // Legacy keys from before a rename, kept only so migrateIfNeeded() can read them once.
+    private enum LegacyKey {
+        static let usesStandardMagicGallerySet = "ImpossibleGalleryUsesStandardSet"
+    }
+
+    private enum SchemaVersion {
+        static let current = 1
+    }
+
+    // Runs once per store (gated by SchemaVersion.current) so renaming a key here doesn't
+    // silently reset it to its default for people who already have the old key set.
+    func migrateIfNeeded() {
+        guard Int(store.double(forKey: Key.preferencesSchemaVersion)) < SchemaVersion.current else { return }
+
+        if store.object(forKey: LegacyKey.usesStandardMagicGallerySet) != nil {
+            store.set(
+                store.bool(forKey: LegacyKey.usesStandardMagicGallerySet),
+                forKey: Key.usesStandardMagicGallerySet
+            )
+        }
+
+        store.set(Double(SchemaVersion.current), forKey: Key.preferencesSchemaVersion)
+    }
+
     enum Key {
+        static let preferencesSchemaVersion = "preferencesSchemaVersion"
+
+        // Haptic
         static let hapticSpeedMultiplier = "hapticSpeedMultiplier"
         static let hapticGroupByThreeEnabled = "hapticGroupByThreeEnabled"
         static let hapticIntensity = "hapticIntensity"
+
+        // Motion
         static let secretGestureEnabled = "secretGestureEnabled"
         static let screenDownHoldDuration = "screenDownHoldDuration"
+
+        // ExitHint
         static let didLearnExitHint = "didLearnExitHint"
         static let isExitHintEnabled = "isExitHintEnabled"
-        static let usesStandardMagicGallerySet = "ImpossibleGalleryUsesStandardSet"
+
+        // MagicGallery
+        static let usesStandardMagicGallerySet = "usesStandardMagicGallerySet"
         static let magicGalleryGestureMode = "magicGalleryGestureMode"
-        static let hasCompletedOnboarding = "hasCompletedOnboarding"
-        static let trickLaunchCount = "trickLaunchCount"
+
+        // RateApp
         static let hasRespondedToRating = "hasRespondedToRating"
         static let ratingSnoozedUntil = "ratingSnoozedUntil"
+        static let trickLaunchCount = "trickLaunchCount"
+
+        // Onboarding
+        static let hasCompletedOnboarding = "hasCompletedOnboarding"
         static let seenTrickIds = "seenTrickIds"
     }
 
