@@ -27,19 +27,11 @@ struct MotionSettingsSection: View {
     var body: some View {
         SettingsSection(title: String(localized: "settings.trigger")) {
             VStack(spacing: 0) {
-                Toggle(isOn: $settings.isSecretGestureEnabled.animation()) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(String(localized: "settings.faceDown"))
-                            .font(.system(size: 17, weight: .bold, design: .rounded))
-                            .foregroundStyle(.primaryText)
-
-                        Text(String(localized: "settings.haptics.faceDownDescription"))
-                            .font(.system(size: 13, weight: .medium, design: .rounded))
-                            .foregroundStyle(Color.primaryText.opacity(0.58))
-                    }
-                }
-                .tint(TrickPalette.Collection.timeControl)
-                .padding(18)
+                SettingsToggleRow(
+                    title: String(localized: "settings.faceDown"),
+                    subtitle: String(localized: "settings.haptics.faceDownDescription"),
+                    isOn: $settings.isSecretGestureEnabled.animation()
+                )
 
                 if settings.isSecretGestureEnabled {
                     cardDivider

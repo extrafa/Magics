@@ -50,20 +50,12 @@ private extension SettingsScreen {
     var testFlightSection: some View {
         SettingsSection(title: "TestFlight") {
             VStack(spacing: 0) {
-                Toggle(isOn: $storeManager.isProOverride) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(String(localized: "settings.proOverride.title"))
-                            .font(.system(.body, design: .rounded, weight: .bold))
-                            .foregroundStyle(.primaryText)
-
-                        Text(String(localized: "settings.proOverride.description"))
-                            .font(.system(.footnote, design: .rounded, weight: .medium))
-                            .foregroundStyle(Color.primaryText.opacity(0.58))
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-                .tint(.orange)
-                .padding(18)
+                SettingsToggleRow(
+                    title: String(localized: "settings.proOverride.title"),
+                    subtitle: String(localized: "settings.proOverride.description"),
+                    tint: .orange,
+                    isOn: $storeManager.isProOverride
+                )
 
                 SettingsDivider()
 
@@ -78,20 +70,12 @@ private extension SettingsScreen {
 
                 SettingsDivider()
 
-                Toggle(isOn: $storeManager.isWatermarkHidden) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(String(localized: "settings.hideWatermark.title"))
-                            .font(.system(.body, design: .rounded, weight: .bold))
-                            .foregroundStyle(.primaryText)
-
-                        Text(String(localized: "settings.hideWatermark.description"))
-                            .font(.system(.footnote, design: .rounded, weight: .medium))
-                            .foregroundStyle(Color.primaryText.opacity(0.58))
-                            .fixedSize(horizontal: false, vertical: true)
-                    }
-                }
-                .tint(.orange)
-                .padding(18)
+                SettingsToggleRow(
+                    title: String(localized: "settings.hideWatermark.title"),
+                    subtitle: String(localized: "settings.hideWatermark.description"),
+                    tint: .orange,
+                    isOn: $storeManager.isWatermarkHidden
+                )
             }
             .cardSurface(cornerRadius: 20)
         }
@@ -99,20 +83,11 @@ private extension SettingsScreen {
 
     var exitHintSection: some View {
         SettingsSection(title: String(localized: "settings.exitHint.section")) {
-            Toggle(isOn: $store.isExitHintEnabled) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(String(localized: "settings.exitHint"))
-                        .font(.system(.body, design: .rounded, weight: .bold))
-                        .foregroundStyle(.primaryText)
-
-                    Text(String(localized: "settings.exitHint.description"))
-                        .font(.system(.footnote, design: .rounded, weight: .medium))
-                        .foregroundStyle(Color.primaryText.opacity(0.58))
-                        .fixedSize(horizontal: false, vertical: true)
-                }
-            }
-            .tint(TrickPalette.Collection.timeControl)
-            .padding(18)
+            SettingsToggleRow(
+                title: String(localized: "settings.exitHint"),
+                subtitle: String(localized: "settings.exitHint.description"),
+                isOn: $store.isExitHintEnabled
+            )
             .cardSurface(cornerRadius: 20)
         }
     }
