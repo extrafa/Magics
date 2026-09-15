@@ -49,6 +49,39 @@ final class AppPreferencesTests: XCTestCase {
             XCTAssertEqual(preferences.hapticIntensity, intensity)
         }
     }
+
+    func test_migrateIfNeeded_migratesLegacyUsesStandardMagicGallerySetValue() {
+        let store = MockPreferenceStore()
+        store.storage["ImpossibleGalleryUsesStandardSet"] = false
+        let preferences = AppPreferences(store: store)
+
+        preferences.migrateIfNeeded()
+
+        XCTAssertEqual(preferences.usesStandardMagicGallerySet, false)
+        XCTAssertEqual(store.storage[AppPreferences.Key.preferencesSchemaVersion] as? Double, 1)
+    }
+
+    func test_migrateIfNeeded_withNoLegacyKey_keepsDefaultAndBumpsSchemaVersion() {
+        let store = MockPreferenceStore()
+        let preferences = AppPreferences(store: store)
+
+        preferences.migrateIfNeeded()
+
+        XCTAssertEqual(preferences.usesStandardMagicGallerySet, AppPreferences.Default.usesStandardMagicGallerySet)
+        XCTAssertEqual(store.storage[AppPreferences.Key.preferencesSchemaVersion] as? Double, 1)
+    }
+
+    func test_migrateIfNeeded_secondCallDoesNotOverrideValueSetAfterFirstMigration() {
+        let store = MockPreferenceStore()
+        store.storage["ImpossibleGalleryUsesStandardSet"] = false
+        let preferences = AppPreferences(store: store)
+        preferences.migrateIfNeeded()
+
+        preferences.usesStandardMagicGallerySet = true
+        preferences.migrateIfNeeded()
+
+        XCTAssertEqual(preferences.usesStandardMagicGallerySet, true)
+    }
 }
 
 private final class MockPreferenceStore: PreferenceStoring {
