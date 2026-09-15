@@ -21,12 +21,16 @@ final class AppFlowCoordinator: ObservableObject {
     @Published var isPaywallOverlayPresented = false
 
     private var pendingFlow: FullScreenFlow?
-    private let preferences: AppPreferences
+    private var preferences: FlowPreferenceManaging
     private let scheduler: DelayedActionScheduling
     private let store: StoreManager
     private static let ratingTriggerCount = 3
 
-    init(store: StoreManager, preferences: AppPreferences = .shared, scheduler: DelayedActionScheduling = DispatchQueueScheduler()) {
+    init(
+        store: StoreManager,
+        preferences: FlowPreferenceManaging = AppPreferences.shared,
+        scheduler: DelayedActionScheduling = DispatchQueueScheduler()
+    ) {
         self.store = store
         self.preferences = preferences
         self.scheduler = scheduler
@@ -75,6 +79,11 @@ final class AppFlowCoordinator: ObservableObject {
         } else {
             activeSheet = .instructionFirstLaunch(instruction: trick.instruction, trick: trick)
         }
+    }
+
+    func resetRatingState() {
+        preferences.hasRespondedToRating = false
+        preferences.trickLaunchCount = 0
     }
 
     func markTrickAsSeen(_ trick: Trick) {

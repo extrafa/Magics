@@ -38,13 +38,24 @@ protocol MagicGalleryPreferenceManaging {
 protocol RateAppPreferenceManaging {
     var hasRespondedToRating: Bool { get set }
     var ratingSnoozedUntil: Date? { get set }
+    var trickLaunchCount: Int { get set }
 }
 
 protocol OnboardingPreferenceManaging {
     var hasCompletedOnboarding: Bool { get set }
+    var seenTrickIds: [String] { get set }
 }
 
-struct AppPreferences: ExitHintPreferenceManaging, HapticPreferenceManaging, MotionPreferenceManaging, MagicGalleryPreferenceManaging, RateAppPreferenceManaging, OnboardingPreferenceManaging {
+typealias AppPreferencesProviding = ExitHintPreferenceManaging
+    & HapticPreferenceManaging
+    & MotionPreferenceManaging
+    & MagicGalleryPreferenceManaging
+    & RateAppPreferenceManaging
+    & OnboardingPreferenceManaging
+
+typealias FlowPreferenceManaging = RateAppPreferenceManaging & OnboardingPreferenceManaging
+
+struct AppPreferences: AppPreferencesProviding {
     static let shared = AppPreferences()
 
     private let store: PreferenceStoring

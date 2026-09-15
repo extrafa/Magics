@@ -68,8 +68,7 @@ private extension SettingsScreen {
                 SettingsDivider()
 
                 Button {
-                    AppPreferences.shared.hasRespondedToRating = false
-                    AppPreferences.shared.trickLaunchCount = 0
+                    flow.resetRatingState()
                     flow.activeSheet = .rateApp
                 } label: {
                     SettingsActionRow(icon: "star.bubble", title: String(localized: "settings.showRateAppSheet"))
