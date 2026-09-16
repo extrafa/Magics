@@ -9,12 +9,14 @@ import Foundation
 
 enum TrickType: String, CaseIterable {
     // Declaration order is also the Collection screen's display order (allCases).
-    case geoMentalism
-    case colorSense
-    case calculatorPrediction
-    case timeControl
-    case magicGallery
-    case phantomDraw
+    // Raw values are pinned to the current case names on purpose - they're persisted in
+    // seenTrickIds, so renaming a case here must not change what's already on disk.
+    case geoMentalism = "geoMentalism"
+    case colorSense = "colorSense"
+    case calculatorPrediction = "calculatorPrediction"
+    case timeControl = "timeControl"
+    case magicGallery = "magicGallery"
+    case phantomDraw = "phantomDraw"
 
     var requiresPro: Bool {
         switch self {
