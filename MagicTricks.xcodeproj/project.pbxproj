@@ -150,6 +150,7 @@
 		0AML00000000000000000046 /* PhantomDrawFramingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000045 /* PhantomDrawFramingTests.swift */; };
 		5FABCD547C09B1157E0A6DFA /* PhantomDrawSessionManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5E9EDF25809CFBDCA6673A0F /* PhantomDrawSessionManagerTests.swift */; };
 		C376B2B950875F1B1B462D8D /* PhantomDrawStrokeRenderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B697265AA3EF1397DFB5D3C7 /* PhantomDrawStrokeRenderingTests.swift */; };
+		4760AA29523C94A092B691BB /* InstructionModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08AB6D1A687687B5E44F869 /* InstructionModelsTests.swift */; };
 		0AML00000000000000000048 /* AppPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000047 /* AppPreferencesTests.swift */; };
 		EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */; };
 		0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */; };
@@ -317,6 +318,7 @@
 		0AML00000000000000000045 /* PhantomDrawFramingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawFramingTests.swift; sourceTree = "<group>"; };
 		5E9EDF25809CFBDCA6673A0F /* PhantomDrawSessionManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawSessionManagerTests.swift; sourceTree = "<group>"; };
 		B697265AA3EF1397DFB5D3C7 /* PhantomDrawStrokeRenderingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawStrokeRenderingTests.swift; sourceTree = "<group>"; };
+		D08AB6D1A687687B5E44F869 /* InstructionModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionModelsTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000047 /* AppPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferencesTests.swift; sourceTree = "<group>"; };
 		32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTimingsTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
@@ -954,6 +956,7 @@
 				0AML00000000000000000045 /* PhantomDrawFramingTests.swift */,
 				5E9EDF25809CFBDCA6673A0F /* PhantomDrawSessionManagerTests.swift */,
 				B697265AA3EF1397DFB5D3C7 /* PhantomDrawStrokeRenderingTests.swift */,
+				D08AB6D1A687687B5E44F869 /* InstructionModelsTests.swift */,
 				0AML00000000000000000047 /* AppPreferencesTests.swift */,
 			);
 			path = Services;
@@ -1312,6 +1315,7 @@
 				0AML00000000000000000046 /* PhantomDrawFramingTests.swift in Sources */,
 				5FABCD547C09B1157E0A6DFA /* PhantomDrawSessionManagerTests.swift in Sources */,
 				C376B2B950875F1B1B462D8D /* PhantomDrawStrokeRenderingTests.swift in Sources */,
+				4760AA29523C94A092B691BB /* InstructionModelsTests.swift in Sources */,
 				0AML00000000000000000048 /* AppPreferencesTests.swift in Sources */,
 				EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */,
 				0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */,
