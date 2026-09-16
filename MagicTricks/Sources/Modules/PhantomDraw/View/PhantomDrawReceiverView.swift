@@ -24,9 +24,17 @@ struct PhantomDrawReceiverView: View {
                     }
 
                     Canvas { context, size in
-                        context.drawStrokes(session.receivedStrokes, canvasSize: size)
+                        context.drawStrokes(
+                            session.receivedStrokes,
+                            canvasSize: size,
+                            senderAspectRatio: session.senderCanvasAspectRatio
+                        )
                         if let inProgressStroke = session.inProgressStroke {
-                            context.drawStrokes([inProgressStroke], canvasSize: size)
+                            context.drawStrokes(
+                                [inProgressStroke],
+                                canvasSize: size,
+                                senderAspectRatio: session.senderCanvasAspectRatio
+                            )
                         }
                     }
                     .padding(24)
