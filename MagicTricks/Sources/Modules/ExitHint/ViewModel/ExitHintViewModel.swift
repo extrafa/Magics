@@ -25,6 +25,11 @@ final class ExitHintViewModel: ObservableObject {
         self.skipsTraining = skipsTraining
     }
 
+    deinit {
+        autoFadeTask?.cancel()
+        flashTask?.cancel()
+    }
+
     var didLearnExitHint: Bool {
         get { skipsTraining || preferences.didLearnExitHint }
         set { preferences.didLearnExitHint = newValue }
@@ -55,9 +60,9 @@ final class ExitHintViewModel: ObservableObject {
 
         guard isVisible, didLearnExitHint else { return }
 
-        autoFadeTask = Task {
-            await pause(ExitHintFadeTiming.initialDelay)
-            guard !Task.isCancelled else { return }
+        autoFadeTask = Task { [weak self] in
+            await self?.pause(ExitHintFadeTiming.initialDelay)
+            guard let self, !Task.isCancelled else { return }
 
             hintOpacity = ExitHintOpacity.dimmed
 
@@ -75,10 +80,13 @@ final class ExitHintViewModel: ObservableObject {
 
     func flashHint() {
         flashTask?.cancel()
-        flashTask = Task {
+        flashTask = Task { [weak self] in
+            guard let self else { return }
             for _ in 0..<ExitHintFlash.repeatCount {
+                guard !Task.isCancelled else { return }
                 flashBrightness = ExitHintFlash.peak
                 await pause(ExitHintFlashTiming.holdAfterPeak)
+                guard !Task.isCancelled else { return }
                 flashBrightness = ExitHintFlash.rest
                 await pause(ExitHintFlashTiming.holdAfterRest)
             }
