@@ -26,7 +26,8 @@ enum InstructionImageRatio: CGFloat {
 }
 
 struct InstructionStep: Identifiable, Hashable {
-    let id = UUID()
+    // Computed (not stored) so it's excluded from the synthesized Hashable/Equatable.
+    var id: String { title }
     let title: String
     let description: String
     let phase: InstructionPhase
