@@ -11,12 +11,7 @@ extension GraphicsContext {
         let frame = Self.letterboxedFrame(canvasSize: canvasSize, senderAspectRatio: senderAspectRatio)
         for stroke in strokes {
             guard stroke.points.count > 1 else { continue }
-            var path = Path()
-            path.move(to: stroke.points[0].toCGPoint(in: frame))
-            for point in stroke.points.dropFirst() {
-                path.addLine(to: point.toCGPoint(in: frame))
-            }
-            self.stroke(path, with: .color(color), style: StrokeStyle(lineWidth: 3.5, lineCap: .round, lineJoin: .round))
+            strokePath(through: stroke.points.map { $0.toCGPoint(in: frame) }, color: color)
         }
     }
 
@@ -35,6 +30,10 @@ extension GraphicsContext {
 
     func drawActiveStroke(_ points: [CGPoint], color: Color = .black) {
         guard points.count > 1 else { return }
+        strokePath(through: points, color: color)
+    }
+
+    private func strokePath(through points: [CGPoint], color: Color) {
         var path = Path()
         path.move(to: points[0])
         for point in points.dropFirst() {
