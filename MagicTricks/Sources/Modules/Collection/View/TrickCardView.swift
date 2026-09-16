@@ -61,7 +61,7 @@ struct TrickCardView: View {
     private var header: some View {
         HStack(alignment: .top, spacing: 16) {
             TrickIcon(
-                systemName: trick.image,
+                systemName: trick.image.rawValue,
                 color: trick.id.collectionColor,
                 size: CGSize(width: 54, height: 54)
             )
