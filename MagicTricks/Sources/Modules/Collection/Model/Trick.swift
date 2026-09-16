@@ -26,6 +26,15 @@ enum TrickType: String, CaseIterable {
     }
 }
 
+enum SFSymbol: String {
+    case globeEuropeAfricaFill = "globe.europe.africa.fill"
+    case paintpalette = "paintpalette"
+    case ipad = "ipad"
+    case stopwatchFill = "stopwatch.fill"
+    case photoOnRectangleAngled = "photo.on.rectangle.angled"
+    case antennaRadiowavesLeftAndRight = "antenna.radiowaves.left.and.right"
+}
+
 enum TrickDifficulty: Hashable {
     case easy
     case medium
@@ -45,7 +54,7 @@ struct Trick: Identifiable, Hashable {
     let title: LocalizedStringResource
     let cardTitle: LocalizedStringResource?
     let subtitle: LocalizedStringResource
-    let image: String
+    let image: SFSymbol
     let difficulty: TrickDifficulty
     let instruction: Instruction
 
@@ -54,7 +63,7 @@ struct Trick: Identifiable, Hashable {
         title: LocalizedStringResource,
         cardTitle: LocalizedStringResource? = nil,
         subtitle: LocalizedStringResource,
-        image: String,
+        image: SFSymbol,
         difficulty: TrickDifficulty,
         instruction: Instruction
     ) {
@@ -86,7 +95,7 @@ extension TrickType {
                 title: "card.geo.title",
                 cardTitle: "card.geo.cardTitle",
                 subtitle: "card.geo.subtitle",
-                image: "globe.europe.africa.fill",
+                image: .globeEuropeAfricaFill,
                 difficulty: .medium,
                 instruction: .geoMentalism
             )
@@ -96,7 +105,7 @@ extension TrickType {
                 title: "card.color.title",
                 cardTitle: "card.color.cardTitle",
                 subtitle: "card.color.subtitle",
-                image: "paintpalette",
+                image: .paintpalette,
                 difficulty: .easy,
                 instruction: .colorSense
             )
@@ -106,7 +115,7 @@ extension TrickType {
                 title: "card.calculatorPrediction.title",
                 cardTitle: "card.calculatorPrediction.cardTitle",
                 subtitle: "card.calculatorPrediction.subtitle",
-                image: "ipad",
+                image: .ipad,
                 difficulty: .medium,
                 instruction: .calculatorPrediction
             )
@@ -115,7 +124,7 @@ extension TrickType {
                 id: .timeControl,
                 title: "card.time.title",
                 subtitle: "card.time.subtitle",
-                image: "stopwatch.fill",
+                image: .stopwatchFill,
                 difficulty: .medium,
                 instruction: .timeControl
             )
@@ -124,7 +133,7 @@ extension TrickType {
                 id: .magicGallery,
                 title: "card.magicGallery.title",
                 subtitle: "card.magicGallery.subtitle",
-                image: "photo.on.rectangle.angled",
+                image: .photoOnRectangleAngled,
                 difficulty: .hard,
                 instruction: .magicGallery
             )
@@ -134,7 +143,7 @@ extension TrickType {
                 title: "card.phantomDraw.title",
                 cardTitle: "card.phantomDraw.cardTitle",
                 subtitle: "card.phantomDraw.subtitle",
-                image: "antenna.radiowaves.left.and.right",
+                image: .antennaRadiowavesLeftAndRight,
                 difficulty: .easy,
                 instruction: .phantomDraw
             )
