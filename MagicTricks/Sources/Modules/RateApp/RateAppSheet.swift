@@ -129,16 +129,14 @@ struct RateAppSheet: View {
     // MARK: - Actions
 
     private func handleLike() {
-        viewModel.like()
         dismiss()
         Task {
             try? await Task.sleep(milliseconds: 600)
-            await MainActor.run {
-                if let scene = UIApplication.shared.connectedScenes
-                    .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene {
-                    SKStoreReviewController.requestReview(in: scene)
-                }
-            }
+            guard let scene = UIApplication.shared.connectedScenes
+                .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene
+            else { return }
+            SKStoreReviewController.requestReview(in: scene)
+            viewModel.recordReviewShown()
         }
     }
 

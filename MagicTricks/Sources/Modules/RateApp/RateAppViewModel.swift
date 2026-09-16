@@ -24,7 +24,7 @@ final class RateAppViewModel: ObservableObject {
         self.preferences = preferences
     }
 
-    func like() {
+    func recordReviewShown() {
         preferences.hasRespondedToRating = true
     }
 
