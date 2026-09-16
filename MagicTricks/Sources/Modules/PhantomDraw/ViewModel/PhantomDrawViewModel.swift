@@ -45,6 +45,8 @@ final class PhantomDrawViewModel: ObservableObject {
 
     func setCanvasSize(_ size: CGSize) {
         canvasSize = size
+        guard size.height > 0 else { return }
+        session.send(.canvasAspectRatio(size.width / size.height))
     }
 
     func addPoint(_ point: CGPoint) {

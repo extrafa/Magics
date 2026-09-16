@@ -36,6 +36,10 @@ struct DrawingPoint: Codable, Equatable {
     func toCGPoint(in size: CGSize) -> CGPoint {
         CGPoint(x: x * size.width, y: y * size.height)
     }
+
+    func toCGPoint(in rect: CGRect) -> CGPoint {
+        CGPoint(x: rect.minX + x * rect.width, y: rect.minY + y * rect.height)
+    }
 }
 
 struct DrawingStroke: Codable, Identifiable, Equatable {
@@ -48,4 +52,5 @@ enum PhantomDrawMessage: Codable, Equatable {
     case strokeProgress(DrawingStroke)
     case clear
     case sync([DrawingStroke])
+    case canvasAspectRatio(Double)
 }

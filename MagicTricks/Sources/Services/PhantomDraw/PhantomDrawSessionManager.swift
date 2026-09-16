@@ -34,6 +34,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     @Published var receivedStrokes: [DrawingStroke] = []
     @Published var inProgressStroke: DrawingStroke?
     @Published private(set) var pairingCode: String?
+    @Published var senderCanvasAspectRatio: Double?
 
     @Published var isReconnecting = false
 
@@ -80,6 +81,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         isReconnecting = false
         connectionState = .idle
         receivedStrokes = []
+        senderCanvasAspectRatio = nil
         pairingCode = nil
     }
 
@@ -291,6 +293,9 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
                     case .sync(let all):
                         self.receivedStrokes = Array(all.compactMap(self.sanitized).prefix(Self.maxStrokes))
                         self.inProgressStroke = nil
+                    case .canvasAspectRatio(let ratio):
+                        guard ratio.isFinite, ratio > 0 else { break }
+                        self.senderCanvasAspectRatio = ratio
                     }
                 }
                 self.receiveLoop(conn)
