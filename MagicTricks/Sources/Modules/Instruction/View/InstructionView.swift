@@ -10,8 +10,15 @@ import SwiftUI
 struct InstructionView: View {
     @State private var presentedSheet: InstructionPresentedSheet?
     let instruction: Instruction
-    var onStart: (() -> Void)? = nil
+    var onStart: Completion? = nil
     @ScaledMetric(relativeTo: .largeTitle) private var headerTitleSize: CGFloat = 32
+    private let shareText: String
+
+    init(instruction: Instruction, onStart: Completion? = nil) {
+        self.instruction = instruction
+        self.onStart = onStart
+        self.shareText = InstructionShareFormatter.shareText(for: instruction)
+    }
 
     var body: some View {
         ZStack(alignment: .bottom) {
@@ -44,7 +51,7 @@ struct InstructionView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(item: InstructionShareFormatter.shareText(for: instruction)) {
+                ShareLink(item: shareText) {
                     Image(systemName: "square.and.arrow.up")
                         .foregroundStyle(.primaryText)
                 }
@@ -53,7 +60,7 @@ struct InstructionView: View {
         }
     }
 
-    private func startTrickButton(action: @escaping () -> Void) -> some View {
+    private func startTrickButton(action: @escaping Completion) -> some View {
         VStack(spacing: 0) {
             LinearGradient(
                 colors: [Color.background.opacity(0), Color.background],
