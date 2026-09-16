@@ -27,8 +27,8 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     private static let connectionTimeout: TimeInterval = 10
 
     // Peer-sent strokes are untrusted network input.
-    static let maxStrokes = 500
-    static let maxPointsPerStroke = 5_000
+    nonisolated static let maxStrokes = 500
+    nonisolated static let maxPointsPerStroke = 5_000
 
     @Published var connectionState: PhantomDrawConnectionState = .idle
     @Published var receivedStrokes: [DrawingStroke] = []
@@ -38,6 +38,9 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     @Published var isReconnecting = false
 
     var onNewConnection: Completion?
+
+    // Connection receive/decode runs here, off main, so a large .sync frame doesn't hitch Canvas.
+    private let netQueue = DispatchQueue(label: "phantomdraw.net")
 
     private var listener: NWListener?
     private var browser: NWBrowser?
@@ -90,12 +93,12 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         }
         l.service = NWListener.Service(type: Self.bonjourType)
         l.stateUpdateHandler = { [weak self] state in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 if case .failed = state { self?.connectionState = .failed }
             }
         }
         l.newConnectionHandler = { [weak self] conn in
-            DispatchQueue.main.async { [weak self] in
+            Task { @MainActor [weak self] in
                 guard let self else { return }
                 if case .connected = self.connectionState, !self.isReconnecting {
                     conn.cancel()
@@ -116,7 +119,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         let params = makeParams(code: code)
         let b = NWBrowser(for: .bonjour(type: Self.bonjourType, domain: nil), using: params)
         b.browseResultsChangedHandler = { [weak self] results, _ in
-            DispatchQueue.main.async { [weak self] in
+            Task { @MainActor [weak self] in
                 guard let self, self.connection == nil, !results.isEmpty else { return }
                 self.browser?.cancel()
                 self.browser = nil
@@ -124,7 +127,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
             }
         }
         b.stateUpdateHandler = { [weak self] state in
-            DispatchQueue.main.async {
+            Task { @MainActor [weak self] in
                 if case .failed = state { self?.connectionState = .failed }
             }
         }
@@ -138,11 +141,11 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         candidateConnections = connections
         for conn in connections {
             conn.stateUpdateHandler = { [weak self] state in
-                DispatchQueue.main.async { [weak self] in
+                Task { @MainActor [weak self] in
                     self?.handleCandidateState(state, for: conn)
                 }
             }
-            conn.start(queue: .main)
+            conn.start(queue: netQueue)
         }
     }
 
@@ -205,7 +208,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         connection = conn
         cancelWaitingTimeout()
         conn.stateUpdateHandler = { [weak self] state in
-            DispatchQueue.main.async { [weak self] in
+            Task { @MainActor [weak self] in
                 guard let self else { return }
                 switch state {
                 case .ready:
@@ -231,7 +234,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
                 }
             }
         }
-        conn.start(queue: .main)
+        conn.start(queue: netQueue)
     }
 
     // A connection with no viable path (e.g. AWDL out of range) can sit in .waiting indefinitely on its own.
@@ -253,7 +256,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
     // MARK: - Framing
 
-    private func receiveLoop(_ conn: NWConnection) {
+    nonisolated private func receiveLoop(_ conn: NWConnection) {
         conn.receive(minimumIncompleteLength: 4, maximumLength: 4) { [weak self] header, _, done, error in
             guard let self, let header, error == nil, !done else {
                 if done || error != nil { conn.cancel() }
@@ -273,7 +276,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
                     conn.cancel()
                     return
                 }
-                DispatchQueue.main.async { [weak self] in
+                Task { @MainActor [weak self] in
                     guard let self else { return }
                     switch msg {
                     case .stroke(let s):
@@ -290,7 +293,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
                         self.inProgressStroke = nil
                     }
                 }
-                DispatchQueue.main.async { [weak self] in self?.receiveLoop(conn) }
+                self.receiveLoop(conn)
             }
         }
     }
@@ -298,7 +301,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     // MARK: - Helpers
 
     // Clamps a peer-sent stroke to sane bounds; nil if it's malformed enough to just drop.
-    func sanitized(_ stroke: DrawingStroke) -> DrawingStroke? {
+    nonisolated func sanitized(_ stroke: DrawingStroke) -> DrawingStroke? {
         guard (1...Self.maxPointsPerStroke).contains(stroke.points.count) else { return nil }
         let clampedPoints = stroke.points.map {
             DrawingPoint(x: min(max($0.x, 0), 1), y: min(max($0.y, 0), 1))
