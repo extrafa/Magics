@@ -60,9 +60,9 @@ struct PhantomDrawReceiverView: View {
     private var connectionBadge: some View {
         HStack(spacing: 5) {
             Circle()
-                .fill(Color.green)
+                .fill(session.isReconnecting ? Color.orange : Color.green)
                 .frame(width: 7, height: 7)
-            Text(peerName)
+            Text(session.isReconnecting ? String(localized: "phantomDraw.reconnecting") : peerName)
                 .font(.system(size: 13, weight: .medium, design: .rounded))
                 .foregroundStyle(.secondary)
         }
