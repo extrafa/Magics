@@ -25,11 +25,14 @@ struct InstructionStepActionsView: View {
 
 private struct InstructionStepActionButton: View {
     let action: InstructionStepAction
-    let onTap: () -> Void
+    let onTap: Completion
     @ScaledMetric(relativeTo: .footnote) private var titleSize: CGFloat = 14
+    private let presentation: InstructionStepActionPresentation
 
-    private var presentation: InstructionStepActionPresentation {
-        InstructionStepActionPresentation(action: action)
+    init(action: InstructionStepAction, onTap: @escaping Completion) {
+        self.action = action
+        self.onTap = onTap
+        self.presentation = InstructionStepActionPresentation(action: action)
     }
 
     var body: some View {
