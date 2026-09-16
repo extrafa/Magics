@@ -43,15 +43,21 @@ struct CalculatorPredictionButtonView: View {
     }
 }
 
+private enum CalculatorButtonPalette {
+    static let operatorColor = Color(red: 1, green: 0.5713006854, blue: 0.005122783594)
+    static let functionColor = Color(red: 0.3568627536, green: 0.3568627536, blue: 0.3568627536)
+    static let digitColor = Color(red: 0.1882353127, green: 0.1882353127, blue: 0.1882353127)
+}
+
 private extension CalculatorPredictionButton {
     var buttonColor: Color {
         switch self {
         case .divide, .multiple, .subtract, .add, .equal:
-            return Color(#colorLiteral(red: 1, green: 0.5713006854, blue: 0.005122783594, alpha: 1))
+            return CalculatorButtonPalette.operatorColor
         case .delete, .clear, .percent:
-            return Color(#colorLiteral(red: 0.3568627536, green: 0.3568627536, blue: 0.3568627536, alpha: 1))
+            return CalculatorButtonPalette.functionColor
         default:
-            return Color(#colorLiteral(red: 0.1882353127, green: 0.1882353127, blue: 0.1882353127, alpha: 1))
+            return CalculatorButtonPalette.digitColor
         }
     }
 }
