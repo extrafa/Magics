@@ -49,11 +49,11 @@ struct GeoMentalismCitiesView: View {
         .onAppear {
             isExitHintVisible = false
             viewModel.generateList(for: city)
-            Task {
-                try? await Task.sleep(milliseconds: 550)
-                withAnimation(.easeInOut) {
-                    viewModel.shuffleList()
-                }
+        }
+        .task {
+            try? await Task.sleep(milliseconds: 550)
+            withAnimation(.easeInOut) {
+                viewModel.shuffleList()
             }
         }
     }
