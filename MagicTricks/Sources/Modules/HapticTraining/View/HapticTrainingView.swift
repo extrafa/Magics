@@ -113,16 +113,10 @@ struct HapticTrainingView: View {
             hasPlayed: viewModel.hasPlayed,
             isPlaying: viewModel.isPlaying,
             result: viewModel.result,
-            canSubmitAnswer: canSubmitAnswer,
             answerText: $answerText,
             isAnswerFocused: $isAnswerFocused,
-            onAnswerChange: submitAnswerIfNeeded,
-            onSubmit: submitExplicit
+            onAnswerChange: submitAnswerIfNeeded
         )
-    }
-
-    private var canSubmitAnswer: Bool {
-        viewModel.hasPlayed && viewModel.result == nil && !answerText.isEmpty && Int(answerText) != nil
     }
 
     private func playSignal() {
@@ -156,12 +150,6 @@ struct HapticTrainingView: View {
             viewModel.submitGuess(number)
             isAnswerFocused = false
         }
-    }
-
-    private func submitExplicit() {
-        guard let number = Int(answerText) else { return }
-        viewModel.submitGuess(number)
-        isAnswerFocused = false
     }
 
     private func startNewRound() {

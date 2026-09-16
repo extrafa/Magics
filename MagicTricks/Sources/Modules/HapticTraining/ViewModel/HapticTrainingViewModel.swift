@@ -17,8 +17,6 @@ final class HapticTrainingViewModel: ObservableObject {
 
     @Published private(set) var targetValue: Int
     @Published private(set) var result: GuessResult?
-    @Published private(set) var correctCount = 0
-    @Published private(set) var attemptCount = 0
     @Published private(set) var isPlaying = false
     @Published private(set) var hasPlayed = false
 
@@ -46,10 +44,7 @@ final class HapticTrainingViewModel: ObservableObject {
     }
 
     func submitGuess(_ value: Int) {
-        attemptCount += 1
-
         if value == targetValue {
-            correctCount += 1
             result = .correct
         } else {
             result = .incorrect(expected: targetValue)

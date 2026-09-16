@@ -13,11 +13,9 @@ struct HapticAnswerSectionView: View {
     let hasPlayed: Bool
     let isPlaying: Bool
     let result: HapticTrainingViewModel.GuessResult?
-    let canSubmitAnswer: Bool
     @Binding var answerText: String
     var isAnswerFocused: FocusState<Bool>.Binding
     let onAnswerChange: (String) -> Void
-    let onSubmit: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
