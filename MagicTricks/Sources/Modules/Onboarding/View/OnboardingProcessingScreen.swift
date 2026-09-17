@@ -30,7 +30,7 @@ struct OnboardingProcessingScreen: View {
             VStack(spacing: 10) {
                 Text(String(localized: "onboarding.processing.title"))
                     .font(.system(size: 26, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 28)
                     .onboardingAppear(appeared, offset: 12, delay: 0.18)
@@ -78,12 +78,12 @@ struct OnboardingProcessingScreen: View {
             if isDone {
                 Image(systemName: "checkmark.circle.fill")
                     .font(.system(size: 80))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                     .transition(.scale(scale: 0.6).combined(with: .opacity))
             } else {
                 Image(systemName: "wand.and.stars")
                     .font(.system(size: 72, weight: .regular))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                     .opacity(breathing ? 1.0 : 0.35)
                     .scaleEffect(breathing ? 1.08 : 0.94)
                     .animation(
@@ -101,11 +101,11 @@ struct OnboardingProcessingScreen: View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
                 Capsule()
-                    .fill(Color.primaryText.opacity(0.12))
+                    .fill(Color.textPrimary.opacity(0.12))
                     .frame(height: 4)
 
                 Capsule()
-                    .fill(Color.primaryText)
+                    .fill(Color.textPrimary)
                     .frame(width: geo.size.width * progress, height: 4)
                     .animation(.easeInOut(duration: 1.2), value: progress)
             }

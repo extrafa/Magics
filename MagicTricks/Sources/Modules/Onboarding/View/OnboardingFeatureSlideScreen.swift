@@ -67,7 +67,7 @@ struct OnboardingFeatureSlideScreen: View {
             VStack(spacing: 10) {
                 Text(feature.title)
                     .font(.system(size: 26, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 28)
                     .onboardingAppear(appeared, offset: 12, delay: 0.18)

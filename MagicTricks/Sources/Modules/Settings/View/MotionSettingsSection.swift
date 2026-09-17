@@ -39,7 +39,7 @@ struct MotionSettingsSection: View {
                     VStack(alignment: .leading, spacing: 12) {
                         Text(String(localized: "settings.haptics.holdDurationDescription"))
                             .font(.system(size: 13, weight: .medium, design: .rounded))
-                            .foregroundStyle(Color.secondaryText)
+                            .foregroundStyle(Color.textSecondary)
 
                         SettingsStepper(
                             value: $settings.screenDownHoldDuration,

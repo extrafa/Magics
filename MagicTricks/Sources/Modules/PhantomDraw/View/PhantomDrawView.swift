@@ -163,7 +163,7 @@ struct PhantomDrawView: View {
                 VStack(alignment: .leading, spacing: 3) {
                     Text(title)
                         .font(.system(size: 16, weight: .semibold, design: .rounded))
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(.textPrimary)
                     Text(subtitle)
                         .font(.system(size: 13, weight: .regular, design: .rounded))
                         .foregroundStyle(.secondary)
@@ -191,7 +191,7 @@ struct PhantomDrawView: View {
                     .accessibilityHidden(true)
                 Text(String(localized: "phantomDraw.enterCode.title"))
                     .font(.system(size: 20, weight: .semibold, design: .rounded))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                 Text(String(localized: "phantomDraw.enterCode.description"))
                     .font(.system(size: 15, design: .rounded))
                     .foregroundStyle(.secondary)
@@ -206,7 +206,7 @@ struct PhantomDrawView: View {
                 }
                 TextField("", text: $codeInput)
                     .keyboardType(.numberPad)
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                     .multilineTextAlignment(.center)
                     .focused($isCodeFieldFocused)
             }
@@ -245,7 +245,7 @@ struct PhantomDrawView: View {
             Spacer().frame(height: 28)
             Text(viewModel.role == .sender ? "phantomDraw.status.waiting" : "phantomDraw.status.connecting")
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(.textPrimary)
             Spacer().frame(height: 8)
             Text(viewModel.role == .sender
                  ? "phantomDraw.status.waitingDescription"
@@ -282,7 +282,7 @@ struct PhantomDrawView: View {
             Spacer().frame(height: 20)
             Text(title)
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(.textPrimary)
             Spacer().frame(height: 8)
             Text(subtitle)
                 .font(.system(size: 15, design: .rounded))

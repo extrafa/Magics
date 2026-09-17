@@ -79,7 +79,7 @@ struct TrickCardView: View {
             VStack(alignment: .leading, spacing: 6) {
                 Text(trick.cardTitle ?? trick.title)
                     .font(.title3.weight(.bold))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
                     // The badge floats independently in a ZStack overlay, inset less from the card edge

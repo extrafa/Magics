@@ -31,7 +31,7 @@ struct GeoMentalismView: View {
                     } label: {
                         Text(city)
                             .font(.system(size: 17, weight: .medium, design: .rounded))
-                            .foregroundStyle(Color.primaryText)
+                            .foregroundStyle(Color.textPrimary)
                             .padding(.vertical, 4)
                     }
                     .listRowBackground(Color.backgroundScreen)

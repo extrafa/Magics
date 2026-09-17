@@ -32,7 +32,7 @@ struct OnboardingWelcomeScreen: View {
             VStack(spacing: 12) {
                 Text(String(localized: "onboarding.welcome.headline"))
                     .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
                     .onboardingAppear(appeared, offset: 12, delay: 0.42)

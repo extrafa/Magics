@@ -16,7 +16,7 @@ struct InstructionStepsSection: View {
         VStack(alignment: .leading, spacing: 14) {
             Text(String(localized: "instruction.section.steps"))
                 .font(.system(size: titleSize, weight: .bold, design: .rounded))
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(.textPrimary)
 
             InstructionPhaseLegend()
 

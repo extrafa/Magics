@@ -20,7 +20,7 @@ struct OnboardingOptionRow: View {
 
             Text(title)
                 .font(.system(size: 16, weight: .medium, design: .rounded))
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(.textPrimary)
 
             Spacer()
 
@@ -30,10 +30,10 @@ struct OnboardingOptionRow: View {
         .padding(.vertical, 14)
         .background {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(isSelected ? Color.primaryText.opacity(0.06) : Color.cardBackground)
+                .fill(isSelected ? Color.textPrimary.opacity(0.06) : Color.cardBackground)
                 .overlay {
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(isSelected ? Color.primaryText.opacity(0.35) : Color.cardBorder, lineWidth: 1)
+                        .stroke(isSelected ? Color.textPrimary.opacity(0.35) : Color.cardBorder, lineWidth: 1)
                 }
         }
         .animation(.easeOut(duration: 0.15), value: isSelected)
@@ -43,11 +43,11 @@ struct OnboardingOptionRow: View {
     private var selectionIndicator: some View {
         if isSelected {
             Image(systemName: "checkmark.circle.fill")
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(.textPrimary)
                 .font(.system(size: 22, weight: .semibold))
         } else {
             Circle()
-                .stroke(Color.primaryText.opacity(0.2), lineWidth: 1.5)
+                .stroke(Color.textPrimary.opacity(0.2), lineWidth: 1.5)
                 .frame(width: 22, height: 22)
         }
     }

@@ -23,7 +23,7 @@ struct WatermarkView: View {
                         Text(String(localized: "watermark.freeTrialBadge"))
                             .font(.system(size: 13, weight: .semibold, design: .rounded))
                     }
-                    .foregroundStyle(Color.primaryText)
+                    .foregroundStyle(Color.textPrimary)
                     .padding(.leading, 10)
                     .padding(.trailing, 8)
                     .padding(.vertical, 6)
@@ -31,7 +31,7 @@ struct WatermarkView: View {
                 .buttonStyle(.plain)
 
                 Rectangle()
-                    .fill(Color.primaryText.opacity(0.2))
+                    .fill(Color.textPrimary.opacity(0.2))
                     .frame(width: 1, height: 12)
 
                 Button {
@@ -41,7 +41,7 @@ struct WatermarkView: View {
                 } label: {
                     Image(systemName: "xmark")
                         .font(.system(size: 9, weight: .bold))
-                        .foregroundStyle(Color.primaryText.opacity(0.4))
+                        .foregroundStyle(Color.textPrimary.opacity(0.4))
                         .padding(.leading, 8)
                         .padding(.trailing, 10)
                         .padding(.vertical, 6)

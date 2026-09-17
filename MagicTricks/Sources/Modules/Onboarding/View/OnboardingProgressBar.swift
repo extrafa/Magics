@@ -15,11 +15,11 @@ struct OnboardingProgressBar: View {
         GeometryReader { geo in
             ZStack(alignment: .leading) {
                 RoundedRectangle(cornerRadius: 3, style: .continuous)
-                    .fill(Color.primaryText.opacity(0.1))
+                    .fill(Color.textPrimary.opacity(0.1))
                     .frame(height: 4)
 
                 RoundedRectangle(cornerRadius: 3, style: .continuous)
-                    .fill(Color.primaryText)
+                    .fill(Color.textPrimary)
                     .frame(width: geo.size.width * progress, height: 4)
                     .animation(.spring(response: 0.4, dampingFraction: 0.8), value: step)
             }
