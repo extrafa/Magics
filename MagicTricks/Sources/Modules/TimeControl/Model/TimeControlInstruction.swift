@@ -25,14 +25,14 @@ extension Instruction {
                 description: String(localized: "instruction.time.step2.description"),
                 phase: .preparation,
                 actions: [.hapticSettings],
-                imageName: "time.step.faceDown",
+                imageName: "step.time.faceDown",
                 imageRatio: .compact
             ),
             InstructionStep(
                 title: String(localized: "instruction.time.step3.title"),
                 description: String(localized: "instruction.time.step3.description"),
                 phase: .demonstration,
-                imageName: "time.step.timer"
+                imageName: "step.time.timer"
             ),
             InstructionStep(
                 title: String(localized: "instruction.time.step4.title"),

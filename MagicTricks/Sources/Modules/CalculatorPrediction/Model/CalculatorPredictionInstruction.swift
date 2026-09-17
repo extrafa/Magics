@@ -11,7 +11,7 @@ extension Instruction {
                 title: String(localized: "instruction.calculatorPrediction.step1.title"),
                 description: String(localized: "instruction.calculatorPrediction.step1.description"),
                 phase: .preparation,
-                imageName: "calculator.step.acNumber"
+                imageName: "step.calculator.acNumber"
             ),
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step2.title"),
@@ -37,7 +37,7 @@ extension Instruction {
                 title: String(localized: "instruction.calculatorPrediction.step6.title"),
                 description: String(localized: "instruction.calculatorPrediction.step6.description"),
                 phase: .demonstration,
-                imageName: "calculator.step.multiply"
+                imageName: "step.calculator.multiply"
             ),
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step7.title"),
