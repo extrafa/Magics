@@ -1,5 +1,5 @@
 //
-//  OBProcessingScreen.swift
+//  OnboardingProcessingScreen.swift
 //  Magic Tricks
 //
 //  Created by Ross on 28/03/2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OBProcessingScreen: View {
+struct OnboardingProcessingScreen: View {
     let phases: [String]
     let onComplete: () -> Void
 
@@ -132,7 +132,7 @@ struct OBProcessingScreen: View {
 }
 
 #Preview {
-    OBProcessingScreen(
+    OnboardingProcessingScreen(
         phases: ["Getting the party tricks ready…", "Picking tricks that need no setup…"],
         onComplete: {}
     )

@@ -20,11 +20,11 @@ struct AppFlowCoverView: View {
                 TrickRouterView(type: trick.id)
             }
             .fullScreenCover(isPresented: $flow.isPaywallOverlayPresented) {
-                OBPaywallScreen(onDismiss: flow.dismissPaywallOverlay)
+                OnboardingPaywallScreen(onDismiss: flow.dismissPaywallOverlay)
                     .background(Color.background)
             }
         case .paywall:
-            OBPaywallScreen(onDismiss: { dismiss() })
+            OnboardingPaywallScreen(onDismiss: { dismiss() })
                 .background(Color.background)
         }
     }
