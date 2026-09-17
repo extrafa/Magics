@@ -14,6 +14,8 @@ struct TrickCardView: View {
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
 
+    @State private var badgeWidth: CGFloat = 0
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
             cardBody
@@ -35,9 +37,15 @@ struct TrickCardView: View {
                 }
 
             badge
+                .background {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: BadgeWidthPreferenceKey.self, value: geometry.size.width)
+                    }
+                }
                 .padding(.top, 16)
                 .padding(.trailing, 16)
         }
+        .onPreferenceChange(BadgeWidthPreferenceKey.self) { badgeWidth = $0 }
         // Caps growth so the badge doesn't collide with the title's reserved trailing padding (see `header`).
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
@@ -72,7 +80,10 @@ struct TrickCardView: View {
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.trailing, 88)
+                    // The badge floats independently in a ZStack overlay, inset less from the card edge
+                    // than this content area - reserve exactly the width it measured, so it never overlaps
+                    // regardless of locale/badge text length.
+                    .padding(.trailing, max(0, badgeWidth - 6))
 
                 Text(trick.subtitle)
                     .font(.subheadline)
@@ -116,6 +127,13 @@ struct TrickCardView: View {
             Capsule(style: .continuous)
                 .stroke(Color.primary.opacity(0.22), lineWidth: 1.2)
         }
+    }
+}
+
+private struct BadgeWidthPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
     }
 }
 
