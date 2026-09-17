@@ -113,7 +113,7 @@ struct OnboardingFeatureSlideScreen: View {
 
 private struct InstructionPreviewVisual: View {
     var body: some View {
-        Image("instruction")
+        Image("onboarding.preview.instructions")
             .resizable()
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -125,7 +125,7 @@ private struct InstructionPreviewVisual: View {
 
 private struct TricksPreviewVisual: View {
     var body: some View {
-        Image("tricks")
+        Image("onboarding.preview.everyMoment")
             .resizable()
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -137,7 +137,7 @@ private struct TricksPreviewVisual: View {
 
 private struct VibrationsVisual: View {
     var body: some View {
-        Image("noprops")
+        Image("onboarding.preview.phoneOnly")
             .resizable()
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
