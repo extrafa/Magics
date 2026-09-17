@@ -80,6 +80,9 @@ struct ExitHintView: View {
         .onChange(of: viewModel.isSwipeAlertPresented) { _ in
             syncGestureState()
         }
+        .onDisappear {
+            viewModel.cancelAll()
+        }
     }
 
     private var exitHitArea: some View {

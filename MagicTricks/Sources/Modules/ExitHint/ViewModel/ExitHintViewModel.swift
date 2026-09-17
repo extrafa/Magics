@@ -106,6 +106,11 @@ final class ExitHintViewModel: ObservableObject {
         autoFadeTask?.cancel()
     }
 
+    func cancelAll() {
+        autoFadeTask?.cancel()
+        flashTask?.cancel()
+    }
+
     private func pause(_ duration: TimeInterval) async {
         try? await Task.sleep(seconds: duration)
     }
