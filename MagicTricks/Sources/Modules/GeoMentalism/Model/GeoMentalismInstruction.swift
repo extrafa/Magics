@@ -23,13 +23,13 @@ extension Instruction {
                 title: String(localized: "instruction.geo.step2.title"),
                 description: String(localized: "instruction.geo.step2.description"),
                 phase: .demonstration,
-                imageName: "geo.step.cityList"
+                imageName: "step.geo.cityList"
             ),
             InstructionStep(
                 title: String(localized: "instruction.geo.step3.title"),
                 description: String(localized: "instruction.geo.step3.description"),
                 phase: .demonstration,
-                imageName: "geo.step.cityGrid"
+                imageName: "step.geo.cityGrid"
             ),
             InstructionStep(
                 title: String(localized: "instruction.geo.step4.title"),

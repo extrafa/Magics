@@ -18,7 +18,7 @@ extension Instruction {
                 title: String(localized: "instruction.magicGallery.step1.title"),
                 description: String(localized: "instruction.magicGallery.step1.description"),
                 phase: .preparation,
-                imageName: "gallery.step.collection"
+                imageName: "step.gallery.collection"
             ),
             InstructionStep(
                 title: String(localized: "instruction.magicGallery.step2.title"),
