@@ -22,7 +22,7 @@ struct ColorSenseView: View {
 
     var body: some View {
         ZStack {
-            Color.background.ignoresSafeArea()
+            Color.backgroundScreen.ignoresSafeArea()
 
             LazyVGrid(columns: Self.columns, spacing: 14) {
                 ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in

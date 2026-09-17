@@ -11,7 +11,7 @@ struct PhantomDrawReceiverView: View {
 
     var body: some View {
         ZStack {
-            Color.background.ignoresSafeArea()
+            Color.backgroundScreen.ignoresSafeArea()
 
             GeometryReader { geo in
                 ZStack {

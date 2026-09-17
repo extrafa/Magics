@@ -55,7 +55,7 @@ struct InstructionStepRow: View {
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     .overlay {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
-                            .stroke(Color.grayBorder, lineWidth: 1)
+                            .stroke(Color.cardBorder, lineWidth: 1)
                     }
             }
 

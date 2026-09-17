@@ -110,5 +110,5 @@ struct OnboardingWelcomeScreen: View {
 
 #Preview {
     OnboardingWelcomeScreen(onContinue: {})
-        .background(Color.background)
+        .background(Color.backgroundScreen)
 }

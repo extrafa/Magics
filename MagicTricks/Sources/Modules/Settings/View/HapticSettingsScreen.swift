@@ -24,7 +24,7 @@ struct HapticSettingsScreen: View {
 
     var body: some View {
         ZStack {
-            Color.background.ignoresSafeArea()
+            Color.backgroundScreen.ignoresSafeArea()
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {

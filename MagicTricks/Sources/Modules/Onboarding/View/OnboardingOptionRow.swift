@@ -30,10 +30,10 @@ struct OnboardingOptionRow: View {
         .padding(.vertical, 14)
         .background {
             RoundedRectangle(cornerRadius: 14, style: .continuous)
-                .fill(isSelected ? Color.textPrimary.opacity(0.06) : Color.grayCard)
+                .fill(isSelected ? Color.textPrimary.opacity(0.06) : Color.cardBackground)
                 .overlay {
                     RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .stroke(isSelected ? Color.textPrimary.opacity(0.35) : Color.grayBorder, lineWidth: 1)
+                        .stroke(isSelected ? Color.textPrimary.opacity(0.35) : Color.cardBorder, lineWidth: 1)
                 }
         }
         .animation(.easeOut(duration: 0.15), value: isSelected)

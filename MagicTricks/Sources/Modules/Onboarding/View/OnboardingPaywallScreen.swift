@@ -363,6 +363,6 @@ private struct HeroSparkle: View {
 
 #Preview {
     OnboardingPaywallScreen(onDismiss: {})
-        .background(Color.background)
+        .background(Color.backgroundScreen)
         .environmentObject(StoreManager())
 }

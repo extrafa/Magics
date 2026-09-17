@@ -22,7 +22,7 @@ struct GeoMentalismView: View {
 
     var body: some View {
         ZStack {
-            Color.background.ignoresSafeArea()
+            Color.backgroundScreen.ignoresSafeArea()
 
             List {
                 ForEach(GeoMentalismCities.all, id: \.self) { city in
@@ -34,8 +34,8 @@ struct GeoMentalismView: View {
                             .foregroundStyle(Color.textPrimary)
                             .padding(.vertical, 4)
                     }
-                    .listRowBackground(Color.background)
-                    .listRowSeparatorTint(Color.grayBorder)
+                    .listRowBackground(Color.backgroundScreen)
+                    .listRowSeparatorTint(Color.cardBorder)
                 }
             }
             .listStyle(.plain)

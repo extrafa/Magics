@@ -21,11 +21,11 @@ struct AppFlowCoverView: View {
             }
             .fullScreenCover(isPresented: $flow.isPaywallOverlayPresented) {
                 OnboardingPaywallScreen(onDismiss: flow.dismissPaywallOverlay)
-                    .background(Color.background)
+                    .background(Color.backgroundScreen)
             }
         case .paywall:
             OnboardingPaywallScreen(onDismiss: { dismiss() })
-                .background(Color.background)
+                .background(Color.backgroundScreen)
         }
     }
 }

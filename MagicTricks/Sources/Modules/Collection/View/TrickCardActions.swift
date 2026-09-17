@@ -33,7 +33,7 @@ struct TrickCardActions: View {
                     .frame(height: 52)
                     .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
-            .buttonStyle(PrimaryTrickButtonStyle(color: .button))
+            .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
             .accessibilityLabel(String(format: String(localized: "collection.start.accessibilityLabel"), trickName))
         }
     }

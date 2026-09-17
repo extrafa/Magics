@@ -30,7 +30,7 @@ struct HapticSignalSettingsSection: View {
                             .frame(maxWidth: .infinity)
                             .frame(height: 48)
                             .foregroundStyle(settings.hapticIntensity == intensity ? Color.textSecondary : Color.textPrimary.opacity(0.55))
-                            .background(settings.hapticIntensity == intensity ? Color.button : Color.clear)
+                            .background(settings.hapticIntensity == intensity ? Color.buttonPrimary : Color.clear)
                             .animation(.easeInOut(duration: 0.18), value: settings.hapticIntensity)
                     }
                     .buttonStyle(.plain)
@@ -42,7 +42,7 @@ struct HapticSignalSettingsSection: View {
                     }
                 }
             }
-            .background(Color.grayCard)
+            .background(Color.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)

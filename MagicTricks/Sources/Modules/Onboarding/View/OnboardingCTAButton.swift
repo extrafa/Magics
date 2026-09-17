@@ -18,7 +18,7 @@ struct OnboardingCTAButton: View {
             Group {
                 if isLoading {
                     ProgressView()
-                        .tint(Color.background)
+                        .tint(Color.backgroundScreen)
                 } else {
                     Text(title)
                         .font(.system(size: 18, weight: .semibold, design: .rounded))
@@ -27,7 +27,7 @@ struct OnboardingCTAButton: View {
             .frame(maxWidth: .infinity)
             .frame(height: 56)
             .background(isEnabled ? Color.textPrimary : Color.textPrimary.opacity(0.3))
-            .foregroundStyle(Color.background)
+            .foregroundStyle(Color.backgroundScreen)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .animation(.easeOut(duration: 0.2), value: isEnabled)
         }

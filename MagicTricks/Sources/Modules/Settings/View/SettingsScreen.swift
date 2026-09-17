@@ -15,7 +15,7 @@ struct SettingsScreen: View {
 
     var body: some View {
         ZStack {
-            Color.background
+            Color.backgroundScreen
                 .ignoresSafeArea()
 
             ScrollView {
