@@ -1,5 +1,5 @@
 //
-//  OBOptionRow.swift
+//  OnboardingOptionRow.swift
 //  Magic Tricks
 //
 //  Created by Ross on 28/03/2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OBOptionRow: View {
+struct OnboardingOptionRow: View {
     let emoji: String
     let title: String
     let isSelected: Bool

@@ -17,11 +17,10 @@
 		0AAB00000000000000000002 /* StoreErrorAlert.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AAB00000000000000000001 /* StoreErrorAlert.swift */; };
 		0A000300000000000000001B /* OnboardingFlowView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000300000000000000001A /* OnboardingFlowView.swift */; };
 		0A000400000000000000001B /* OnboardingProgressBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000400000000000000001A /* OnboardingProgressBar.swift */; };
-		0A000500000000000000001B /* OBOptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000500000000000000001A /* OBOptionRow.swift */; };
-		0A000600000000000000001B /* OBWelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000600000000000000001A /* OBWelcomeScreen.swift */; };
-		0A000700000000000000001B /* OBGoalScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000700000000000000001A /* OBGoalScreen.swift */; };
-		0A000800000000000000001B /* OBPainPointsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000800000000000000001A /* OBPainPointsScreen.swift */; };
-		0A000C00000000000000001B /* OBProcessingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000C00000000000000001A /* OBProcessingScreen.swift */; };
+		0A000500000000000000001B /* OnboardingOptionRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000500000000000000001A /* OnboardingOptionRow.swift */; };
+		0A000600000000000000001B /* OnboardingWelcomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000600000000000000001A /* OnboardingWelcomeScreen.swift */; };
+		0A000700000000000000001B /* OnboardingGoalScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000700000000000000001A /* OnboardingGoalScreen.swift */; };
+		0A000C00000000000000001B /* OnboardingProcessingScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A000C00000000000000001A /* OnboardingProcessingScreen.swift */; };
 		0A00FE000000000000000002 /* StoreProduct.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000001 /* StoreProduct.swift */; };
 		0A00FE000000000000000004 /* StoreService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000003 /* StoreService.swift */; };
 		0A00FE000000000000000006 /* StoreManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0A00FE000000000000000005 /* StoreManager.swift */; };
@@ -61,10 +60,8 @@
 		28062326301A8E06003F0C44 /* GeoMentalismCitiesView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */; };
 		280ECC5F30387FF300269CC6 /* MagicTricksIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 280ECC5E30387FF300269CC6 /* MagicTricksIcon.icon */; };
 		280FC5D92FCDA5EA00B347F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */; };
-		28258EC02FF3E31800DE5695 /* OBPreferenceScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */; };
-		28258EC12FF3E31800DE5695 /* OBValueDeliveryScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */; };
-		28258EC22FF3E31800DE5695 /* OBFeatureSlideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */; };
-		28258EC32FF3E31800DE5695 /* OBPaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */; };
+		28258EC22FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBC2FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift */; };
+		28258EC32FF3E31800DE5695 /* OnboardingPaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBD2FF3E31800DE5695 /* OnboardingPaywallScreen.swift */; };
 		282AC7622FCF09E400315861 /* MagicTricksIconOLD.icon in Resources */ = {isa = PBXBuildFile; fileRef = 282AC7612FCF09E400315861 /* MagicTricksIconOLD.icon */; };
 		28335ADD2FA55DCD00DE419B /* ColorSenseInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */; };
 		2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370A2FAA196500234419 /* TimeControlViewModel.swift */; };
@@ -113,7 +110,6 @@
 		28E100012FC9F00000BB0001 /* TrickPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E100002FC9F00000BB0001 /* TrickPalette.swift */; };
 		28E200022FCE720000BB0001 /* TrickButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E200012FCE720000BB0001 /* TrickButtonStyles.swift */; };
 		0AML00000000000000000025 /* ProUpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000024 /* ProUpgradeButton.swift */; };
-		28E935822FF2BEEC00AEF6EC /* OBFirstScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */; };
 		28F1571830334E1A00DBF903 /* MagicTricksIconSecond.icon in Resources */ = {isa = PBXBuildFile; fileRef = 28F1571730334E1A00DBF903 /* MagicTricksIconSecond.icon */; };
 		28F200012FCE500000CC0001 /* MotionSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28F200002FCE500000CC0001 /* MotionSettingsSection.swift */; };
 		9100D5882F89343C005B0BC0 /* TrickCardView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9100D5872F89343C005B0BC0 /* TrickCardView.swift */; };
@@ -181,11 +177,10 @@
 		0AAB00000000000000000001 /* StoreErrorAlert.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreErrorAlert.swift; sourceTree = "<group>"; };
 		0A000300000000000000001A /* OnboardingFlowView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFlowView.swift; sourceTree = "<group>"; };
 		0A000400000000000000001A /* OnboardingProgressBar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProgressBar.swift; sourceTree = "<group>"; };
-		0A000500000000000000001A /* OBOptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBOptionRow.swift; sourceTree = "<group>"; };
-		0A000600000000000000001A /* OBWelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBWelcomeScreen.swift; sourceTree = "<group>"; };
-		0A000700000000000000001A /* OBGoalScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBGoalScreen.swift; sourceTree = "<group>"; };
-		0A000800000000000000001A /* OBPainPointsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPainPointsScreen.swift; sourceTree = "<group>"; };
-		0A000C00000000000000001A /* OBProcessingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBProcessingScreen.swift; sourceTree = "<group>"; };
+		0A000500000000000000001A /* OnboardingOptionRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingOptionRow.swift; sourceTree = "<group>"; };
+		0A000600000000000000001A /* OnboardingWelcomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingWelcomeScreen.swift; sourceTree = "<group>"; };
+		0A000700000000000000001A /* OnboardingGoalScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingGoalScreen.swift; sourceTree = "<group>"; };
+		0A000C00000000000000001A /* OnboardingProcessingScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingProcessingScreen.swift; sourceTree = "<group>"; };
 		0A00FE000000000000000001 /* StoreProduct.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreProduct.swift; sourceTree = "<group>"; };
 		0A00FE000000000000000003 /* StoreService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreService.swift; sourceTree = "<group>"; };
 		0A00FE000000000000000005 /* StoreManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManager.swift; sourceTree = "<group>"; };
@@ -225,10 +220,8 @@
 		28062327301A8E06003F0C44 /* GeoMentalismCitiesView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismCitiesView.swift; sourceTree = "<group>"; };
 		280ECC5E30387FF300269CC6 /* MagicTricksIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIcon.icon; sourceTree = "<group>"; };
 		280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
-		28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBFeatureSlideScreen.swift; sourceTree = "<group>"; };
-		28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPaywallScreen.swift; sourceTree = "<group>"; };
-		28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBPreferenceScreen.swift; sourceTree = "<group>"; };
-		28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBValueDeliveryScreen.swift; sourceTree = "<group>"; };
+		28258EBC2FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeatureSlideScreen.swift; sourceTree = "<group>"; };
+		28258EBD2FF3E31800DE5695 /* OnboardingPaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPaywallScreen.swift; sourceTree = "<group>"; };
 		282AC7612FCF09E400315861 /* MagicTricksIconOLD.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIconOLD.icon; sourceTree = "<group>"; };
 		28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseInstruction.swift; sourceTree = "<group>"; };
 		28335AE22FA5838300DE419B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
@@ -278,7 +271,6 @@
 		28E100002FC9F00000BB0001 /* TrickPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickPalette.swift; sourceTree = "<group>"; };
 		28E200012FCE720000BB0001 /* TrickButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickButtonStyles.swift; sourceTree = "<group>"; };
 		0AML00000000000000000024 /* ProUpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProUpgradeButton.swift; sourceTree = "<group>"; };
-		28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OBFirstScreen.swift; sourceTree = "<group>"; };
 		28F1571730334E1A00DBF903 /* MagicTricksIconSecond.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIconSecond.icon; sourceTree = "<group>"; };
 		28F200002FCE500000CC0001 /* MotionSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MotionSettingsSection.swift; sourceTree = "<group>"; };
 		9100D5872F89343C005B0BC0 /* TrickCardView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickCardView.swift; sourceTree = "<group>"; };
@@ -387,18 +379,14 @@
 		0A00FF000000000000000004 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				28258EBC2FF3E31800DE5695 /* OBFeatureSlideScreen.swift */,
-				28258EBD2FF3E31800DE5695 /* OBPaywallScreen.swift */,
-				28258EBE2FF3E31800DE5695 /* OBPreferenceScreen.swift */,
-				28258EBF2FF3E31800DE5695 /* OBValueDeliveryScreen.swift */,
+				28258EBC2FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift */,
+				28258EBD2FF3E31800DE5695 /* OnboardingPaywallScreen.swift */,
 				0A000300000000000000001A /* OnboardingFlowView.swift */,
 				0A000400000000000000001A /* OnboardingProgressBar.swift */,
-				0A000500000000000000001A /* OBOptionRow.swift */,
-				0A000600000000000000001A /* OBWelcomeScreen.swift */,
-				0A000700000000000000001A /* OBGoalScreen.swift */,
-				0A000800000000000000001A /* OBPainPointsScreen.swift */,
-				28E935812FF2BEEC00AEF6EC /* OBFirstScreen.swift */,
-				0A000C00000000000000001A /* OBProcessingScreen.swift */,
+				0A000500000000000000001A /* OnboardingOptionRow.swift */,
+				0A000600000000000000001A /* OnboardingWelcomeScreen.swift */,
+				0A000700000000000000001A /* OnboardingGoalScreen.swift */,
+				0A000C00000000000000001A /* OnboardingProcessingScreen.swift */,
 				0A0002000000000000000025 /* OnboardingCTAButton.swift */,
 				0AML00000000000000000033 /* OnboardingAppearTransition.swift */,
 			);
@@ -1190,7 +1178,6 @@
 				289123F32FC880000051759C /* HapticProtocols.swift in Sources */,
 				289123F72FC880000051759C /* TimeHapticPatternBuilder.swift in Sources */,
 				63CFE047B79B1D380E83FC1A /* GroupedHapticPatternBuilder.swift in Sources */,
-				28E935822FF2BEEC00AEF6EC /* OBFirstScreen.swift in Sources */,
 				913878262F89733200CA371E /* InstructionView.swift in Sources */,
 				28404A062FC056FF0062D941 /* TimeControlSignalTransmitter.swift in Sources */,
 				2834370D2FAA196500234419 /* TimeControlView.swift in Sources */,
@@ -1246,11 +1233,9 @@
 				28C187882FCE7800001306EE /* InstructionPhaseLegend.swift in Sources */,
 				28C1878A2FCE7900001306EE /* InstructionPresentedSheet.swift in Sources */,
 				28C1878C2FCE7900001306EE /* InstructionActionSheetDestination.swift in Sources */,
-				28258EC02FF3E31800DE5695 /* OBPreferenceScreen.swift in Sources */,
-				28258EC12FF3E31800DE5695 /* OBValueDeliveryScreen.swift in Sources */,
-				28258EC22FF3E31800DE5695 /* OBFeatureSlideScreen.swift in Sources */,
+				28258EC22FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift in Sources */,
 				28062323301A8966003F0C44 /* GeoMentalismViewModel.swift in Sources */,
-				28258EC32FF3E31800DE5695 /* OBPaywallScreen.swift in Sources */,
+				28258EC32FF3E31800DE5695 /* OnboardingPaywallScreen.swift in Sources */,
 				287D56362FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift in Sources */,
 				0A00FE000000000000000002 /* StoreProduct.swift in Sources */,
 				0A00FE000000000000000004 /* StoreService.swift in Sources */,
@@ -1270,11 +1255,10 @@
 				0A0002000000000000000028 /* AsyncUtilities.swift in Sources */,
 				0A000300000000000000001B /* OnboardingFlowView.swift in Sources */,
 				0A000400000000000000001B /* OnboardingProgressBar.swift in Sources */,
-				0A000500000000000000001B /* OBOptionRow.swift in Sources */,
-				0A000600000000000000001B /* OBWelcomeScreen.swift in Sources */,
-				0A000700000000000000001B /* OBGoalScreen.swift in Sources */,
-				0A000800000000000000001B /* OBPainPointsScreen.swift in Sources */,
-				0A000C00000000000000001B /* OBProcessingScreen.swift in Sources */,
+				0A000500000000000000001B /* OnboardingOptionRow.swift in Sources */,
+				0A000600000000000000001B /* OnboardingWelcomeScreen.swift in Sources */,
+				0A000700000000000000001B /* OnboardingGoalScreen.swift in Sources */,
+				0A000C00000000000000001B /* OnboardingProcessingScreen.swift in Sources */,
 				0AFF00000000000000000002 /* InstructionPhase.swift in Sources */,
 				0AEE00000000000000000002 /* MagicGalleryPhoto.swift in Sources */,
 				0AEE00000000000000000004 /* MagicGalleryCameraView.swift in Sources */,

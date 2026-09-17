@@ -48,19 +48,19 @@ struct OnboardingFlowView: View {
     private var currentScreen: some View {
         switch viewModel.step {
         case .welcome:
-            OBWelcomeScreen(onContinue: viewModel.advance)
+            OnboardingWelcomeScreen(onContinue: viewModel.advance)
         case .goal:
-            OBGoalScreen(selectedGoals: $viewModel.selectedGoals, onContinue: viewModel.advance)
+            OnboardingGoalScreen(selectedGoals: $viewModel.selectedGoals, onContinue: viewModel.advance)
         case .noProps:
-            OBFeatureSlideScreen(feature: .noProps, goals: viewModel.selectedGoals, onContinue: viewModel.advance)
+            OnboardingFeatureSlideScreen(feature: .noProps, goals: viewModel.selectedGoals, onContinue: viewModel.advance)
         case .instructions:
-            OBFeatureSlideScreen(feature: .instructions, goals: [], onContinue: viewModel.advance)
+            OnboardingFeatureSlideScreen(feature: .instructions, goals: [], onContinue: viewModel.advance)
         case .vibrations:
-            OBFeatureSlideScreen(feature: .vibrations, goals: [], onContinue: viewModel.advance)
+            OnboardingFeatureSlideScreen(feature: .vibrations, goals: [], onContinue: viewModel.advance)
         case .processing:
-            OBProcessingScreen(phases: viewModel.loadingPhases, onComplete: viewModel.advance)
+            OnboardingProcessingScreen(phases: viewModel.loadingPhases, onComplete: viewModel.advance)
         case .paywall:
-            OBPaywallScreen(onDismiss: dismissPaywall)
+            OnboardingPaywallScreen(onDismiss: dismissPaywall)
         }
     }
 

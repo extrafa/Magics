@@ -1,5 +1,5 @@
 //
-//  OBGoalScreen.swift
+//  OnboardingGoalScreen.swift
 //  Magic Tricks
 //
 //  Created by Ross on 28/03/2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OBGoalScreen: View {
+struct OnboardingGoalScreen: View {
     @Binding var selectedGoals: Set<OnboardingGoal>
     let onContinue: () -> Void
 
@@ -38,7 +38,7 @@ struct OBGoalScreen: View {
                             ? isEverywhereActive
                             : !isEverywhereActive && selectedGoals.contains(goal)
 
-                        OBOptionRow(
+                        OnboardingOptionRow(
                             emoji: goal.emoji,
                             title: goal.localizedTitle,
                             isSelected: isSelected

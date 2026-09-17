@@ -1,5 +1,5 @@
 //
-//  OBWelcomeScreen.swift
+//  OnboardingWelcomeScreen.swift
 //  Magic Tricks
 //
 //  Created by Ross on 28/03/2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OBWelcomeScreen: View {
+struct OnboardingWelcomeScreen: View {
     let onContinue: () -> Void
 
     @State private var appeared = false
@@ -109,6 +109,6 @@ struct OBWelcomeScreen: View {
 }
 
 #Preview {
-    OBWelcomeScreen(onContinue: {})
+    OnboardingWelcomeScreen(onContinue: {})
         .background(Color.background)
 }

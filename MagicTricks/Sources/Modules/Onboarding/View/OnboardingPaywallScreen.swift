@@ -1,5 +1,5 @@
 //
-//  OBPaywallScreen.swift
+//  OnboardingPaywallScreen.swift
 //  Magic Tricks
 //
 //  Created by Ross on 28/03/2026.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct OBPaywallScreen: View {
+struct OnboardingPaywallScreen: View {
     let onDismiss: () -> Void
 
     @EnvironmentObject private var store: StoreManager
@@ -362,7 +362,7 @@ private struct HeroSparkle: View {
 }
 
 #Preview {
-    OBPaywallScreen(onDismiss: {})
+    OnboardingPaywallScreen(onDismiss: {})
         .background(Color.background)
         .environmentObject(StoreManager())
 }

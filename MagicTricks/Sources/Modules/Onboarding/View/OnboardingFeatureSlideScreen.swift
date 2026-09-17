@@ -1,5 +1,5 @@
 //
-//  OBFeatureSlideScreen.swift
+//  OnboardingFeatureSlideScreen.swift
 //  Magic Tricks
 //
 //  Created by Ross on 28/03/2026.
@@ -9,7 +9,7 @@ import SwiftUI
 
 // MARK: - Feature type
 
-enum OBFeatureType {
+enum OnboardingFeatureType {
     case instructions
     case noProps
     case vibrations
@@ -48,8 +48,8 @@ enum OBFeatureType {
 
 // MARK: - Screen
 
-struct OBFeatureSlideScreen: View {
-    let feature: OBFeatureType
+struct OnboardingFeatureSlideScreen: View {
+    let feature: OnboardingFeatureType
     let goals: Set<OnboardingGoal>
     let onContinue: () -> Void
 
