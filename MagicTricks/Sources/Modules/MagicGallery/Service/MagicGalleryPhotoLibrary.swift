@@ -147,16 +147,16 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     private static let maxStoredSide: CGFloat = 2000
 
     private static let standardAssetNames: [Int: String] = [
-        1: "one",
-        2: "two",
-        3: "three",
-        4: "four",
-        5: "five",
-        6: "six",
-        7: "seven",
-        8: "eight",
-        9: "nine",
-        10: "ten"
+        1: "gallery.photo.one",
+        2: "gallery.photo.two",
+        3: "gallery.photo.three",
+        4: "gallery.photo.four",
+        5: "gallery.photo.five",
+        6: "gallery.photo.six",
+        7: "gallery.photo.seven",
+        8: "gallery.photo.eight",
+        9: "gallery.photo.nine",
+        10: "gallery.photo.ten"
     ]
 }
 
