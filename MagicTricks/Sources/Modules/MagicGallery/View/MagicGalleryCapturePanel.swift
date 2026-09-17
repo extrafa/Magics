@@ -41,7 +41,7 @@ struct MagicGalleryCapturePanel: View {
 
                 Text(String(localized: "magicGallery.standardSet.description"))
                     .font(.caption.weight(.medium))
-                    .foregroundStyle(Color.primaryText.opacity(0.58))
+                    .foregroundStyle(Color.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
             }
 

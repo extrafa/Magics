@@ -21,7 +21,7 @@ struct HapticAnswerSectionView: View {
         VStack(alignment: .leading, spacing: 10) {
             Text(String(localized: "training.answer.title"))
                 .font(.system(size: 15, weight: .bold, design: .rounded))
-                .foregroundStyle(Color.primaryText.opacity(0.58))
+                .foregroundStyle(Color.secondaryText)
 
             // Keyboard appears after the signal plays; direct taps are blocked until then.
             TextField(isAnswerFocused.wrappedValue ? "" : mode.inputPlaceholder, text: $answerText)

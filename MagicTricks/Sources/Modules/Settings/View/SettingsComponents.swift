@@ -74,7 +74,7 @@ struct SettingsToggleRow: View {
 
                 Text(subtitle)
                     .font(.system(size: 13, weight: .medium, design: .rounded))
-                    .foregroundStyle(Color.primaryText.opacity(0.58))
+                    .foregroundStyle(Color.secondaryText)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
