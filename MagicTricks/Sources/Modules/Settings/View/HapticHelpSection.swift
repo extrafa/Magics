@@ -66,7 +66,7 @@ private struct HelpItem: View {
 
             Text(answer)
                 .font(.system(size: 14, weight: .medium, design: .rounded))
-                .foregroundStyle(Color.primaryText.opacity(0.58))
+                .foregroundStyle(Color.secondaryText)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)

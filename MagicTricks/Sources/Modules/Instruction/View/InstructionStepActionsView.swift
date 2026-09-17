@@ -64,7 +64,7 @@ private struct InstructionStepActionButton: View {
 
             Text(presentation.subtitle)
                 .font(.system(.caption, design: .rounded))
-                .foregroundStyle(.primaryText.opacity(0.58))
+                .foregroundStyle(.secondaryText)
                 .lineLimit(1)
                 .minimumScaleFactor(0.78)
         }
