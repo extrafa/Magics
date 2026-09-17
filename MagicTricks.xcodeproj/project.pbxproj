@@ -93,7 +93,6 @@
 		28960C5B2FABD6D1003268CD /* ExitHintConfiguration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5A2FABD6D1003268CD /* ExitHintConfiguration.swift */; };
 		28960C5D2FABD6D2003268CD /* ExitHintViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5C2FABD6D2003268CD /* ExitHintViewModel.swift */; };
 		28960C602FABD7A0003268CD /* ExitHintGestureCaptureView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28960C5F2FABD7A0003268CD /* ExitHintGestureCaptureView.swift */; };
-		28B6EAA53013DC05001FD5CB /* TrickCardButtonStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */; };
 		28BA97D62FBB389000F30468 /* HapticSettingsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */; };
 		28BA97D82FCE760000F30468 /* HapticSignalSettingsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */; };
 		28BA97DA2FCE760000F30468 /* HapticPreviewSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */; };
@@ -254,7 +253,6 @@
 		28960C5A2FABD6D1003268CD /* ExitHintConfiguration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintConfiguration.swift; sourceTree = "<group>"; };
 		28960C5C2FABD6D2003268CD /* ExitHintViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintViewModel.swift; sourceTree = "<group>"; };
 		28960C5F2FABD7A0003268CD /* ExitHintGestureCaptureView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExitHintGestureCaptureView.swift; sourceTree = "<group>"; };
-		28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickCardButtonStyle.swift; sourceTree = "<group>"; };
 		28BA97D52FBB389000F30468 /* HapticSettingsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSettingsScreen.swift; sourceTree = "<group>"; };
 		28BA97D72FCE760000F30468 /* HapticSignalSettingsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticSignalSettingsSection.swift; sourceTree = "<group>"; };
 		28BA97D92FCE760000F30468 /* HapticPreviewSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticPreviewSection.swift; sourceTree = "<group>"; };
@@ -680,7 +678,6 @@
 		28E200002FCE720000BB0001 /* Components */ = {
 			isa = PBXGroup;
 			children = (
-				28B6EAA43013DC05001FD5CB /* TrickCardButtonStyle.swift */,
 				28E200012FCE720000BB0001 /* TrickButtonStyles.swift */,
 				0AML00000000000000000024 /* ProUpgradeButton.swift */,
 				0A0002000000000000000023 /* TrickGradientCard.swift */,
@@ -1196,7 +1193,6 @@
 				289123E52FBDCEC80051759C /* HapticModels.swift in Sources */,
 				9122DB952EDD20C300277108 /* Trick.swift in Sources */,
 				918359822F2719DB0068D5BC /* AppFlowCoverView.swift in Sources */,
-				28B6EAA53013DC05001FD5CB /* TrickCardButtonStyle.swift in Sources */,
 				28960C5B2FABD6D1003268CD /* ExitHintConfiguration.swift in Sources */,
 				9122DB932EDD1CCB00277108 /* CollectionView.swift in Sources */,
 				913AE9A22F54939D0061F75A /* AppConfig.swift in Sources */,
