@@ -14,6 +14,10 @@ struct TrickCardView: View {
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
 
+    // Seeded close to a typical badge width so the first frame (before GeometryReader
+    // reports the real measurement) doesn't render the title with zero trailing space.
+    @State private var badgeWidth: CGFloat = 94
+
     var body: some View {
         ZStack(alignment: .topTrailing) {
             cardBody
@@ -35,10 +39,16 @@ struct TrickCardView: View {
                 }
 
             badge
+                .background {
+                    GeometryReader { geometry in
+                        Color.clear.preference(key: BadgeWidthPreferenceKey.self, value: geometry.size.width)
+                    }
+                }
                 .padding(.top, 16)
                 .padding(.trailing, 16)
         }
-        // Caps growth so the badge doesn't collide with the title's reserved trailing padding (see `header`).
+        .onPreferenceChange(BadgeWidthPreferenceKey.self) { badgeWidth = $0 }
+        // Caps growth so the icon/title/badge row stays usable at the largest accessibility sizes.
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
@@ -72,7 +82,10 @@ struct TrickCardView: View {
                     .foregroundStyle(.primaryText)
                     .multilineTextAlignment(.leading)
                     .fixedSize(horizontal: false, vertical: true)
-                    .padding(.trailing, 88)
+                    // The badge floats independently in a ZStack overlay, inset less from the card edge
+                    // than this content area - reserve exactly the width it measured, so it never overlaps
+                    // regardless of locale/badge text length.
+                    .padding(.trailing, max(0, badgeWidth - 6))
 
                 Text(trick.subtitle)
                     .font(.subheadline)
@@ -116,6 +129,13 @@ struct TrickCardView: View {
             Capsule(style: .continuous)
                 .stroke(Color.primary.opacity(0.22), lineWidth: 1.2)
         }
+    }
+}
+
+private struct BadgeWidthPreferenceKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
+        value = nextValue()
     }
 }
 
