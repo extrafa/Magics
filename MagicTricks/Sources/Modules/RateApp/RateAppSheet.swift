@@ -48,10 +48,10 @@ struct RateAppSheet: View {
             VStack(spacing: 6) {
                 Text(String(localized: "rateApp.question.title"))
                     .font(.title3.weight(.bold))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                 Text(String(localized: "rateApp.question.subtitle"))
                     .font(.subheadline)
-                    .foregroundStyle(.secondaryText)
+                    .foregroundStyle(.textSecondary)
             }
             .multilineTextAlignment(.center)
 
@@ -77,7 +77,7 @@ struct RateAppSheet: View {
                     .font(.system(size: 36))
                 Text(label)
                     .font(.subheadline.weight(.medium))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 20)
@@ -100,10 +100,10 @@ struct RateAppSheet: View {
                     .font(.system(size: 44))
                 Text(String(localized: "rateApp.disliked.title"))
                     .font(.title3.weight(.bold))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
                 Text(String(localized: "rateApp.disliked.subtitle"))
                     .font(.subheadline)
-                    .foregroundStyle(.secondaryText)
+                    .foregroundStyle(.textSecondary)
             }
             .multilineTextAlignment(.center)
 
@@ -119,7 +119,7 @@ struct RateAppSheet: View {
                 Button(action: handleMaybeLater) {
                     Text(String(localized: "rateApp.disliked.laterButton"))
                         .font(.subheadline)
-                        .foregroundStyle(.secondaryText)
+                        .foregroundStyle(.textSecondary)
                 }
                 .buttonStyle(.plain)
             }

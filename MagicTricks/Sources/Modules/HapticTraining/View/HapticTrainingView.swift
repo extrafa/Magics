@@ -52,11 +52,11 @@ struct HapticTrainingView: View {
 
                 Text(mode.navigationTitle)
                     .font(.system(size: 28, weight: .black, design: .rounded))
-                    .foregroundStyle(Color.primaryText)
+                    .foregroundStyle(Color.textPrimary)
 
                 Text(mode.subtitle)
                     .font(.subheadline.weight(.semibold))
-                    .foregroundStyle(Color.primaryText.opacity(0.54))
+                    .foregroundStyle(Color.textPrimary.opacity(0.54))
                     .multilineTextAlignment(.center)
                     .lineLimit(1)
                     .minimumScaleFactor(0.78)
@@ -88,11 +88,11 @@ struct HapticTrainingView: View {
                     .foregroundStyle(mode.accentColor)
                 Text(String(localized: "training.legend.longVibration"))
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Color.primaryText.opacity(0.45))
+                    .foregroundStyle(Color.textPrimary.opacity(0.45))
             }
 
             Rectangle()
-                .fill(Color.primaryText.opacity(0.12))
+                .fill(Color.textPrimary.opacity(0.12))
                 .frame(width: 1, height: 30)
 
             VStack(spacing: 2) {
@@ -101,7 +101,7 @@ struct HapticTrainingView: View {
                     .foregroundStyle(mode.accentColor)
                 Text(String(localized: "training.legend.thatManyVibrations"))
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
-                    .foregroundStyle(Color.primaryText.opacity(0.45))
+                    .foregroundStyle(Color.textPrimary.opacity(0.45))
             }
         }
         .padding(.vertical, 6)

@@ -53,7 +53,7 @@ struct InstructionView: View {
             ToolbarItem(placement: .topBarTrailing) {
                 ShareLink(item: shareText) {
                     Image(systemName: "square.and.arrow.up")
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(.textPrimary)
                 }
                 .accessibilityLabel(String(localized: "common.share"))
             }
@@ -87,7 +87,7 @@ private extension InstructionView {
     var headerSection: some View {
         Text(instruction.title)
             .font(.system(size: headerTitleSize, weight: .bold, design: .rounded))
-            .foregroundStyle(.primaryText)
+            .foregroundStyle(.textPrimary)
             .multilineTextAlignment(.leading)
             .fixedSize(horizontal: false, vertical: true)
             .padding(.top)

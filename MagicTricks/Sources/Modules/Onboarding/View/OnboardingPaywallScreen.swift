@@ -136,7 +136,7 @@ struct OnboardingPaywallScreen: View {
     private var heroIcon: some View {
         ZStack {
             Circle()
-                .stroke(Color.primaryText.opacity(0.1), lineWidth: 1)
+                .stroke(Color.textPrimary.opacity(0.1), lineWidth: 1)
                 .frame(width: 136, height: 136)
 
             ForEach(0..<8, id: \.self) { i in
@@ -144,7 +144,7 @@ struct OnboardingPaywallScreen: View {
             }
 
             Circle()
-                .fill(Color.primaryText.opacity(heroPulse ? 0.13 : 0.07))
+                .fill(Color.textPrimary.opacity(heroPulse ? 0.13 : 0.07))
                 .frame(
                     width: heroPulse ? 104 : 98,
                     height: heroPulse ? 104 : 98
@@ -156,7 +156,7 @@ struct OnboardingPaywallScreen: View {
 
             Image(systemName: "wand.and.stars")
                 .font(.system(size: 42, weight: .semibold))
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(.textPrimary)
         }
         .scaleEffect(appeared ? 1 : 0.65)
         .opacity(appeared ? 1 : 0)
@@ -170,7 +170,7 @@ struct OnboardingPaywallScreen: View {
         VStack(spacing: 8) {
             Text(String.paywall("title"))
                 .font(.system(size: 28, weight: .bold, design: .rounded))
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(.textPrimary)
                 .onboardingAppear(appeared, offset: 14, delay: 0.2)
 
             Text(String.paywall("subtitle"))
@@ -199,7 +199,7 @@ struct OnboardingPaywallScreen: View {
                     VStack(alignment: .leading, spacing: 2) {
                         Text(benefit.title)
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
-                            .foregroundStyle(.primaryText)
+                            .foregroundStyle(.textPrimary)
                         Text(benefit.detail)
                             .font(.system(size: 13, weight: .regular, design: .rounded))
                             .foregroundStyle(.secondary)
@@ -290,7 +290,7 @@ struct OnboardingPaywallScreen: View {
                 HStack(alignment: .firstTextBaseline, spacing: 6) {
                     Text(price)
                         .font(.system(size: 26, weight: .bold, design: .rounded))
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(.textPrimary)
 
                     Text(String.paywall("period"))
                         .font(.system(size: 14, weight: .medium, design: .rounded))
@@ -345,7 +345,7 @@ private struct HeroSparkle: View {
     var body: some View {
         Image(systemName: "sparkle")
             .font(.system(size: starSize, weight: .bold))
-            .foregroundStyle(Color.primaryText)
+            .foregroundStyle(Color.textPrimary)
             .opacity(active ? 0.7 : 0.08)
             .scaleEffect(active ? 1.1 : 0.5)
             .offset(x: cos(angle) * 68, y: sin(angle) * 68)

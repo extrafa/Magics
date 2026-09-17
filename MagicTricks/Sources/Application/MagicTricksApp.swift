@@ -25,7 +25,7 @@ struct MagicTricksApp: App {
         WindowGroup {
             ZStack {
                 CollectionView()
-                    .tint(.primaryText)
+                    .tint(.textPrimary)
                     .environmentObject(flow)
                     .environmentObject(settingsStore)
                     .environmentObject(storeManager)

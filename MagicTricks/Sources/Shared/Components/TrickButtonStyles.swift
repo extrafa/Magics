@@ -12,7 +12,7 @@ struct PrimaryTrickButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(.secondaryText)
+            .foregroundStyle(.textSecondary)
             .background {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(color)
@@ -25,10 +25,10 @@ struct PrimaryTrickButtonStyle: ButtonStyle {
 struct SecondaryTrickButtonStyle: ButtonStyle {
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(.primaryText)
+            .foregroundStyle(.textPrimary)
             .overlay {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(Color.primaryText.opacity(0.16), lineWidth: 3)
+                    .stroke(Color.textPrimary.opacity(0.16), lineWidth: 3)
             }
             .scaleEffect(configuration.isPressed ? 0.98 : 1)
             .animation(.easeOut(duration: 0.15), value: configuration.isPressed)

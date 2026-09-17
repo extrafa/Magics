@@ -37,11 +37,11 @@ struct MagicGalleryCapturePanel: View {
             VStack(alignment: .leading, spacing: 3) {
                 Text(String(localized: "magicGallery.standardSet.title"))
                     .font(.subheadline.weight(.bold))
-                    .foregroundStyle(Color.primaryText)
+                    .foregroundStyle(Color.textPrimary)
 
                 Text(String(localized: "magicGallery.standardSet.description"))
                     .font(.caption.weight(.medium))
-                    .foregroundStyle(Color.secondaryText)
+                    .foregroundStyle(Color.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
@@ -66,7 +66,7 @@ struct MagicGalleryCapturePanel: View {
 
             Text(String(localized: "magicGallery.gesture.title"))
                 .font(.subheadline.weight(.bold))
-                .foregroundStyle(Color.primaryText)
+                .foregroundStyle(Color.textPrimary)
 
             Spacer(minLength: 8)
 
@@ -89,7 +89,7 @@ struct MagicGalleryCapturePanel: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 15)
                 .background(canAddMorePhotos ? Color.button : Color.button.opacity(0.45))
-                .foregroundStyle(.secondaryText)
+                .foregroundStyle(.textSecondary)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
         .buttonStyle(.plain)

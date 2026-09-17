@@ -13,7 +13,7 @@ struct CityCapsule: View {
     var body: some View {
         Text(city)
             .font(.system(size: 15, weight: .medium, design: .rounded))
-            .foregroundStyle(Color.primaryText)
+            .foregroundStyle(Color.textPrimary)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 12)
             .padding(.horizontal, 12)

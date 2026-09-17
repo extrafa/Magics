@@ -22,7 +22,7 @@ struct HapticPreviewSection: View {
             VStack(alignment: .leading, spacing: 14) {
                 Text(String.localizedStringWithFormat(String(localized: "settings.haptics.testNumber"), testNumber))
                     .font(.system(size: 17, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
 
                 Button(action: action) {
                     HStack(spacing: 10) {

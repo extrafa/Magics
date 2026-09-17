@@ -42,14 +42,14 @@ struct SettingsActionRow: View {
 
             Text(title)
                 .font(.system(size: 17, weight: isBold ? .bold : .semibold, design: .rounded))
-                .foregroundStyle(tint ?? .primaryText)
+                .foregroundStyle(tint ?? .textPrimary)
 
             Spacer()
 
             if showsChevron {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(Color.primaryText.opacity(0.34))
+                    .foregroundStyle(Color.textPrimary.opacity(0.34))
             }
         }
         .frame(maxWidth: .infinity)
@@ -70,11 +70,11 @@ struct SettingsToggleRow: View {
             VStack(alignment: .leading, spacing: 4) {
                 Text(title)
                     .font(.system(size: 17, weight: .bold, design: .rounded))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
 
                 Text(subtitle)
                     .font(.system(size: 13, weight: .medium, design: .rounded))
-                    .foregroundStyle(Color.secondaryText)
+                    .foregroundStyle(Color.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
         }
@@ -129,7 +129,7 @@ struct SettingsStepper: View {
 
             Text(String(format: format, value))
                 .font(.system(size: 20, weight: .bold, design: .rounded))
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(.textPrimary)
 
             Spacer()
 
