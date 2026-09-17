@@ -21,7 +21,7 @@ struct HapticTrainingView: View {
 
     var body: some View {
         ZStack {
-            Color.background.ignoresSafeArea()
+            Color.backgroundScreen.ignoresSafeArea()
 
             VStack(spacing: 18) {
                 signalDeck
@@ -72,7 +72,7 @@ struct HapticTrainingView: View {
                     .frame(height: 54)
                     .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
             }
-            .buttonStyle(PrimaryTrickButtonStyle(color: .button))
+            .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
             .allowsHitTesting(!viewModel.isPlaying)
         }
         .padding(22)

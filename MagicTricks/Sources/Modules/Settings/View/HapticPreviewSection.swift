@@ -42,7 +42,7 @@ struct HapticPreviewSection: View {
                     .frame(height: 52)
                     .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
-                .buttonStyle(PrimaryTrickButtonStyle(color: .button))
+                .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
                 .disabled(isTesting)
                 .animation(.easeInOut(duration: 0.2), value: isWaitingForGesture)
             }

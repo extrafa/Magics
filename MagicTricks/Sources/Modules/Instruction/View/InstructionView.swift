@@ -22,7 +22,7 @@ struct InstructionView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Color.background
+            Color.backgroundScreen
                 .ignoresSafeArea()
 
             ScrollView(.vertical, showsIndicators: false) {
@@ -63,7 +63,7 @@ struct InstructionView: View {
     private func startTrickButton(action: @escaping Completion) -> some View {
         VStack(spacing: 0) {
             LinearGradient(
-                colors: [Color.background.opacity(0), Color.background],
+                colors: [Color.backgroundScreen.opacity(0), Color.backgroundScreen],
                 startPoint: .top,
                 endPoint: .bottom
             )
@@ -75,10 +75,10 @@ struct InstructionView: View {
                     .frame(maxWidth: .infinity)
                     .frame(height: 54)
             }
-            .buttonStyle(PrimaryTrickButtonStyle(color: .button))
+            .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
-            .background(Color.background)
+            .background(Color.backgroundScreen)
         }
     }
 }

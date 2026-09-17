@@ -136,5 +136,5 @@ struct OnboardingProcessingScreen: View {
         phases: ["Getting the party tricks ready…", "Picking tricks that need no setup…"],
         onComplete: {}
     )
-    .background(Color.background)
+    .background(Color.backgroundScreen)
 }

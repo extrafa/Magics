@@ -56,7 +56,7 @@ struct WatermarkView: View {
                 } else {
                     Capsule()
                         .fill(.ultraThinMaterial)
-                        .overlay(Capsule().stroke(Color.grayBorder, lineWidth: 1))
+                        .overlay(Capsule().stroke(Color.cardBorder, lineWidth: 1))
                 }
             }
         }

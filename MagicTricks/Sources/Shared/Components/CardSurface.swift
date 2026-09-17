@@ -9,10 +9,10 @@ extension View {
     func cardSurface(cornerRadius: CGFloat = 22) -> some View {
         background {
             RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                .fill(Color.grayCard)
+                .fill(Color.cardBackground)
                 .overlay {
                     RoundedRectangle(cornerRadius: cornerRadius, style: .continuous)
-                        .stroke(Color.grayBorder, lineWidth: 1)
+                        .stroke(Color.cardBorder, lineWidth: 1)
                 }
         }
     }
@@ -20,9 +20,9 @@ extension View {
     func cardSurface<S: InsettableShape>(_ shape: S) -> some View {
         background {
             shape
-                .fill(Color.grayCard)
+                .fill(Color.cardBackground)
                 .overlay {
-                    shape.stroke(Color.grayBorder, lineWidth: 1)
+                    shape.stroke(Color.cardBorder, lineWidth: 1)
                 }
         }
     }

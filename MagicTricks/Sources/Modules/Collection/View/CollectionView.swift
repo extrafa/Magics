@@ -16,7 +16,7 @@ struct CollectionView: View {
     var body: some View {
         NavigationStack {
             ZStack {
-                Color.background.ignoresSafeArea()
+                Color.backgroundScreen.ignoresSafeArea()
 
                 ScrollView {
                     LazyVStack(spacing: 16) {

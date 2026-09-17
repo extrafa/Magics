@@ -25,7 +25,7 @@ struct GeoMentalismCitiesView: View {
 
     var body: some View {
         ZStack(alignment: .bottom) {
-            Color.background.ignoresSafeArea()
+            Color.backgroundScreen.ignoresSafeArea()
 
             VStack(spacing: 0) {
                 LazyVGrid(columns: Self.columns, spacing: 12) {
@@ -76,7 +76,7 @@ struct GeoMentalismCitiesView: View {
             .padding(.vertical, 16)
             .background {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.button)
+                    .fill(Color.buttonPrimary)
             }
         }
         .padding(.horizontal, 20)

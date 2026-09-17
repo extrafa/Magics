@@ -19,7 +19,7 @@ struct MagicGallerySlotCard: View {
         ZStack(alignment: .topTrailing) {
             ZStack {
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color.grayCard)
+                    .fill(Color.cardBackground)
 
                 if let photo {
                     MagicGallerySlotPhotoContent(photo: photo)

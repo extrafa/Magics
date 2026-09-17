@@ -17,7 +17,7 @@ struct OnboardingFlowView: View {
 
     var body: some View {
         ZStack {
-            Color.background.ignoresSafeArea()
+            Color.backgroundScreen.ignoresSafeArea()
 
             currentScreen
                 .id(viewModel.step)
@@ -30,7 +30,7 @@ struct OnboardingFlowView: View {
                         .padding(.horizontal, 24)
                         .padding(.top, 14)
                         .padding(.bottom, 10)
-                        .background(Color.background)
+                        .background(Color.backgroundScreen)
                         .transition(.opacity)
                 }
             }

@@ -81,11 +81,11 @@ struct RateAppSheet: View {
             }
             .frame(maxWidth: .infinity)
             .padding(.vertical, 20)
-            .background(Color.grayCard)
+            .background(Color.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             .overlay(
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(Color.grayBorder, lineWidth: 1.5)
+                    .stroke(Color.cardBorder, lineWidth: 1.5)
             )
         }
         .buttonStyle(.plain)
@@ -114,7 +114,7 @@ struct RateAppSheet: View {
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
                 }
-                .buttonStyle(PrimaryTrickButtonStyle(color: .button))
+                .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
 
                 Button(action: handleMaybeLater) {
                     Text(String(localized: "rateApp.disliked.laterButton"))
@@ -163,7 +163,7 @@ private struct RateAppPresentationModifier: ViewModifier {
         if #available(iOS 16.4, *) {
             content
                 .presentationDetents([.height(300)])
-                .presentationBackground(Color.background)
+                .presentationBackground(Color.backgroundScreen)
                 .presentationCornerRadius(28)
         } else if #available(iOS 16, *) {
             content
