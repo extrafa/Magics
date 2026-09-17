@@ -64,6 +64,10 @@ private final class MockHapticEnginePlayer: HapticEnginePlaying {
             fallback()
         }
     }
+
+    func stop() {}
+
+    func stopEngine() {}
 }
 
 @MainActor
@@ -71,6 +75,8 @@ private final class MockHapticScheduler: HapticScheduling {
     func schedule(after delay: TimeInterval, action: @escaping () -> Void) {
         action()
     }
+
+    func cancelAll() {}
 
     func scheduleCompletion(
         initialDelay: TimeInterval,

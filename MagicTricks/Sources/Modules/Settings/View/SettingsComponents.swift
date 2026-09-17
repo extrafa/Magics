@@ -42,19 +42,44 @@ struct SettingsActionRow: View {
 
             Text(title)
                 .font(.system(size: 17, weight: isBold ? .bold : .semibold, design: .rounded))
-                .foregroundStyle(tint ?? .primaryText)
+                .foregroundStyle(tint ?? .textPrimary)
 
             Spacer()
 
             if showsChevron {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(Color.primaryText.opacity(0.34))
+                    .foregroundStyle(Color.textPrimary.opacity(0.34))
             }
         }
         .frame(maxWidth: .infinity)
         .frame(height: 58)
         .contentShape(Rectangle())
+    }
+}
+
+struct SettingsToggleRow: View {
+
+    let title: String
+    let subtitle: String
+    var tint: Color = TrickPalette.Collection.timeControl
+    @Binding var isOn: Bool
+
+    var body: some View {
+        Toggle(isOn: $isOn) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.system(.body, design: .rounded, weight: .bold))
+                    .foregroundStyle(.textPrimary)
+
+                Text(subtitle)
+                    .font(.system(.footnote, design: .rounded, weight: .medium))
+                    .foregroundStyle(Color.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .tint(tint)
+        .padding(18)
     }
 }
 
@@ -80,7 +105,7 @@ struct SettingsResetButton: View {
                 isBold: true
             )
             .padding(.horizontal, 18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
         .buttonStyle(.plain)
     }
@@ -93,7 +118,7 @@ struct SettingsStepper: View {
     @Binding var value: Double
     let range: ClosedRange<Double>
     let step: Double
-    let format: String  // e.g. "%.2fx" or "%.2fs"
+    let format: String
 
     var body: some View {
         HStack(spacing: 0) {
@@ -104,7 +129,7 @@ struct SettingsStepper: View {
 
             Text(String(format: format, value))
                 .font(.system(size: 20, weight: .bold, design: .rounded))
-                .foregroundStyle(.primaryText)
+                .foregroundStyle(.textPrimary)
 
             Spacer()
 
@@ -130,20 +155,5 @@ struct SettingsStepper: View {
 
     private func decrement() {
         value = max(range.lowerBound, ((value - step) * 100).rounded() / 100)
-    }
-}
-
-// MARK: - Card background modifier
-
-extension View {
-    func settingsCard() -> some View {
-        self.background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color.grayCard)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(Color.grayBorder, lineWidth: 1)
-                }
-        )
     }
 }

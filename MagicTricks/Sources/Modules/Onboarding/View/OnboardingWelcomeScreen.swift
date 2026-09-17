@@ -1,0 +1,114 @@
+//
+//  OnboardingWelcomeScreen.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/03/2026.
+//
+
+import SwiftUI
+
+struct OnboardingWelcomeScreen: View {
+    let onContinue: () -> Void
+
+    @State private var appeared = false
+
+    private let topRow: [(String, Color)] = [
+        ("paintpalette",             TrickPalette.Collection.colorSense),
+        ("ipad",                     TrickPalette.Collection.calculatorPrediction),
+    ]
+
+    private let bottomRow: [(String, Color)] = [
+        ("stopwatch.fill",            TrickPalette.Collection.timeControl),
+        ("photo.on.rectangle.angled", TrickPalette.Collection.magicGallery),
+    ]
+
+    var body: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            trickPreview
+                .padding(.bottom, 44)
+
+            VStack(spacing: 12) {
+                Text(String(localized: "onboarding.welcome.headline"))
+                    .font(.system(size: 34, weight: .bold, design: .rounded))
+                    .foregroundStyle(.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+                    .onboardingAppear(appeared, offset: 12, delay: 0.42)
+
+                Text(String(localized: "onboarding.welcome.subheadline"))
+                    .font(.system(size: 17, weight: .regular, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+                    .onboardingAppear(appeared, offset: 10, delay: 0.52)
+            }
+
+            Spacer()
+
+            OnboardingCTAButton(
+                title: String(localized: "onboarding.welcome.cta"),
+                action: onContinue
+            )
+            .padding(.horizontal, 24)
+            .padding(.bottom, 48)
+            .opacity(appeared ? 1 : 0)
+            .animation(.easeOut(duration: 0.35).delay(0.65), value: appeared)
+        }
+        .onAppear {
+            Task { @MainActor in
+                try? await Task.sleep(milliseconds: 150)
+                appeared = true
+            }
+        }
+    }
+
+    private var trickPreview: some View {
+        VStack(spacing: 18) {
+            HStack(spacing: 18) {
+                ForEach(topRow.indices, id: \.self) { i in
+                    let (icon, color) = topRow[i]
+                    TrickIcon(systemName: icon, color: color, size: CGSize(width: 64, height: 64))
+                        .floatingMotion(
+                            phase: Double(i) * 0.38,
+                            travel: 2.8,
+                            rotation: 0.75,
+                            duration: 4.1 + Double(i) * 0.3
+                        )
+                        .scaleEffect(appeared ? 1 : 0.4)
+                        .opacity(appeared ? 1 : 0)
+                        .animation(
+                            .spring(response: 0.5, dampingFraction: 0.65).delay(Double(i) * 0.07),
+                            value: appeared
+                        )
+                }
+            }
+
+            HStack(spacing: 18) {
+                ForEach(bottomRow.indices, id: \.self) { i in
+                    let (icon, color) = bottomRow[i]
+                    TrickIcon(systemName: icon, color: color, size: CGSize(width: 64, height: 64))
+                        .floatingMotion(
+                            phase: Double(i + 3) * 0.38,
+                            travel: 2.8,
+                            rotation: 0.75,
+                            duration: 4.4 + Double(i) * 0.3
+                        )
+                        .scaleEffect(appeared ? 1 : 0.4)
+                        .opacity(appeared ? 1 : 0)
+                        .animation(
+                            .spring(response: 0.5, dampingFraction: 0.65).delay(Double(i + 3) * 0.07),
+                            value: appeared
+                        )
+                }
+            }
+        }
+        
+    }
+}
+
+#Preview {
+    OnboardingWelcomeScreen(onContinue: {})
+        .background(Color.backgroundScreen)
+}

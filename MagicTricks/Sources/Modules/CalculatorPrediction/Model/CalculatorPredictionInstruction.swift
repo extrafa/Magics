@@ -2,6 +2,7 @@ import Foundation
 
 extension Instruction {
     static let calculatorPrediction = Instruction(
+        trickType: .calculatorPrediction,
         title: String(localized: "instruction.calculatorPrediction.title"),
         effect: String(localized: "instruction.calculatorPrediction.effect"),
         secret: String(localized: "instruction.calculatorPrediction.secret"),
@@ -10,7 +11,7 @@ extension Instruction {
                 title: String(localized: "instruction.calculatorPrediction.step1.title"),
                 description: String(localized: "instruction.calculatorPrediction.step1.description"),
                 phase: .preparation,
-                actions: [.hapticSettings]
+                imageName: "step.calculator.acNumber"
             ),
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step2.title"),
@@ -35,7 +36,8 @@ extension Instruction {
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step6.title"),
                 description: String(localized: "instruction.calculatorPrediction.step6.description"),
-                phase: .demonstration
+                phase: .demonstration,
+                imageName: "step.calculator.multiply"
             ),
             InstructionStep(
                 title: String(localized: "instruction.calculatorPrediction.step7.title"),

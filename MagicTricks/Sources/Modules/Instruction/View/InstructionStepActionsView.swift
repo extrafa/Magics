@@ -1,3 +1,10 @@
+//
+//  InstructionStepActionsView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 02/06/2026.
+//
+
 import SwiftUI
 
 struct InstructionStepActionsView: View {
@@ -18,10 +25,14 @@ struct InstructionStepActionsView: View {
 
 private struct InstructionStepActionButton: View {
     let action: InstructionStepAction
-    let onTap: () -> Void
+    let onTap: Completion
+    @ScaledMetric(relativeTo: .footnote) private var titleSize: CGFloat = 14
+    private let presentation: InstructionStepActionPresentation
 
-    private var presentation: InstructionStepActionPresentation {
-        InstructionStepActionPresentation(action: action)
+    init(action: InstructionStepAction, onTap: @escaping Completion) {
+        self.action = action
+        self.onTap = onTap
+        self.presentation = InstructionStepActionPresentation(action: action)
     }
 
     var body: some View {
@@ -35,7 +46,7 @@ private struct InstructionStepActionButton: View {
                 Spacer(minLength: 8)
                 chevron
             }
-            .foregroundStyle(.primaryText)
+            .foregroundStyle(.textPrimary)
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity, minHeight: 62, alignment: .leading)
@@ -47,13 +58,13 @@ private struct InstructionStepActionButton: View {
     private var labels: some View {
         VStack(alignment: .leading, spacing: 2) {
             Text(presentation.title)
-                .font(.system(size: 14, weight: .bold, design: .rounded))
+                .font(.system(size: titleSize, weight: .bold, design: .rounded))
                 .lineLimit(1)
                 .minimumScaleFactor(0.82)
 
             Text(presentation.subtitle)
-                .font(.system(size: 12, weight: .regular, design: .rounded))
-                .foregroundStyle(.primaryText.opacity(0.58))
+                .font(.system(.caption, design: .rounded))
+                .foregroundStyle(.textSecondary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.78)
         }
@@ -62,15 +73,15 @@ private struct InstructionStepActionButton: View {
     private var chevron: some View {
         Image(systemName: "chevron.right")
             .font(.system(size: 12, weight: .bold))
-            .foregroundStyle(.primaryText.opacity(0.44))
+            .foregroundStyle(.textPrimary.opacity(0.44))
     }
 
     private var buttonBackground: some View {
         RoundedRectangle(cornerRadius: 16, style: .continuous)
-            .fill(Color.primaryText.opacity(0.055))
+            .fill(Color.textPrimary.opacity(0.055))
             .overlay {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(Color.primaryText.opacity(0.08), lineWidth: 1)
+                    .stroke(Color.textPrimary.opacity(0.08), lineWidth: 1)
             }
     }
 }
