@@ -34,7 +34,7 @@ final class RateAppViewModel: ObservableObject {
 
     func writeToUs() -> URL? {
         preferences.hasRespondedToRating = true
-        return AppConfig.supportMailURL(subject: "Magic Tricks Feedback")
+        return AppConfig.supportMailURL(subject: String(localized: "rateApp.feedback.emailSubject"))
     }
 
     func markDismissed() {
