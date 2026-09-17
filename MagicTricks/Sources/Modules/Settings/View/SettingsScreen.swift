@@ -168,7 +168,7 @@ private extension SettingsScreen {
                     )
                 }
 
-                if let supportURL = AppConfig.supportMailURL(subject: "Magic Tricks Support") {
+                if let supportURL = AppConfig.supportMailURL(subject: String(localized: "settings.support.emailSubject")) {
                     SettingsDivider()
 
                     Link(destination: supportURL) {
