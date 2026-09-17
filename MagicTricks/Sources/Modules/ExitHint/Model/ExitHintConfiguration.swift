@@ -81,24 +81,24 @@ enum ExitHintStyle {
 
     var strokeColor: Color {
         switch self {
-        case .normal: Color.primaryText.opacity(0.36)
-        case .specialWhite: Color.defaultText.opacity(0.36)
+        case .normal: Color.textPrimary.opacity(0.36)
+        case .specialWhite: Color.textOnOverlay.opacity(0.36)
         case .specialBlack: Color.black.opacity(0.55)
         }
     }
 
     var fillColor: Color {
         switch self {
-        case .normal: Color.primaryText.opacity(0.04)
-        case .specialWhite: Color.defaultText.opacity(0.04)
+        case .normal: Color.textPrimary.opacity(0.04)
+        case .specialWhite: Color.textOnOverlay.opacity(0.04)
         case .specialBlack: Color.black.opacity(0.06)
         }
     }
 
     var textColor: Color {
         switch self {
-        case .normal: Color.primaryText.opacity(0.62)
-        case .specialWhite: Color.defaultText.opacity(0.62)
+        case .normal: Color.textPrimary.opacity(0.62)
+        case .specialWhite: Color.textOnOverlay.opacity(0.62)
         case .specialBlack: Color.black.opacity(0.62)
         }
     }

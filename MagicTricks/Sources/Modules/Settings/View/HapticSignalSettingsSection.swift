@@ -29,7 +29,7 @@ struct HapticSignalSettingsSection: View {
                             .font(.system(size: 15, weight: .semibold, design: .rounded))
                             .frame(maxWidth: .infinity)
                             .frame(height: 48)
-                            .foregroundStyle(settings.hapticIntensity == intensity ? Color.secondaryText : Color.primaryText.opacity(0.55))
+                            .foregroundStyle(settings.hapticIntensity == intensity ? Color.textSecondary : Color.textPrimary.opacity(0.55))
                             .background(settings.hapticIntensity == intensity ? Color.button : Color.clear)
                             .animation(.easeInOut(duration: 0.18), value: settings.hapticIntensity)
                     }
@@ -37,7 +37,7 @@ struct HapticSignalSettingsSection: View {
 
                     if intensity != HapticIntensity.allCases.last {
                         Rectangle()
-                            .fill(Color.primaryText.opacity(0.12))
+                            .fill(Color.textPrimary.opacity(0.12))
                             .frame(width: 1, height: 22)
                     }
                 }
@@ -46,7 +46,7 @@ struct HapticSignalSettingsSection: View {
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 14, style: .continuous)
-                    .stroke(Color.primaryText.opacity(0.1), lineWidth: 1)
+                    .stroke(Color.textPrimary.opacity(0.1), lineWidth: 1)
             }
         }
     }

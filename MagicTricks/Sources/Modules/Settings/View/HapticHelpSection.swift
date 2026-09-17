@@ -49,13 +49,13 @@ private struct HelpItem: View {
                 HStack(spacing: 12) {
                     Text(question)
                         .font(.system(size: 15, weight: .semibold, design: .rounded))
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(.textPrimary)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .multilineTextAlignment(.leading)
 
                     Image(systemName: "chevron.down")
                         .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(Color.primaryText.opacity(0.35))
+                        .foregroundStyle(Color.textPrimary.opacity(0.35))
                         .rotationEffect(.degrees(isExpanded ? 180 : 0))
                 }
                 .padding(.horizontal, 18)
@@ -66,7 +66,7 @@ private struct HelpItem: View {
 
             Text(answer)
                 .font(.system(size: 14, weight: .medium, design: .rounded))
-                .foregroundStyle(Color.secondaryText)
+                .foregroundStyle(Color.textSecondary)
                 .lineSpacing(3)
                 .fixedSize(horizontal: false, vertical: true)
                 .frame(maxWidth: .infinity, alignment: .leading)

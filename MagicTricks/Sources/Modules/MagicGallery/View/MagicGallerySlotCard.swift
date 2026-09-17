@@ -31,7 +31,7 @@ struct MagicGallerySlotCard: View {
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .strokeBorder(Color.primaryText.opacity(0.08), lineWidth: 1)
+                    .strokeBorder(Color.textPrimary.opacity(0.08), lineWidth: 1)
             }
             .overlay(alignment: .topLeading) {
                 numberBadge.padding(10)

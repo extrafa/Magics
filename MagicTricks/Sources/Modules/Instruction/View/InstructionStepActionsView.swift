@@ -46,7 +46,7 @@ private struct InstructionStepActionButton: View {
                 Spacer(minLength: 8)
                 chevron
             }
-            .foregroundStyle(.primaryText)
+            .foregroundStyle(.textPrimary)
             .padding(.horizontal, 14)
             .padding(.vertical, 12)
             .frame(maxWidth: .infinity, minHeight: 62, alignment: .leading)
@@ -64,7 +64,7 @@ private struct InstructionStepActionButton: View {
 
             Text(presentation.subtitle)
                 .font(.system(.caption, design: .rounded))
-                .foregroundStyle(.secondaryText)
+                .foregroundStyle(.textSecondary)
                 .lineLimit(1)
                 .minimumScaleFactor(0.78)
         }
@@ -73,15 +73,15 @@ private struct InstructionStepActionButton: View {
     private var chevron: some View {
         Image(systemName: "chevron.right")
             .font(.system(size: 12, weight: .bold))
-            .foregroundStyle(.primaryText.opacity(0.44))
+            .foregroundStyle(.textPrimary.opacity(0.44))
     }
 
     private var buttonBackground: some View {
         RoundedRectangle(cornerRadius: 16, style: .continuous)
-            .fill(Color.primaryText.opacity(0.055))
+            .fill(Color.textPrimary.opacity(0.055))
             .overlay {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .stroke(Color.primaryText.opacity(0.08), lineWidth: 1)
+                    .stroke(Color.textPrimary.opacity(0.08), lineWidth: 1)
             }
     }
 }

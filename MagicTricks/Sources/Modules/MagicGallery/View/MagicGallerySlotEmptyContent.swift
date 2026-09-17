@@ -16,11 +16,11 @@ struct MagicGallerySlotEmptyContent: View {
 
             Text(String(localized: "magicGallery.emptySlot"))
                 .font(.subheadline.weight(.semibold))
-                .foregroundStyle(Color.primaryText)
+                .foregroundStyle(Color.textPrimary)
 
             Text(String(localized: "magicGallery.tapToCapture"))
                 .font(.caption)
-                .foregroundStyle(Color.primaryText.opacity(0.55))
+                .foregroundStyle(Color.textPrimary.opacity(0.55))
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity)
     }

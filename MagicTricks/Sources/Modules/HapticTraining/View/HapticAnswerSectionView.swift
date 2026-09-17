@@ -21,12 +21,12 @@ struct HapticAnswerSectionView: View {
         VStack(alignment: .leading, spacing: 10) {
             Text(String(localized: "training.answer.title"))
                 .font(.system(size: 15, weight: .bold, design: .rounded))
-                .foregroundStyle(Color.secondaryText)
+                .foregroundStyle(Color.textSecondary)
 
             // Keyboard appears after the signal plays; direct taps are blocked until then.
             TextField(isAnswerFocused.wrappedValue ? "" : mode.inputPlaceholder, text: $answerText)
                 .font(.system(size: 24, weight: .black, design: .rounded))
-                .foregroundStyle(Color.primaryText)
+                .foregroundStyle(Color.textPrimary)
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.center)
                 .focused(isAnswerFocused)
@@ -50,7 +50,7 @@ struct HapticAnswerSectionView: View {
     }
 
     private var answerFieldBackground: Color {
-        guard let result else { return Color.primaryText.opacity(0.06) }
+        guard let result else { return Color.textPrimary.opacity(0.06) }
         switch result {
         case .correct:   return Color.green.opacity(0.18)
         case .incorrect: return Color.red.opacity(0.16)
@@ -58,7 +58,7 @@ struct HapticAnswerSectionView: View {
     }
 
     private var answerFieldStroke: Color {
-        guard result != nil else { return Color.primaryText.opacity(0.1) }
+        guard result != nil else { return Color.textPrimary.opacity(0.1) }
         return resultColor.opacity(0.54)
     }
 
@@ -73,7 +73,7 @@ struct HapticAnswerSectionView: View {
     }
 
     private var resultColor: Color {
-        guard let result else { return Color.primaryText.opacity(0.1) }
+        guard let result else { return Color.textPrimary.opacity(0.1) }
         switch result {
         case .correct:   return .green
         case .incorrect: return .red

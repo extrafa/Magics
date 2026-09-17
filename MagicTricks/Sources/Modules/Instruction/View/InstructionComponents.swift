@@ -53,27 +53,27 @@ private struct InstructionInfoCard: View {
             HStack(spacing: 10) {
                 Image(systemName: icon)
                     .font(.system(size: 18, weight: .semibold))
-                    .foregroundStyle(.primaryText.opacity(iconOpacity))
+                    .foregroundStyle(.textPrimary.opacity(iconOpacity))
                     .frame(width: 22, alignment: .leading)
 
                 Text(title)
                     .font(.system(.title2, design: .rounded, weight: .bold))
-                    .foregroundStyle(.primaryText)
+                    .foregroundStyle(.textPrimary)
             }
 
             Text(text)
                 .font(.system(.callout, design: .rounded))
-                .foregroundStyle(.primaryText.opacity(textOpacity))
+                .foregroundStyle(.textPrimary.opacity(textOpacity))
                 .lineSpacing(5)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .padding(18)
         .background {
             RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color.primaryText.opacity(fillOpacity))
+                .fill(Color.textPrimary.opacity(fillOpacity))
                 .overlay {
                     RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .stroke(Color.primaryText.opacity(strokeOpacity), lineWidth: 1)
+                        .stroke(Color.textPrimary.opacity(strokeOpacity), lineWidth: 1)
                 }
         }
     }

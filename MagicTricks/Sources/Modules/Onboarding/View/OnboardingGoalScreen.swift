@@ -23,7 +23,7 @@ struct OnboardingGoalScreen: View {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(String(localized: "onboarding.goal.headline"))
                         .font(.system(size: 28, weight: .bold, design: .rounded))
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(.textPrimary)
                         .padding(.bottom, 4)
                         .onboardingAppear(appeared, offset: 14, delay: 0.06)
 
