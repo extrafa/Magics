@@ -14,7 +14,9 @@ struct TrickCardView: View {
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
 
-    @State private var badgeWidth: CGFloat = 0
+    // Seeded close to a typical badge width so the first frame (before GeometryReader
+    // reports the real measurement) doesn't render the title with zero trailing space.
+    @State private var badgeWidth: CGFloat = 94
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -46,7 +48,7 @@ struct TrickCardView: View {
                 .padding(.trailing, 16)
         }
         .onPreferenceChange(BadgeWidthPreferenceKey.self) { badgeWidth = $0 }
-        // Caps growth so the badge doesn't collide with the title's reserved trailing padding (see `header`).
+        // Caps growth so the icon/title/badge row stays usable at the largest accessibility sizes.
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
