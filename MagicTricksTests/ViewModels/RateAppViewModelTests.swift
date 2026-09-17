@@ -11,11 +11,11 @@ import XCTest
 @MainActor
 final class RateAppViewModelTests: XCTestCase {
 
-    func test_like_setsHasRespondedToRating() {
+    func test_recordReviewShown_setsHasRespondedToRating() {
         let preferences = MockRateAppPreferences()
         let viewModel = RateAppViewModel(preferences: preferences)
 
-        viewModel.like()
+        viewModel.recordReviewShown()
 
         XCTAssertTrue(preferences.hasRespondedToRating)
     }
