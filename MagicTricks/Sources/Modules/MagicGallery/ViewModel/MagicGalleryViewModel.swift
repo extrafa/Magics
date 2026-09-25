@@ -9,6 +9,8 @@ import AVFoundation
 import Foundation
 import UIKit
 
+private let key = L10nDomain("magicGallery.error")
+
 @MainActor
 final class MagicGalleryViewModel: ObservableObject {
     @Published private(set) var customPhotos: [MagicGalleryPhoto] = []
@@ -53,7 +55,7 @@ final class MagicGalleryViewModel: ObservableObject {
         do {
             customPhotos = try await photoLibrary.loadCustomPhotos()
         } catch {
-            alertMessage = String(localized: "magicGallery.error.loadPhotosFailed")
+            alertMessage = String(localized: key("loadPhotosFailed"))
         }
     }
 
@@ -96,7 +98,7 @@ final class MagicGalleryViewModel: ObservableObject {
 
     func startSequentialCapture(sourceType: UIImagePickerController.SourceType = .camera) {
         guard let nextAvailableNumber else {
-            alertMessage = String(localized: "magicGallery.error.allPhotosReady")
+            alertMessage = String(localized: key("allPhotosReady"))
             return
         }
         beginCapture(sourceType: sourceType) { [weak self] in
@@ -125,11 +127,11 @@ final class MagicGalleryViewModel: ObservableObject {
                 if await AVCaptureDevice.requestAccess(for: .video) {
                     onReady()
                 } else {
-                    accessDeniedAlertMessage = String(localized: "magicGallery.error.cameraAccessDenied")
+                    accessDeniedAlertMessage = String(localized: key("cameraAccessDenied"))
                 }
             }
         default:
-            accessDeniedAlertMessage = String(localized: "magicGallery.error.cameraAccessDenied")
+            accessDeniedAlertMessage = String(localized: key("cameraAccessDenied"))
         }
     }
 
@@ -154,7 +156,7 @@ final class MagicGalleryViewModel: ObservableObject {
                 let photo = try await photoLibrary.saveCustomPhoto(image, for: number)
                 upsert(photo)
             } catch {
-                alertMessage = String(localized: "magicGallery.error.savePhotoFailed")
+                alertMessage = String(localized: key("savePhotoFailed"))
             }
         }
     }
@@ -167,7 +169,7 @@ final class MagicGalleryViewModel: ObservableObject {
             do {
                 try await photoLibrary.deleteCustomPhoto(photo)
             } catch {
-                alertMessage = String(localized: "magicGallery.error.deletePhotoFailed")
+                alertMessage = String(localized: key("deletePhotoFailed"))
             }
         }
     }
@@ -178,7 +180,7 @@ final class MagicGalleryViewModel: ObservableObject {
             return false
         }
         guard await photoLibraryAuthorizer.hasAddAccess() else {
-            accessDeniedAlertMessage = String(localized: "magicGallery.error.photoLibraryAccessDenied")
+            accessDeniedAlertMessage = String(localized: key("photoLibraryAccessDenied"))
             return false
         }
         do {
@@ -187,7 +189,7 @@ final class MagicGalleryViewModel: ObservableObject {
             haptics.playSuccessNotification()
             return true
         } catch {
-            alertMessage = String(localized: "magicGallery.error.saveToGalleryFailed")
+            alertMessage = String(localized: key("saveToGalleryFailed"))
             return false
         }
     }
