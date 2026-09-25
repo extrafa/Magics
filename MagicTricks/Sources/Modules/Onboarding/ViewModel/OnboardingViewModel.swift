@@ -7,6 +7,8 @@
 
 import Foundation
 
+private let l10n = L10nDomain("onboarding.processing")
+
 @MainActor
 final class OnboardingViewModel: ObservableObject {
     @Published var step: OnboardingStep = .welcome
@@ -33,31 +35,28 @@ final class OnboardingViewModel: ObservableObject {
     var loadingPhases: [String] {
         [
             loadingPhase1,
-            String(localized: "onboarding.processing.phase2"),
-            String(localized: "onboarding.processing.phase3"),
+            String(localized: l10n("phase2")),
+            String(localized: l10n("phase3")),
         ]
     }
 
     private var loadingPhase1: String {
         if selectedGoals.contains(.everywhere) {
-            return String(localized: "onboarding.processing.phase1.everywhere")
+            return String(localized: l10n("phase1.everywhere"))
         }
         let matched = selectedGoals.orderedCombinableGoals
         switch matched.count {
         case 0:
-            return String(localized: "onboarding.processing.phase1")
+            return String(localized: l10n("phase1"))
         case 1:
-            // Built as a String first - interpolating into a LocalizationValue literal makes it a %@ argument, not part of the key.
-            let key: String = "onboarding.processing.phase1.\(matched[0].rawValue)"
-            return String(localized: String.LocalizationValue(key))
+            return String(localized: l10n("phase1.\(matched[0].rawValue)"))
         default:
             // Each goal contributes a short noun phrase; ListFormatter joins them with correct per-locale grammar.
-            let fragments = matched.map { goal -> String in
-                let key: String = "onboarding.processing.goalFragment.\(goal.rawValue)"
-                return String(localized: String.LocalizationValue(key))
+            let fragments = matched.map { goal in
+                String(localized: l10n("goalFragment.\(goal.rawValue)"))
             }
             let joined = ListFormatter().string(from: fragments) ?? fragments.joined(separator: ", ")
-            return String(format: String(localized: "onboarding.processing.phase1.combined"), joined)
+            return String(format: String(localized: l10n("phase1.combined")), joined)
         }
     }
 }
