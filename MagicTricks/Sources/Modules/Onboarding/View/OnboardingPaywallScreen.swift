@@ -114,7 +114,13 @@ struct OnboardingPaywallScreen: View {
                 .font(.system(size: 13, weight: .bold))
                 .foregroundStyle(.secondary)
                 .frame(width: 28, height: 28)
-                .background(Circle().fill(Color.primary.opacity(0.08)))
+                .background {
+                    if #available(iOS 26, *) {
+                        Color.clear
+                    } else {
+                        Circle().fill(Color.primary.opacity(0.08))
+                    }
+                }
         }
         .accessibilityLabel(String(localized: "common.close"))
         .opacity(appeared ? 1 : 0)
