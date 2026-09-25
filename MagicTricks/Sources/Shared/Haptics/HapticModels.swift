@@ -8,6 +8,8 @@
 import Foundation
 import UIKit
 
+private let intensityKey = L10nDomain("settings.haptics.intensity")
+
 enum HapticIntensity: Equatable, Hashable {
     case light
     case medium
@@ -60,9 +62,9 @@ enum HapticIntensity: Equatable, Hashable {
 
     var localizedTitle: String {
         switch self {
-        case .light: String(localized: "settings.haptics.intensity.weak")
-        case .medium: String(localized: "settings.haptics.intensity.medium")
-        case .heavy: String(localized: "settings.haptics.intensity.strong")
+        case .light: String(localized: intensityKey("weak"))
+        case .medium: String(localized: intensityKey("medium"))
+        case .heavy: String(localized: intensityKey("strong"))
         }
     }
 }
