@@ -1,0 +1,13 @@
+// Shared signing defaults for the MagicTricks target. Tracked in git.
+// Personal machine-specific overrides go in Local.xcconfig (gitignored,
+// not created automatically — see Config/Local.xcconfig.example).
+
+CODE_SIGN_STYLE = Manual
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = iPhone Distribution
+DEVELOPMENT_TEAM =
+DEVELOPMENT_TEAM[sdk=iphoneos*] = VUS888QPJB
+PRODUCT_BUNDLE_IDENTIFIER = net.svoego.magic
+PROVISIONING_PROFILE_SPECIFIER =
+PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*] = Magic - distribution
+
+#include? "Local.xcconfig"

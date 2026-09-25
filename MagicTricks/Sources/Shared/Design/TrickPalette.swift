@@ -8,45 +8,41 @@
 import SwiftUI
 
 enum TrickPalette {
-    enum Difficulty {
-        static let easy = Color("collectionMindPattern")
-        static let medium = Color("collectionCalculatorPrediction")
-        static let hard = Color("difficultyHard")
-    }
+    static let accentPrimary = Color.accentPrimary
 
     enum Collection {
-        static let colorSense = Color("collectionColorSense")
-        static let mindPattern = Color("collectionMindPattern")
-        static let calculatorPrediction = Color("collectionCalculatorPrediction")
-        static let timeControl = Color("collectionTimeControl")
-        static let magicGallery = Color("collectionMagicGallery")
+        static let colorSense = Color.collectionColorSense
+        static let calculatorPrediction = Color.collectionCalculatorPrediction
+        static let timeControl = Color.collectionTimeControl
+        static let magicGallery = Color.collectionMagicGallery
+        static let geoMentalism = Color.collectionGeoMentalism
+        static let phantomDraw = Color.collectionPhantomDraw
+    }
+
+    enum Difficulty {
+        static let easy = Color.difficultyEasy
+        static let medium = Collection.calculatorPrediction
+        static let hard = Color.difficultyHard
     }
 
     enum ColorSense {
-        static let red = Color("colorSenseRed")
-        static let blue = Color("colorSenseBlue")
-        static let green = Color("collectionMindPattern")
-        static let yellow = Color("colorSenseYellow")
+        static let red = Color.colorSenseRed
+        static let blue = Color.colorSenseBlue
+        static let green = Color.colorSenseGreen
+        static let yellow = Color.colorSenseYellow
     }
 
-    enum MindPattern {
-        static let red = Color("difficultyHard")
-        static let blue = Color("mindPatternBlue")
-        static let green = Color("mindPatternGreen")
-        static let orange = Color("mindPatternOrange")
-        static let purple = Color("mindPatternPurple")
-        static let cyan = Color("mindPatternCyan")
-    }
 }
 
 extension TrickType {
     var collectionColor: Color {
         switch self {
-        case .colorMentalism: TrickPalette.Collection.colorSense
-        case .mindPattern: TrickPalette.Collection.mindPattern
+        case .colorSense: TrickPalette.Collection.colorSense
         case .calculatorPrediction: TrickPalette.Collection.calculatorPrediction
         case .timeControl: TrickPalette.Collection.timeControl
         case .magicGallery: TrickPalette.Collection.magicGallery
+        case .geoMentalism: TrickPalette.Collection.geoMentalism
+        case .phantomDraw: TrickPalette.Collection.phantomDraw
         }
     }
 }

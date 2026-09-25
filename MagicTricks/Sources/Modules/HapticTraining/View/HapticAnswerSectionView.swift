@@ -1,28 +1,34 @@
+//
+//  HapticAnswerSectionView.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
 
-// Input area: answer field, submit button, result feedback
+private let key = L10nDomain("training.answer")
+
 struct HapticAnswerSectionView: View {
 
     let mode: HapticTrainingMode
     let hasPlayed: Bool
     let isPlaying: Bool
     let result: HapticTrainingViewModel.GuessResult?
-    let canSubmitAnswer: Bool
     @Binding var answerText: String
     var isAnswerFocused: FocusState<Bool>.Binding
     let onAnswerChange: (String) -> Void
-    let onSubmit: () -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(String(localized: "training.answer.title"))
+            Text(String(localized: key("title")))
                 .font(.system(size: 15, weight: .bold, design: .rounded))
-                .foregroundStyle(Color.primaryText.opacity(0.58))
+                .foregroundStyle(Color.textSecondary)
 
-            // Input field — keyboard appears automatically after signal, manual tap is blocked
+            // Keyboard appears after the signal plays; direct taps are blocked until then.
             TextField(isAnswerFocused.wrappedValue ? "" : mode.inputPlaceholder, text: $answerText)
                 .font(.system(size: 24, weight: .black, design: .rounded))
-                .foregroundStyle(Color.primaryText)
+                .foregroundStyle(Color.textPrimary)
                 .keyboardType(.numberPad)
                 .multilineTextAlignment(.center)
                 .focused(isAnswerFocused)
@@ -34,36 +40,19 @@ struct HapticAnswerSectionView: View {
                         .stroke(answerFieldStroke, lineWidth: 1.2)
                 }
                 .opacity(hasPlayed && !isPlaying || result != nil ? 1 : 0.42)
-                .onChange(of: answerText) { _, newValue in
+                .onChange(of: answerText) { newValue in
                     onAnswerChange(newValue)
                 }
 
-            // Feedback label — always occupies space to prevent layout shift
             Text(resultLabel)
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(resultColor)
                 .frame(maxWidth: .infinity, minHeight: 20, alignment: .center)
-
-            if mode.usesExplicitSubmit {
-                // Submit button
-                Button(action: onSubmit) {
-                    Text(String(localized: "training.answer.submit"))
-                        .font(.headline)
-                        .frame(maxWidth: .infinity)
-                        .frame(height: 46)
-                        .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
-                }
-                .buttonStyle(PrimaryTrickButtonStyle(color: .button))
-                .disabled(!canSubmitAnswer)
-                .opacity(canSubmitAnswer ? 1 : 0.42)
-            }
         }
     }
 
-    // MARK: - Derived display state
-
     private var answerFieldBackground: Color {
-        guard let result else { return Color.primaryText.opacity(0.06) }
+        guard let result else { return Color.textPrimary.opacity(0.06) }
         switch result {
         case .correct:   return Color.green.opacity(0.18)
         case .incorrect: return Color.red.opacity(0.16)
@@ -71,7 +60,7 @@ struct HapticAnswerSectionView: View {
     }
 
     private var answerFieldStroke: Color {
-        guard result != nil else { return Color.primaryText.opacity(0.1) }
+        guard result != nil else { return Color.textPrimary.opacity(0.1) }
         return resultColor.opacity(0.54)
     }
 
@@ -79,14 +68,14 @@ struct HapticAnswerSectionView: View {
         guard let result else { return " " }
         switch result {
         case .correct:
-            return String(localized: "training.answer.correct")
+            return String(localized: key("correct"))
         case .incorrect(let expected):
-            return String.localizedStringWithFormat(String(localized: "training.answer.incorrect"), expected)
+            return String.localizedStringWithFormat(String(localized: key("incorrect")), expected)
         }
     }
 
     private var resultColor: Color {
-        guard let result else { return Color.primaryText.opacity(0.1) }
+        guard let result else { return Color.textPrimary.opacity(0.1) }
         switch result {
         case .correct:   return .green
         case .incorrect: return .red

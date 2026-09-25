@@ -1,3 +1,10 @@
+//
+//  TrickDifficultyBadge.swift
+//  Magic Tricks
+//
+//  Created by Ross on 10/04/2026.
+//
+
 import SwiftUI
 
 struct TrickDifficultyBadge: View {
@@ -6,7 +13,7 @@ struct TrickDifficultyBadge: View {
 
     var body: some View {
         Text(difficulty.localizedTitle.uppercased())
-            .font(.system(size: 11, weight: .bold, design: .rounded))
+            .font(.system(.caption2, design: .rounded, weight: .bold))
             .tracking(0.4)
             .foregroundStyle(difficulty.color)
             .padding(.horizontal, 10)
