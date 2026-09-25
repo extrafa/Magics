@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let key = L10nDomain("onboarding.welcome")
+
 struct OnboardingWelcomeScreen: View {
     let onContinue: () -> Void
 
@@ -30,14 +32,14 @@ struct OnboardingWelcomeScreen: View {
                 .padding(.bottom, 44)
 
             VStack(spacing: 12) {
-                Text(String(localized: "onboarding.welcome.headline"))
+                Text(String(localized: key("headline")))
                     .font(.system(size: 34, weight: .bold, design: .rounded))
                     .foregroundStyle(.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 32)
                     .onboardingAppear(appeared, offset: 12, delay: 0.42)
 
-                Text(String(localized: "onboarding.welcome.subheadline"))
+                Text(String(localized: key("subheadline")))
                     .font(.system(size: 17, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -48,7 +50,7 @@ struct OnboardingWelcomeScreen: View {
             Spacer()
 
             OnboardingCTAButton(
-                title: String(localized: "onboarding.welcome.cta"),
+                title: String(localized: key("cta")),
                 action: onContinue
             )
             .padding(.horizontal, 24)
