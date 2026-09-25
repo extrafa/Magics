@@ -7,13 +7,15 @@
 
 import SwiftUI
 
+private let key = L10nDomain("instruction.phase")
+
 struct InstructionPhaseLegend: View {
     @ScaledMetric(relativeTo: .footnote) private var titleSize: CGFloat = 14
 
     var body: some View {
         HStack(spacing: 18) {
-            legendItem(color: .blue, title: String(localized: "instruction.phase.preparation"))
-            legendItem(color: .green, title: String(localized: "instruction.phase.demonstration"))
+            legendItem(color: .blue, title: String(localized: key("preparation")))
+            legendItem(color: .green, title: String(localized: key("demonstration")))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
