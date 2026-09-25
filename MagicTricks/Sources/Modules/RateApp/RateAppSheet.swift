@@ -61,14 +61,14 @@ struct RateAppSheet: View {
 
             HStack(spacing: 12) {
                 reactionButton(
-                    emoji: String(localized: reactionKey("likeIcon")),
-                    label: String(localized: reactionKey("like")),
-                    action: handleLike
-                )
-                reactionButton(
                     emoji: String(localized: reactionKey("dislikeIcon")),
                     label: String(localized: reactionKey("dislike")),
                     action: handleDislike
+                )
+                reactionButton(
+                    emoji: String(localized: reactionKey("likeIcon")),
+                    label: String(localized: reactionKey("like")),
+                    action: handleLike
                 )
             }
         }
