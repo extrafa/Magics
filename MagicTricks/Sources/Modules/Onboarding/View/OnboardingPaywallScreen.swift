@@ -12,7 +12,6 @@ struct OnboardingPaywallScreen: View {
 
     @EnvironmentObject private var store: StoreManager
     @State private var appeared = false
-    @State private var topInset: CGFloat = 44
 
     private struct Benefit {
         let icon: String
@@ -57,41 +56,39 @@ struct OnboardingPaywallScreen: View {
     ]
 
     var body: some View {
-        VStack(spacing: 0) {
-            closeButton
+        NavigationStack {
+            VStack(spacing: 0) {
+                GeometryReader { proxy in
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 0) {
+                            Spacer(minLength: 0)
 
-            GeometryReader { proxy in
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 0) {
-                        Spacer(minLength: 0)
+                            heroIcon
+                                .padding(.bottom, 16)
 
-                        heroIcon
-                            .padding(.bottom, 16)
+                            titleBlock
+                                .padding(.horizontal, 24)
+                                .padding(.bottom, 24)
+                                .padding(.top, 4)
 
-                        titleBlock
-                            .padding(.horizontal, 24)
-                            .padding(.bottom, 24)
-                            .padding(.top, 4)
-
-                        benefitsList
-                            .padding(.horizontal, 24)
+                            benefitsList
+                                .padding(.horizontal, 24)
+                        }
+                        .frame(minWidth: proxy.size.width, minHeight: proxy.size.height)
                     }
-                    .frame(minWidth: proxy.size.width, minHeight: proxy.size.height)
+                }
+
+                bottomBlock
+                    .padding(.top, 28)
+                    .padding(.bottom, 40)
+            }
+            .navigationBarTitleDisplayMode(.inline)
+            .toolbarBackground(.hidden, for: .navigationBar)
+            .toolbar {
+                ToolbarItem(placement: .topBarTrailing) {
+                    closeButton
                 }
             }
-
-            bottomBlock
-                .padding(.top, 28)
-                .padding(.bottom, 40)
-        }
-        .background(
-            GeometryReader { proxy in
-                Color.clear.preference(key: TopInsetKey.self, value: proxy.safeAreaInsets.top)
-            }
-            .ignoresSafeArea()
-        )
-        .onPreferenceChange(TopInsetKey.self) { value in
-            if value > 0 { topInset = value }
         }
         .onAppear {
             Task { @MainActor in
@@ -112,19 +109,14 @@ struct OnboardingPaywallScreen: View {
     // MARK: Close
 
     private var closeButton: some View {
-        HStack {
-            Spacer()
-            Button(action: onDismiss) {
-                Image(systemName: "xmark")
-                    .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(.secondary)
-                    .frame(width: 28, height: 28)
-                    .background(Circle().fill(Color.primary.opacity(0.08)))
-            }
-            .accessibilityLabel(String(localized: "common.close"))
+        Button(action: onDismiss) {
+            Image(systemName: "xmark")
+                .font(.system(size: 13, weight: .bold))
+                .foregroundStyle(.secondary)
+                .frame(width: 28, height: 28)
+                .background(Circle().fill(Color.primary.opacity(0.08)))
         }
-        .padding(.horizontal, 20)
-        .padding(.top, topInset + 8)
+        .accessibilityLabel(String(localized: "common.close"))
         .opacity(appeared ? 1 : 0)
         .animation(.easeOut(duration: 0.2).delay(0.5), value: appeared)
     }
@@ -319,13 +311,6 @@ struct OnboardingPaywallScreen: View {
 private extension String {
     static func paywall(_ key: String) -> String {
         NSLocalizedString("onboarding.paywall.\(key)", comment: "")
-    }
-}
-
-private struct TopInsetKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {
-        value = max(value, nextValue())
     }
 }
 
