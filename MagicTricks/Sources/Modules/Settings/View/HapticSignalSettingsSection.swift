@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let key = L10nDomain("settings.haptics")
+
 struct HapticSignalSettingsSection: View {
     @ObservedObject var settings: SettingsStore
 
@@ -19,7 +21,7 @@ struct HapticSignalSettingsSection: View {
     }
 
     private var intensitySection: some View {
-        SettingsSection(title: String(localized: "settings.haptics.strength")) {
+        SettingsSection(title: String(localized: key("strength"))) {
             HStack(spacing: 0) {
                 ForEach(HapticIntensity.allCases, id: \.self) { intensity in
                     Button {
@@ -52,7 +54,7 @@ struct HapticSignalSettingsSection: View {
     }
 
     private var speedSection: some View {
-        SettingsSection(title: String(localized: "settings.haptics.speed")) {
+        SettingsSection(title: String(localized: key("speed"))) {
             SettingsStepper(
                 value: $settings.hapticSpeedMultiplier,
                 range: AppPreferences.Range.hapticSpeedMultiplier,
@@ -65,10 +67,10 @@ struct HapticSignalSettingsSection: View {
     }
 
     private var groupingSection: some View {
-        SettingsSection(title: String(localized: "settings.haptics.grouping")) {
+        SettingsSection(title: String(localized: key("grouping"))) {
             SettingsToggleRow(
-                title: String(localized: "settings.haptics.groupVibrations"),
-                subtitle: String(localized: "settings.haptics.groupingDescription"),
+                title: String(localized: key("groupVibrations")),
+                subtitle: String(localized: key("groupingDescription")),
                 isOn: $settings.isHapticGroupByThreeEnabled
             )
             .cardSurface(cornerRadius: 20)
