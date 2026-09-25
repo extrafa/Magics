@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let hapticsKey = L10nDomain("settings.haptics")
+
 struct MotionSettingsSection: View {
 
     @ObservedObject var settings: SettingsStore
@@ -29,7 +31,7 @@ struct MotionSettingsSection: View {
             VStack(spacing: 0) {
                 SettingsToggleRow(
                     title: String(localized: "settings.faceDown"),
-                    subtitle: String(localized: "settings.haptics.faceDownDescription"),
+                    subtitle: String(localized: hapticsKey("faceDownDescription")),
                     isOn: $settings.isSecretGestureEnabled.animation()
                 )
 
@@ -37,7 +39,7 @@ struct MotionSettingsSection: View {
                     cardDivider
 
                     VStack(alignment: .leading, spacing: 12) {
-                        Text(String(localized: "settings.haptics.holdDurationDescription"))
+                        Text(String(localized: hapticsKey("holdDurationDescription")))
                             .font(.system(size: 13, weight: .medium, design: .rounded))
                             .foregroundStyle(Color.textSecondary)
 
