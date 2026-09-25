@@ -71,7 +71,7 @@ struct GeoMentalismCitiesView: View {
                 Text(String(localized: "geo.shuffle"))
                     .font(.system(size: 17, weight: .semibold, design: .rounded))
             }
-            .foregroundStyle(.textSecondary)
+            .foregroundStyle(.textOnOverlay)
             .frame(maxWidth: .infinity)
             .padding(.vertical, 16)
             .background {
