@@ -104,6 +104,7 @@
 		28C1878E2FCE7900001306EE /* InstructionStepsSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C1878D2FCE7900001306EE /* InstructionStepsSection.swift */; };
 		28C4F25C2FAB7ADA002BB78D /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28C4F25B2FAB7ADA002BB78D /* HapticManager.swift */; };
 		28D000012FC7350000AA0001 /* AppPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28D000002FC7350000AA0001 /* AppPreferences.swift */; };
+		5B32805EB4B39215DC027A34 /* KeyDomain.swift in Sources */ = {isa = PBXBuildFile; fileRef = A33456E8A50F8B8809842152 /* KeyDomain.swift */; };
 		28E100012FC9F00000BB0001 /* TrickPalette.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E100002FC9F00000BB0001 /* TrickPalette.swift */; };
 		28E200022FCE720000BB0001 /* TrickButtonStyles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28E200012FCE720000BB0001 /* TrickButtonStyles.swift */; };
 		0AML00000000000000000025 /* ProUpgradeButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000024 /* ProUpgradeButton.swift */; };
@@ -144,6 +145,7 @@
 		C376B2B950875F1B1B462D8D /* PhantomDrawStrokeRenderingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = B697265AA3EF1397DFB5D3C7 /* PhantomDrawStrokeRenderingTests.swift */; };
 		4760AA29523C94A092B691BB /* InstructionModelsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = D08AB6D1A687687B5E44F869 /* InstructionModelsTests.swift */; };
 		0AML00000000000000000048 /* AppPreferencesTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000047 /* AppPreferencesTests.swift */; };
+		108A5A61291D63978687C79E /* KeyDomainTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7464C4DA9B11596D99BC6508 /* KeyDomainTests.swift */; };
 		EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */; };
 		0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */; };
 		0AML00000000000000000038 /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000037 /* StoreManagerTests.swift */; };
@@ -261,6 +263,7 @@
 		28C1878D2FCE7900001306EE /* InstructionStepsSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionStepsSection.swift; sourceTree = "<group>"; };
 		28C4F25B2FAB7ADA002BB78D /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
 		28D000002FC7350000AA0001 /* AppPreferences.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferences.swift; sourceTree = "<group>"; };
+		A33456E8A50F8B8809842152 /* KeyDomain.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyDomain.swift; sourceTree = "<group>"; };
 		28E100002FC9F00000BB0001 /* TrickPalette.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickPalette.swift; sourceTree = "<group>"; };
 		28E200012FCE720000BB0001 /* TrickButtonStyles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TrickButtonStyles.swift; sourceTree = "<group>"; };
 		0AML00000000000000000024 /* ProUpgradeButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProUpgradeButton.swift; sourceTree = "<group>"; };
@@ -304,6 +307,7 @@
 		B697265AA3EF1397DFB5D3C7 /* PhantomDrawStrokeRenderingTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawStrokeRenderingTests.swift; sourceTree = "<group>"; };
 		D08AB6D1A687687B5E44F869 /* InstructionModelsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionModelsTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000047 /* AppPreferencesTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppPreferencesTests.swift; sourceTree = "<group>"; };
+		7464C4DA9B11596D99BC6508 /* KeyDomainTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeyDomainTests.swift; sourceTree = "<group>"; };
 		32AE31DA0DBB65789F8CA0B4 /* HapticTimingsTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticTimingsTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000037 /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
@@ -659,6 +663,14 @@
 			path = Preferences;
 			sourceTree = "<group>";
 		};
+		A3345000A50F8B8809842152 /* Localization */ = {
+			isa = PBXGroup;
+			children = (
+				A33456E8A50F8B8809842152 /* KeyDomain.swift */,
+			);
+			path = Localization;
+			sourceTree = "<group>";
+		};
 		28E100022FC9F00000BB0001 /* Design */ = {
 			isa = PBXGroup;
 			children = (
@@ -934,6 +946,7 @@
 				B697265AA3EF1397DFB5D3C7 /* PhantomDrawStrokeRenderingTests.swift */,
 				D08AB6D1A687687B5E44F869 /* InstructionModelsTests.swift */,
 				0AML00000000000000000047 /* AppPreferencesTests.swift */,
+				7464C4DA9B11596D99BC6508 /* KeyDomainTests.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -966,6 +979,7 @@
 				91A793CD2F0E149F009CA8A3 /* Navigation */,
 				28D000022FC7350000AA0001 /* Preferences */,
 				28C4F25A2FAB7A92002BB78D /* Haptics */,
+				A3345000A50F8B8809842152 /* Localization */,
 				0A0002000000000000000027 /* AsyncUtilities.swift */,
 				2875DE8D2FBA738B00B9298C /* Motion */,
 			);
@@ -1151,6 +1165,7 @@
 				28062326301A8E06003F0C44 /* GeoMentalismCitiesView.swift in Sources */,
 				9191CE162F549A7400D5BAE8 /* TrickIcon.swift in Sources */,
 				28D000012FC7350000AA0001 /* AppPreferences.swift in Sources */,
+				5B32805EB4B39215DC027A34 /* KeyDomain.swift in Sources */,
 				287D56272FACD66B00ECCE14 /* MagicGalleryView.swift in Sources */,
 				287D562C2FCE700000ECCE14 /* MagicGalleryCapturePanel.swift in Sources */,
 				912B25852F2EBB5B00B32AF1 /* CalculatorPredictionButtonView.swift in Sources */,
@@ -1285,6 +1300,7 @@
 				C376B2B950875F1B1B462D8D /* PhantomDrawStrokeRenderingTests.swift in Sources */,
 				4760AA29523C94A092B691BB /* InstructionModelsTests.swift in Sources */,
 				0AML00000000000000000048 /* AppPreferencesTests.swift in Sources */,
+				108A5A61291D63978687C79E /* KeyDomainTests.swift in Sources */,
 				EE9CA7ED7C5162E38D46F2A5 /* HapticTimingsTests.swift in Sources */,
 				0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */,
 				0AML00000000000000000038 /* StoreManagerTests.swift in Sources */,
