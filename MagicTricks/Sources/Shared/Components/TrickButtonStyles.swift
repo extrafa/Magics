@@ -12,7 +12,7 @@ struct PrimaryTrickButtonStyle: ButtonStyle {
 
     func makeBody(configuration: Configuration) -> some View {
         configuration.label
-            .foregroundStyle(.textOnOverlay)
+            .foregroundStyle(Color.backgroundScreen)
             .background {
                 RoundedRectangle(cornerRadius: 16, style: .continuous)
                     .fill(color)
