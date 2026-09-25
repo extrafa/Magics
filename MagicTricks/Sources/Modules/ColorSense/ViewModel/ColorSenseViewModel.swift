@@ -7,20 +7,22 @@
 
 import Foundation
 
+private let key = L10nDomain("colorMentalism.card")
+
 @MainActor
 final class ColorSenseViewModel: ObservableObject {
     @Published private(set) var canTap = true
     @Published private(set) var activeTapCardID: UUID?
 
     let cards: [ColorCard] = [
-        .init(colorType: .red,    title: String(localized: "colorMentalism.card.tap"),      height: 150, rotation: -2),
-        .init(colorType: .yellow, title: String(localized: "colorMentalism.card.trust"),    height: 180, rotation:  2),
-        .init(colorType: .green,  title: String(localized: "colorMentalism.card.pickOne"),  height: 165, rotation: -1),
-        .init(colorType: .blue,   title: String(localized: "colorMentalism.card.goOn"),     height: 175, rotation:  1),
-        .init(colorType: .yellow, title: String(localized: "colorMentalism.card.choose"),   height: 145, rotation: -2),
-        .init(colorType: .green,  title: String(localized: "colorMentalism.card.feelIt"),   height: 190, rotation:  2),
-        .init(colorType: .red,    title: String(localized: "colorMentalism.card.notice"),   height: 160, rotation:  1),
-        .init(colorType: .blue,   title: String(localized: "colorMentalism.card.tap"),      height: 180, rotation: -1),
+        .init(colorType: .red,    title: String(localized: key("tap")),      height: 150, rotation: -2),
+        .init(colorType: .yellow, title: String(localized: key("trust")),    height: 180, rotation:  2),
+        .init(colorType: .green,  title: String(localized: key("pickOne")),  height: 165, rotation: -1),
+        .init(colorType: .blue,   title: String(localized: key("goOn")),     height: 175, rotation:  1),
+        .init(colorType: .yellow, title: String(localized: key("choose")),   height: 145, rotation: -2),
+        .init(colorType: .green,  title: String(localized: key("feelIt")),   height: 190, rotation:  2),
+        .init(colorType: .red,    title: String(localized: key("notice")),   height: 160, rotation:  1),
+        .init(colorType: .blue,   title: String(localized: key("tap")),      height: 180, rotation: -1),
     ]
 
     private let haptics: CountHapticPlaying
