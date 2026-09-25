@@ -7,6 +7,10 @@
 
 import Foundation
 
+private let goalKey = L10nDomain("onboarding.goal")
+private let painKey = L10nDomain("onboarding.pain")
+private let solutionKey = L10nDomain("onboarding.solution")
+
 enum OnboardingStep: Int, CaseIterable {
     case welcome, goal, noProps, instructions, vibrations, processing, paywall
 
@@ -42,11 +46,11 @@ enum OnboardingGoal: String, CaseIterable, Hashable {
 
     var localizedTitle: String {
         switch self {
-        case .parties: String(localized: "onboarding.goal.parties")
-        case .dates: String(localized: "onboarding.goal.dates")
-        case .work: String(localized: "onboarding.goal.work")
-        case .family: String(localized: "onboarding.goal.family")
-        case .everywhere: String(localized: "onboarding.goal.everywhere")
+        case .parties: String(localized: goalKey("parties"))
+        case .dates: String(localized: goalKey("dates"))
+        case .work: String(localized: goalKey("work"))
+        case .family: String(localized: goalKey("family"))
+        case .everywhere: String(localized: goalKey("everywhere"))
         }
     }
 }
@@ -75,23 +79,23 @@ enum OnboardingPainPoint: CaseIterable, Identifiable, Hashable {
 
     var localizedTitle: String {
         switch self {
-        case .tooHard: String(localized: "onboarding.pain.tooHard")
-        case .needsProps: String(localized: "onboarding.pain.needsProps")
-        case .forgetUnderPressure: String(localized: "onboarding.pain.forgetUnderPressure")
-        case .scaredOfBeingCaught: String(localized: "onboarding.pain.scaredOfBeingCaught")
-        case .noTricksForMe: String(localized: "onboarding.pain.noTricksForMe")
-        case .noTime: String(localized: "onboarding.pain.noTime")
+        case .tooHard: String(localized: painKey("tooHard"))
+        case .needsProps: String(localized: painKey("needsProps"))
+        case .forgetUnderPressure: String(localized: painKey("forgetUnderPressure"))
+        case .scaredOfBeingCaught: String(localized: painKey("scaredOfBeingCaught"))
+        case .noTricksForMe: String(localized: painKey("noTricksForMe"))
+        case .noTime: String(localized: painKey("noTime"))
         }
     }
 
     var localizedSolution: String {
         switch self {
-        case .tooHard: String(localized: "onboarding.solution.tooHard")
-        case .needsProps: String(localized: "onboarding.solution.needsProps")
-        case .forgetUnderPressure: String(localized: "onboarding.solution.forgetUnderPressure")
-        case .scaredOfBeingCaught: String(localized: "onboarding.solution.scaredOfBeingCaught")
-        case .noTricksForMe: String(localized: "onboarding.solution.noTricksForMe")
-        case .noTime: String(localized: "onboarding.solution.noTime")
+        case .tooHard: String(localized: solutionKey("tooHard"))
+        case .needsProps: String(localized: solutionKey("needsProps"))
+        case .forgetUnderPressure: String(localized: solutionKey("forgetUnderPressure"))
+        case .scaredOfBeingCaught: String(localized: solutionKey("scaredOfBeingCaught"))
+        case .noTricksForMe: String(localized: solutionKey("noTricksForMe"))
+        case .noTime: String(localized: solutionKey("noTime"))
         }
     }
 }
