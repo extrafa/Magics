@@ -5,6 +5,13 @@
 
 import SwiftUI
 
+private let introKey = L10nDomain("phantomDraw.intro")
+private let receiverKey = L10nDomain("phantomDraw.role.receiver")
+private let senderKey = L10nDomain("phantomDraw.role.sender")
+private let enterCodeKey = L10nDomain("phantomDraw.enterCode")
+private let statusKey = L10nDomain("phantomDraw.status")
+private let statusFailedKey = KeyDomain("phantomDraw.status.failed")
+
 struct PhantomDrawView: View {
 
     @StateObject private var session = PhantomDrawSessionManager()
@@ -86,9 +93,9 @@ struct PhantomDrawView: View {
             if case .failed = state {
                 statusView(
                     icon: "exclamationmark.triangle",
-                    title: "phantomDraw.status.failed.title",
-                    subtitle: "phantomDraw.status.failed.subtitle",
-                    buttonTitle: "phantomDraw.status.failed.retry",
+                    title: LocalizedStringKey(stringLiteral: statusFailedKey("title")),
+                    subtitle: LocalizedStringKey(stringLiteral: statusFailedKey("subtitle")),
+                    buttonTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
                     action: retry
                 )
                 .transition(.opacity)
@@ -116,8 +123,8 @@ struct PhantomDrawView: View {
                     .foregroundStyle(TrickPalette.Collection.phantomDraw)
 
                 VStack(spacing: 3) {
-                    Text(String(localized: "phantomDraw.intro.line1"))
-                    Text(String(localized: "phantomDraw.intro.line2"))
+                    Text(String(localized: introKey("line1")))
+                    Text(String(localized: introKey("line2")))
                 }
                 .font(.system(size: 15, weight: .regular, design: .rounded))
                 .foregroundStyle(.secondary)
@@ -128,14 +135,14 @@ struct PhantomDrawView: View {
 
             VStack(spacing: 14) {
                 roleButton(
-                    title: String(localized: "phantomDraw.role.receiver.title"),
-                    subtitle: String(localized: "phantomDraw.role.receiver.subtitle"),
+                    title: String(localized: receiverKey("title")),
+                    subtitle: String(localized: receiverKey("subtitle")),
                     icon: "eye",
                     role: .receiver
                 )
                 roleButton(
-                    title: String(localized: "phantomDraw.role.sender.title"),
-                    subtitle: String(localized: "phantomDraw.role.sender.subtitle"),
+                    title: String(localized: senderKey("title")),
+                    subtitle: String(localized: senderKey("subtitle")),
                     icon: "hand.draw",
                     role: .sender
                 )
@@ -189,10 +196,10 @@ struct PhantomDrawView: View {
                     .font(.system(size: 44, weight: .light))
                     .foregroundStyle(TrickPalette.Collection.phantomDraw)
                     .accessibilityHidden(true)
-                Text(String(localized: "phantomDraw.enterCode.title"))
+                Text(String(localized: enterCodeKey("title")))
                     .font(.system(size: 20, weight: .semibold, design: .rounded))
                     .foregroundStyle(.textPrimary)
-                Text(String(localized: "phantomDraw.enterCode.description"))
+                Text(String(localized: enterCodeKey("description")))
                     .font(.system(size: 15, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -243,13 +250,13 @@ struct PhantomDrawView: View {
             PulsingSignalView(color: TrickPalette.Collection.phantomDraw)
                 .frame(width: 120, height: 120)
             Spacer().frame(height: 28)
-            Text(viewModel.role == .sender ? "phantomDraw.status.waiting" : "phantomDraw.status.connecting")
+            Text(String(localized: statusKey(viewModel.role == .sender ? "waiting" : "connecting")))
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                 .foregroundStyle(.textPrimary)
             Spacer().frame(height: 8)
-            Text(viewModel.role == .sender
-                 ? "phantomDraw.status.waitingDescription"
-                 : "phantomDraw.status.connectingDescription")
+            Text(String(localized: statusKey(viewModel.role == .sender
+                 ? "waitingDescription"
+                 : "connectingDescription")))
                 .font(.system(size: 15, design: .rounded))
                 .foregroundStyle(.secondary)
             if viewModel.role == .sender, let code = session.pairingCode {
