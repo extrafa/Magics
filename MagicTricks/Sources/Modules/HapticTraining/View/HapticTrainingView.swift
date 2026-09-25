@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let legendKey = L10nDomain("training.legend")
+
 struct HapticTrainingView: View {
     @StateObject private var viewModel: HapticTrainingViewModel
     @State private var answerText = ""
@@ -83,10 +85,10 @@ struct HapticTrainingView: View {
     private var hintLegend: some View {
         HStack(spacing: 20) {
             VStack(spacing: 2) {
-                Text(String(localized: "training.legend.zero"))
+                Text(String(localized: legendKey("zero")))
                     .font(.system(size: 17, weight: .black, design: .rounded))
                     .foregroundStyle(mode.accentColor)
-                Text(String(localized: "training.legend.longVibration"))
+                Text(String(localized: legendKey("longVibration")))
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(Color.textPrimary.opacity(0.45))
             }
@@ -96,10 +98,10 @@ struct HapticTrainingView: View {
                 .frame(width: 1, height: 30)
 
             VStack(spacing: 2) {
-                Text(String(localized: "training.legend.oneToNine"))
+                Text(String(localized: legendKey("oneToNine")))
                     .font(.system(size: 17, weight: .black, design: .rounded))
                     .foregroundStyle(mode.accentColor)
-                Text(String(localized: "training.legend.thatManyVibrations"))
+                Text(String(localized: legendKey("thatManyVibrations")))
                     .font(.system(size: 12, weight: .semibold, design: .rounded))
                     .foregroundStyle(Color.textPrimary.opacity(0.45))
             }
