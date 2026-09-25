@@ -22,6 +22,17 @@ struct OnboardingPaywallScreen: View {
 
     private typealias Palette = TrickPalette.Collection
 
+    private enum AppearDelay {
+        static let closeButton: Double = 0.5
+        static let hero: Double = 0.06
+        static let title: Double = 0.2
+        static let subtitle: Double = 0.27
+        static let benefitsBase: Double = 0.34
+        static let benefitsStep: Double = 0.07
+        static let bottomBlockBase: Double = 0.58
+        static let bottomBlockStep: Double = 0.08
+    }
+
     private let benefits: [Benefit] = [
         Benefit(
             icon: "photo.on.rectangle.angled",
@@ -124,7 +135,7 @@ struct OnboardingPaywallScreen: View {
         }
         .accessibilityLabel(String(localized: "common.close"))
         .opacity(appeared ? 1 : 0)
-        .animation(.easeOut(duration: 0.2).delay(0.5), value: appeared)
+        .animation(.easeOut(duration: 0.2).delay(AppearDelay.closeButton), value: appeared)
     }
 
     // MARK: Hero
@@ -158,7 +169,7 @@ struct OnboardingPaywallScreen: View {
         }
         .scaleEffect(appeared ? 1 : 0.65)
         .opacity(appeared ? 1 : 0)
-        .animation(.onboardingAppear.delay(0.06), value: appeared)
+        .animation(.onboardingAppear.delay(AppearDelay.hero), value: appeared)
         .onAppear { heroPulse = true }
     }
 
@@ -169,12 +180,12 @@ struct OnboardingPaywallScreen: View {
             Text(String.paywall("title"))
                 .font(.system(size: 28, weight: .bold, design: .rounded))
                 .foregroundStyle(.textPrimary)
-                .onboardingAppear(appeared, offset: 14, delay: 0.2)
+                .onboardingAppear(appeared, offset: 14, delay: AppearDelay.title)
 
             Text(String.paywall("subtitle"))
                 .font(.system(size: 16, weight: .regular, design: .rounded))
                 .foregroundStyle(.secondary)
-                .onboardingAppear(appeared, offset: 10, delay: 0.27)
+                .onboardingAppear(appeared, offset: 10, delay: AppearDelay.subtitle)
         }
         .multilineTextAlignment(.center)
     }
@@ -203,7 +214,7 @@ struct OnboardingPaywallScreen: View {
                             .foregroundStyle(.secondary)
                     }
                 }
-                .onboardingAppear(appeared, offset: 10, delay: 0.34 + Double(i) * 0.07)
+                .onboardingAppear(appeared, offset: 10, delay: AppearDelay.benefitsBase + Double(i) * AppearDelay.benefitsStep)
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
@@ -240,7 +251,7 @@ struct OnboardingPaywallScreen: View {
             .foregroundStyle(.tertiary)
         }
         .frame(maxWidth: .infinity)
-        .onboardingAppear(appeared, offset: 16, delay: 0.58 + Double(benefits.count - 1) * 0.08)
+        .onboardingAppear(appeared, offset: 16, delay: AppearDelay.bottomBlockBase + Double(benefits.count - 1) * AppearDelay.bottomBlockStep)
     }
 
     // MARK: Purchase
