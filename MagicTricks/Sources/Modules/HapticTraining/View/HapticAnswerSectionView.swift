@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let key = L10nDomain("training.answer")
+
 struct HapticAnswerSectionView: View {
 
     let mode: HapticTrainingMode
@@ -19,7 +21,7 @@ struct HapticAnswerSectionView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
-            Text(String(localized: "training.answer.title"))
+            Text(String(localized: key("title")))
                 .font(.system(size: 15, weight: .bold, design: .rounded))
                 .foregroundStyle(Color.textSecondary)
 
@@ -66,9 +68,9 @@ struct HapticAnswerSectionView: View {
         guard let result else { return " " }
         switch result {
         case .correct:
-            return String(localized: "training.answer.correct")
+            return String(localized: key("correct"))
         case .incorrect(let expected):
-            return String.localizedStringWithFormat(String(localized: "training.answer.incorrect"), expected)
+            return String.localizedStringWithFormat(String(localized: key("incorrect")), expected)
         }
     }
 

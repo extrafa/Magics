@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let statusKey = L10nDomain("magicGallery.status")
+
 struct MagicGallerySlotCard: View {
     let number: Int
     let photo: MagicGalleryPhoto?
@@ -83,8 +85,8 @@ struct MagicGallerySlotCard: View {
 
     private func sourceBadge(for photo: MagicGalleryPhoto) -> some View {
         Text(photo.isStandard
-             ? String(localized: "magicGallery.status.standard")
-             : String(localized: "magicGallery.status.custom"))
+             ? String(localized: statusKey("standard"))
+             : String(localized: statusKey("custom")))
             .font(.caption2.weight(.semibold))
             .foregroundStyle(.white)
             .padding(.horizontal, 10)

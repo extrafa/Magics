@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let key = L10nDomain("onboarding.goal")
+
 struct OnboardingGoalScreen: View {
     @Binding var selectedGoals: Set<OnboardingGoal>
     let onContinue: () -> Void
@@ -21,13 +23,13 @@ struct OnboardingGoalScreen: View {
         VStack(spacing: 0) {
             ScrollView {
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(String(localized: "onboarding.goal.headline"))
+                    Text(String(localized: key("headline")))
                         .font(.system(size: 28, weight: .bold, design: .rounded))
                         .foregroundStyle(.textPrimary)
                         .padding(.bottom, 4)
                         .onboardingAppear(appeared, offset: 14, delay: 0.06)
 
-                    Text(String(localized: "onboarding.goal.subheadline"))
+                    Text(String(localized: key("subheadline")))
                         .font(.system(size: 16, weight: .regular, design: .rounded))
                         .foregroundStyle(.secondary)
                         .padding(.bottom, 20)

@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+private let confirmKey = L10nDomain("exitHint.confirm")
+private let swipeKey = L10nDomain("exitHint.swipe")
+
 struct ExitHintView: View {
     @Binding var isExitHintVisible: Bool
     @Environment(\.dismiss) private var dismiss
@@ -40,7 +43,7 @@ struct ExitHintView: View {
         .exitHintLongPressEnabled(onExit: dismiss.callAsFunction)
         .environmentObject(gestureCoordinator)
         .alert(
-            String(localized: "exitHint.confirm.title"),
+            String(localized: confirmKey("title")),
             isPresented: $viewModel.isConfirmAlertPresented
         ) {
             Button(String(localized: "exitHint.showAgain"), role: .cancel) { }
@@ -52,15 +55,15 @@ struct ExitHintView: View {
                 }
             }
         } message: {
-            Text(String(localized: "exitHint.confirm.description"))
+            Text(String(localized: confirmKey("description")))
         }
         .alert(
-            String(localized: "exitHint.swipe.title"),
+            String(localized: swipeKey("title")),
             isPresented: $viewModel.isSwipeAlertPresented
         ) {
             Button(String(localized: "common.gotIt")) { }
         } message: {
-            Text(String(localized: "exitHint.swipe.description"))
+            Text(String(localized: swipeKey("description")))
         }
         .onAppear {
             viewModel.configurePresentation(isVisible: isExitHintVisible) { isExitHintVisible = false }

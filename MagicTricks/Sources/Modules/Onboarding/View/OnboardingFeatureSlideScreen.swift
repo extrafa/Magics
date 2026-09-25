@@ -9,6 +9,10 @@ import SwiftUI
 
 // MARK: - Feature type
 
+private let instructionsKey = L10nDomain("onboarding.feature.instructions")
+private let noPropsKey = L10nDomain("onboarding.feature.noprops")
+private let vibrationsKey = L10nDomain("onboarding.feature.vibrations")
+
 enum OnboardingFeatureType {
     case instructions
     case noProps
@@ -16,16 +20,16 @@ enum OnboardingFeatureType {
 
     var title: String {
         switch self {
-        case .instructions: String(localized: "onboarding.feature.instructions.title")
-        case .noProps:      String(localized: "onboarding.feature.noprops.title")
-        case .vibrations:   String(localized: "onboarding.feature.vibrations.title")
+        case .instructions: String(localized: instructionsKey("title"))
+        case .noProps:      String(localized: noPropsKey("title"))
+        case .vibrations:   String(localized: vibrationsKey("title"))
         }
     }
 
     func subtitle(for goals: Set<OnboardingGoal>) -> String {
         switch self {
-        case .instructions: return String(localized: "onboarding.feature.instructions.subtitle")
-        case .vibrations:   return String(localized: "onboarding.feature.vibrations.subtitle")
+        case .instructions: return String(localized: instructionsKey("subtitle"))
+        case .vibrations:   return String(localized: vibrationsKey("subtitle"))
         case .noProps:      return noPropsSubtitle(for: goals)
         }
     }
@@ -33,16 +37,14 @@ enum OnboardingFeatureType {
     // Key is the matched goals' raw values joined by "." - one hand-written string per combination instead of listing all 15.
     private func noPropsSubtitle(for goals: Set<OnboardingGoal>) -> String {
         if goals.contains(.everywhere) {
-            return String(localized: "onboarding.feature.noprops.subtitle.everywhere")
+            return String(localized: noPropsKey("subtitle.everywhere"))
         }
         let matched = goals.orderedCombinableGoals
         guard !matched.isEmpty else {
-            return String(localized: "onboarding.feature.noprops.subtitle")
+            return String(localized: noPropsKey("subtitle"))
         }
         let suffix = matched.map(\.rawValue).joined(separator: ".")
-        // Built as a String first - interpolating into a LocalizationValue literal makes it a %@ argument, not part of the key.
-        let key: String = "onboarding.feature.noprops.subtitle.\(suffix)"
-        return String(localized: String.LocalizationValue(key))
+        return String(localized: noPropsKey("subtitle.\(suffix)"))
     }
 }
 
@@ -111,9 +113,11 @@ struct OnboardingFeatureSlideScreen: View {
 
 // MARK: - Visual: Instructions
 
+private let previewImage = KeyDomain("onboarding.preview")
+
 private struct InstructionPreviewVisual: View {
     var body: some View {
-        Image("onboarding.preview.instructions")
+        Image(previewImage("instructions"))
             .resizable()
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -125,7 +129,7 @@ private struct InstructionPreviewVisual: View {
 
 private struct TricksPreviewVisual: View {
     var body: some View {
-        Image("onboarding.preview.everyMoment")
+        Image(previewImage("everyMoment"))
             .resizable()
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -137,7 +141,7 @@ private struct TricksPreviewVisual: View {
 
 private struct VibrationsVisual: View {
     var body: some View {
-        Image("onboarding.preview.phoneOnly")
+        Image(previewImage("phoneOnly"))
             .resizable()
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))

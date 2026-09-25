@@ -90,59 +90,65 @@ extension TrickType {
     var trick: Trick {
         switch self {
         case .geoMentalism:
-            Trick(
+            let key = L10nDomain("card.geo")
+            return Trick(
                 id: .geoMentalism,
-                title: "card.geo.title",
-                cardTitle: "card.geo.cardTitle",
-                subtitle: "card.geo.subtitle",
+                title: key("title"),
+                cardTitle: key("cardTitle"),
+                subtitle: key("subtitle"),
                 image: .globeEuropeAfricaFill,
                 difficulty: .medium,
                 instruction: .geoMentalism
             )
         case .colorSense:
-            Trick(
+            let key = L10nDomain("card.color")
+            return Trick(
                 id: .colorSense,
-                title: "card.color.title",
-                cardTitle: "card.color.cardTitle",
-                subtitle: "card.color.subtitle",
+                title: key("title"),
+                cardTitle: key("cardTitle"),
+                subtitle: key("subtitle"),
                 image: .paintpalette,
                 difficulty: .easy,
                 instruction: .colorSense
             )
         case .calculatorPrediction:
-            Trick(
+            let key = L10nDomain("card.calculatorPrediction")
+            return Trick(
                 id: .calculatorPrediction,
-                title: "card.calculatorPrediction.title",
-                cardTitle: "card.calculatorPrediction.cardTitle",
-                subtitle: "card.calculatorPrediction.subtitle",
+                title: key("title"),
+                cardTitle: key("cardTitle"),
+                subtitle: key("subtitle"),
                 image: .ipad,
                 difficulty: .medium,
                 instruction: .calculatorPrediction
             )
         case .timeControl:
-            Trick(
+            let key = L10nDomain("card.time")
+            return Trick(
                 id: .timeControl,
-                title: "card.time.title",
-                subtitle: "card.time.subtitle",
+                title: key("title"),
+                subtitle: key("subtitle"),
                 image: .stopwatchFill,
                 difficulty: .medium,
                 instruction: .timeControl
             )
         case .magicGallery:
-            Trick(
+            let key = L10nDomain("card.magicGallery")
+            return Trick(
                 id: .magicGallery,
-                title: "card.magicGallery.title",
-                subtitle: "card.magicGallery.subtitle",
+                title: key("title"),
+                subtitle: key("subtitle"),
                 image: .photoOnRectangleAngled,
                 difficulty: .hard,
                 instruction: .magicGallery
             )
         case .phantomDraw:
-            Trick(
+            let key = L10nDomain("card.phantomDraw")
+            return Trick(
                 id: .phantomDraw,
-                title: "card.phantomDraw.title",
-                cardTitle: "card.phantomDraw.cardTitle",
-                subtitle: "card.phantomDraw.subtitle",
+                title: key("title"),
+                cardTitle: key("cardTitle"),
+                subtitle: key("subtitle"),
                 image: .antennaRadiowavesLeftAndRight,
                 difficulty: .easy,
                 instruction: .phantomDraw

@@ -8,6 +8,8 @@
 import Photos
 import UIKit
 
+private let photoImage = KeyDomain("gallery.photo")
+
 @MainActor
 protocol PhotoLibraryAuthorizing {
     func hasAddAccess() async -> Bool
@@ -147,16 +149,16 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     private static let maxStoredSide: CGFloat = 2000
 
     private static let standardAssetNames: [Int: String] = [
-        1: "gallery.photo.one",
-        2: "gallery.photo.two",
-        3: "gallery.photo.three",
-        4: "gallery.photo.four",
-        5: "gallery.photo.five",
-        6: "gallery.photo.six",
-        7: "gallery.photo.seven",
-        8: "gallery.photo.eight",
-        9: "gallery.photo.nine",
-        10: "gallery.photo.ten"
+        1: photoImage("one"),
+        2: photoImage("two"),
+        3: photoImage("three"),
+        4: photoImage("four"),
+        5: photoImage("five"),
+        6: photoImage("six"),
+        7: photoImage("seven"),
+        8: photoImage("eight"),
+        9: photoImage("nine"),
+        10: photoImage("ten")
     ]
 }
 

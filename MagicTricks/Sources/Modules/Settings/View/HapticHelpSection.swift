@@ -7,17 +7,19 @@
 
 import SwiftUI
 
+private let key = L10nDomain("settings.help")
+
 struct HapticHelpSection: View {
 
     private let items: [(question: String, answer: String)] = [
         (
-            String(localized: "settings.help.exitHint.question"),
-            String(localized: "settings.help.exitHint.answer")
+            String(localized: key("exitHint.question")),
+            String(localized: key("exitHint.answer"))
         ),
     ]
 
     var body: some View {
-        SettingsSection(title: String(localized: "settings.help.title")) {
+        SettingsSection(title: String(localized: key("title"))) {
             VStack(spacing: 0) {
                 ForEach(Array(items.enumerated()), id: \.offset) { index, item in
                     if index > 0 {

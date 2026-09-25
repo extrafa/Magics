@@ -7,6 +7,12 @@
 
 import SwiftUI
 
+private let sectionKey = L10nDomain("settings.section")
+private let proOverrideKey = L10nDomain("settings.proOverride")
+private let hideWatermarkKey = L10nDomain("settings.hideWatermark")
+private let exitHintKey = L10nDomain("settings.exitHint")
+private let paywallKey = L10nDomain("onboarding.paywall")
+
 struct SettingsScreen: View {
 
     @EnvironmentObject private var store: SettingsStore
@@ -51,8 +57,8 @@ private extension SettingsScreen {
         SettingsSection(title: "TestFlight") {
             VStack(spacing: 0) {
                 SettingsToggleRow(
-                    title: String(localized: "settings.proOverride.title"),
-                    subtitle: String(localized: "settings.proOverride.description"),
+                    title: String(localized: proOverrideKey("title")),
+                    subtitle: String(localized: proOverrideKey("description")),
                     tint: .orange,
                     isOn: $storeManager.isProOverride
                 )
@@ -71,8 +77,8 @@ private extension SettingsScreen {
                 SettingsDivider()
 
                 SettingsToggleRow(
-                    title: String(localized: "settings.hideWatermark.title"),
-                    subtitle: String(localized: "settings.hideWatermark.description"),
+                    title: String(localized: hideWatermarkKey("title")),
+                    subtitle: String(localized: hideWatermarkKey("description")),
                     tint: .orange,
                     isOn: $storeManager.isWatermarkHidden
                 )
@@ -82,10 +88,10 @@ private extension SettingsScreen {
     }
 
     var exitHintSection: some View {
-        SettingsSection(title: String(localized: "settings.exitHint.section")) {
+        SettingsSection(title: String(localized: exitHintKey("section"))) {
             SettingsToggleRow(
                 title: String(localized: "settings.exitHint"),
-                subtitle: String(localized: "settings.exitHint.description"),
+                subtitle: String(localized: exitHintKey("description")),
                 isOn: $store.isExitHintEnabled
             )
             .cardSurface(cornerRadius: 20)
@@ -93,7 +99,7 @@ private extension SettingsScreen {
     }
 
     var vibrationsSection: some View {
-        SettingsSection(title: String(localized: "settings.section.vibrations")) {
+        SettingsSection(title: String(localized: sectionKey("vibrations"))) {
             VStack(spacing: 0) {
                 NavigationLink {
                     HapticSettingsScreen()
@@ -127,7 +133,7 @@ private extension SettingsScreen {
     @ViewBuilder
     var appSection: some View {
         if let appShareURL = store.appShareURL {
-            SettingsSection(title: String(localized: "settings.section.app")) {
+            SettingsSection(title: String(localized: sectionKey("app"))) {
                 VStack(spacing: 0) {
                     shareButton(url: appShareURL)
                 }
@@ -147,13 +153,13 @@ private extension SettingsScreen {
     }
 
     var aboutSection: some View {
-        SettingsSection(title: String(localized: "settings.section.about")) {
+        SettingsSection(title: String(localized: sectionKey("about"))) {
             VStack(spacing: 0) {
                 Link(destination: AppConfig.privacyPolicyURL) {
                     SettingsActionRow(
                         icon: "hand.raised",
                         // Same key as the paywall's link - one canonical translation for the same label.
-                        title: String(localized: "onboarding.paywall.privacy"),
+                        title: String(localized: paywallKey("privacy")),
                         showsChevron: true
                     )
                 }
@@ -163,7 +169,7 @@ private extension SettingsScreen {
                 Link(destination: AppConfig.termsOfUseURL) {
                     SettingsActionRow(
                         icon: "doc.text",
-                        title: String(localized: "onboarding.paywall.terms"),
+                        title: String(localized: paywallKey("terms")),
                         showsChevron: true
                     )
                 }

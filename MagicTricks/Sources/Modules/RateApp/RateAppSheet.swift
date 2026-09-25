@@ -8,6 +8,10 @@
 import SwiftUI
 import StoreKit
 
+private let questionKey = L10nDomain("rateApp.question")
+private let reactionKey = L10nDomain("rateApp.reaction")
+private let dislikedKey = L10nDomain("rateApp.disliked")
+
 struct RateAppSheet: View {
 
     @Environment(\.dismiss) private var dismiss
@@ -46,10 +50,10 @@ struct RateAppSheet: View {
     private var questionView: some View {
         VStack(spacing: 20) {
             VStack(spacing: 6) {
-                Text(String(localized: "rateApp.question.title"))
+                Text(String(localized: questionKey("title")))
                     .font(.title3.weight(.bold))
                     .foregroundStyle(.textPrimary)
-                Text(String(localized: "rateApp.question.subtitle"))
+                Text(String(localized: questionKey("subtitle")))
                     .font(.subheadline)
                     .foregroundStyle(.textSecondary)
             }
@@ -57,13 +61,13 @@ struct RateAppSheet: View {
 
             HStack(spacing: 12) {
                 reactionButton(
-                    emoji: String(localized: "rateApp.reaction.likeIcon"),
-                    label: String(localized: "rateApp.reaction.like"),
+                    emoji: String(localized: reactionKey("likeIcon")),
+                    label: String(localized: reactionKey("like")),
                     action: handleLike
                 )
                 reactionButton(
-                    emoji: String(localized: "rateApp.reaction.dislikeIcon"),
-                    label: String(localized: "rateApp.reaction.dislike"),
+                    emoji: String(localized: reactionKey("dislikeIcon")),
+                    label: String(localized: reactionKey("dislike")),
                     action: handleDislike
                 )
             }
@@ -96,12 +100,12 @@ struct RateAppSheet: View {
     private var dislikedView: some View {
         VStack(spacing: 20) {
             VStack(spacing: 6) {
-                Text(String(localized: "rateApp.disliked.icon"))
+                Text(String(localized: dislikedKey("icon")))
                     .font(.system(size: 44))
-                Text(String(localized: "rateApp.disliked.title"))
+                Text(String(localized: dislikedKey("title")))
                     .font(.title3.weight(.bold))
                     .foregroundStyle(.textPrimary)
-                Text(String(localized: "rateApp.disliked.subtitle"))
+                Text(String(localized: dislikedKey("subtitle")))
                     .font(.subheadline)
                     .foregroundStyle(.textSecondary)
             }
@@ -109,7 +113,7 @@ struct RateAppSheet: View {
 
             VStack(spacing: 12) {
                 Button(action: handleWriteToUs) {
-                    Text(String(localized: "rateApp.disliked.writeButton"))
+                    Text(String(localized: dislikedKey("writeButton")))
                         .font(.headline)
                         .frame(maxWidth: .infinity)
                         .padding(.vertical, 16)
@@ -117,7 +121,7 @@ struct RateAppSheet: View {
                 .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
 
                 Button(action: handleMaybeLater) {
-                    Text(String(localized: "rateApp.disliked.laterButton"))
+                    Text(String(localized: dislikedKey("laterButton")))
                         .font(.subheadline)
                         .foregroundStyle(.textSecondary)
                 }

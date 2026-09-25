@@ -8,6 +8,8 @@
 import Foundation
 import SwiftUI
 
+private let key = L10nDomain("training.digits")
+
 enum HapticTrainingMode {
     case digits
 
@@ -15,11 +17,11 @@ enum HapticTrainingMode {
 
     var inputPlaceholder: String { "0–9" }
 
-    var navigationTitle: String { String(localized: "training.digits.title") }
+    var navigationTitle: String { String(localized: key("title")) }
 
-    var subtitle: String { String(localized: "training.digits.subtitle") }
+    var subtitle: String { String(localized: key("subtitle")) }
 
-    var playButtonTitle: String { String(localized: "training.digits.playButton") }
+    var playButtonTitle: String { String(localized: key("playButton")) }
 
     var accentColor: Color { TrickPalette.accentPrimary }
 

@@ -7,6 +7,9 @@
 
 import SwiftUI
 
+private let standardSetKey = L10nDomain("magicGallery.standardSet")
+private let gestureKey = L10nDomain("magicGallery.gesture")
+
 struct MagicGalleryCapturePanel: View {
     let usesStandardSet: Bool
     let onToggleStandardSet: (Bool) -> Void
@@ -35,11 +38,11 @@ struct MagicGalleryCapturePanel: View {
                 .background(.indigo, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
 
             VStack(alignment: .leading, spacing: 3) {
-                Text(String(localized: "magicGallery.standardSet.title"))
+                Text(String(localized: standardSetKey("title")))
                     .font(.subheadline.weight(.bold))
                     .foregroundStyle(Color.textPrimary)
 
-                Text(String(localized: "magicGallery.standardSet.description"))
+                Text(String(localized: standardSetKey("description")))
                     .font(.caption.weight(.medium))
                     .foregroundStyle(Color.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
@@ -64,7 +67,7 @@ struct MagicGalleryCapturePanel: View {
                 .frame(width: 38, height: 38)
                 .background(.indigo, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
 
-            Text(String(localized: "magicGallery.gesture.title"))
+            Text(String(localized: gestureKey("title")))
                 .font(.subheadline.weight(.bold))
                 .foregroundStyle(Color.textPrimary)
 
@@ -74,8 +77,8 @@ struct MagicGalleryCapturePanel: View {
                 get: { gestureMode },
                 set: onGestureModeChange
             )) {
-                Text(String(localized: "magicGallery.gesture.tap")).tag(MagicGalleryGestureMode.tap)
-                Text(String(localized: "magicGallery.gesture.swipe")).tag(MagicGalleryGestureMode.swipe)
+                Text(String(localized: gestureKey("tap"))).tag(MagicGalleryGestureMode.tap)
+                Text(String(localized: gestureKey("swipe"))).tag(MagicGalleryGestureMode.swipe)
             }
             .pickerStyle(.segmented)
             .frame(width: 120)

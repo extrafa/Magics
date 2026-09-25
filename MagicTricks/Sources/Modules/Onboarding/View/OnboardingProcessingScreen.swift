@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let key = L10nDomain("onboarding.processing")
+
 struct OnboardingProcessingScreen: View {
     let phases: [String]
     let onComplete: () -> Void
@@ -28,14 +30,14 @@ struct OnboardingProcessingScreen: View {
             Spacer()
 
             VStack(spacing: 10) {
-                Text(String(localized: "onboarding.processing.title"))
+                Text(String(localized: key("title")))
                     .font(.system(size: 26, weight: .bold, design: .rounded))
                     .foregroundStyle(.textPrimary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 28)
                     .onboardingAppear(appeared, offset: 12, delay: 0.18)
 
-                Text(isDone ? String(localized: "onboarding.processing.done") : phases[phaseIndex])
+                Text(isDone ? String(localized: key("done")) : phases[phaseIndex])
                     .font(.system(size: 16, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -54,7 +56,7 @@ struct OnboardingProcessingScreen: View {
             Spacer().frame(height: 24)
 
             OnboardingCTAButton(
-                title: String(localized: "onboarding.processing.cta"),
+                title: String(localized: key("cta")),
                 action: onComplete
             )
             .padding(.horizontal, 24)

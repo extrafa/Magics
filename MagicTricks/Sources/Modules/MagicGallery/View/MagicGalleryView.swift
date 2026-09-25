@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let sourceKey = L10nDomain("magicGallery.source")
+
 struct MagicGalleryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var vm: MagicGalleryViewModel
@@ -43,11 +45,11 @@ struct MagicGalleryView: View {
         }
         .confirmationDialog("", isPresented: $showSourceDialog) {
             if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                Button(String(localized: "magicGallery.source.camera")) {
+                Button(String(localized: sourceKey("camera"))) {
                     vm.startSequentialCapture(sourceType: .camera)
                 }
             }
-            Button(String(localized: "magicGallery.source.photoLibrary")) {
+            Button(String(localized: sourceKey("photoLibrary"))) {
                 vm.startSequentialCapture(sourceType: .photoLibrary)
             }
             Button(String(localized: "common.cancel"), role: .cancel) {}

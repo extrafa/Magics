@@ -7,13 +7,15 @@
 
 import SwiftUI
 
+private let sectionKey = L10nDomain("instruction.section")
+
 struct InstructionBlock: View {
     let text: String
 
     var body: some View {
         InstructionInfoCard(
             icon: "sparkles",
-            title: String(localized: "instruction.section.effect"),
+            title: String(localized: sectionKey("effect")),
             text: text,
             iconOpacity: 0.85,
             textOpacity: 0.8,
@@ -29,7 +31,7 @@ struct InstructionSecretView: View {
     var body: some View {
         InstructionInfoCard(
             icon: "lock.fill",
-            title: String(localized: "instruction.section.secret"),
+            title: String(localized: sectionKey("secret")),
             text: text,
             iconOpacity: 0.82,
             textOpacity: 0.78,

@@ -7,6 +7,8 @@
 
 import SwiftUI
 
+private let hapticsKey = L10nDomain("settings.haptics")
+
 struct HapticPreviewSection: View {
     let testNumber: Int
     let isTesting: Bool
@@ -20,7 +22,7 @@ struct HapticPreviewSection: View {
     var body: some View {
         SettingsSection(title: String(localized: "settings.preview")) {
             VStack(alignment: .leading, spacing: 14) {
-                Text(String.localizedStringWithFormat(String(localized: "settings.haptics.testNumber"), testNumber))
+                Text(String.localizedStringWithFormat(String(localized: hapticsKey("testNumber")), testNumber))
                     .font(.system(size: 17, weight: .bold, design: .rounded))
                     .foregroundStyle(.textPrimary)
 
@@ -29,7 +31,7 @@ struct HapticPreviewSection: View {
                         Label(
                             isWaitingForGesture
                                 ? String(localized: "settings.faceDown")
-                                : String(localized: "settings.haptics.tryVibration"),
+                                : String(localized: hapticsKey("tryVibration")),
                             systemImage: buttonIcon
                         )
 
