@@ -92,7 +92,7 @@ struct MagicGalleryCapturePanel: View {
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 15)
                 .background(canAddMorePhotos ? Color.buttonPrimary : Color.buttonPrimary.opacity(0.45))
-                .foregroundStyle(.textOnOverlay)
+                .foregroundStyle(Color.backgroundScreen)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
         .buttonStyle(.plain)
