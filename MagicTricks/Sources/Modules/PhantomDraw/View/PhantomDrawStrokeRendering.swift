@@ -6,11 +6,13 @@
 import SwiftUI
 
 extension GraphicsContext {
+    private static let strokeLineWidth: CGFloat = 3.5
+
     // Letterboxes to the sender's aspect ratio, when known, instead of stretching per axis.
     func drawStrokes(_ strokes: [DrawingStroke], canvasSize: CGSize, senderAspectRatio: Double? = nil, color: Color = .black) {
         let frame = Self.letterboxedFrame(canvasSize: canvasSize, senderAspectRatio: senderAspectRatio)
         for stroke in strokes {
-            guard stroke.points.count > 1 else { continue }
+            guard !stroke.points.isEmpty else { continue }
             strokePath(through: stroke.points.map { $0.toCGPoint(in: frame) }, color: color)
         }
     }
@@ -29,16 +31,23 @@ extension GraphicsContext {
     }
 
     func drawActiveStroke(_ points: [CGPoint], color: Color = .black) {
-        guard points.count > 1 else { return }
+        guard !points.isEmpty else { return }
         strokePath(through: points, color: color)
     }
 
     private func strokePath(through points: [CGPoint], color: Color) {
+        guard points.count > 1 else {
+            let point = points[0]
+            let radius = Self.strokeLineWidth / 2
+            let dot = CGRect(x: point.x - radius, y: point.y - radius, width: Self.strokeLineWidth, height: Self.strokeLineWidth)
+            fill(Path(ellipseIn: dot), with: .color(color))
+            return
+        }
         var path = Path()
         path.move(to: points[0])
         for point in points.dropFirst() {
             path.addLine(to: point)
         }
-        self.stroke(path, with: .color(color), style: StrokeStyle(lineWidth: 3.5, lineCap: .round, lineJoin: .round))
+        self.stroke(path, with: .color(color), style: StrokeStyle(lineWidth: Self.strokeLineWidth, lineCap: .round, lineJoin: .round))
     }
 }
