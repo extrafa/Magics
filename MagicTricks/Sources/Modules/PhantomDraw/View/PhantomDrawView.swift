@@ -275,6 +275,7 @@ struct PhantomDrawView: View {
                 .padding(.bottom, 32)
         }
         .frame(maxWidth: .infinity)
+        .keepsScreenAwake()
     }
 
     // MARK: - Status
