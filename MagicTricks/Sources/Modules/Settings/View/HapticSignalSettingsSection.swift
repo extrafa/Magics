@@ -22,28 +22,36 @@ struct HapticSignalSettingsSection: View {
 
     private var intensitySection: some View {
         SettingsSection(title: String(localized: key("strength"))) {
-            HStack(spacing: 0) {
-                ForEach(HapticIntensity.allCases, id: \.self) { intensity in
-                    Button {
-                        settings.hapticIntensity = intensity
-                    } label: {
-                        Text(intensity.localizedTitle)
-                            .font(.system(size: 15, weight: .semibold, design: .rounded))
-                            .frame(maxWidth: .infinity)
-                            .frame(height: 48)
-                            .foregroundStyle(settings.hapticIntensity == intensity ? Color.textSecondary : Color.textPrimary.opacity(0.55))
-                            .background(settings.hapticIntensity == intensity ? Color.buttonPrimary : Color.clear)
-                            .animation(.easeInOut(duration: 0.18), value: settings.hapticIntensity)
-                    }
-                    .buttonStyle(.plain)
+            GeometryReader { proxy in
+                let segmentWidth = proxy.size.width / CGFloat(HapticIntensity.allCases.count)
+                let selectedIndex = HapticIntensity.allCases.firstIndex(of: settings.hapticIntensity) ?? 0
 
-                    if intensity != HapticIntensity.allCases.last {
-                        Rectangle()
-                            .fill(Color.textPrimary.opacity(0.12))
-                            .frame(width: 1, height: 22)
+                ZStack(alignment: .leading) {
+                    RoundedRectangle(cornerRadius: 14, style: .continuous)
+                        .fill(Color.textPrimary.opacity(0.06))
+                        .frame(width: segmentWidth, height: proxy.size.height)
+                        .offset(x: segmentWidth * CGFloat(selectedIndex))
+                        .animation(.easeInOut(duration: 0.18), value: settings.hapticIntensity)
+
+                    HStack(spacing: 0) {
+                        ForEach(HapticIntensity.allCases, id: \.self) { intensity in
+                            Text(intensity.localizedTitle)
+                                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                .frame(maxWidth: .infinity)
+                                .frame(height: proxy.size.height)
+                                .foregroundStyle(Color.textPrimary)
+                                .contentShape(Rectangle())
+                                .onTapGesture {
+                                    settings.hapticIntensity = intensity
+                                }
+                                .accessibilityAddTraits(
+                                    settings.hapticIntensity == intensity ? [.isButton, .isSelected] : .isButton
+                                )
+                        }
                     }
                 }
             }
+            .frame(height: 48)
             .background(Color.cardBackground)
             .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
             .overlay {
