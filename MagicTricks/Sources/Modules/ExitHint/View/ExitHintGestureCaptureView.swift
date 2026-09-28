@@ -29,6 +29,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
     func makeUIView(context: Context) -> GestureInstallerView {
         let view = GestureInstallerView()
+        view.gestureCoordinator = gestureCoordinator
         context.coordinator.installerView = view
         view.onMoveToWindow = { window in
             context.coordinator.installRecognizerIfNeeded(on: window)
@@ -39,7 +40,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
     func updateUIView(_ uiView: GestureInstallerView, context: Context) {
         context.coordinator.onExit = onExit
         context.coordinator.gestureCoordinator = gestureCoordinator
-        uiView.isTrainingActive = gestureCoordinator.isTrainingActive
+        uiView.gestureCoordinator = gestureCoordinator
         if let window = uiView.window {
             context.coordinator.installRecognizerIfNeeded(on: window)
         }
@@ -264,7 +265,7 @@ private final class TouchTrackingRecognizer: UIGestureRecognizer {
 
 private final class GestureInstallerView: UIView {
     var onMoveToWindow: ((UIWindow) -> Void)?
-    var isTrainingActive = false
+    weak var gestureCoordinator: ExitHintGestureCoordinator?
 
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -282,7 +283,7 @@ private final class GestureInstallerView: UIView {
     }
 
     override func point(inside point: CGPoint, with event: UIEvent?) -> Bool {
-        isTrainingActive
+        gestureCoordinator?.isTrainingActive == true
     }
 }
 
