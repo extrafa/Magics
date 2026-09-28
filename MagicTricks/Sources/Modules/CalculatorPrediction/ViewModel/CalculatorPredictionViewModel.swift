@@ -46,7 +46,13 @@ final class CalculatorPredictionViewModel: ObservableObject {
         display.replacingOccurrences(of: groupingSeparator, with: "")
     }
 
+    private var errorDisplay: String { String(localized: "common.error") }
+    private var isDisplayingError: Bool { display == errorDisplay }
+
     func buttonPressed(_ button: CalculatorPredictionButton) {
+        if isDisplayingError, button != .clear {
+            display = "0"
+        }
         switch button {
         case .clear:
             display = "0"
@@ -66,6 +72,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
     }
 
     func saveSecretValue() {
+        guard !isDisplayingError else { return }
         let raw = rawDisplay
         let hasOperator = raw.contains { Self.operators.contains(String($0)) }
         guard !hasOperator else { return }
@@ -136,7 +143,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
                 let result = try evaluatePercent(raw)
                 display = formatResult(result)
             } catch {
-                display = String(localized: "common.error")
+                display = errorDisplay
             }
             return
         }
@@ -146,7 +153,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
             let result = try expressionEvaluator.evaluate(raw)
             display = formatResult(result)
         } catch {
-            display = String(localized: "common.error")
+            display = errorDisplay
         }
     }
 
@@ -175,7 +182,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
     }
 
     private func formatResult(_ value: Double) -> String {
-        guard value.isFinite else { return String(localized: "common.error") }
+        guard value.isFinite else { return errorDisplay }
         if value.truncatingRemainder(dividingBy: 1) == 0 {
             if let whole = Int(exactly: value) {
                 return formatExpression(String(whole))
