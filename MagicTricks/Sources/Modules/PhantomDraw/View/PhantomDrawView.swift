@@ -14,15 +14,15 @@ private let statusFailedKey = KeyDomain("phantomDraw.status.failed")
 
 struct PhantomDrawView: View {
 
-    @StateObject private var session = PhantomDrawSessionManager()
+    @StateObject private var session: PhantomDrawSessionManager
     @StateObject private var viewModel: PhantomDrawViewModel
     @Environment(\.dismiss) private var dismiss
     @State private var codeInput = ""
     @AppStorage("phantomDrawLastCode") private var lastCode = ""
     @FocusState private var isCodeFieldFocused: Bool
 
-    init() {
-        let session = PhantomDrawSessionManager()
+    init(session: PhantomDrawSessionManager? = nil) {
+        let session = session ?? PhantomDrawSessionManager()
         _session = StateObject(wrappedValue: session)
         _viewModel = StateObject(wrappedValue: PhantomDrawViewModel(session: session))
     }
