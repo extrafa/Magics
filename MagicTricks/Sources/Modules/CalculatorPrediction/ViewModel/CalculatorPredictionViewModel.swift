@@ -98,7 +98,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
     private func toggleSign() {
         var raw = rawDisplay
-        guard !raw.isEmpty else { return }
+        guard !raw.isEmpty, !raw.hasSuffix("%") else { return }
         let lastOperatorIndex = raw.lastIndex { Self.operators.contains(String($0)) }
         let numberStart = lastOperatorIndex.map { raw.index(after: $0) } ?? raw.startIndex
         if raw[numberStart...].hasPrefix("-") {
@@ -111,6 +111,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
 
     private func appendDecimal() {
         let raw = rawDisplay
+        guard !raw.hasSuffix("%") else { return }
         let components = raw.split { Self.operators.contains(String($0)) }
         if let last = components.last, !last.contains(decimalSeparator) {
             display = formatExpression(raw + decimalSeparator)
