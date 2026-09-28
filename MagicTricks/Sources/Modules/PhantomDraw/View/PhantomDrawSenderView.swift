@@ -54,6 +54,7 @@ struct PhantomDrawSenderView: View {
                 .padding(.top, statusBarHeight)
                 .ignoresSafeArea(edges: .top)
         }
+        .keepsScreenAwake()
         .onAppear {
             // Nested inside PhantomDrawView's titled nav bar, so the inherited safe area is taller than just the status bar - same workaround as GeoMentalismView.
             statusBarHeight = UIApplication.shared.connectedScenes
