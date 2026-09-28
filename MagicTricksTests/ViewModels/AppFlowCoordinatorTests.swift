@@ -63,6 +63,31 @@ final class AppFlowCoordinatorTests: XCTestCase {
         XCTAssertNil(coordinator.activeSheet)
     }
 
+    func test_resetRatingState_clearsSnooze() {
+        let store = MockPreferenceStore()
+        let preferences = AppPreferences(store: store)
+        preferences.hasRespondedToRating = true
+        preferences.trickLaunchCount = 2
+        preferences.ratingSnoozedUntil = Date().addingTimeInterval(3600)
+        let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: preferences,
+            scheduler: ImmediateScheduler()
+        )
+
+        coordinator.resetRatingState()
+
+        XCTAssertFalse(preferences.hasRespondedToRating)
+        XCTAssertEqual(preferences.trickLaunchCount, 0)
+        XCTAssertNil(preferences.ratingSnoozedUntil)
+
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+
+        XCTAssertEqual(coordinator.activeSheet, .rateApp)
+    }
+
     func test_recordTrickClose_threeTimes_whenAnotherFlowIsActive_doesNotShowSheetAndKeepsCount() {
         let store = MockPreferenceStore()
         let preferences = AppPreferences(store: store)

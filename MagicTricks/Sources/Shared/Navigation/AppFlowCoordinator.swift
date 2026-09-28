@@ -84,6 +84,7 @@ final class AppFlowCoordinator: ObservableObject {
     func resetRatingState() {
         preferences.hasRespondedToRating = false
         preferences.trickLaunchCount = 0
+        preferences.ratingSnoozedUntil = nil
     }
 
     func markTrickAsSeen(_ trick: Trick) {
