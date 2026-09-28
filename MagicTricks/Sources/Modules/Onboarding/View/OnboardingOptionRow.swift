@@ -37,6 +37,8 @@ struct OnboardingOptionRow: View {
                 }
         }
         .animation(.easeOut(duration: 0.15), value: isSelected)
+        .accessibilityElement(children: .combine)
+        .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 
     @ViewBuilder
