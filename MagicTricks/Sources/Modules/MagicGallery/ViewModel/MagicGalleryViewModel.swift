@@ -26,6 +26,7 @@ final class MagicGalleryViewModel: ObservableObject {
     private let haptics: HapticNotificationPlaying
     private var preferences: MagicGalleryPreferenceManaging
     private var captureFlow = MagicGalleryCaptureFlow()
+    private var hasLoadedStoredPhotos = false
 
     init(
         haptics: HapticNotificationPlaying? = nil,
@@ -52,8 +53,10 @@ final class MagicGalleryViewModel: ObservableObject {
     }
 
     func loadStoredPhotos() async {
+        guard !hasLoadedStoredPhotos else { return }
         do {
             customPhotos = try await photoLibrary.loadCustomPhotos()
+            hasLoadedStoredPhotos = true
         } catch {
             alertMessage = String(localized: key("loadPhotosFailed"))
         }
