@@ -86,13 +86,17 @@ final class MagicGalleryViewModel: ObservableObject {
         customPhotos.count < photoLibrary.maxPhotos
     }
 
+    // The editor grid always shows the real library, regardless of usesStandardSet.
     var photosByNumber: [Int: MagicGalleryPhoto] {
-        Dictionary(uniqueKeysWithValues: (1...photoLibrary.maxPhotos).compactMap { number in
-            photo(for: number).map { (number, $0) }
-        })
+        Dictionary(uniqueKeysWithValues: customPhotos.map { ($0.number, $0) })
     }
 
     func photo(for number: Int) -> MagicGalleryPhoto? {
+        customPhotos.first { $0.number == number }
+    }
+
+    // What actually gets revealed to the spectator: the standard set when enabled, the captured photo otherwise.
+    func revealPhoto(for number: Int) -> MagicGalleryPhoto? {
         if usesStandardSet {
             return photoLibrary.standardPhoto(for: number)
         }
@@ -178,7 +182,7 @@ final class MagicGalleryViewModel: ObservableObject {
     }
 
     func savePhoto(number: Int) async -> Bool {
-        guard let photo = photo(for: number) else {
+        guard let photo = revealPhoto(for: number) else {
             alertMessage = String(localized: "magicGallery.selectPhotoFirst")
             return false
         }
