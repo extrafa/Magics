@@ -75,21 +75,111 @@ final class StoreManagerTests: XCTestCase {
 
         XCTAssertEqual(store.storage["dev.proOverride"] as? Bool, true)
     }
+
+    func test_purchase_whenSuccessful_grantsAccess() async {
+        let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        await manager.purchase(productID: "magic_lifetime")
+
+        XCTAssertTrue(manager.hasProAccess)
+    }
+
+    func test_purchase_whenThrows_doesNotGrantAccessAndSetsAlert() async {
+        let service = MockStoreService()
+        service.purchaseResult = .failure(MockStoreServiceError.requestedFailure)
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        await manager.purchase(productID: "magic_lifetime")
+
+        XCTAssertFalse(manager.hasProAccess)
+        XCTAssertNotNil(manager.alertMessage)
+    }
+
+    func test_purchase_whenPending_doesNotGrantAccessAndSetsAlert() async {
+        let service = MockStoreService()
+        service.purchaseResult = .success(.pending)
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        await manager.purchase(productID: "magic_lifetime")
+
+        XCTAssertFalse(manager.hasProAccess)
+        XCTAssertNotNil(manager.alertMessage)
+    }
+
+    func test_transactionUpdate_grantsAccess() async {
+        let service = MockStoreService()
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        manager.start()
+        await flushPendingTasks()
+        XCTAssertFalse(manager.hasProAccess)
+
+        service.entitlementProductIDs = ["magic_lifetime"]
+        service.emitTransactionUpdate(productID: "magic_lifetime")
+        await flushPendingTasks()
+
+        XCTAssertTrue(manager.hasProAccess)
+    }
+
+    func test_retryLoadProducts_whenSuccessful_populatesProductsAndClearsError() async {
+        let service = MockStoreService()
+        service.products = [StoreProduct(id: "magic_lifetime", displayName: "Lifetime", displayPrice: "$9.99")]
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        await manager.retryLoadProducts()
+
+        XCTAssertEqual(manager.products.map(\.id), ["magic_lifetime"])
+        XCTAssertNil(manager.productsLoadError)
+    }
+
+    func test_retryLoadProducts_whenThrows_setsProductsLoadError() async {
+        let service = MockStoreService()
+        service.loadProductsError = MockStoreServiceError.requestedFailure
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        await manager.retryLoadProducts()
+
+        XCTAssertTrue(manager.products.isEmpty)
+        XCTAssertNotNil(manager.productsLoadError)
+    }
+
+    func test_reloadProductsIfNeeded_whenProductsAlreadyLoaded_doesNotReload() async {
+        let service = MockStoreService()
+        service.products = [StoreProduct(id: "magic_lifetime", displayName: "Lifetime", displayPrice: "$9.99")]
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+        await manager.retryLoadProducts()
+        XCTAssertEqual(service.loadProductsCallCount, 1)
+
+        await manager.reloadProductsIfNeeded()
+
+        XCTAssertEqual(service.loadProductsCallCount, 1)
+    }
+
+    // Lets fire-and-forget Task {} blocks under test finish before we assert on them.
+    private func flushPendingTasks() async {
+        for _ in 0..<10 { await Task.yield() }
+    }
 }
 
 private final class MockStoreService: StoreServicing {
     var products: [StoreProduct] = []
+    var loadProductsError: Error?
+    var loadProductsCallCount = 0
     var purchaseResult: Result<StorePurchaseResult, Error> = .success(.success)
     var entitlementProductIDs: [String]
     var syncCallCount = 0
     var syncError: Error?
+    private var transactionContinuation: AsyncStream<String>.Continuation?
 
     init(entitlementProductIDs: [String] = []) {
         self.entitlementProductIDs = entitlementProductIDs
     }
 
     func loadProducts(for productIDs: [String]) async throws -> [StoreProduct] {
-        products
+        loadProductsCallCount += 1
+        if let loadProductsError { throw loadProductsError }
+        return products
     }
 
     func purchase(productID: String) async throws -> StorePurchaseResult {
@@ -104,7 +194,13 @@ private final class MockStoreService: StoreServicing {
     }
 
     func transactionUpdateProductIDs() -> AsyncStream<String> {
-        AsyncStream { $0.finish() }
+        AsyncStream { continuation in
+            transactionContinuation = continuation
+        }
+    }
+
+    func emitTransactionUpdate(productID: String) {
+        transactionContinuation?.yield(productID)
     }
 
     func sync() async throws {
