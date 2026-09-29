@@ -1900,7 +1900,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mantén presionada la zona resaltada para salir de cualquier truco."
+            "value" : "Mantén presionada la zona resaltada para salir de cualquier truco. Puedes desactivar este aviso en Ajustes."
           }
         }
       }
@@ -6832,7 +6832,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Al abrir un truco, aparece una barra en la parte inferior de la pantalla. Mantenla presionada para cerrar el truco. Puedes desactivar este aviso en el ajuste de Salida de arriba."
+            "value" : "Para cerrar un truco, mantén presionada la zona en la parte superior izquierda de la pantalla. Un aviso te muestra dónde está al abrir un truco. Puedes desactivarlo en el ajuste \"Mostrar Consejo de Salida\"."
           }
         }
       }
