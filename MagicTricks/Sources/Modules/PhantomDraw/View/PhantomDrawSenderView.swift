@@ -67,6 +67,7 @@ struct PhantomDrawSenderView: View {
                     Image(systemName: "trash")
                         .foregroundStyle(.black)
                 }
+                .accessibilityLabel(String(localized: "phantomDraw.clearDrawing"))
             }
         }
     }
