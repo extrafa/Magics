@@ -53,7 +53,7 @@ final class SettingsStoreTests: XCTestCase {
         let store = MockSettingsPreferenceStore()
         let settings = SettingsStore(preferences: AppPreferences(store: store))
 
-        settings.hapticSpeedMultiplier = 1.5
+        settings.hapticSpeedMultiplier = 2.2
         settings.isHapticGroupByThreeEnabled = true
         settings.hapticIntensity = .light
         settings.isSecretGestureEnabled = true
