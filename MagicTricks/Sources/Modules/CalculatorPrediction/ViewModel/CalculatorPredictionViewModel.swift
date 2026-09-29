@@ -112,7 +112,7 @@ final class CalculatorPredictionViewModel: ObservableObject {
     private func appendDecimal() {
         let raw = rawDisplay
         guard !raw.hasSuffix("%") else { return }
-        let components = raw.split { Self.operators.contains(String($0)) }
+        let components = raw.split(omittingEmptySubsequences: false) { Self.operators.contains(String($0)) }
         if let last = components.last, !last.contains(decimalSeparator) {
             display = formatExpression(raw + decimalSeparator)
         }
