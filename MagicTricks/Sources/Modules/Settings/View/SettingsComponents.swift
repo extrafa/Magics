@@ -15,7 +15,7 @@ struct SettingsSection<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title.uppercased())
-                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .font(.system(.caption, design: .rounded, weight: .bold))
                 .foregroundStyle(.secondary.opacity(0.85))
 
             VStack(alignment: .leading, spacing: 0) {
@@ -41,7 +41,7 @@ struct SettingsActionRow: View {
                 .frame(width: 24)
 
             Text(title)
-                .font(.system(size: 17, weight: isBold ? .bold : .semibold, design: .rounded))
+                .font(.system(.body, design: .rounded, weight: isBold ? .bold : .semibold))
                 .foregroundStyle(tint ?? .textPrimary)
 
             Spacer()
@@ -128,7 +128,7 @@ struct SettingsStepper: View {
             Spacer()
 
             Text(String(format: format, value))
-                .font(.system(size: 20, weight: .bold, design: .rounded))
+                .font(.system(.title3, design: .rounded, weight: .bold))
                 .foregroundStyle(.textPrimary)
 
             Spacer()

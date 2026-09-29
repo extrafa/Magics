@@ -52,7 +52,7 @@ struct ColorSenseView: View {
             VStack(alignment: .leading, spacing: 10) {
                 Spacer()
                 Text(card.title)
-                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
                     .foregroundStyle(.white.opacity(0.35))
             }
             .padding(16)

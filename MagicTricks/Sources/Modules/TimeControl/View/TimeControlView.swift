@@ -81,7 +81,7 @@ struct TimeControlView: View {
                 .frame(width: 84, height: 84)
 
             Text(title)
-                .font(.system(size: 20, weight: .regular, design: .rounded))
+                .font(.system(.title3, design: .rounded, weight: .regular))
                 .foregroundStyle(titleColor)
         }
     }

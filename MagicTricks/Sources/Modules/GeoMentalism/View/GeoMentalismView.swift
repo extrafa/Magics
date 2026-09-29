@@ -30,7 +30,7 @@ struct GeoMentalismView: View {
                         GeoMentalismCitiesView(city: city, isExitHintVisible: $isExitHintVisible)
                     } label: {
                         Text(city)
-                            .font(.system(size: 17, weight: .medium, design: .rounded))
+                            .font(.system(.body, design: .rounded, weight: .medium))
                             .foregroundStyle(Color.textPrimary)
                             .padding(.vertical, 4)
                     }

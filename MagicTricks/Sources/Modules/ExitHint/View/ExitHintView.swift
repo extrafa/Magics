@@ -109,15 +109,15 @@ struct ExitHintView: View {
 
                         VStack(spacing: 6) {
                             Text(String(localized: "exitHint.holdHere"))
-                                .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                .font(.system(.subheadline, design: .rounded, weight: .semibold))
                             Text(String(localized: "exitHint.exitAnyTrick"))
-                                .font(.system(size: 15, weight: .medium, design: .rounded))
+                                .font(.system(.subheadline, design: .rounded, weight: .medium))
                         }
 
                         Spacer()
 
                         Text(String(localized: "exitHint.tryHold"))
-                            .font(.system(size: 12, weight: .semibold, design: .rounded))
+                            .font(.system(.caption, design: .rounded, weight: .semibold))
                             .opacity(0.9)
                     }
                     .foregroundStyle(style.textColor)

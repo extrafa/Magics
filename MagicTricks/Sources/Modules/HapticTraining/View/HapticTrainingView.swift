@@ -53,7 +53,7 @@ struct HapticTrainingView: View {
                 }
 
                 Text(mode.navigationTitle)
-                    .font(.system(size: 28, weight: .black, design: .rounded))
+                    .font(.system(.title, design: .rounded, weight: .black))
                     .foregroundStyle(Color.textPrimary)
 
                 Text(mode.subtitle)
@@ -86,10 +86,10 @@ struct HapticTrainingView: View {
         HStack(spacing: 20) {
             VStack(spacing: 2) {
                 Text(String(localized: legendKey("zero")))
-                    .font(.system(size: 17, weight: .black, design: .rounded))
+                    .font(.system(.body, design: .rounded, weight: .black))
                     .foregroundStyle(mode.accentColor)
                 Text(String(localized: legendKey("longVibration")))
-                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
                     .foregroundStyle(Color.textPrimary.opacity(0.45))
             }
 
@@ -99,10 +99,10 @@ struct HapticTrainingView: View {
 
             VStack(spacing: 2) {
                 Text(String(localized: legendKey("oneToNine")))
-                    .font(.system(size: 17, weight: .black, design: .rounded))
+                    .font(.system(.body, design: .rounded, weight: .black))
                     .foregroundStyle(mode.accentColor)
                 Text(String(localized: legendKey("thatManyVibrations")))
-                    .font(.system(size: 12, weight: .semibold, design: .rounded))
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
                     .foregroundStyle(Color.textPrimary.opacity(0.45))
             }
         }

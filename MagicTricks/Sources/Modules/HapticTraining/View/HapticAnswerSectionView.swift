@@ -22,7 +22,7 @@ struct HapticAnswerSectionView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 10) {
             Text(String(localized: key("title")))
-                .font(.system(size: 15, weight: .bold, design: .rounded))
+                .font(.system(.subheadline, design: .rounded, weight: .bold))
                 .foregroundStyle(Color.textSecondary)
 
             // Keyboard appears after the signal plays; direct taps are blocked until then.
@@ -45,7 +45,7 @@ struct HapticAnswerSectionView: View {
                 }
 
             Text(resultLabel)
-                .font(.system(size: 15, weight: .bold, design: .rounded))
+                .font(.system(.subheadline, design: .rounded, weight: .bold))
                 .foregroundStyle(resultColor)
                 .frame(maxWidth: .infinity, minHeight: 20, alignment: .center)
         }
