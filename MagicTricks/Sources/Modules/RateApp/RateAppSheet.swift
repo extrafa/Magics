@@ -169,11 +169,9 @@ private struct RateAppPresentationModifier: ViewModifier {
                 .presentationDetents([.height(300)])
                 .presentationBackground(Color.backgroundScreen)
                 .presentationCornerRadius(28)
-        } else if #available(iOS 16, *) {
-            content
-                .presentationDetents([.height(300)])
         } else {
             content
+                .presentationDetents([.height(300)])
         }
     }
 }
