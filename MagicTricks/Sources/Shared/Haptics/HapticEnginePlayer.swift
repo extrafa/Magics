@@ -66,7 +66,9 @@ final class HapticEnginePlayer {
 
         do {
             let engine = try CHHapticEngine()
-            engine.stoppedHandler = { [weak self] _ in
+            engine.stoppedHandler = { [weak self] reason in
+                // .idleTimeout is autoShutdown's normal sleep - the engine restarts cheaply, don't discard and rebuild it.
+                guard reason != .idleTimeout else { return }
                 Task { @MainActor in
                     self?.engine = nil
                 }

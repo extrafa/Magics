@@ -14,6 +14,7 @@ struct MagicTricksApp: App {
     @StateObject private var settingsStore = SettingsStore()
     @StateObject private var storeManager: StoreManager
     @State private var showOnboarding = !AppPreferences.shared.hasCompletedOnboarding
+    @Environment(\.scenePhase) private var scenePhase
 
     init() {
         let storeManager = StoreManager()
@@ -39,6 +40,9 @@ struct MagicTricksApp: App {
                 }
             }
             .task { storeManager.start() }
+            .onChange(of: scenePhase) { newPhase in
+                HapticManager.shared.handleScenePhase(newPhase)
+            }
         }
     }
 }
