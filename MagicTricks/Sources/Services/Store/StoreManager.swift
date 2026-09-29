@@ -51,6 +51,7 @@ final class StoreManager: ObservableObject {
 
     private var startupTask: Task<Void, Never>?
     private var listenerTask: Task<Void, Never>?
+    private var loadProductsTask: Task<Void, Never>?
     private var hasStarted = false
 
     init(
@@ -155,7 +156,23 @@ final class StoreManager: ObservableObject {
 
     // MARK: Private
 
+    // Joins an in-flight load instead of starting a duplicate - start(), reloadProductsIfNeeded(),
+    // and retryLoadProducts() can all reach here around the same time.
     private func loadProducts() async {
+        if let loadProductsTask {
+            await loadProductsTask.value
+            return
+        }
+        let task = Task { [weak self] in
+            guard let self else { return }
+            await self.performLoadProducts()
+        }
+        loadProductsTask = task
+        await task.value
+        loadProductsTask = nil
+    }
+
+    private func performLoadProducts() async {
         phase = .loadingProducts
         defer { phase = .idle }
         do {
