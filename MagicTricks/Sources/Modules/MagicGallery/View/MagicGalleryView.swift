@@ -41,6 +41,7 @@ struct MagicGalleryView: View {
                 Button { dismiss() } label: {
                     Image(systemName: "xmark")
                 }
+                .accessibilityLabel(String(localized: "common.close"))
             }
         }
         .confirmationDialog("", isPresented: $showSourceDialog) {

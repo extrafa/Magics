@@ -46,6 +46,8 @@ struct MagicGallerySlotCard: View {
             .onTapGesture {
                 onTap?()
             }
+            .accessibilityElement(children: onTap != nil ? .combine : .contain)
+            .accessibilityAddTraits(onTap != nil ? .isButton : [])
 
             if let photo, photo.isCustom {
                 deleteButton
