@@ -10,6 +10,7 @@ import SwiftUI
 struct ProUpgradeButton: View {
     let action: () -> Void
     @State private var shimmer = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         Button(action: action) {
@@ -58,6 +59,7 @@ struct ProUpgradeButton: View {
     }
 
     private func shimmerLoop() async {
+        guard !reduceMotion else { return }
         while !Task.isCancelled {
             try? await Task.sleep(seconds: 2.5)
             withAnimation(.easeInOut(duration: 0.75)) { shimmer = true }
