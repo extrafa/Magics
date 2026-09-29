@@ -38,7 +38,7 @@ struct TimeControlView: View {
             }
         }
         .exitHint(style: .specialWhite)
-        .keepsScreenAwake(while: viewModel.isRunning)
+        .keepsScreenAwake(while: viewModel.isRunning || viewModel.isTransmitting)
         .onChange(of: scenePhase) { newPhase in
             guard newPhase == .active else { return }
             viewModel.handleSceneBecameActive()
