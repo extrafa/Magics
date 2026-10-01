@@ -153,6 +153,7 @@
 		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
 		0AML00000000000000000042 /* AppFlowCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */; };
 		0AML00000000000000000050 /* CalculatorPredictionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */; };
+		0AML00000000000000000052 /* PhantomDrawViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */; };
 		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -317,6 +318,7 @@
 		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinatorTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModelTests.swift; sourceTree = "<group>"; };
+		0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawViewModelTests.swift; sourceTree = "<group>"; };
 		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
 		E718EB3DEAA25219A8279ECA /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		905BBBF565F9E4E4297D5225 /* Local.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig.example; sourceTree = "<group>"; };
@@ -963,6 +965,7 @@
 				92A0000273CB6047599A017B /* RateAppViewModelTests.swift */,
 				0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */,
 				0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */,
+				0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1316,6 +1319,7 @@
 				92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */,
 				0AML00000000000000000042 /* AppFlowCoordinatorTests.swift in Sources */,
 				0AML00000000000000000050 /* CalculatorPredictionViewModelTests.swift in Sources */,
+				0AML00000000000000000052 /* PhantomDrawViewModelTests.swift in Sources */,
 				92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
