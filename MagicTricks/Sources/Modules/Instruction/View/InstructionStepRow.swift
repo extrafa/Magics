@@ -51,6 +51,8 @@ struct InstructionStepRow: View {
                         Image(imageName)
                             .resizable()
                             .scaledToFill()
+                            // The title/description right above already say what this step shows.
+                            .accessibilityHidden(true)
                     }
                     .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
                     .overlay {
