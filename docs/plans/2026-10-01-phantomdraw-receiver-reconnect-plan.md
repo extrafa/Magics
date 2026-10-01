@@ -39,50 +39,59 @@
 
 ## Чанки
 
-### Чанк 1 — Тестируемость: абстракция над соединением + инъекция таймера
+Пересмотрено после одобрения: полноценная протокол-абстракция над
+`NWConnection` не нужна и рискованнее, чем надо — она бы затронула
+весь сетевой код файла (`send`, `receiveLoop`, `raceConnections`,
+`activateIncomingConnection`). Вместо этого новая логика (что делать при
+потере активного соединения и при срабатывании тайм-аута реконнекта)
+выносится в два маленьких метода без параметра `NWConnection` вообще —
+они тестируются напрямую, а сетевой код, который их вызывает, не трогается.
+
+### Чанк 1 — Инъекция таймера + извлечение тестируемой логики
 
 Без изменения поведения, только рефакторинг:
 
-- `protocol PhantomDrawConnectable: AnyObject { var endpoint: NWEndpoint { get }; func cancel() }`,
-  `NWConnection` соответствует ему через extension.
-- `connection: NWConnection?` → `connection: (any PhantomDrawConnectable)?`,
-  `candidateConnections: [NWConnection]` → `[any PhantomDrawConnectable]`.
-- `handleCandidateState(_ state: NWConnection.State, for conn: NWConnection)`
-  → параметр `conn: any PhantomDrawConnectable`, убрать `private` (нужен
-  доступ из тестов через `@testable import`).
 - Добавить `scheduler: DelayedActionScheduling` параметром `init`
-  (дефолт `DispatchQueueScheduler()`), сохранить как `private let`.
+  (дефолт `DispatchQueueScheduler()`), сохранить как `private let`; добавить
+  явный `init`, раз у класса появляется параметр (сейчас используется
+  неявный `init()`).
+- Вынести `handleActiveConnectionLost()` (без `private`, чтобы быть
+  доступным из тестов через `@testable import`) — пока с тем же
+  поведением, что и сейчас (`connection = nil; connectionState = .idle`),
+  вызывается из ветки `.failed`/`.cancelled` вместо инлайна.
 - Билд зелёный, существующее поведение не меняется.
 
 ### Чанк 2 — Поведение переподключения
 
-- В ветке `.failed`/`.cancelled` для уже активного соединения (сейчас:
-  `connection = nil; connectionState = .idle; return`) — заменить на:
-  `connection = nil`, `isReconnecting = true`, перезапуск
-  `startBrowsing(code: receiverCode)`, планирование тайм-аута через
-  `scheduler.schedule(after: Self.reconnectTimeout) { ... }`.
-- В замыкании тайм-аута — проверять, не восстановилась ли уже связь
-  (`isReconnecting` всё ещё `true` и `connection == nil`) перед тем как
-  переводить `connectionState` в `.failed`; если уже подключились —
-  ничего не делать (без отдельного механизма отмены).
+- `handleActiveConnectionLost()`: вместо `connectionState = .idle` —
+  `isReconnecting = true`, перезапуск `startBrowsing(code: receiverCode)`,
+  планирование тайм-аута через `scheduleReconnectTimeout()`.
+- `scheduleReconnectTimeout()` (`private`) — через `scheduler.schedule(after: Self.reconnectTimeout) { ... }`;
+  в замыкании проверять `isReconnecting` перед переводом в `.failed` — если
+  уже `false` (значит переподключились), ничего не делать. Отдельного
+  механизма отмены не нужно.
 - В ветке `.ready` (успешное переподключение) — `isReconnecting = false`
-  уже обрабатывается существующим кодом, достаточно, чтобы замыкание
-  тайм-аута само себя отключало через проверку состояния.
+  уже обрабатывается существующим кодом.
 - Тайм-аут: 15 секунд (между существующими 10 сек на отдельное TCP-соединение
   и достаточно, чтобы пережить случайный обрыв, не превращаясь в вечное
   ожидание).
 
 ### Чанк 3 — Тесты
 
-- `MockPhantomDrawConnection: PhantomDrawConnectable` и приватный
-  `FakeScheduler: DelayedActionScheduling` (хранит незапущенные действия,
-  тест запускает их вручную) в `PhantomDrawSessionManagerTests.swift`.
-- Тесты:
-  - обрыв активного соединения → `isReconnecting == true`,
-    `connectionState` остался `.connected`, браузер перезапущен;
-  - успешное переподключение до тайм-аута → `isReconnecting == false`,
-    `connectionState == .connected` с новым peer;
-  - тайм-аут истёк, переподключения не было → `connectionState == .failed`.
+- Приватный `FakeScheduler: DelayedActionScheduling` в
+  `PhantomDrawSessionManagerTests.swift` — хранит последнее запланированное
+  действие, тест запускает его вручную через `fire()`.
+- Тесты (вызывают `handleActiveConnectionLost()` напрямую, без реального
+  `NWConnection`):
+  - потеря активного соединения → `isReconnecting == true`,
+    `connectionState` не стал `.idle`/`.failed`;
+  - тайм-аут сработал, пока всё ещё `isReconnecting` → `connectionState == .failed`,
+    `isReconnecting == false`;
+  - тайм-аут сработал, но `isReconnecting` уже `false` (успели
+    переподключиться раньше) → `connectionState` не тронут.
+- Проверку "браузер реально перезапустился" автотестом не покрываем —
+  это потребовало бы реального `NWBrowser` в тесте; оставляем ручной
+  проверке в чанке 4.
 
 ### Чанк 4 — Ручная проверка
 
