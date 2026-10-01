@@ -4,6 +4,7 @@
 //
 
 import XCTest
+import UIKit
 @testable import MagicTricks
 
 final class InstructionModelsTests: XCTestCase {
@@ -20,5 +21,21 @@ final class InstructionModelsTests: XCTestCase {
         let step = InstructionStep(title: "Step 1", description: "Do the thing", phase: .preparation)
 
         XCTAssertEqual(step.id, "Step 1")
+    }
+
+    func test_allInstructionSteps_imageNamesExistInAssetCatalog() {
+        let instructions: [Instruction] = [
+            .calculatorPrediction, .colorSense, .geoMentalism,
+            .magicGallery, .phantomDraw, .timeControl
+        ]
+        for instruction in instructions {
+            for step in instruction.steps {
+                guard let imageName = step.imageName else { continue }
+                XCTAssertNotNil(
+                    UIImage(named: imageName),
+                    "\(instruction.trickType) step \"\(step.title)\" references missing asset \"\(imageName)\""
+                )
+            }
+        }
     }
 }
