@@ -25,6 +25,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     private static let bonjourType = "_phantomdraw._tcp"
     private static let pskIdentity = "PhantomDraw"
     private static let connectionTimeout: TimeInterval = 10
+    private static let reconnectTimeout: TimeInterval = 15
 
     // Peer-sent strokes are untrusted network input.
     nonisolated static let maxStrokes = 500
@@ -50,6 +51,11 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     private var waitingTimeoutWorkItem: DispatchWorkItem?
     private var candidateConnections: [NWConnection] = []
     private var candidateTimeouts: [ObjectIdentifier: DispatchWorkItem] = [:]
+    private let scheduler: DelayedActionScheduling
+
+    init(scheduler: DelayedActionScheduling = DispatchQueueScheduler()) {
+        self.scheduler = scheduler
+    }
 
     // MARK: - Public API
 
@@ -170,20 +176,46 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         case .failed, .cancelled:
             cancelCandidateTimeout(for: conn)
             if connection === conn {
-                // Already connected then dropped - back to role selection instead of re-searching forever (no "found nothing" timeout).
-                connection = nil
-                connectionState = .idle
+                handleActiveConnectionLost()
                 return
             }
             // A stale callback from a candidate teardown() already cancelled and dropped - ignore it.
             guard candidateConnections.contains(where: { $0 === conn }) else { return }
             candidateConnections.removeAll { $0 === conn }
             guard connection == nil, candidateConnections.isEmpty else { return }
-            connectionState = .searching
+            // Mid-reconnect, a failed candidate just means "keep trying" - connectionState
+            // stays .connected (with the badge) until the reconnect timeout gives up.
+            if !isReconnecting {
+                connectionState = .searching
+            }
             if let receiverCode { startBrowsing(code: receiverCode) }
 
         default:
             break
+        }
+    }
+
+    // A dropped active connection retries instead of bouncing straight back to role selection -
+    // a brief Wi-Fi blip shouldn't lose the trick's progress. Not private: driven directly in tests.
+    func handleActiveConnectionLost() {
+        connection = nil
+        isReconnecting = true
+        if let receiverCode { startBrowsing(code: receiverCode) }
+        scheduleReconnectTimeout()
+    }
+
+    private func scheduleReconnectTimeout() {
+        scheduler.schedule(after: Self.reconnectTimeout) { [weak self] in
+            guard let self, self.isReconnecting else { return }
+            self.isReconnecting = false
+            // Give up the search entirely instead of leaving a browser/candidates running in the background.
+            self.browser?.cancel()
+            self.browser = nil
+            self.candidateConnections.forEach { $0.cancel() }
+            self.candidateConnections = []
+            self.candidateTimeouts.values.forEach { $0.cancel() }
+            self.candidateTimeouts.removeAll()
+            self.connectionState = .failed
         }
     }
 
