@@ -28,6 +28,9 @@ final class PhantomDrawViewModel: ObservableObject {
         session.onNewConnection = { [weak self] in
             guard let self, self.role == .sender else { return }
             self.session.send(.sync(self.completedStrokes))
+            if let ratio = self.canvasAspectRatio {
+                self.session.send(.canvasAspectRatio(ratio))
+            }
         }
     }
 
@@ -45,8 +48,13 @@ final class PhantomDrawViewModel: ObservableObject {
 
     func setCanvasSize(_ size: CGSize) {
         canvasSize = size
-        guard size.height > 0 else { return }
-        session.send(.canvasAspectRatio(size.width / size.height))
+        guard let ratio = canvasAspectRatio else { return }
+        session.send(.canvasAspectRatio(ratio))
+    }
+
+    private var canvasAspectRatio: Double? {
+        guard canvasSize.height > 0 else { return nil }
+        return canvasSize.width / canvasSize.height
     }
 
     func addPoint(_ point: CGPoint) {
