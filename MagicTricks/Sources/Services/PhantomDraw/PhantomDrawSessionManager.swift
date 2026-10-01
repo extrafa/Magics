@@ -183,7 +183,11 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
             guard candidateConnections.contains(where: { $0 === conn }) else { return }
             candidateConnections.removeAll { $0 === conn }
             guard connection == nil, candidateConnections.isEmpty else { return }
-            connectionState = .searching
+            // Mid-reconnect, a failed candidate just means "keep trying" - connectionState
+            // stays .connected (with the badge) until the reconnect timeout gives up.
+            if !isReconnecting {
+                connectionState = .searching
+            }
             if let receiverCode { startBrowsing(code: receiverCode) }
 
         default:
@@ -204,6 +208,13 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         scheduler.schedule(after: Self.reconnectTimeout) { [weak self] in
             guard let self, self.isReconnecting else { return }
             self.isReconnecting = false
+            // Give up the search entirely instead of leaving a browser/candidates running in the background.
+            self.browser?.cancel()
+            self.browser = nil
+            self.candidateConnections.forEach { $0.cancel() }
+            self.candidateConnections = []
+            self.candidateTimeouts.values.forEach { $0.cancel() }
+            self.candidateTimeouts.removeAll()
             self.connectionState = .failed
         }
     }
