@@ -151,14 +151,15 @@ final class MagicGalleryViewModel: ObservableObject {
         activeCaptureSession = nil
     }
 
-    func handleCapturedImage(_ image: UIImage, for number: Int) {
+    @discardableResult
+    func handleCapturedImage(_ image: UIImage, for number: Int) -> Task<Void, Never> {
         let takenNumbers = Set(customPhotos.map(\.number)).union([number])
         let nextNumber = firstAvailableNumber(excluding: takenNumbers)
 
         captureFlow.completeCapture(nextAvailableNumber: nextNumber)
         activeCaptureSession = nil
 
-        Task {
+        return Task {
             do {
                 let photo = try await photoLibrary.saveCustomPhoto(image, for: number)
                 upsert(photo)
@@ -168,11 +169,12 @@ final class MagicGalleryViewModel: ObservableObject {
         }
     }
 
-    func deletePhoto(_ photo: MagicGalleryPhoto) {
-        guard photo.isCustom else { return }
+    @discardableResult
+    func deletePhoto(_ photo: MagicGalleryPhoto) -> Task<Void, Never> {
+        guard photo.isCustom else { return Task {} }
         removeCustomPhoto(number: photo.number)
 
-        Task {
+        return Task {
             do {
                 try await photoLibrary.deleteCustomPhoto(photo)
             } catch {

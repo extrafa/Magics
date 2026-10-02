@@ -84,7 +84,7 @@ struct MagicGalleryView: View {
         MagicGallerySlotGrid(
             photos: vm.photosByNumber,
             onSlotTap: vm.handleSlotTap,
-            onDelete: vm.deletePhoto
+            onDelete: { vm.deletePhoto($0) }
         )
     }
 

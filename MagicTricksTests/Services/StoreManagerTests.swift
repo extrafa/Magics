@@ -154,12 +154,12 @@ final class StoreManagerTests: XCTestCase {
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
         manager.start()
-        await flushPendingTasks()
+        await waitUntil { service.isListeningForTransactions }
         XCTAssertFalse(manager.hasProAccess)
 
         service.entitlementProductIDs = ["magic_lifetime"]
         service.emitTransactionUpdate(productID: "magic_lifetime")
-        await flushPendingTasks()
+        await waitUntil { manager.hasProAccess }
 
         XCTAssertTrue(manager.hasProAccess)
     }
@@ -198,9 +198,21 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertEqual(service.loadProductsCallCount, 1)
     }
 
-    // Lets fire-and-forget Task {} blocks under test finish before we assert on them.
-    private func flushPendingTasks() async {
-        for _ in 0..<10 { await Task.yield() }
+    // Waits for a state change driven by a fire-and-forget Task inside StoreManager, failing on timeout.
+    private func waitUntil(
+        timeout: TimeInterval = 2,
+        file: StaticString = #filePath,
+        line: UInt = #line,
+        _ condition: () -> Bool
+    ) async {
+        let deadline = Date().addingTimeInterval(timeout)
+        while !condition() {
+            guard Date() < deadline else {
+                XCTFail("Timed out waiting for condition", file: file, line: line)
+                return
+            }
+            try? await Task.sleep(nanoseconds: 1_000_000)
+        }
     }
 }
 
@@ -240,6 +252,8 @@ private final class MockStoreService: StoreServicing {
             transactionContinuation = continuation
         }
     }
+
+    var isListeningForTransactions: Bool { transactionContinuation != nil }
 
     func emitTransactionUpdate(productID: String) {
         transactionContinuation?.yield(productID)
