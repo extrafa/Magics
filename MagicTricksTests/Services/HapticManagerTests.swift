@@ -45,6 +45,48 @@ final class HapticManagerTests: XCTestCase {
         XCTAssertEqual(engine.playEventsCount, 1)
         XCTAssertTrue(didRunFallback)
     }
+
+    func test_playGroupedCountSignal_callsCompletionOnceAfterLastPulse() {
+        let scheduler = MockHapticScheduler()
+        let manager = HapticManager(enginePlayer: MockHapticEnginePlayer(), scheduler: scheduler)
+        var completionCount = 0
+
+        manager.playGroupedCountSignal(
+            7,
+            initialDelay: 0.5,
+            generator: UIImpactFeedbackGenerator(),
+            timings: HapticTimings(preferences: MockHapticPreferences()),
+            completion: { completionCount += 1 }
+        )
+
+        XCTAssertEqual(completionCount, 1)
+        XCTAssertEqual(scheduler.scheduledDelays.count, 1)
+        XCTAssertEqual(scheduler.scheduledDelays[0], 0.5 + 1.66, accuracy: 0.0001)
+    }
+
+    func test_playGroupedCountSignal_whenEngineFallsBack_stillCallsCompletionOnce() {
+        let engine = MockHapticEnginePlayer()
+        engine.shouldRunFallback = true
+        let manager = HapticManager(enginePlayer: engine, scheduler: MockHapticScheduler())
+        var completionCount = 0
+
+        manager.playGroupedCountSignal(
+            7,
+            generator: UIImpactFeedbackGenerator(),
+            timings: HapticTimings(preferences: MockHapticPreferences()),
+            completion: { completionCount += 1 }
+        )
+
+        XCTAssertEqual(completionCount, 1)
+    }
+}
+
+private struct MockHapticPreferences: HapticPreferenceManaging {
+    var hapticSpeedMultiplier = 1.0
+    var isHapticGroupByThreeEnabled = true
+    var hapticIntensity: HapticIntensity = .heavy
+
+    func resetHapticSettings() {}
 }
 
 @MainActor
@@ -72,7 +114,10 @@ private final class MockHapticEnginePlayer: HapticEnginePlaying {
 
 @MainActor
 private final class MockHapticScheduler: HapticScheduling {
+    var scheduledDelays: [TimeInterval] = []
+
     func schedule(after delay: TimeInterval, action: @escaping () -> Void) {
+        scheduledDelays.append(delay)
         action()
     }
 
