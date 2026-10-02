@@ -4,6 +4,7 @@ protocol PreferenceStoring {
     func object(forKey defaultName: String) -> Any?
     func bool(forKey defaultName: String) -> Bool
     func double(forKey defaultName: String) -> Double
+    func integer(forKey defaultName: String) -> Int
     func stringArray(forKey defaultName: String) -> [String]?
     func set(_ value: Any?, forKey defaultName: String)
 }
@@ -80,7 +81,7 @@ struct AppPreferences: AppPreferencesProviding {
     // Runs once per store (gated by SchemaVersion.current) so renaming a key here doesn't
     // silently reset it to its default for people who already have the old key set.
     func migrateIfNeeded() {
-        guard Int(store.double(forKey: Key.preferencesSchemaVersion)) < SchemaVersion.current else { return }
+        guard store.integer(forKey: Key.preferencesSchemaVersion) < SchemaVersion.current else { return }
 
         if store.object(forKey: LegacyKey.usesStandardMagicGallerySet) != nil {
             store.set(
@@ -89,7 +90,7 @@ struct AppPreferences: AppPreferencesProviding {
             )
         }
 
-        store.set(Double(SchemaVersion.current), forKey: Key.preferencesSchemaVersion)
+        store.set(SchemaVersion.current, forKey: Key.preferencesSchemaVersion)
     }
 
     enum Key {
@@ -213,8 +214,8 @@ struct AppPreferences: AppPreferencesProviding {
     }
 
     var trickLaunchCount: Int {
-        get { Int(store.double(forKey: Key.trickLaunchCount)) }
-        nonmutating set { store.set(Double(newValue), forKey: Key.trickLaunchCount) }
+        get { store.integer(forKey: Key.trickLaunchCount) }
+        nonmutating set { store.set(newValue, forKey: Key.trickLaunchCount) }
     }
 
     var hasRespondedToRating: Bool {
@@ -245,9 +246,9 @@ struct AppPreferences: AppPreferencesProviding {
     var magicGalleryGestureMode: MagicGalleryGestureMode {
         get {
             guard store.object(forKey: Key.magicGalleryGestureMode) != nil else { return Default.magicGalleryGestureMode }
-            return MagicGalleryGestureMode(rawValue: Int(store.double(forKey: Key.magicGalleryGestureMode))) ?? Default.magicGalleryGestureMode
+            return MagicGalleryGestureMode(rawValue: store.integer(forKey: Key.magicGalleryGestureMode)) ?? Default.magicGalleryGestureMode
         }
-        nonmutating set { store.set(Double(newValue.rawValue), forKey: Key.magicGalleryGestureMode) }
+        nonmutating set { store.set(newValue.rawValue, forKey: Key.magicGalleryGestureMode) }
     }
 
     func resetHapticSettings() {
