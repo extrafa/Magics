@@ -34,13 +34,15 @@ struct OnboardingPaywallScreen: View {
     // Derived from TrickCollection so a new Pro trick can't be left off the paywall by accident.
     private let benefits: [Benefit] = TrickCollection.tricks
         .filter { $0.id.requiresPro }
-        .map { trick in
-            Benefit(
-                icon: trick.image.rawValue,
-                color: trick.id.collectionColor,
-                title: String(localized: trick.title),
-                detail: String.paywall("benefit.\(trick.id.rawValue).detail")
-            )
+        .compactMap { trick in
+            trick.id.paywallDetail.map { detail in
+                Benefit(
+                    icon: trick.image.rawValue,
+                    color: trick.id.collectionColor,
+                    title: String(localized: trick.title),
+                    detail: detail
+                )
+            }
         }
         + [
             Benefit(
@@ -313,6 +315,20 @@ struct OnboardingPaywallScreen: View {
 private extension String {
     static func paywall(_ key: String) -> String {
         NSLocalizedString("onboarding.paywall.\(key)", comment: "")
+    }
+}
+
+private extension TrickType {
+    // Exhaustive on purpose: a new trick won't compile until it decides what the paywall says about it.
+    var paywallDetail: String? {
+        switch self {
+        case .geoMentalism: nil
+        case .colorSense: String.paywall("benefit.colorSense.detail")
+        case .calculatorPrediction: String.paywall("benefit.calculatorPrediction.detail")
+        case .timeControl: String.paywall("benefit.timeControl.detail")
+        case .magicGallery: String.paywall("benefit.magicGallery.detail")
+        case .phantomDraw: String.paywall("benefit.phantomDraw.detail")
+        }
     }
 }
 
