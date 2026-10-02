@@ -44,9 +44,10 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     func loadCustomPhotos() async throws -> [MagicGalleryPhoto] {
         try ensureStorageDirectoryExists()
         let directoryURL = try storageDirectoryURL()
+        let fileManager = fileManager
 
         return try await Task.detached(priority: .userInitiated) {
-            let fileURLs = try FileManager.default.contentsOfDirectory(
+            let fileURLs = try fileManager.contentsOfDirectory(
                 at: directoryURL,
                 includingPropertiesForKeys: nil,
                 options: [.skipsHiddenFiles]
@@ -99,8 +100,9 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     func deleteCustomPhoto(_ photo: MagicGalleryPhoto) async throws {
         guard photo.isCustom else { return }
         let url = try storageDirectoryURL().appendingPathComponent(photo.fileName)
+        let fileManager = fileManager
         try await Task.detached(priority: .utility) {
-            try FileManager.default.removeItem(at: url)
+            try fileManager.removeItem(at: url)
         }.value
     }
 
