@@ -8,8 +8,6 @@
 import Foundation
 
 private let goalKey = L10nDomain("onboarding.goal")
-private let painKey = L10nDomain("onboarding.pain")
-private let solutionKey = L10nDomain("onboarding.solution")
 
 enum OnboardingStep: Int, CaseIterable {
     case welcome, goal, noProps, instructions, vibrations, processing, paywall
@@ -59,43 +57,5 @@ extension Set where Element == OnboardingGoal {
     // Combinable goals in this set, in fixed display order - for building a dynamic catalog key or fragment list.
     var orderedCombinableGoals: [OnboardingGoal] {
         OnboardingGoal.combinable.filter(contains)
-    }
-}
-
-enum OnboardingPainPoint: CaseIterable, Identifiable, Hashable {
-    case tooHard, needsProps, forgetUnderPressure, scaredOfBeingCaught, noTricksForMe, noTime
-    var id: Self { self }
-
-    var emoji: String {
-        switch self {
-        case .tooHard: "😰"
-        case .needsProps: "🃏"
-        case .forgetUnderPressure: "🧠"
-        case .scaredOfBeingCaught: "😬"
-        case .noTricksForMe: "🤷"
-        case .noTime: "⏱"
-        }
-    }
-
-    var localizedTitle: String {
-        switch self {
-        case .tooHard: String(localized: painKey("tooHard"))
-        case .needsProps: String(localized: painKey("needsProps"))
-        case .forgetUnderPressure: String(localized: painKey("forgetUnderPressure"))
-        case .scaredOfBeingCaught: String(localized: painKey("scaredOfBeingCaught"))
-        case .noTricksForMe: String(localized: painKey("noTricksForMe"))
-        case .noTime: String(localized: painKey("noTime"))
-        }
-    }
-
-    var localizedSolution: String {
-        switch self {
-        case .tooHard: String(localized: solutionKey("tooHard"))
-        case .needsProps: String(localized: solutionKey("needsProps"))
-        case .forgetUnderPressure: String(localized: solutionKey("forgetUnderPressure"))
-        case .scaredOfBeingCaught: String(localized: solutionKey("scaredOfBeingCaught"))
-        case .noTricksForMe: String(localized: solutionKey("noTricksForMe"))
-        case .noTime: String(localized: solutionKey("noTime"))
-        }
     }
 }
