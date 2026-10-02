@@ -14,8 +14,8 @@ struct InstructionPhaseLegend: View {
 
     var body: some View {
         HStack(spacing: 18) {
-            legendItem(color: .blue, title: String(localized: key("preparation")))
-            legendItem(color: .green, title: String(localized: key("demonstration")))
+            legendItem(color: InstructionPhase.preparation.color, title: String(localized: key("preparation")))
+            legendItem(color: InstructionPhase.demonstration.color, title: String(localized: key("demonstration")))
         }
         .frame(maxWidth: .infinity, alignment: .leading)
     }
