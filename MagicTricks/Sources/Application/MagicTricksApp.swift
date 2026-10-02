@@ -30,6 +30,8 @@ struct MagicTricksApp: App {
                     .environmentObject(flow)
                     .environmentObject(settingsStore)
                     .environmentObject(storeManager)
+                    // Onboarding is stacked on top; without this VoiceOver still reads the cards underneath.
+                    .accessibilityHidden(showOnboarding)
 
                 if showOnboarding {
                     OnboardingFlowView {
