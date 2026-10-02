@@ -7537,6 +7537,40 @@
           }
         }
       }
+    },
+    "onboarding.paywall.info.alreadyPro" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You already have Pro."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Ya tienes Pro."
+          }
+        }
+      }
+    },
+    "onboarding.paywall.info.alreadyPro.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro is active"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro activo"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

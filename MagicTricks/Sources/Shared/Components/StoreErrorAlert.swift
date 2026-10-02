@@ -8,7 +8,7 @@ import SwiftUI
 extension View {
     func storeErrorAlert(_ store: StoreManager) -> some View {
         alert(
-            String(localized: "common.error"),
+            store.alertTitle,
             isPresented: Binding(
                 get: { store.alertMessage != nil },
                 set: { if !$0 { store.alertMessage = nil } }

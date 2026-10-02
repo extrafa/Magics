@@ -27,6 +27,29 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertFalse(manager.hasProAccess)
     }
 
+    func test_restore_whenAlreadyHasStoreAccess_showsAlreadyProAndSkipsSync() async {
+        let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+        await manager.restore()
+        XCTAssertNil(manager.alertMessage)
+
+        await manager.restore()
+
+        XCTAssertNotNil(manager.alertMessage)
+        XCTAssertNotEqual(manager.alertTitle, String(localized: "common.error"))
+        XCTAssertEqual(service.syncCallCount, 0)
+    }
+
+    func test_restore_withProOverrideOnAndNoStoreAccess_stillCallsSync() async {
+        let service = MockStoreService()
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+        manager.isProOverride = true
+
+        await manager.restore()
+
+        XCTAssertEqual(service.syncCallCount, 1)
+    }
+
     func test_purchase_whenUserCancelled_doesNotGrantAccess() async {
         let service = MockStoreService()
         service.purchaseResult = .success(.userCancelled)
@@ -44,6 +67,15 @@ final class StoreManagerTests: XCTestCase {
         await manager.restore()
 
         XCTAssertEqual(service.syncCallCount, 1)
+    }
+
+    func test_restore_withProOverrideOnAndNothingToRestore_showsNoPurchasesAlert() async {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore())
+        manager.isProOverride = true
+
+        await manager.restore()
+
+        XCTAssertNotNil(manager.alertMessage)
     }
 
     func test_hasProAccess_isTrueWhenDevOverrideIsSetEvenWithoutStoreAccess() async {
@@ -65,6 +97,7 @@ final class StoreManagerTests: XCTestCase {
 
         XCTAssertFalse(manager.hasProAccess)
         XCTAssertNotNil(manager.alertMessage)
+        XCTAssertEqual(manager.alertTitle, String(localized: "common.error"))
     }
 
     func test_isProOverride_writesThroughInjectedDefaultsNotUserDefaultsStandard() {
