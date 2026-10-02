@@ -176,6 +176,10 @@ final class MagicGalleryViewModel: ObservableObject {
             do {
                 try await photoLibrary.deleteCustomPhoto(photo)
             } catch {
+                // The file is still on disk, so put the photo back; skip if the slot was refilled meanwhile.
+                if !customPhotos.contains(where: { $0.number == photo.number }) {
+                    upsert(photo)
+                }
                 alertMessage = String(localized: key("deletePhotoFailed"))
             }
         }

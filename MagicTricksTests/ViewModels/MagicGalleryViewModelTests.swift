@@ -92,8 +92,7 @@ final class MagicGalleryViewModelTests: XCTestCase {
         XCTAssertEqual(library.deletedNumbers, [2])
     }
 
-    func test_deletePhoto_whenStorageDeleteFails_stillRemovesLocallyAndShowsAlert() async {
-        // deletePhoto removes locally right away and doesn't roll back on failure.
+    func test_deletePhoto_whenStorageDeleteFails_restoresPhotoAndShowsAlert() async {
         let photo = MagicGalleryPhoto(number: 2, image: Self.image(), fileName: "2.jpg", source: .custom)
         let library = MockMagicGalleryPhotoLibrary(storedPhotos: [photo])
         library.shouldFailDelete = true
@@ -104,6 +103,7 @@ final class MagicGalleryViewModelTests: XCTestCase {
         await flushPendingTasks()
 
         XCTAssertEqual(library.deletedNumbers, [2])
+        XCTAssertEqual(viewModel.customPhotos.map(\.number), [2])
         XCTAssertEqual(viewModel.alertMessage, String(localized: "magicGallery.error.deletePhotoFailed"))
     }
 
