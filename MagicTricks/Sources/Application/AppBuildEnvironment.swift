@@ -8,11 +8,12 @@
 import Foundation
 
 enum AppBuildEnvironment {
-    static let isSandboxOrDebug: Bool = {
-        #if DEBUG
+    // Not a receipt check: App Review builds carry a sandbox receipt too and would see tester-only toggles.
+    static let isInternalBuild: Bool = {
+        #if DEBUG || BETA
         true
         #else
-        Bundle.main.appStoreReceiptURL?.path.contains("sandboxReceipt") ?? false
+        false
         #endif
     }()
 }

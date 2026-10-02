@@ -67,7 +67,7 @@ final class StoreManager: ObservableObject {
     }
 
     private static func sandboxGatedFlag(forKey key: String, defaults: PreferenceStoring) -> Bool {
-        guard AppBuildEnvironment.isSandboxOrDebug else {
+        guard AppBuildEnvironment.isInternalBuild else {
             if defaults.bool(forKey: key) {
                 // Property observers don't fire during init, so this write is explicit.
                 defaults.set(false, forKey: key)

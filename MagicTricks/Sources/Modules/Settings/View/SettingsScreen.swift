@@ -50,7 +50,7 @@ struct SettingsScreen: View {
 private extension SettingsScreen {
 
     var showsTestFlightSection: Bool {
-        AppBuildEnvironment.isSandboxOrDebug
+        AppBuildEnvironment.isInternalBuild
     }
 
     var testFlightSection: some View {
