@@ -16,6 +16,11 @@ enum StorePurchaseResult: Equatable {
     case pending
 }
 
+enum StoreError: Error, Equatable {
+    case verificationFailed
+    case productNotFound
+}
+
 // MARK: - Protocol
 
 protocol StoreServicing {
@@ -38,7 +43,7 @@ final class StoreKitStoreService: StoreServicing {
     }
 
     func purchase(productID: String) async throws -> StorePurchaseResult {
-        guard let product = productsByID[productID] else { return .userCancelled }
+        guard let product = productsByID[productID] else { throw StoreError.productNotFound }
 
         let result = try await product.purchase()
 
@@ -91,7 +96,7 @@ final class StoreKitStoreService: StoreServicing {
 
     private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
         switch result {
-        case .unverified: throw StoreKitError.userCancelled
+        case .unverified: throw StoreError.verificationFailed
         case .verified(let value): return value
         }
     }
