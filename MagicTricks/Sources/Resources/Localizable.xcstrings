@@ -5424,23 +5424,6 @@
         }
       }
     },
-    "onboarding.paywall.benefit.calculatorPrediction" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Calculator Prediction"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Predicción con Calculadora"
-          }
-        }
-      }
-    },
     "onboarding.paywall.benefit.calculatorPrediction.detail" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5458,23 +5441,6 @@
         }
       }
     },
-    "onboarding.paywall.benefit.colorSense" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Color Sense"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sentido del Color"
-          }
-        }
-      }
-    },
     "onboarding.paywall.benefit.colorSense.detail" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5488,23 +5454,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Di el color. Sin mirar."
-          }
-        }
-      }
-    },
-    "onboarding.paywall.benefit.magicGallery" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Magic Gallery"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Galería Mágica"
           }
         }
       }
@@ -5556,23 +5505,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Sin marca de agua durante las funciones."
-          }
-        }
-      }
-    },
-    "onboarding.paywall.benefit.timeControl" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Time Control"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Control del Tiempo"
           }
         }
       }
@@ -5821,13 +5753,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1 trick free. 4 more, one payment."
+            "value" : "1 trick free. %lld more, one payment."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "1 truco gratis. 4 más, un solo pago."
+            "value" : "1 truco gratis. %lld más, un solo pago."
           }
         }
       }
@@ -7585,6 +7517,23 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Borrar Dibujo"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.benefit.phantomDraw.detail" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Whatever they draw, you already know."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Lo que sea que dibujen, tú ya lo sabes."
           }
         }
       }

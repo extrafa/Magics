@@ -20,8 +20,6 @@ struct OnboardingPaywallScreen: View {
         let detail: String
     }
 
-    private typealias Palette = TrickPalette.Collection
-
     private enum AppearDelay {
         static let closeButton: Double = 0.5
         static let hero: Double = 0.06
@@ -33,38 +31,25 @@ struct OnboardingPaywallScreen: View {
         static let bottomBlockStep: Double = 0.08
     }
 
-    private let benefits: [Benefit] = [
-        Benefit(
-            icon: "photo.on.rectangle.angled",
-            color: Palette.magicGallery,
-            title: String.paywall("benefit.magicGallery"),
-            detail: String.paywall("benefit.magicGallery.detail")
-        ),
-        Benefit(
-            icon: "ipad",
-            color: Palette.calculatorPrediction,
-            title: String.paywall("benefit.calculatorPrediction"),
-            detail: String.paywall("benefit.calculatorPrediction.detail")
-        ),
-        Benefit(
-            icon: "paintpalette",
-            color: Palette.colorSense,
-            title: String.paywall("benefit.colorSense"),
-            detail: String.paywall("benefit.colorSense.detail")
-        ),
-        Benefit(
-            icon: "stopwatch.fill",
-            color: Palette.timeControl,
-            title: String.paywall("benefit.timeControl"),
-            detail: String.paywall("benefit.timeControl.detail")
-        ),
-        Benefit(
-            icon: "sparkles",
-            color: TrickPalette.accentPrimary,
-            title: String.paywall("benefit.noWatermark"),
-            detail: String.paywall("benefit.noWatermark.detail")
-        ),
-    ]
+    // Derived from TrickCollection so a new Pro trick can't be left off the paywall by accident.
+    private let benefits: [Benefit] = TrickCollection.tricks
+        .filter { $0.id.requiresPro }
+        .map { trick in
+            Benefit(
+                icon: trick.image.rawValue,
+                color: trick.id.collectionColor,
+                title: String(localized: trick.title),
+                detail: String.paywall("benefit.\(trick.id.rawValue).detail")
+            )
+        }
+        + [
+            Benefit(
+                icon: "sparkles",
+                color: TrickPalette.accentPrimary,
+                title: String.paywall("benefit.noWatermark"),
+                detail: String.paywall("benefit.noWatermark.detail")
+            ),
+        ]
 
     var body: some View {
         NavigationStack {
@@ -182,7 +167,7 @@ struct OnboardingPaywallScreen: View {
                 .foregroundStyle(.textPrimary)
                 .onboardingAppear(appeared, offset: 14, delay: AppearDelay.title)
 
-            Text(String.paywall("subtitle"))
+            Text(String.localizedStringWithFormat(String.paywall("subtitle"), benefits.count - 1))
                 .font(.system(size: 16, weight: .regular, design: .rounded))
                 .foregroundStyle(.secondary)
                 .onboardingAppear(appeared, offset: 10, delay: AppearDelay.subtitle)
