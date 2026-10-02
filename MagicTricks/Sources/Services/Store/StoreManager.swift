@@ -57,11 +57,11 @@ final class StoreManager: ObservableObject {
 
     init(
         productIDs: [String] = StoreProducts.all,
-        service: StoreServicing = StoreKitStoreService(),
+        service: StoreServicing? = nil,
         defaults: PreferenceStoring = UserDefaults.standard
     ) {
         self.productIDs = productIDs
-        self.service = service
+        self.service = service ?? StoreKitStoreService()
         self.defaults = defaults
         self.isProOverride = Self.internalBuildGatedFlag(forKey: Key.proOverride, defaults: defaults)
         self.isWatermarkHidden = Self.internalBuildGatedFlag(forKey: Key.watermarkHidden, defaults: defaults)

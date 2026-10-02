@@ -23,6 +23,7 @@ enum StoreError: Error, Equatable {
 
 // MARK: - Protocol
 
+@MainActor
 protocol StoreServicing {
     func loadProducts(for productIDs: [String]) async throws -> [StoreProduct]
     func purchase(productID: String) async throws -> StorePurchaseResult
@@ -33,6 +34,7 @@ protocol StoreServicing {
 
 // MARK: - StoreKit 2 implementation
 
+@MainActor
 final class StoreKitStoreService: StoreServicing {
     private var productsByID: [String: Product] = [:]
 
