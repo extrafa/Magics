@@ -145,8 +145,8 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         }
     }
 
-    private static let thumbnailMaxSize = CGSize(width: 400, height: 400)
-    private static let maxStoredSide: CGFloat = 2000
+    private nonisolated static let thumbnailMaxSize = CGSize(width: 400, height: 400)
+    private nonisolated static let maxStoredSide: CGFloat = 2000
 
     private static let standardAssetNames: [Int: String] = [
         1: photoImage("one"),
