@@ -43,8 +43,7 @@ final class MagicGalleryViewModelTests: XCTestCase {
         let library = MockMagicGalleryPhotoLibrary()
         let viewModel = await makeViewModel(photoLibrary: library, usesStandardSet: false)
 
-        viewModel.handleCapturedImage(Self.image(), for: 6)
-        await flushPendingTasks()
+        await viewModel.handleCapturedImage(Self.image(), for: 6).value
 
         XCTAssertEqual(library.savedNumbers, [6])
         XCTAssertEqual(viewModel.customPhotos.map(\.number), [6])
@@ -58,9 +57,9 @@ final class MagicGalleryViewModelTests: XCTestCase {
         viewModel.startSequentialCapture(sourceType: .photoLibrary)
         XCTAssertEqual(viewModel.activeCaptureSession?.number, 1)
 
-        viewModel.handleCapturedImage(Self.image(), for: 1)
+        let save = viewModel.handleCapturedImage(Self.image(), for: 1)
         XCTAssertNil(viewModel.activeCaptureSession)
-        await flushPendingTasks()
+        await save.value
 
         viewModel.presentPendingCaptureIfNeeded()
 
@@ -85,9 +84,9 @@ final class MagicGalleryViewModelTests: XCTestCase {
         let library = MockMagicGalleryPhotoLibrary(storedPhotos: [photo])
         let viewModel = await makeViewModel(photoLibrary: library, storedPhotos: [photo], usesStandardSet: false)
 
-        viewModel.deletePhoto(photo)
+        let deletion = viewModel.deletePhoto(photo)
         XCTAssertTrue(viewModel.customPhotos.isEmpty)
-        await flushPendingTasks()
+        await deletion.value
 
         XCTAssertEqual(library.deletedNumbers, [2])
     }
@@ -98,9 +97,9 @@ final class MagicGalleryViewModelTests: XCTestCase {
         library.shouldFailDelete = true
         let viewModel = await makeViewModel(photoLibrary: library, storedPhotos: [photo], usesStandardSet: false)
 
-        viewModel.deletePhoto(photo)
+        let deletion = viewModel.deletePhoto(photo)
         XCTAssertTrue(viewModel.customPhotos.isEmpty)
-        await flushPendingTasks()
+        await deletion.value
 
         XCTAssertEqual(library.deletedNumbers, [2])
         XCTAssertEqual(viewModel.customPhotos.map(\.number), [2])
@@ -170,11 +169,6 @@ final class MagicGalleryViewModelTests: XCTestCase {
         )
         await viewModel.loadStoredPhotos()
         return viewModel
-    }
-
-    // Lets fire-and-forget Task {} blocks under test finish before we assert on them.
-    private func flushPendingTasks() async {
-        for _ in 0..<10 { await Task.yield() }
     }
 
     fileprivate static func image() -> UIImage {
