@@ -131,13 +131,17 @@ final class StoreManager: ObservableObject {
         phase = .restoring
         defer { phase = .idle }
 
+        let hadStoreAccess = _hasStoreAccess
         await refreshAccess()
-        guard !hasProAccess else { return }
+        guard !_hasStoreAccess else {
+            if hadStoreAccess { alertMessage = .paywallInfo("alreadyPro") }
+            return
+        }
 
         do {
             try await service.sync()
             await refreshAccess()
-            if !hasProAccess {
+            if !_hasStoreAccess {
                 alertMessage = .paywallError("noPurchasesFound")
             }
         } catch {
@@ -205,5 +209,9 @@ final class StoreManager: ObservableObject {
 private extension String {
     static func paywallError(_ key: String) -> String {
         NSLocalizedString("onboarding.paywall.error.\(key)", comment: "")
+    }
+
+    static func paywallInfo(_ key: String) -> String {
+        NSLocalizedString("onboarding.paywall.info.\(key)", comment: "")
     }
 }
