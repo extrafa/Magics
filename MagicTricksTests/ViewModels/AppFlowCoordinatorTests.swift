@@ -145,6 +145,7 @@ private final class MockPreferenceStore: PreferenceStoring {
     func object(forKey defaultName: String) -> Any? { storage[defaultName] }
     func bool(forKey defaultName: String) -> Bool { (storage[defaultName] as? Bool) ?? false }
     func double(forKey defaultName: String) -> Double { (storage[defaultName] as? Double) ?? 0 }
+    func integer(forKey defaultName: String) -> Int { (storage[defaultName] as? Int) ?? 0 }
     func stringArray(forKey defaultName: String) -> [String]? { storage[defaultName] as? [String] }
     func set(_ value: Any?, forKey defaultName: String) { storage[defaultName] = value }
 }

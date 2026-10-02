@@ -50,6 +50,29 @@ final class AppPreferencesTests: XCTestCase {
         }
     }
 
+    func test_integerPreferences_roundTripAsIntegers() {
+        let store = MockPreferenceStore()
+        let preferences = AppPreferences(store: store)
+
+        preferences.trickLaunchCount = 7
+        preferences.magicGalleryGestureMode = .swipe
+
+        XCTAssertEqual(preferences.trickLaunchCount, 7)
+        XCTAssertEqual(preferences.magicGalleryGestureMode, .swipe)
+        XCTAssertEqual(store.storage[AppPreferences.Key.trickLaunchCount] as? Int, 7)
+        XCTAssertEqual(store.storage[AppPreferences.Key.magicGalleryGestureMode] as? Int, MagicGalleryGestureMode.swipe.rawValue)
+    }
+
+    func test_integerPreferences_readValuesPreviouslyStoredAsDouble() {
+        let store = MockPreferenceStore()
+        store.storage[AppPreferences.Key.trickLaunchCount] = 5.0
+        store.storage[AppPreferences.Key.magicGalleryGestureMode] = Double(MagicGalleryGestureMode.swipe.rawValue)
+        let preferences = AppPreferences(store: store)
+
+        XCTAssertEqual(preferences.trickLaunchCount, 5)
+        XCTAssertEqual(preferences.magicGalleryGestureMode, .swipe)
+    }
+
     func test_migrateIfNeeded_migratesLegacyUsesStandardMagicGallerySetValue() {
         let store = MockPreferenceStore()
         store.storage["ImpossibleGalleryUsesStandardSet"] = false
@@ -58,7 +81,7 @@ final class AppPreferencesTests: XCTestCase {
         preferences.migrateIfNeeded()
 
         XCTAssertEqual(preferences.usesStandardMagicGallerySet, false)
-        XCTAssertEqual(store.storage[AppPreferences.Key.preferencesSchemaVersion] as? Double, 1)
+        XCTAssertEqual(store.storage[AppPreferences.Key.preferencesSchemaVersion] as? Int, 1)
     }
 
     func test_migrateIfNeeded_withNoLegacyKey_keepsDefaultAndBumpsSchemaVersion() {
@@ -68,7 +91,7 @@ final class AppPreferencesTests: XCTestCase {
         preferences.migrateIfNeeded()
 
         XCTAssertEqual(preferences.usesStandardMagicGallerySet, AppPreferences.Default.usesStandardMagicGallerySet)
-        XCTAssertEqual(store.storage[AppPreferences.Key.preferencesSchemaVersion] as? Double, 1)
+        XCTAssertEqual(store.storage[AppPreferences.Key.preferencesSchemaVersion] as? Int, 1)
     }
 
     func test_migrateIfNeeded_secondCallDoesNotOverrideValueSetAfterFirstMigration() {
@@ -90,6 +113,11 @@ private final class MockPreferenceStore: PreferenceStoring {
     func object(forKey defaultName: String) -> Any? { storage[defaultName] }
     func bool(forKey defaultName: String) -> Bool { (storage[defaultName] as? Bool) ?? false }
     func double(forKey defaultName: String) -> Double { (storage[defaultName] as? Double) ?? 0 }
+    func integer(forKey defaultName: String) -> Int {
+        // Like UserDefaults: a number stored as Double still reads back as an Int.
+        if let value = storage[defaultName] as? Int { return value }
+        return (storage[defaultName] as? Double).map(Int.init) ?? 0
+    }
     func stringArray(forKey defaultName: String) -> [String]? { storage[defaultName] as? [String] }
     func set(_ value: Any?, forKey defaultName: String) { storage[defaultName] = value }
 }
