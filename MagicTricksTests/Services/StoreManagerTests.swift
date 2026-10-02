@@ -36,6 +36,7 @@ final class StoreManagerTests: XCTestCase {
         await manager.restore()
 
         XCTAssertNotNil(manager.alertMessage)
+        XCTAssertNotEqual(manager.alertTitle, String(localized: "common.error"))
         XCTAssertEqual(service.syncCallCount, 0)
     }
 
@@ -96,6 +97,7 @@ final class StoreManagerTests: XCTestCase {
 
         XCTAssertFalse(manager.hasProAccess)
         XCTAssertNotNil(manager.alertMessage)
+        XCTAssertEqual(manager.alertTitle, String(localized: "common.error"))
     }
 
     func test_isProOverride_writesThroughInjectedDefaultsNotUserDefaultsStandard() {

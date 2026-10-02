@@ -7554,6 +7554,23 @@
           }
         }
       }
+    },
+    "onboarding.paywall.info.alreadyPro.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro is active"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro activo"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"

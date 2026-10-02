@@ -34,6 +34,7 @@ final class StoreManager: ObservableObject {
     @Published private(set) var products: [StoreProduct] = []
     @Published private(set) var phase: PurchasePhase = .idle
     @Published var alertMessage: String?
+    @Published private(set) var alertTitle: String = .commonError
     @Published private(set) var productsLoadError: String?
     @Published private var _hasStoreAccess: Bool = false
     @Published var isProOverride: Bool {
@@ -119,10 +120,10 @@ final class StoreManager: ObservableObject {
             case .userCancelled:
                 break
             case .pending:
-                alertMessage = .paywallError("pending")
+                showAlert(.paywallError("pending"))
             }
         } catch {
-            alertMessage = .paywallError("purchaseFailed")
+            showAlert(.paywallError("purchaseFailed"))
         }
     }
 
@@ -134,7 +135,7 @@ final class StoreManager: ObservableObject {
         let hadStoreAccess = _hasStoreAccess
         await refreshAccess()
         guard !_hasStoreAccess else {
-            if hadStoreAccess { alertMessage = .paywallInfo("alreadyPro") }
+            if hadStoreAccess { showAlert(.paywallInfo("alreadyPro"), title: .paywallInfo("alreadyPro.title")) }
             return
         }
 
@@ -142,10 +143,10 @@ final class StoreManager: ObservableObject {
             try await service.sync()
             await refreshAccess()
             if !_hasStoreAccess {
-                alertMessage = .paywallError("noPurchasesFound")
+                showAlert(.paywallError("noPurchasesFound"))
             }
         } catch {
-            alertMessage = .paywallError("restoreFailed")
+            showAlert(.paywallError("restoreFailed"))
         }
     }
 
@@ -187,6 +188,11 @@ final class StoreManager: ObservableObject {
         }
     }
 
+    private func showAlert(_ message: String, title: String = .commonError) {
+        alertTitle = title
+        alertMessage = message
+    }
+
     private func refreshAccess() async {
         var found = false
         for await productID in service.currentEntitlementProductIDs() {
@@ -210,6 +216,8 @@ private extension String {
     static func paywallError(_ key: String) -> String {
         NSLocalizedString("onboarding.paywall.error.\(key)", comment: "")
     }
+
+    static var commonError: String { String(localized: "common.error") }
 
     static func paywallInfo(_ key: String) -> String {
         NSLocalizedString("onboarding.paywall.info.\(key)", comment: "")
