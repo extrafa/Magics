@@ -129,6 +129,15 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertNotNil(manager.alertMessage)
     }
 
+    func test_storeKitService_purchaseOfUnloadedProduct_throwsProductNotFound() async {
+        do {
+            _ = try await StoreKitStoreService().purchase(productID: "magic_lifetime")
+            XCTFail("Expected purchase to throw")
+        } catch {
+            XCTAssertEqual(error as? StoreError, .productNotFound)
+        }
+    }
+
     func test_purchase_whenPending_doesNotGrantAccessAndSetsAlert() async {
         let service = MockStoreService()
         service.purchaseResult = .success(.pending)
