@@ -20,17 +20,29 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
-      - name: List simulators
+      - name: Boot simulator
         run: |
-          xcrun simctl list runtimes
-          xcrun simctl list devices available
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, sys
+          devices = json.load(sys.stdin)["devices"]
+          runtimes = sorted(
+              (k for k in devices if "SimRuntime.iOS-" in k),
+              key=lambda k: [int(x) for x in k.split("iOS-")[1].split("-")],
+          )
+          print(next(d["udid"] for d in devices[runtimes[-1]] if d["name"] == "iPhone 17"))
+          ')
+          echo "SIM_UDID=$UDID" >> "$GITHUB_ENV"
+          xcrun simctl bootstatus "$UDID" -b
 
       - name: Build and test
         run: |
           xcodebuild test \
             -project MagicTricks.xcodeproj \
             -scheme Magics \
-            -destination 'platform=iOS Simulator,name=iPhone 17' \
+            -destination "platform=iOS Simulator,id=$SIM_UDID" \
+            -parallel-testing-enabled NO \
+            -retry-tests-on-failure \
+            -test-iterations 2 \
             -enableCodeCoverage YES \
             -resultBundlePath TestResults.xcresult \
             CODE_SIGNING_ALLOWED=NO
