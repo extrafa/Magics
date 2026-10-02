@@ -47,6 +47,15 @@ extension TrickType {
     }
 }
 
+extension InstructionPhase {
+    var color: Color {
+        switch self {
+        case .preparation: .blue
+        case .demonstration: .green
+        }
+    }
+}
+
 extension TrickDifficulty {
     var color: Color {
         switch self {

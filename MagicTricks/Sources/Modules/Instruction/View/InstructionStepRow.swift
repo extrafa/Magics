@@ -22,19 +22,12 @@ struct InstructionStepRow: View {
         self.onAction = onAction
     }
 
-    private var phaseColor: Color {
-        switch step.phase {
-        case .preparation: .blue
-        case .demonstration: .green
-        }
-    }
-
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             content
 
             RoundedRectangle(cornerRadius: 999)
-                .fill(phaseColor)
+                .fill(step.phase.color)
                 .frame(width: 3)
         }
         .padding(.vertical, 12)
