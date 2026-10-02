@@ -9,11 +9,13 @@ import SwiftUI
 
 struct CalculatorPredictionView: View {
     
-    @Environment(\.dismiss) private var dismiss
-    @StateObject private var vm = CalculatorPredictionViewModel()
-    @State private var isVisible = true
-    
-    let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 4)
+    @StateObject private var vm: CalculatorPredictionViewModel
+
+    private static let columns = Array(repeating: GridItem(.flexible(), spacing: 12), count: 4)
+
+    init(vm: CalculatorPredictionViewModel? = nil) {
+        _vm = StateObject(wrappedValue: vm ?? CalculatorPredictionViewModel())
+    }
 
     var body: some View {
         GeometryReader { geometry in
@@ -40,27 +42,30 @@ struct CalculatorPredictionView: View {
                             .animation(.easeInOut(duration: 0.12), value: vm.isSaveBlinkVisible)
                     }
 
-                    LazyVGrid(columns: columns, spacing: 12) {
+                    LazyVGrid(columns: Self.columns, spacing: 12) {
                         ForEach(CalculatorPrediction.buttons, id: \.self) { label in
-                            CalculatorPredictionButtonView(label: label.rawValue, buttonSize: buttonSize) { tapped in
+                            let button = CalculatorPredictionButtonView(button: label, buttonSize: buttonSize) {
                                 vm.buttonPressed(label)
                             }
-                            .simultaneousGesture(
-                                LongPressGesture(minimumDuration: 2)
-                                    .onEnded { _ in
-                                        if label == .clear {
-                                            vm.saveSecretValue()
-                                        }
-                                    }
-                            )
+                            if label == .clear {
+                                button.simultaneousGesture(
+                                    LongPressGesture(minimumDuration: 2)
+                                        .onEnded { _ in vm.saveSecretValue() }
+                                )
+                            } else {
+                                button
+                            }
                         }
                     }
                 }
                 .padding(.horizontal, horizontalPadding)
                 .padding(.bottom, 20)
-                
-                ExitHintView(isVisible: $isVisible, style: .specialWhite,)
             }
+            .exitHint(style: .specialWhite)
         }
     }
+}
+
+#Preview {
+    CalculatorPredictionView()
 }

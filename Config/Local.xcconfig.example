@@ -1,0 +1,10 @@
+// Copy this file to Config/Local.xcconfig (gitignored) to build with your
+// own signing locally, without touching the shared project.pbxproj values.
+// Local.xcconfig is included automatically by Shared.xcconfig if present.
+
+CODE_SIGN_STYLE = Automatic
+CODE_SIGN_IDENTITY[sdk=iphoneos*] = Apple Development
+DEVELOPMENT_TEAM = YOUR_TEAM_ID
+DEVELOPMENT_TEAM[sdk=iphoneos*] = YOUR_TEAM_ID
+PRODUCT_BUNDLE_IDENTIFIER = your.local.bundle.id
+PROVISIONING_PROFILE_SPECIFIER[sdk=iphoneos*] =
