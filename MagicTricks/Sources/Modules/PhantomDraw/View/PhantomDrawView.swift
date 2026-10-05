@@ -3,6 +3,7 @@
 //  Magic Tricks
 //
 
+import Combine
 import SwiftUI
 
 private let introKey = L10nDomain("phantomDraw.intro")
@@ -14,23 +15,37 @@ private let statusFailedKey = KeyDomain("phantomDraw.status.failed")
 
 struct PhantomDrawView: View {
 
-    @StateObject private var session: PhantomDrawSessionManager
-    @StateObject private var viewModel: PhantomDrawViewModel
+    // Holds the objects without subscribing to them: the canvases observe them themselves, so a drawn point
+    // doesn't re-run this root body. Only the three low-frequency values below are mirrored into @State.
+    @MainActor
+    private final class Dependencies: ObservableObject {
+        let session: PhantomDrawSessionManager
+        let viewModel: PhantomDrawViewModel
+
+        init(session: PhantomDrawSessionManager) {
+            self.session = session
+            viewModel = PhantomDrawViewModel(session: session)
+        }
+    }
+
+    @StateObject private var dependencies: Dependencies
+    @State private var state: PhantomDrawConnectionState = .idle
+    @State private var role: PhantomDrawRole?
+    @State private var pairingCode: String?
     @Environment(\.dismiss) private var dismiss
     @State private var codeInput = ""
     @AppStorage("phantomDrawLastCode") private var lastCode = ""
     @FocusState private var isCodeFieldFocused: Bool
 
     init(session: PhantomDrawSessionManager? = nil) {
-        let session = session ?? PhantomDrawSessionManager()
-        _session = StateObject(wrappedValue: session)
-        _viewModel = StateObject(wrappedValue: PhantomDrawViewModel(session: session))
+        _dependencies = StateObject(wrappedValue: Dependencies(session: session ?? PhantomDrawSessionManager()))
     }
 
-    private var state: PhantomDrawConnectionState { session.connectionState }
+    private var session: PhantomDrawSessionManager { dependencies.session }
+    private var viewModel: PhantomDrawViewModel { dependencies.viewModel }
 
     private var isSenderCanvas: Bool {
-        guard viewModel.role == .sender, case .connected = state else { return false }
+        guard role == .sender, case .connected = state else { return false }
         return true
     }
 
@@ -50,8 +65,11 @@ struct PhantomDrawView: View {
             }
         }
         .onDisappear { viewModel.stop() }
+        .onReceive(session.$connectionState.removeDuplicates()) { state = $0 }
+        .onReceive(viewModel.$role.removeDuplicates()) { role = $0 }
+        .onReceive(session.$pairingCode.removeDuplicates()) { pairingCode = $0 }
         .onChange(of: state) { newState in
-            if case .connected = newState, viewModel.role == .receiver, codeInput.count == 2 {
+            if case .connected = newState, role == .receiver, codeInput.count == 2 {
                 lastCode = codeInput
             }
         }
@@ -106,7 +124,7 @@ struct PhantomDrawView: View {
 
     @ViewBuilder
     private var connectedView: some View {
-        if viewModel.role == .receiver {
+        if role == .receiver {
             PhantomDrawReceiverView(session: session)
         } else {
             PhantomDrawSenderView(viewModel: viewModel)
@@ -250,16 +268,16 @@ struct PhantomDrawView: View {
             PulsingSignalView(color: TrickPalette.Collection.phantomDraw)
                 .frame(width: 120, height: 120)
             Spacer().frame(height: 28)
-            Text(String(localized: statusKey(viewModel.role == .sender ? "waiting" : "connecting")))
+            Text(String(localized: statusKey(role == .sender ? "waiting" : "connecting")))
                 .font(.system(size: 20, weight: .semibold, design: .rounded))
                 .foregroundStyle(.textPrimary)
             Spacer().frame(height: 8)
-            Text(String(localized: statusKey(viewModel.role == .sender
+            Text(String(localized: statusKey(role == .sender
                  ? "waitingDescription"
                  : "connectingDescription")))
                 .font(.system(size: 15, design: .rounded))
                 .foregroundStyle(.secondary)
-            if viewModel.role == .sender, let code = session.pairingCode {
+            if role == .sender, let code = pairingCode {
                 Spacer().frame(height: 20)
                 Text(code)
                     .font(.system(size: 44, weight: .heavy, design: .rounded))
@@ -319,8 +337,8 @@ struct PhantomDrawView: View {
     // MARK: - Helpers
 
     private func retry() {
-        guard let role = viewModel.role else { return }
-        viewModel.selectRole(role)
+        guard let currentRole = viewModel.role else { return }
+        viewModel.selectRole(currentRole)
     }
 
     private func stop() {
