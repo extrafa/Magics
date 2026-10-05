@@ -47,6 +47,62 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
         XCTAssertEqual(manager.connectionState, .connected(peerName: "New iPhone"))
     }
 
+    func test_searchTimeout_whenReceiverNeverConnects_fallsBackToFailed() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+
+        manager.startAsReceiver(code: "42")
+        XCTAssertEqual(manager.connectionState, .searching)
+        scheduler.fire()
+
+        XCTAssertEqual(manager.connectionState, .failed)
+    }
+
+    func test_searchTimeout_whenReceiverConnectedMeanwhile_doesNothing() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+
+        manager.startAsReceiver(code: "42")
+        manager.connectionState = .connected(peerName: "Sender")
+        scheduler.fire()
+
+        XCTAssertEqual(manager.connectionState, .connected(peerName: "Sender"))
+    }
+
+    func test_searchTimeout_fromEarlierSearchDoesNotFailARetry() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+
+        manager.startAsReceiver(code: "42")
+        manager.startAsReceiver(code: "42")
+        scheduler.fire(at: 0)
+
+        XCTAssertEqual(manager.connectionState, .searching)
+
+        scheduler.fire()
+        XCTAssertEqual(manager.connectionState, .failed)
+    }
+
+    func test_reconnectTimeout_fromEarlierDropDoesNotFailALaterReconnect() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .connected(peerName: "Spectator's iPhone")
+
+        manager.handleActiveConnectionLost()
+        manager.isReconnecting = false
+        manager.handleActiveConnectionLost()
+        scheduler.fire(at: 0)
+
+        XCTAssertTrue(manager.isReconnecting)
+        XCTAssertEqual(manager.connectionState, .connected(peerName: "Spectator's iPhone"))
+
+        scheduler.fire()
+        XCTAssertEqual(manager.connectionState, .failed)
+    }
+
     func test_sanitized_withInRangeStroke_returnsItUnchanged() {
         let stroke = DrawingStroke(id: UUID(), points: [DrawingPoint(x: 0.2, y: 0.8)])
 
@@ -93,14 +149,15 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
 }
 
 private final class FakeScheduler: DelayedActionScheduling {
-    private var scheduledAction: Completion?
+    private var scheduledActions: [Completion] = []
 
     func schedule(after delay: TimeInterval, action: @escaping Completion) {
-        scheduledAction = action
+        scheduledActions.append(action)
     }
 
-    func fire() {
-        scheduledAction?()
-        scheduledAction = nil
+    // Fires the oldest pending action by default; pass the index to fire a later one.
+    func fire(at index: Int = 0) {
+        guard scheduledActions.indices.contains(index) else { return }
+        scheduledActions.remove(at: index)()
     }
 }
