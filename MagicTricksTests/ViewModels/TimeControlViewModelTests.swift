@@ -60,6 +60,62 @@ final class TimeControlViewModelTests: XCTestCase {
         XCTAssertEqual(engine.restartCount, 1)
     }
 
+    // MARK: - Transmission phases
+
+    func test_canUsePrimaryAction_whileSignalIsPlaying_isFalseAndIgnoresTaps() async {
+        let (viewModel, transmitter) = await makeViewModelTransmitting()
+        let cancelsBefore = transmitter.cancelCount
+
+        transmitter.emit(.playingSeconds)
+
+        XCTAssertFalse(viewModel.canUsePrimaryAction)
+        viewModel.handlePrimaryAction()
+        XCTAssertFalse(viewModel.isRunning)
+        XCTAssertEqual(transmitter.cancelCount, cancelsBefore)
+    }
+
+    func test_canUsePrimaryAction_whileWaitingForStartTrigger_isTrue() async {
+        let (viewModel, transmitter) = await makeViewModelTransmitting()
+
+        transmitter.emit(.waitingForStartTrigger)
+
+        XCTAssertTrue(viewModel.canUsePrimaryAction)
+    }
+
+    func test_primaryAction_whileWaitingForStartTrigger_cancelsTransmissionAndRestartsTimer() async {
+        let (viewModel, transmitter) = await makeViewModelTransmitting()
+        let cancelsBefore = transmitter.cancelCount
+        transmitter.emit(.waitingForStartTrigger)
+
+        viewModel.handlePrimaryAction()
+
+        XCTAssertEqual(transmitter.cancelCount, cancelsBefore + 1)
+        XCTAssertFalse(viewModel.isTransmitting)
+        XCTAssertTrue(viewModel.isRunning)
+    }
+
+    func test_transmissionFinishing_clearsTransmittingState() async {
+        let (viewModel, transmitter) = await makeViewModelTransmitting()
+        transmitter.emit(.playingHundredths)
+
+        transmitter.finish()
+        await waitUntil { !viewModel.isTransmitting }
+
+        XCTAssertTrue(viewModel.canUsePrimaryAction)
+    }
+
+    func test_onDisappear_duringTransmission_cancelsItAndStopsRunning() async {
+        let (viewModel, transmitter) = await makeViewModelTransmitting()
+        let cancelsBefore = transmitter.cancelCount
+        transmitter.emit(.playingSeconds)
+
+        viewModel.onDisappear()
+
+        XCTAssertEqual(transmitter.cancelCount, cancelsBefore + 1)
+        XCTAssertFalse(viewModel.isTransmitting)
+        XCTAssertFalse(viewModel.isRunning)
+    }
+
     // MARK: - Helpers
 
     private func makeViewModel() -> (viewModel: TimeControlViewModel, clock: FakeClock, transmitter: MockSignalTransmitter) {
@@ -71,6 +127,23 @@ final class TimeControlViewModelTests: XCTestCase {
             now: { clock.now }
         )
         return (viewModel, clock, transmitter)
+    }
+
+    // Runs the timer, stops it, and returns once the (suspended) transmission has actually begun.
+    // transmit() cancels any previous transmission first, so cancelCount is already 1 here; assert on deltas.
+    private func makeViewModelTransmitting() async -> (TimeControlViewModel, ControllableTransmitter) {
+        let clock = FakeClock()
+        let transmitter = ControllableTransmitter()
+        let viewModel = TimeControlViewModel(
+            signalTransmitter: transmitter,
+            hapticEngineManager: MockHapticEngine(),
+            now: { clock.now }
+        )
+        viewModel.handlePrimaryAction()
+        clock.advance(by: 12.345)
+        viewModel.handlePrimaryAction()
+        await waitUntil { viewModel.isTransmitting && transmitter.isTransmitting }
+        return (viewModel, transmitter)
     }
 
     // Waits for a state change driven by a Task inside the view model, failing on timeout.
@@ -120,5 +193,37 @@ private final class MockHapticEngine: HapticEngineManaging {
 
     func restartEngineIfNeeded() {
         restartCount += 1
+    }
+}
+
+@MainActor
+private final class ControllableTransmitter: TimeControlSignalTransmitting {
+    private(set) var cancelCount = 0
+    private var onPhaseChange: ((TimeControlTransmissionPhase) -> Void)?
+    private var continuation: CheckedContinuation<Void, Never>?
+
+    var isTransmitting: Bool { continuation != nil }
+
+    func transmit(
+        second: Int,
+        hundredths: Int,
+        onPhaseChange: @escaping (TimeControlTransmissionPhase) -> Void
+    ) async {
+        self.onPhaseChange = onPhaseChange
+        await withCheckedContinuation { continuation = $0 }
+    }
+
+    func emit(_ phase: TimeControlTransmissionPhase) {
+        onPhaseChange?(phase)
+    }
+
+    func finish() {
+        continuation?.resume()
+        continuation = nil
+    }
+
+    func cancel() {
+        cancelCount += 1
+        finish()
     }
 }
