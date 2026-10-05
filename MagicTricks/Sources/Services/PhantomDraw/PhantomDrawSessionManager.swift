@@ -25,7 +25,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     private static let bonjourType = "_phantomdraw._tcp"
     private static let pskIdentity = "PhantomDraw"
     private static let connectionTimeout: TimeInterval = 10
-    private static let reconnectTimeout: TimeInterval = 15
+    private static let searchTimeout: TimeInterval = 15
 
     // Peer-sent strokes are untrusted network input.
     nonisolated static let maxStrokes = 500
@@ -38,6 +38,9 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     @Published var senderCanvasAspectRatio: Double?
 
     @Published var isReconnecting = false
+
+    // Bumped on every new search and on teardown, so a timer from an earlier search can't fail a later one.
+    private var searchGeneration = 0
 
     var onNewConnection: Completion?
 
@@ -65,6 +68,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         receiverCode = code
         connectionState = .searching
         startBrowsing(code: code)
+        scheduleSearchTimeout()
     }
 
     func startAsSender() {
@@ -201,12 +205,17 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         connection = nil
         isReconnecting = true
         if let receiverCode { startBrowsing(code: receiverCode) }
-        scheduleReconnectTimeout()
+        scheduleSearchTimeout()
     }
 
-    private func scheduleReconnectTimeout() {
-        scheduler.schedule(after: Self.reconnectTimeout) { [weak self] in
-            guard let self, self.isReconnecting else { return }
+    // Caps both the first search and a reconnect: a wrong code otherwise loops search -> handshake fails -> search forever.
+    private func scheduleSearchTimeout() {
+        searchGeneration += 1
+        let generation = searchGeneration
+        scheduler.schedule(after: Self.searchTimeout) { [weak self] in
+            guard let self, generation == self.searchGeneration else { return }
+            let isStillSearching = self.isReconnecting || (self.receiverCode != nil && self.connectionState == .searching)
+            guard isStillSearching else { return }
             self.isReconnecting = false
             // Give up the search entirely instead of leaving a browser/candidates running in the background.
             self.browser?.cancel()
@@ -370,6 +379,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     }
 
     private func teardown() {
+        searchGeneration += 1
         browser?.cancel()
         listener?.cancel()
         connection?.cancel()
