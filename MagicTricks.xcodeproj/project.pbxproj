@@ -154,6 +154,7 @@
 		0AML00000000000000000042 /* AppFlowCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */; };
 		0AML00000000000000000050 /* CalculatorPredictionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */; };
 		0AML00000000000000000052 /* PhantomDrawViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */; };
+		0AML00000000000000000056 /* TimeControlViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000055 /* TimeControlViewModelTests.swift */; };
 		0AML00000000000000000054 /* GroupedHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */; };
 		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -320,6 +321,7 @@
 		0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinatorTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModelTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawViewModelTests.swift; sourceTree = "<group>"; };
+		0AML00000000000000000055 /* TimeControlViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModelTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
 		E718EB3DEAA25219A8279ECA /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
@@ -969,6 +971,7 @@
 				0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */,
 				0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */,
 				0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */,
+				0AML00000000000000000055 /* TimeControlViewModelTests.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -1323,6 +1326,7 @@
 				0AML00000000000000000042 /* AppFlowCoordinatorTests.swift in Sources */,
 				0AML00000000000000000050 /* CalculatorPredictionViewModelTests.swift in Sources */,
 				0AML00000000000000000052 /* PhantomDrawViewModelTests.swift in Sources */,
+				0AML00000000000000000056 /* TimeControlViewModelTests.swift in Sources */,
 				0AML00000000000000000054 /* GroupedHapticPatternBuilderTests.swift in Sources */,
 				92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */,
 			);

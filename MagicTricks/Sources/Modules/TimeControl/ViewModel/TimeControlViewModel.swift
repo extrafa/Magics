@@ -17,6 +17,7 @@ final class TimeControlViewModel: ObservableObject {
 
     private let signalTransmitter: TimeControlSignalTransmitting
     private let hapticEngineManager: HapticEngineManaging
+    private let now: () -> Date
     private var accumulatedElapsed: TimeInterval = 0
     private var startDate: Date?
     private var timerTask: Task<Void, Never>?
@@ -25,10 +26,12 @@ final class TimeControlViewModel: ObservableObject {
 
     init(
         signalTransmitter: TimeControlSignalTransmitting? = nil,
-        hapticEngineManager: HapticEngineManaging? = nil
+        hapticEngineManager: HapticEngineManaging? = nil,
+        now: @escaping () -> Date = Date.init
     ) {
         self.signalTransmitter = signalTransmitter ?? TimeControlSignalTransmitter()
         self.hapticEngineManager = hapticEngineManager ?? HapticManager.shared
+        self.now = now
     }
 
     var formattedTime: String {
@@ -81,7 +84,7 @@ final class TimeControlViewModel: ObservableObject {
     private func start() {
         guard !isRunning else { return }
         isRunning = true
-        startDate = Date()
+        startDate = now()
         timerTask?.cancel()
         timerTask = Task { [weak self] in
             guard let self else { return }
@@ -94,7 +97,7 @@ final class TimeControlViewModel: ObservableObject {
 
     private func tick() {
         guard isRunning, let startDate else { return }
-        let elapsed = accumulatedElapsed + Date().timeIntervalSince(startDate)
+        let elapsed = accumulatedElapsed + now().timeIntervalSince(startDate)
         let hundredths = Int((elapsed * 100).rounded(.down))
         guard hundredths != displayedHundredths else { return }
         displayedHundredths = hundredths
@@ -104,7 +107,7 @@ final class TimeControlViewModel: ObservableObject {
         stopTimer()
         isRunning = false
 
-        let currentElapsed = accumulatedElapsed + (startDate.map { Date().timeIntervalSince($0) } ?? 0)
+        let currentElapsed = accumulatedElapsed + (startDate.map { now().timeIntervalSince($0) } ?? 0)
         let totalHundredths = Int((currentElapsed * 100).rounded(.down))
 
         accumulatedElapsed = TimeInterval(totalHundredths) / 100
