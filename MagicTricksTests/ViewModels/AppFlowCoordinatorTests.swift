@@ -10,6 +10,50 @@ import XCTest
 final class AppFlowCoordinatorTests: XCTestCase {
 
     private let trick = TrickCollection.tricks[0]
+    private let proTrick = TrickCollection.tricks.first { $0.id.requiresPro }!
+
+    private func makeCoordinator() -> AppFlowCoordinator {
+        AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: AppPreferences(store: MockPreferenceStore()),
+            scheduler: ImmediateScheduler()
+        )
+    }
+
+    func test_openPaywall_withoutContext_isGeneral() {
+        let coordinator = makeCoordinator()
+
+        coordinator.openPaywall()
+
+        XCTAssertEqual(coordinator.activeFlow, .paywall(context: .general))
+    }
+
+    func test_openInstruction_forLockedTrick_opensPaywallForThatTrick() {
+        let coordinator = makeCoordinator()
+
+        coordinator.open(instruction: proTrick)
+
+        XCTAssertEqual(coordinator.activeFlow, .paywall(context: .trick(proTrick.id)))
+        XCTAssertNil(coordinator.activeSheet)
+    }
+
+    func test_openStartFlow_forLockedTrick_opensPaywallForThatTrick() {
+        let coordinator = makeCoordinator()
+
+        coordinator.openStartFlow(for: proTrick)
+
+        XCTAssertEqual(coordinator.activeFlow, .paywall(context: .trick(proTrick.id)))
+    }
+
+    func test_paywallFlowIDs_differPerContext() {
+        let ids = [
+            FullScreenFlow.paywall(context: .general).id,
+            FullScreenFlow.paywall(context: .trick(.phantomDraw)).id,
+            FullScreenFlow.paywall(context: .trick(.colorSense)).id
+        ]
+
+        XCTAssertEqual(Set(ids).count, ids.count)
+    }
 
     func test_recordTrickClose_threeTimes_showsRateAppSheet() {
         let coordinator = AppFlowCoordinator(

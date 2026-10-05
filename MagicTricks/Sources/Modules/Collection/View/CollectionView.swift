@@ -50,7 +50,7 @@ struct CollectionView: View {
         }
         .overlay(alignment: .topLeading) {
             if !store.hasProAccess {
-                ProUpgradeButton(action: flow.openPaywall)
+                ProUpgradeButton(action: { flow.openPaywall() })
                     .padding(.leading, 20)
                     .padding(.top, 4)
                     .opacity(showSettings ? 0 : 1)
