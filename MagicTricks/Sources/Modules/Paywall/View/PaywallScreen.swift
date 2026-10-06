@@ -95,10 +95,12 @@ struct PaywallScreen: View {
                 .padding(.horizontal, 12)
                 .padding(.vertical, 5)
                 .background(Capsule().fill(TrickPalette.proGradient))
+                .accessibilityHidden(true)
 
             Text(content.headline)
                 .font(.system(.title, design: .rounded, weight: .bold))
                 .foregroundStyle(.textPrimary)
+                .accessibilityAddTraits(.isHeader)
 
             Text(content.subtitle)
                 .font(.system(.subheadline, design: .rounded))
@@ -179,6 +181,8 @@ struct PaywallScreen: View {
         .padding(.horizontal, 20)
         .padding(.top, 12)
         .padding(.bottom, 14)
+        // The dock is pinned, so at accessibility sizes it would crowd out the scrolling list; cap it like system bars.
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .frame(maxWidth: .infinity)
         .background(Color.backgroundScreen)
         .overlay(alignment: .top) {
@@ -187,16 +191,27 @@ struct PaywallScreen: View {
     }
 
     private func priceRow(for product: StoreProduct?) -> some View {
-        HStack(alignment: .firstTextBaseline, spacing: 8) {
-            Text(product?.displayPrice ?? "$0.00")
-                .font(.system(.title, design: .rounded, weight: .bold))
-                .foregroundStyle(.textPrimary)
-                .redacted(reason: product == nil ? .placeholder : [])
+        let price = Text(product?.displayPrice ?? "$0.00")
+            .font(.system(.title, design: .rounded, weight: .bold))
+            .foregroundStyle(.textPrimary)
+            .redacted(reason: product == nil ? .placeholder : [])
+        let caption = Text(key("priceCaption"))
+            .font(.system(.subheadline, design: .rounded))
+            .foregroundStyle(.secondary)
 
-            Text(key("priceCaption"))
-                .font(.system(.subheadline, design: .rounded))
-                .foregroundStyle(.secondary)
+        return ViewThatFits(in: .horizontal) {
+            HStack(alignment: .firstTextBaseline, spacing: 8) {
+                price
+                caption
+            }
+
+            VStack(spacing: 2) {
+                price
+                caption
+            }
         }
+        .accessibilityElement(children: .combine)
+        .accessibilityHidden(product == nil)
     }
 
     @ViewBuilder
@@ -338,8 +353,28 @@ private struct PaywallTrickRow: View {
 #if DEBUG
 @MainActor
 final class PaywallPreviewStoreService: StoreServicing {
+    enum Mode {
+        case loaded
+        case loadFails
+        case neverLoads
+    }
+
+    private let mode: Mode
+
+    init(mode: Mode = .loaded) {
+        self.mode = mode
+    }
+
     func loadProducts(for productIDs: [String]) async throws -> [StoreProduct] {
-        [StoreProduct(id: "magic_lifetime", displayName: "Lifetime", displayPrice: "$9.99")]
+        switch mode {
+        case .loaded:
+            return [StoreProduct(id: "magic_lifetime", displayName: "Lifetime", displayPrice: "$9.99")]
+        case .loadFails:
+            throw URLError(.notConnectedToInternet)
+        case .neverLoads:
+            try await Task.sleep(seconds: 3600)
+            return []
+        }
     }
 
     func purchase(productID: String) async throws -> StorePurchaseResult { .userCancelled }
@@ -358,6 +393,18 @@ final class PaywallPreviewStoreService: StoreServicing {
     PaywallScreen(context: .trick(.phantomDraw), onDismiss: {})
         .background(Color.backgroundScreen)
         .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
+}
+
+#Preview("Store error") {
+    PaywallScreen(context: .general, onDismiss: {})
+        .background(Color.backgroundScreen)
+        .environmentObject(StoreManager(service: PaywallPreviewStoreService(mode: .loadFails)))
+}
+
+#Preview("Loading price") {
+    PaywallScreen(context: .general, onDismiss: {})
+        .background(Color.backgroundScreen)
+        .environmentObject(StoreManager(service: PaywallPreviewStoreService(mode: .neverLoads)))
 }
 
 #Preview("Time Control") {
