@@ -1294,13 +1294,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Magic\nGallery"
+            "value" : "Magic Gallery"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Galería\nMágica"
+            "value" : "Galería Mágica"
           }
         }
       }
@@ -1413,13 +1413,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Time\nControl"
+            "value" : "Time Control"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Control\ndel Tiempo"
+            "value" : "Control del Tiempo"
           }
         }
       }
@@ -7364,6 +7364,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Lo que sea que dibujen, tú ya lo sabes."
+          }
+        }
+      }
+    },
+    "card.time.cardTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Time\nControl"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Control\ndel Tiempo"
+          }
+        }
+      }
+    },
+    "card.magicGallery.cardTitle" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Magic\nGallery"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Galería\nMágica"
           }
         }
       }

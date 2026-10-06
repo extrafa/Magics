@@ -127,6 +127,7 @@ extension TrickType {
             return Trick(
                 id: .timeControl,
                 title: key("title"),
+                cardTitle: key("cardTitle"),
                 subtitle: key("subtitle"),
                 image: .stopwatchFill,
                 difficulty: .medium,
@@ -137,6 +138,7 @@ extension TrickType {
             return Trick(
                 id: .magicGallery,
                 title: key("title"),
+                cardTitle: key("cardTitle"),
                 subtitle: key("subtitle"),
                 image: .photoOnRectangleAngled,
                 difficulty: .hard,
