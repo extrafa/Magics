@@ -11,7 +11,7 @@ private let sectionKey = L10nDomain("settings.section")
 private let proOverrideKey = L10nDomain("settings.proOverride")
 private let hideWatermarkKey = L10nDomain("settings.hideWatermark")
 private let exitHintKey = L10nDomain("settings.exitHint")
-private let paywallKey = L10nDomain("onboarding.paywall")
+private let paywallKey = L10nDomain("paywall")
 
 struct SettingsScreen: View {
 

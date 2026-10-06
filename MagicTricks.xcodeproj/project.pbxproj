@@ -62,7 +62,6 @@
 		280ECC5F30387FF300269CC6 /* MagicTricksIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 280ECC5E30387FF300269CC6 /* MagicTricksIcon.icon */; };
 		280FC5D92FCDA5EA00B347F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */; };
 		28258EC22FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBC2FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift */; };
-		28258EC32FF3E31800DE5695 /* OnboardingPaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBD2FF3E31800DE5695 /* OnboardingPaywallScreen.swift */; };
 		28335ADD2FA55DCD00DE419B /* ColorSenseInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */; };
 		2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370A2FAA196500234419 /* TimeControlViewModel.swift */; };
 		2834370D2FAA196500234419 /* TimeControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370C2FAA196500234419 /* TimeControlView.swift */; };
@@ -229,7 +228,6 @@
 		280ECC5E30387FF300269CC6 /* MagicTricksIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIcon.icon; sourceTree = "<group>"; };
 		280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		28258EBC2FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeatureSlideScreen.swift; sourceTree = "<group>"; };
-		28258EBD2FF3E31800DE5695 /* OnboardingPaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPaywallScreen.swift; sourceTree = "<group>"; };
 		28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseInstruction.swift; sourceTree = "<group>"; };
 		28335AE22FA5838300DE419B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2834370A2FAA196500234419 /* TimeControlViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModel.swift; sourceTree = "<group>"; };
@@ -394,7 +392,6 @@
 			isa = PBXGroup;
 			children = (
 				28258EBC2FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift */,
-				28258EBD2FF3E31800DE5695 /* OnboardingPaywallScreen.swift */,
 				0A000300000000000000001A /* OnboardingFlowView.swift */,
 				0A000400000000000000001A /* OnboardingProgressBar.swift */,
 				0A000500000000000000001A /* OnboardingOptionRow.swift */,
@@ -1286,7 +1283,6 @@
 				28C1878C2FCE7900001306EE /* InstructionActionSheetDestination.swift in Sources */,
 				28258EC22FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift in Sources */,
 				28062323301A8966003F0C44 /* GeoMentalismViewModel.swift in Sources */,
-				28258EC32FF3E31800DE5695 /* OnboardingPaywallScreen.swift in Sources */,
 				287D56362FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift in Sources */,
 				0A00FE000000000000000002 /* StoreProduct.swift in Sources */,
 				0A00FE000000000000000004 /* StoreService.swift in Sources */,
