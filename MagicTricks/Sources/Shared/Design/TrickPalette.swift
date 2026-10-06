@@ -10,6 +10,15 @@ import SwiftUI
 enum TrickPalette {
     static let accentPrimary = Color.accentPrimary
 
+    static let proGradient = LinearGradient(
+        colors: [
+            Color(red: 1.0, green: 0.58, blue: 0.08),
+            Color(red: 1.0, green: 0.28, blue: 0.42)
+        ],
+        startPoint: .topLeading,
+        endPoint: .bottomTrailing
+    )
+
     enum Collection {
         static let colorSense = Color.collectionColorSense
         static let calculatorPrediction = Color.collectionCalculatorPrediction

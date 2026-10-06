@@ -28,16 +28,7 @@ struct ProUpgradeButton: View {
 
     private var capsule: some View {
         Capsule()
-            .fill(
-                LinearGradient(
-                    colors: [
-                        Color(red: 1.0, green: 0.58, blue: 0.08),
-                        Color(red: 1.0, green: 0.28, blue: 0.42)
-                    ],
-                    startPoint: .topLeading,
-                    endPoint: .bottomTrailing
-                )
-            )
+            .fill(TrickPalette.proGradient)
             .overlay(shimmerLayer)
     }
 
