@@ -117,7 +117,7 @@ private struct PaywallCardFace: View {
                 }
                 .overlay {
                     Image(systemName: trick.image.rawValue)
-                        .font(.system(size: geo.size.width * 0.46, weight: .semibold))
+                        .font(.system(size: geo.size.width * 0.52, weight: .semibold))
                         .foregroundStyle(color)
                 }
                 .overlay(alignment: .topLeading) { pip(color: color, width: geo.size.width) }
@@ -141,6 +141,7 @@ private struct PaywallCardBack: View {
     private static let violet = Color(red: 0.48, green: 0.18, blue: 0.88)
     private static let magenta = Color(red: 0.69, green: 0.19, blue: 0.69)
     private static let gold = Color(red: 1.0, green: 0.71, blue: 0.18)
+    private static let pale = Color(red: 1.0, green: 0.94, blue: 0.82)
 
     var body: some View {
         GeometryReader { geo in
@@ -152,11 +153,33 @@ private struct PaywallCardBack: View {
                         .padding(6)
                 }
                 .overlay {
-                    Image(systemName: "sparkle")
-                        .font(.system(size: geo.size.width * 0.4, weight: .regular))
-                        .foregroundStyle(Self.gold)
+                    SparkleShape()
+                        .fill(LinearGradient(colors: [Self.pale, Self.gold], startPoint: .top, endPoint: .bottom))
+                        .frame(width: geo.size.width * 0.52, height: geo.size.width * 0.52)
                 }
         }
         .shadow(color: .black.opacity(0.14), radius: 5, x: -2, y: 1)
+    }
+}
+
+// The icon's four-point star. Drawn by hand: the "sparkle" SF Symbol needs iOS 17 and we support 16.
+private struct SparkleShape: Shape {
+    func path(in rect: CGRect) -> Path {
+        let c = CGPoint(x: rect.midX, y: rect.midY)
+        let r = min(rect.width, rect.height) / 2
+        let pull = r * 0.04
+        let top = CGPoint(x: c.x, y: c.y - r)
+        let right = CGPoint(x: c.x + r, y: c.y)
+        let bottom = CGPoint(x: c.x, y: c.y + r)
+        let left = CGPoint(x: c.x - r, y: c.y)
+
+        var path = Path()
+        path.move(to: top)
+        path.addQuadCurve(to: right, control: CGPoint(x: c.x + pull, y: c.y - pull))
+        path.addQuadCurve(to: bottom, control: CGPoint(x: c.x + pull, y: c.y + pull))
+        path.addQuadCurve(to: left, control: CGPoint(x: c.x - pull, y: c.y + pull))
+        path.addQuadCurve(to: top, control: CGPoint(x: c.x - pull, y: c.y - pull))
+        path.closeSubpath()
+        return path
     }
 }
