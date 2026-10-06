@@ -11,6 +11,7 @@ struct PaywallScreen: View {
     let onDismiss: Completion
 
     @EnvironmentObject private var store: StoreManager
+    @State private var appeared = false
 
     private let content: PaywallContent
 
@@ -25,11 +26,13 @@ struct PaywallScreen: View {
                 ScrollView(showsIndicators: false) {
                     VStack(spacing: 14) {
                         header
+                            .staggeredAppear(appeared, step: 0)
                         trickList
                         Text(key("footnote"))
                             .font(.system(.footnote, design: .rounded))
                             .foregroundStyle(.secondary)
                             .multilineTextAlignment(.center)
+                            .staggeredAppear(appeared, step: content.tricks.count + 1)
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 4)
@@ -37,6 +40,7 @@ struct PaywallScreen: View {
                 }
 
                 purchaseDock
+                    .staggeredAppear(appeared, step: content.tricks.count + 2)
             }
             .background { Color.backgroundScreen.ignoresSafeArea() }
             .navigationBarTitleDisplayMode(.inline)
@@ -49,6 +53,11 @@ struct PaywallScreen: View {
         }
         .task {
             await store.reloadProductsIfNeeded()
+        }
+        .task {
+            // Let the cover finish presenting before the staggered entrance starts.
+            try? await Task.sleep(milliseconds: 200)
+            appeared = true
         }
         .onChange(of: store.hasProAccess) { _ in
             if store.hasProAccess { onDismiss() }
@@ -105,6 +114,7 @@ struct PaywallScreen: View {
         if let highlighted = content.highlighted {
             VStack(spacing: 7) {
                 PaywallTrickRow(item: highlighted, style: .highlighted)
+                    .staggeredAppear(appeared, step: step(of: highlighted))
 
                 Text(key("alsoIncluded"))
                     .font(.system(.caption, design: .rounded, weight: .semibold))
@@ -113,18 +123,25 @@ struct PaywallScreen: View {
                     .padding(.horizontal, 4)
                     .padding(.top, 4)
                     .accessibilityAddTraits(.isHeader)
+                    .staggeredAppear(appeared, step: content.others.first.map(step(of:)) ?? 1)
 
                 ForEach(content.others) { item in
                     PaywallTrickRow(item: item, style: .compact)
+                        .staggeredAppear(appeared, step: step(of: item))
                 }
             }
         } else {
             VStack(spacing: 7) {
                 ForEach(content.tricks) { item in
                     PaywallTrickRow(item: item, style: .regular)
+                        .staggeredAppear(appeared, step: step(of: item))
                 }
             }
         }
+    }
+
+    private func step(of item: PaywallTrick) -> Int {
+        (content.tricks.firstIndex { $0.id == item.id } ?? 0) + 1
     }
 
     // MARK: Purchase
@@ -208,7 +225,36 @@ struct PaywallScreen: View {
                     Task { await store.purchase(productID: product.id) }
                 }
             )
+            .shimmer(
+                in: RoundedRectangle(cornerRadius: 16, style: .continuous),
+                isActive: product != nil && store.phase == .idle,
+                highlight: Color.backgroundScreen.opacity(0.22),
+                blend: .normal
+            )
         }
+    }
+}
+
+// MARK: - Entrance
+
+private struct StaggeredAppear: ViewModifier {
+    let appeared: Bool
+    let step: Int
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
+    func body(content: Content) -> some View {
+        if reduceMotion {
+            content
+        } else {
+            content.onboardingAppear(appeared, offset: 12, delay: Double(step) * 0.06)
+        }
+    }
+}
+
+private extension View {
+    func staggeredAppear(_ appeared: Bool, step: Int) -> some View {
+        modifier(StaggeredAppear(appeared: appeared, step: step))
     }
 }
 

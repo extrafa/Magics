@@ -36,6 +36,7 @@
 		0AEE00000000000000000015 /* MagicGalleryInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000014 /* MagicGalleryInstruction.swift */; };
 		0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000016 /* HapticManager+CountSignal.swift */; };
 		0AEE00000000000000000019 /* FloatingMotionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000018 /* FloatingMotionModifier.swift */; };
+		0AML00000000000000000C11 /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C10 /* ShimmerModifier.swift */; };
 		0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000001A /* MagicGalleryCropView.swift */; };
 		0AEE0000000000000000001D /* RateAppSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000001C /* RateAppSheet.swift */; };
 		0AEE721D1E7FD163829108F5 /* RateAppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE188C8CC8384A08F96A35 /* RateAppViewModel.swift */; };
@@ -202,6 +203,7 @@
 		0AEE00000000000000000014 /* MagicGalleryInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryInstruction.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000016 /* HapticManager+CountSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+CountSignal.swift"; sourceTree = "<group>"; };
 		0AEE00000000000000000018 /* FloatingMotionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMotionModifier.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C10 /* ShimmerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerModifier.swift; sourceTree = "<group>"; };
 		0AEE0000000000000000001A /* MagicGalleryCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCropView.swift; sourceTree = "<group>"; };
 		0AEE0000000000000000001C /* RateAppSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppSheet.swift; sourceTree = "<group>"; };
 		0AEE188C8CC8384A08F96A35 /* RateAppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModel.swift; sourceTree = "<group>"; };
@@ -718,6 +720,7 @@
 				28E100002FC9F00000BB0001 /* TrickPalette.swift */,
 				0AFF00000000000000000003 /* AppColors.swift */,
 				0AEE00000000000000000018 /* FloatingMotionModifier.swift */,
+				0AML00000000000000000C10 /* ShimmerModifier.swift */,
 			);
 			path = Design;
 			sourceTree = "<group>";
@@ -1335,6 +1338,7 @@
 				0A6E00000000000000000004 /* GeoMentalismInstruction.swift in Sources */,
 				0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */,
 				0AEE00000000000000000019 /* FloatingMotionModifier.swift in Sources */,
+				0AML00000000000000000C11 /* ShimmerModifier.swift in Sources */,
 				0AFF00000000000000000004 /* AppColors.swift in Sources */,
 				0AFF00000000000000000006 /* PhoneTiltGestureManager.swift in Sources */,
 				0AFF00000000000000000008 /* CalculatorPredictionInstruction.swift in Sources */,
