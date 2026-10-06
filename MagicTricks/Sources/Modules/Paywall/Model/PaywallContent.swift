@@ -7,41 +7,12 @@ import Foundation
 
 private let key = L10nDomain("paywall")
 
-struct PaywallRow: Identifiable {
-    enum Kind {
-        case trick(Trick)
-        case noWatermark
-    }
-
-    let kind: Kind
-    let isFree: Bool
-
-    var id: String {
-        switch kind {
-        case .trick(let trick): trick.id.rawValue
-        case .noWatermark: "noWatermark"
-        }
-    }
-
-    var trickType: TrickType? {
-        if case .trick(let trick) = kind { trick.id } else { nil }
-    }
-
-    var title: String {
-        switch kind {
-        case .trick(let trick): String(localized: trick.title)
-        case .noWatermark: String(localized: key("row.noWatermark"))
-        }
-    }
-}
-
-// What the paywall says and what it lists: the one place to tune copy and rows.
-// Rows come straight from TrickCollection, so a new trick shows up on the paywall by itself.
+// What the paywall says and which cards it deals: the one place to tune copy.
+// Cards come straight from TrickCollection, so a new Pro trick shows up on the paywall by itself.
 struct PaywallContent {
     let headline: String
-    let subtitle: String
-    let rows: [PaywallRow]
-    let highlighted: TrickType?
+    // The Pro tricks in collection order; the tapped one goes last, so it lies on top of the fan.
+    let cards: [Trick]
 
     // The tapped Pro trick (contextual paywall) and what it does; nil on the general paywall.
     let focus: Trick?
@@ -51,10 +22,6 @@ struct PaywallContent {
     let freeNote: String?
 
     init(context: PaywallContext, tricks: [Trick] = TrickCollection.tricks) {
-        var rows = tricks.map { PaywallRow(kind: .trick($0), isFree: !$0.id.requiresPro) }
-        rows.append(PaywallRow(kind: .noWatermark, isFree: false))
-        self.rows = rows
-
         let proTricks = tricks.filter { $0.id.requiresPro }
         let freeTricks = tricks.filter { !$0.id.requiresPro }
         let picked: Trick?
@@ -68,16 +35,14 @@ struct PaywallContent {
             String.localizedStringWithFormat(String(localized: key("freeNote")), $0)
         }
         focus = picked
-        highlighted = picked?.id
+        cards = proTricks.filter { $0.id != picked?.id } + (picked.map { [$0] } ?? [])
 
         if let picked {
             headline = String.localizedStringWithFormat(String(localized: key("contextTitle")), String(localized: picked.title))
-            subtitle = String.localizedStringWithFormat(String(localized: key("contextSubtitle")), tricks.count)
             effect = String(localized: picked.subtitle)
             unlocks = Self.countedSentence(key: "alsoUnlocks", listing: proTricks.filter { $0.id != picked.id })
         } else {
             headline = String(localized: key("title"))
-            subtitle = String(localized: key("subtitle"))
             effect = nil
             unlocks = Self.countedSentence(key: "unlocks", listing: proTricks)
         }

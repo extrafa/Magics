@@ -10,37 +10,22 @@ final class PaywallContentTests: XCTestCase {
 
     private let collection = TrickCollection.tricks
 
-    func test_rows_listEveryTrickInCollectionOrderThenTheWatermarkPerk() {
+    func test_cards_areTheProTricksInCollectionOrder() {
         let content = PaywallContent(context: .general)
 
-        XCTAssertEqual(content.rows.compactMap(\.trickType), collection.map(\.id))
-        XCTAssertEqual(content.rows.last?.id, "noWatermark")
-        XCTAssertEqual(content.rows.count, collection.count + 1)
+        XCTAssertEqual(content.cards.map(\.id), collection.filter { $0.id.requiresPro }.map(\.id))
+        XCTAssertFalse(content.cards.contains { !$0.id.requiresPro }, "the free trick is not a card")
     }
 
-    func test_rows_marksOnlyTheFreeTricksAsFree() {
-        let content = PaywallContent(context: .general)
-
-        for row in content.rows {
-            if let type = row.trickType {
-                XCTAssertEqual(row.isFree, !type.requiresPro, "\(type)")
-            } else {
-                XCTAssertFalse(row.isFree, "the watermark perk is Pro only")
-            }
-        }
-    }
-
-    func test_general_hasNoHighlight() {
-        XCTAssertNil(PaywallContent(context: .general).highlighted)
-    }
-
-    func test_contextual_highlightsTheTappedTrickWithoutReorderingRows() {
+    func test_contextual_putsTheTappedTrickOnTopOfTheFanKeepingTheRest() {
         let general = PaywallContent(context: .general)
 
         let content = PaywallContent(context: .trick(.timeControl))
 
-        XCTAssertEqual(content.highlighted, .timeControl)
-        XCTAssertEqual(content.rows.map(\.id), general.rows.map(\.id))
+        XCTAssertEqual(content.cards.last?.id, .timeControl)
+        XCTAssertEqual(Set(content.cards.map(\.id)), Set(general.cards.map(\.id)))
+        XCTAssertEqual(content.cards.count, general.cards.count)
+        XCTAssertEqual(content.cards.dropLast().map(\.id), general.cards.map(\.id).filter { $0 != .timeControl })
     }
 
     func test_contextual_headlineNamesTheTappedTrick() {
@@ -51,32 +36,19 @@ final class PaywallContentTests: XCTestCase {
         XCTAssertTrue(content.headline.contains(String(localized: tapped.title)))
     }
 
-    func test_contextual_subtitleCountsEveryTrick() {
-        let content = PaywallContent(context: .trick(.colorSense))
-
-        XCTAssertTrue(content.subtitle.contains("\(collection.count)"))
-    }
-
     func test_contextual_forTheFreeTrick_fallsBackToGeneral() {
         let content = PaywallContent(context: .trick(.geoMentalism))
 
-        XCTAssertNil(content.highlighted)
+        XCTAssertNil(content.focus)
+        XCTAssertEqual(content.cards.map(\.id), PaywallContent(context: .general).cards.map(\.id))
         XCTAssertEqual(content.headline, PaywallContent(context: .general).headline)
-    }
-
-    func test_rowTitles_areFlatAndResolved() {
-        for row in PaywallContent(context: .general).rows {
-            XCTAssertFalse(row.title.contains("\n"), "\(row.id) title has a line break")
-            XCTAssertFalse(row.title.hasPrefix("paywall."), "unresolved key: \(row.title)")
-            XCTAssertFalse(row.title.isEmpty)
-        }
     }
 
     func test_copy_isResolvedNotRawKeys() {
         let general = PaywallContent(context: .general)
         let contextual = PaywallContent(context: .trick(.colorSense))
 
-        for text in [general.headline, general.subtitle, contextual.headline, contextual.subtitle] {
+        for text in [general.headline, contextual.headline] {
             XCTAssertFalse(text.hasPrefix("paywall."), "unresolved key: \(text)")
             XCTAssertFalse(text.isEmpty)
         }
