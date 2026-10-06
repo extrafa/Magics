@@ -12,6 +12,7 @@ struct PaywallScreen: View {
 
     @EnvironmentObject private var store: StoreManager
     @State private var appeared = false
+    @ScaledMetric(relativeTo: .largeTitle) private var priceSize: CGFloat = 72
 
     private let content: PaywallContent
 
@@ -23,16 +24,20 @@ struct PaywallScreen: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                ScrollView(showsIndicators: false) {
-                    VStack(spacing: 14) {
-                        header
-                            .staggeredAppear(appeared, step: 0)
-                        PaywallComparison(rows: content.rows, highlighted: content.highlighted, appeared: appeared)
-                            .staggeredAppear(appeared, step: 1)
+                GeometryReader { geo in
+                    ScrollView(showsIndicators: false) {
+                        VStack(spacing: 28) {
+                            hero
+                                .staggeredAppear(appeared, step: 0)
+                            details
+                                .staggeredAppear(appeared, step: 1)
+                        }
+                        .padding(.horizontal, 24)
+                        .padding(.vertical, 8)
+                        // Centers the poster on tall screens; at big text sizes it grows and scrolls instead.
+                        .frame(maxWidth: .infinity, minHeight: geo.size.height)
                     }
-                    .padding(.horizontal, 20)
-                    .padding(.top, 4)
-                    .padding(.bottom, 16)
+                    .scrollBouncesOnlyWhenNeeded()
                 }
 
                 purchaseDock
@@ -81,22 +86,66 @@ struct PaywallScreen: View {
         .accessibilityLabel(String(localized: "common.close"))
     }
 
-    // MARK: Header
+    // MARK: Hero
 
-    private var header: some View {
-        VStack(spacing: 10) {
+    private var hero: some View {
+        VStack(spacing: 20) {
             Text(content.headline)
                 .font(.system(.title, design: .rounded, weight: .bold))
                 .foregroundStyle(.textPrimary)
+                .multilineTextAlignment(.center)
                 .accessibilityAddTraits(.isHeader)
 
-            Text(content.subtitle)
-                .font(.system(.subheadline, design: .rounded))
+            if store.productsLoadError == nil {
+                priceBlock(for: store.products.first)
+            }
+
+            PaywallCoinTrail()
+        }
+        // At the very largest sizes the headline and caption alone would push the coins and the rest out of sight.
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+    }
+
+    // The price is the biggest thing on the screen: it's the whole deal.
+    private func priceBlock(for product: StoreProduct?) -> some View {
+        VStack(spacing: 4) {
+            Text(product?.displayPrice ?? "$0.00")
+                .font(.system(size: priceSize, weight: .heavy, design: .rounded))
+                .foregroundStyle(.textPrimary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.4)
+                .redacted(reason: product == nil ? .placeholder : [])
+
+            Text(key("priceCaption"))
+                .font(.system(.headline, design: .rounded, weight: .semibold))
+                .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
+        }
+        .accessibilityElement(children: .combine)
+        .accessibilityHidden(product == nil)
+    }
+
+    // MARK: Details
+
+    private var details: some View {
+        VStack(spacing: 10) {
+            if let unlocks = content.unlocks {
+                Text(unlocks)
+                    .font(.system(.subheadline, design: .rounded, weight: .medium))
+                    .foregroundStyle(.textPrimary)
+            }
+
+            Text(notes)
+                .font(.system(.footnote, design: .rounded))
                 .foregroundStyle(.secondary)
         }
         .multilineTextAlignment(.center)
-        // At the very largest sizes the headline alone would fill the screen and push the table out of sight.
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+    }
+
+    private var notes: String {
+        [content.freeNote, String(localized: key("watermarkNote"))]
+            .compactMap { $0 }
+            .joined(separator: " ")
     }
 
     // MARK: Purchase
@@ -104,10 +153,6 @@ struct PaywallScreen: View {
     private var purchaseDock: some View {
         let product = store.products.first
         return VStack(spacing: 10) {
-            if store.productsLoadError == nil {
-                priceRow(for: product)
-            }
-
             purchaseSection(for: product)
 
             Button(action: { Task { await store.restore() } }) {
@@ -134,37 +179,13 @@ struct PaywallScreen: View {
         .padding(.horizontal, 20)
         .padding(.top, 12)
         .padding(.bottom, 14)
-        // The dock is pinned, so at accessibility sizes it would crowd out the scrolling list; cap it like system bars.
+        // The dock is pinned, so at accessibility sizes it would crowd out the scrolling poster; cap it like system bars.
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .frame(maxWidth: .infinity)
         .background(Color.backgroundScreen)
         .overlay(alignment: .top) {
             Rectangle().fill(Color.cardBorder).frame(height: 1)
         }
-    }
-
-    private func priceRow(for product: StoreProduct?) -> some View {
-        let price = Text(product?.displayPrice ?? "$0.00")
-            .font(.system(.title, design: .rounded, weight: .bold))
-            .foregroundStyle(.textPrimary)
-            .redacted(reason: product == nil ? .placeholder : [])
-        let caption = Text(key("priceCaption"))
-            .font(.system(.subheadline, design: .rounded))
-            .foregroundStyle(.secondary)
-
-        return ViewThatFits(in: .horizontal) {
-            HStack(alignment: .firstTextBaseline, spacing: 8) {
-                price
-                caption
-            }
-
-            VStack(spacing: 2) {
-                price
-                caption
-            }
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityHidden(product == nil)
     }
 
     @ViewBuilder
@@ -185,7 +206,7 @@ struct PaywallScreen: View {
             }
         } else {
             OnboardingCTAButton(
-                title: String(localized: key("cta")),
+                title: ctaTitle(for: product),
                 isEnabled: product != nil && store.phase != .restoring,
                 isLoading: store.phase == .purchasing || store.phase == .loadingProducts,
                 action: {
@@ -199,6 +220,23 @@ struct PaywallScreen: View {
                 highlight: Color.backgroundScreen.opacity(0.22),
                 blend: .normal
             )
+        }
+    }
+
+    // The button repeats the deal at the moment of paying: how much, and that it's once.
+    private func ctaTitle(for product: StoreProduct?) -> String {
+        guard let product else { return String(localized: key("cta")) }
+        return String.localizedStringWithFormat(String(localized: key("ctaPrice")), product.displayPrice)
+    }
+}
+
+private extension View {
+    @ViewBuilder
+    func scrollBouncesOnlyWhenNeeded() -> some View {
+        if #available(iOS 16.4, *) {
+            scrollBounceBehavior(.basedOnSize)
+        } else {
+            self
         }
     }
 }

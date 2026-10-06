@@ -7028,6 +7028,74 @@
         }
       }
     },
+    "paywall.trail.start" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "You pay today"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pagas hoy"
+          }
+        }
+      }
+    },
+    "paywall.trail.end" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Never again"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nunca más"
+          }
+        }
+      }
+    },
+    "paywall.watermarkNote" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro also removes the watermark."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro también quita la marca de agua."
+          }
+        }
+      }
+    },
+    "paywall.ctaPrice" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pay %@ once"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pagar %@ una vez"
+          }
+        }
+      }
+    },
     "paywall.pill" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7051,13 +7119,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "one-time payment"
+            "value" : "one payment, no subscription"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "pago único"
+            "value" : "un solo pago, sin suscripción"
           }
         }
       }
