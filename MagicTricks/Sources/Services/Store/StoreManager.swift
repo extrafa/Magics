@@ -182,8 +182,14 @@ final class StoreManager: ObservableObject {
         defer { phase = .idle }
         do {
             products = try await service.loadProducts(for: productIDs)
+            #if DEBUG
+            if products.isEmpty { print("[Store] no products returned for \(productIDs); is a StoreKit configuration attached to the scheme?") }
+            #endif
             productsLoadError = products.isEmpty ? .paywallError("productsLoadFailed") : nil
         } catch {
+            #if DEBUG
+            print("[Store] loadProducts failed: \(error)")
+            #endif
             productsLoadError = .paywallError("productsLoadFailed")
         }
     }
