@@ -27,7 +27,7 @@ struct PaywallScreen: View {
                     VStack(spacing: 14) {
                         header
                             .staggeredAppear(appeared, step: 0)
-                        PaywallShowcase(tricks: content.tricks)
+                        PaywallComparison(rows: content.rows, highlighted: content.highlighted, appeared: appeared)
                             .staggeredAppear(appeared, step: 1)
                     }
                     .padding(.horizontal, 20)
@@ -85,16 +85,6 @@ struct PaywallScreen: View {
 
     private var header: some View {
         VStack(spacing: 10) {
-            if !PaywallShowcase.isCompactScreen {
-                Text(key("pill"))
-                    .font(.system(.caption, design: .rounded, weight: .bold))
-                    .foregroundStyle(.white)
-                    .padding(.horizontal, 12)
-                    .padding(.vertical, 5)
-                    .background(Capsule().fill(TrickPalette.proGradient))
-                    .accessibilityHidden(true)
-            }
-
             Text(content.headline)
                 .font(.system(.title, design: .rounded, weight: .bold))
                 .foregroundStyle(.textPrimary)
@@ -105,7 +95,7 @@ struct PaywallScreen: View {
                 .foregroundStyle(.secondary)
         }
         .multilineTextAlignment(.center)
-        // At the very largest sizes the headline alone would fill the screen and push the showcase out of sight.
+        // At the very largest sizes the headline alone would fill the screen and push the table out of sight.
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 

@@ -8,53 +8,67 @@ import XCTest
 
 final class PaywallContentTests: XCTestCase {
 
-    private let proTypes = TrickCollection.tricks.filter { $0.id.requiresPro }.map(\.id)
+    private let collection = TrickCollection.tricks
 
-    func test_general_listsEveryProTrickInCollectionOrderWithNoHighlight() {
+    func test_rows_listEveryTrickInCollectionOrderThenTheWatermarkPerk() {
         let content = PaywallContent(context: .general)
 
-        XCTAssertNil(content.highlighted)
-        XCTAssertEqual(content.tricks.map(\.id), proTypes)
+        XCTAssertEqual(content.rows.compactMap(\.trickType), collection.map(\.id))
+        XCTAssertEqual(content.rows.last?.id, "noWatermark")
+        XCTAssertEqual(content.rows.count, collection.count + 1)
     }
 
-    func test_general_neverIncludesTheFreeTrick() {
+    func test_rows_marksOnlyTheFreeTricksAsFree() {
         let content = PaywallContent(context: .general)
 
-        XCTAssertFalse(content.tricks.contains { !$0.id.requiresPro })
+        for row in content.rows {
+            if let type = row.trickType {
+                XCTAssertEqual(row.isFree, !type.requiresPro, "\(type)")
+            } else {
+                XCTAssertFalse(row.isFree, "the watermark perk is Pro only")
+            }
+        }
     }
 
-    func test_contextual_putsTheTappedTrickFirstAndKeepsTheRestInOrder() {
-        let tapped = TrickType.timeControl
+    func test_general_hasNoHighlight() {
+        XCTAssertNil(PaywallContent(context: .general).highlighted)
+    }
 
-        let content = PaywallContent(context: .trick(tapped))
+    func test_contextual_highlightsTheTappedTrickWithoutReorderingRows() {
+        let general = PaywallContent(context: .general)
 
-        XCTAssertEqual(content.highlighted?.id, tapped)
-        XCTAssertEqual(content.tricks.first?.id, tapped)
-        XCTAssertEqual(content.others.map(\.id), proTypes.filter { $0 != tapped })
-        XCTAssertEqual(content.tricks.count, proTypes.count)
+        let content = PaywallContent(context: .trick(.timeControl))
+
+        XCTAssertEqual(content.highlighted, .timeControl)
+        XCTAssertEqual(content.rows.map(\.id), general.rows.map(\.id))
     }
 
     func test_contextual_headlineNamesTheTappedTrick() {
-        let tapped = TrickCollection.tricks.first { $0.id == .phantomDraw }!
+        let tapped = collection.first { $0.id == .phantomDraw }!
 
         let content = PaywallContent(context: .trick(.phantomDraw))
 
         XCTAssertTrue(content.headline.contains(String(localized: tapped.title)))
     }
 
+    func test_contextual_subtitleCountsEveryTrick() {
+        let content = PaywallContent(context: .trick(.colorSense))
+
+        XCTAssertTrue(content.subtitle.contains("\(collection.count)"))
+    }
+
     func test_contextual_forTheFreeTrick_fallsBackToGeneral() {
         let content = PaywallContent(context: .trick(.geoMentalism))
 
         XCTAssertNil(content.highlighted)
-        XCTAssertEqual(content.tricks.map(\.id), proTypes)
+        XCTAssertEqual(content.headline, PaywallContent(context: .general).headline)
     }
 
-    func test_everyProTrick_hasAResolvedEffectLine() {
-        for type in proTypes {
-            let effect = type.paywallEffect
-
-            XCTAssertNotNil(effect, "\(type) has no paywall effect")
-            XCTAssertFalse(effect?.hasPrefix("paywall.") ?? true, "\(type) effect is an unresolved key: \(effect ?? "")")
+    func test_rowTitles_areFlatAndResolved() {
+        for row in PaywallContent(context: .general).rows {
+            XCTAssertFalse(row.title.contains("\n"), "\(row.id) title has a line break")
+            XCTAssertFalse(row.title.hasPrefix("paywall."), "unresolved key: \(row.title)")
+            XCTAssertFalse(row.title.isEmpty)
         }
     }
 
@@ -66,14 +80,5 @@ final class PaywallContentTests: XCTestCase {
             XCTAssertFalse(text.hasPrefix("paywall."), "unresolved key: \(text)")
             XCTAssertFalse(text.isEmpty)
         }
-    }
-
-    func test_subtitle_countsFromTheFreeTricksToAllOfThem() {
-        let general = PaywallContent(context: .general)
-        let contextual = PaywallContent(context: .trick(.colorSense))
-
-        let freeCount = TrickCollection.tricks.filter { !$0.id.requiresPro }.count
-        XCTAssertTrue(general.subtitle.contains("\(freeCount + proTypes.count)"))
-        XCTAssertTrue(contextual.subtitle.contains("\(proTypes.count - 1)"))
     }
 }

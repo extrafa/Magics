@@ -7,56 +7,55 @@ import Foundation
 
 private let key = L10nDomain("paywall")
 
-struct PaywallTrick: Identifiable {
-    let trick: Trick
-    let effect: String
+struct PaywallRow: Identifiable {
+    enum Kind {
+        case trick(Trick)
+        case noWatermark
+    }
 
-    var id: TrickType { trick.id }
+    let kind: Kind
+    let isFree: Bool
+
+    var id: String {
+        switch kind {
+        case .trick(let trick): trick.id.rawValue
+        case .noWatermark: "noWatermark"
+        }
+    }
+
+    var trickType: TrickType? {
+        if case .trick(let trick) = kind { trick.id } else { nil }
+    }
+
+    var title: String {
+        switch kind {
+        case .trick(let trick): String(localized: trick.title)
+        case .noWatermark: String(localized: key("row.noWatermark"))
+        }
+    }
 }
 
-// What the paywall says and in which order: the one place to tune copy and trick order.
+// What the paywall says and what it lists: the one place to tune copy and rows.
+// Rows come straight from TrickCollection, so a new trick shows up on the paywall by itself.
 struct PaywallContent {
     let headline: String
     let subtitle: String
-    let highlighted: PaywallTrick?
-    let others: [PaywallTrick]
-
-    var tricks: [PaywallTrick] {
-        (highlighted.map { [$0] } ?? []) + others
-    }
+    let rows: [PaywallRow]
+    let highlighted: TrickType?
 
     init(context: PaywallContext, tricks: [Trick] = TrickCollection.tricks) {
-        let freeCount = tricks.filter { !$0.id.requiresPro }.count
-        let proTricks = tricks.compactMap { trick -> PaywallTrick? in
-            guard trick.id.requiresPro, let effect = trick.id.paywallEffect else { return nil }
-            return PaywallTrick(trick: trick, effect: effect)
-        }
+        var rows = tricks.map { PaywallRow(kind: .trick($0), isFree: !$0.id.requiresPro) }
+        rows.append(PaywallRow(kind: .noWatermark, isFree: false))
+        self.rows = rows
 
-        if case .trick(let type) = context, let picked = proTricks.first(where: { $0.id == type }) {
-            let rest = proTricks.filter { $0.id != type }
-            highlighted = picked
-            others = rest
-            headline = String.localizedStringWithFormat(String(localized: key("contextTitle")), String(localized: picked.trick.title))
-            subtitle = String.localizedStringWithFormat(String(localized: key("contextSubtitle")), rest.count)
+        if case .trick(let type) = context, let picked = tricks.first(where: { $0.id == type && $0.id.requiresPro }) {
+            highlighted = type
+            headline = String.localizedStringWithFormat(String(localized: key("contextTitle")), String(localized: picked.title))
+            subtitle = String.localizedStringWithFormat(String(localized: key("contextSubtitle")), tricks.count)
         } else {
             highlighted = nil
-            others = proTricks
             headline = String(localized: key("title"))
-            subtitle = String.localizedStringWithFormat(String(localized: key("subtitle")), freeCount, freeCount + proTricks.count)
-        }
-    }
-}
-
-extension TrickType {
-    // Exhaustive on purpose: a new trick won't compile until it decides what the paywall says about it.
-    var paywallEffect: String? {
-        switch self {
-        case .geoMentalism: nil
-        case .colorSense: String(localized: key("effect.colorSense"))
-        case .calculatorPrediction: String(localized: key("effect.calculatorPrediction"))
-        case .timeControl: String(localized: key("effect.timeControl"))
-        case .magicGallery: String(localized: key("effect.magicGallery"))
-        case .phantomDraw: String(localized: key("effect.phantomDraw"))
+            subtitle = String(localized: key("subtitle"))
         }
     }
 }

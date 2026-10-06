@@ -6915,13 +6915,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Looks ordinary.\nFeels like magic."
+            "value" : "Pay once.\nKeep it forever."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Parece normal.\nEs pura magia."
+            "value" : "Paga una vez.\nTuyo para siempre."
           }
         }
       }
@@ -6932,13 +6932,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Go from %1$lld trick to %2$lld. One payment, yours forever."
+            "value" : "No subscription. No monthly fees.\nYou never pay again."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pasa de %1$lld truco a %2$lld. Un solo pago, tuyos para siempre."
+            "value" : "Sin suscripción. Sin pagos mensuales.\nNunca vuelves a pagar."
           }
         }
       }
@@ -6966,98 +6966,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Plus %lld more tricks. One payment, yours forever."
+            "value" : "Pay once and get all %lld tricks.\nYou never pay again."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Y %lld trucos más. Un solo pago, tuyos para siempre."
-          }
-        }
-      }
-    },
-    "paywall.effect.colorSense" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name the color. Without looking."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Di el color. Sin mirar."
-          }
-        }
-      }
-    },
-    "paywall.effect.calculatorPrediction" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Know the answer before they press equals."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sabe la respuesta antes de que presionen igual."
-          }
-        }
-      }
-    },
-    "paywall.effect.timeControl" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Name the exact time they stop."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Di el tiempo exacto en que se detienen."
-          }
-        }
-      }
-    },
-    "paywall.effect.magicGallery" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Their choice appears in your photos."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Su elección aparece en tus fotos."
-          }
-        }
-      }
-    },
-    "paywall.effect.phantomDraw" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Whatever they draw, you already know."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Lo que sea que dibujen, tú ya lo sabes."
+            "value" : "Paga una vez y consigue los %lld trucos.\nNunca vuelves a pagar."
           }
         }
       }
@@ -7085,13 +7000,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "once, yours forever"
+            "value" : "one-time payment"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "una vez, tuyo para siempre"
+            "value" : "pago único"
           }
         }
       }
@@ -7211,6 +7126,74 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Galería\nMágica"
+          }
+        }
+      }
+    },
+    "paywall.row.noWatermark" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No watermark"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Sin marca de agua"
+          }
+        }
+      }
+    },
+    "paywall.column.free" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Free"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Gratis"
+          }
+        }
+      }
+    },
+    "paywall.a11y.inBoth" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "included in Free and Pro"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "incluido en Gratis y Pro"
+          }
+        }
+      }
+    },
+    "paywall.a11y.proOnly" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pro only"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "solo en Pro"
           }
         }
       }
