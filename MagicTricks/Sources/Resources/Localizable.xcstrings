@@ -6977,6 +6977,57 @@
         }
       }
     },
+    "paywall.unlocks" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlocks %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquea %@."
+          }
+        }
+      }
+    },
+    "paywall.alsoUnlocks" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Also unlocks %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "También desbloquea %@."
+          }
+        }
+      }
+    },
+    "paywall.freeNote" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ stays free."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%@ sigue siendo gratis."
+          }
+        }
+      }
+    },
     "paywall.pill" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -43,19 +43,47 @@ struct PaywallContent {
     let rows: [PaywallRow]
     let highlighted: TrickType?
 
+    // The tapped Pro trick (contextual paywall) and what it does; nil on the general paywall.
+    let focus: Trick?
+    let effect: String?
+    // Names, not a count: the sentence can't claim a number that drifts from the catalog.
+    let unlocks: String?
+    let freeNote: String?
+
     init(context: PaywallContext, tricks: [Trick] = TrickCollection.tricks) {
         var rows = tricks.map { PaywallRow(kind: .trick($0), isFree: !$0.id.requiresPro) }
         rows.append(PaywallRow(kind: .noWatermark, isFree: false))
         self.rows = rows
 
-        if case .trick(let type) = context, let picked = tricks.first(where: { $0.id == type && $0.id.requiresPro }) {
-            highlighted = type
+        let proTricks = tricks.filter { $0.id.requiresPro }
+        let freeTricks = tricks.filter { !$0.id.requiresPro }
+        let picked: Trick?
+        if case .trick(let type) = context {
+            picked = proTricks.first { $0.id == type }
+        } else {
+            picked = nil
+        }
+
+        freeNote = Self.sentence(key("freeNote"), listing: freeTricks)
+        focus = picked
+        highlighted = picked?.id
+
+        if let picked {
             headline = String.localizedStringWithFormat(String(localized: key("contextTitle")), String(localized: picked.title))
             subtitle = String.localizedStringWithFormat(String(localized: key("contextSubtitle")), tricks.count)
+            effect = String(localized: picked.subtitle)
+            unlocks = Self.sentence(key("alsoUnlocks"), listing: proTricks.filter { $0.id != picked.id })
         } else {
-            highlighted = nil
             headline = String(localized: key("title"))
             subtitle = String(localized: key("subtitle"))
+            effect = nil
+            unlocks = Self.sentence(key("unlocks"), listing: proTricks)
         }
+    }
+
+    private static func sentence(_ format: LocalizedStringResource, listing tricks: [Trick]) -> String? {
+        guard !tricks.isEmpty else { return nil }
+        let names = ListFormatter.localizedString(byJoining: tricks.map { String(localized: $0.title) })
+        return String.localizedStringWithFormat(String(localized: format), names)
     }
 }

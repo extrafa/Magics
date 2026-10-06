@@ -81,4 +81,61 @@ final class PaywallContentTests: XCTestCase {
             XCTAssertFalse(text.isEmpty)
         }
     }
+
+    func test_general_unlocksNamesEveryProTrickAndNoFreeOne() throws {
+        let content = PaywallContent(context: .general)
+        let unlocks = try XCTUnwrap(content.unlocks)
+
+        for trick in collection {
+            let name = String(localized: trick.title)
+            XCTAssertEqual(unlocks.contains(name), trick.id.requiresPro, name)
+        }
+        XCTAssertNil(content.focus)
+        XCTAssertNil(content.effect)
+    }
+
+    func test_general_freeNoteNamesTheFreeTrick() throws {
+        let freeNote = try XCTUnwrap(PaywallContent(context: .general).freeNote)
+
+        for trick in collection {
+            XCTAssertEqual(freeNote.contains(String(localized: trick.title)), !trick.id.requiresPro)
+        }
+    }
+
+    func test_contextual_focusesTheTappedTrickAndDescribesIt() throws {
+        let tapped = collection.first { $0.id == .phantomDraw }!
+
+        let content = PaywallContent(context: .trick(.phantomDraw))
+
+        XCTAssertEqual(content.focus?.id, .phantomDraw)
+        XCTAssertEqual(content.effect, String(localized: tapped.subtitle))
+    }
+
+    func test_contextual_unlocksListsOnlyTheOtherProTricks() throws {
+        let content = PaywallContent(context: .trick(.timeControl))
+        let unlocks = try XCTUnwrap(content.unlocks)
+
+        for trick in collection {
+            let expected = trick.id.requiresPro && trick.id != .timeControl
+            XCTAssertEqual(unlocks.contains(String(localized: trick.title)), expected, "\(trick.id)")
+        }
+    }
+
+    func test_contextual_withNoOtherProTricks_hasNoUnlocksLine() {
+        let onlyOnePro = collection.filter { !$0.id.requiresPro || $0.id == .phantomDraw }
+
+        let content = PaywallContent(context: .trick(.phantomDraw), tricks: onlyOnePro)
+
+        XCTAssertNil(content.unlocks)
+    }
+
+    func test_copy_neverClaimsACountOfTricks() {
+        let texts = [PaywallContent(context: .general), PaywallContent(context: .trick(.colorSense))]
+            .flatMap { [$0.headline, $0.unlocks, $0.freeNote, $0.effect] }
+            .compactMap { $0 }
+
+        for text in texts {
+            XCTAssertFalse(text.contains("\(collection.count)"), text)
+        }
+    }
 }
