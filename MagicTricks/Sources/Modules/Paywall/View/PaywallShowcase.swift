@@ -113,7 +113,7 @@ struct PaywallShowcase: View {
         .transition(.opacity)
         .animation(reduceMotion ? nil : .easeInOut(duration: 0.25), value: index)
         .accessibilityElement(children: .combine)
-        .accessibilityLabel("\(String(localized: current.trick.title)). \(current.effect)")
+        .accessibilityLabel(Text(verbatim: "\(String(localized: current.trick.title)). \(current.effect)"))
     }
 
     // MARK: Switches
