@@ -68,11 +68,12 @@ final class PaywallContentTests: XCTestCase {
         }
     }
 
-    func test_subtitle_countsTheTricksBeingUnlocked() {
+    func test_subtitle_countsFromTheFreeTricksToAllOfThem() {
         let general = PaywallContent(context: .general)
         let contextual = PaywallContent(context: .trick(.colorSense))
 
-        XCTAssertTrue(general.subtitle.contains("\(proTypes.count)"))
+        let freeCount = TrickCollection.tricks.filter { !$0.id.requiresPro }.count
+        XCTAssertTrue(general.subtitle.contains("\(freeCount + proTypes.count)"))
         XCTAssertTrue(contextual.subtitle.contains("\(proTypes.count - 1)"))
     }
 }

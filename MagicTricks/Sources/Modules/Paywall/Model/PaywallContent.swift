@@ -26,6 +26,7 @@ struct PaywallContent {
     }
 
     init(context: PaywallContext, tricks: [Trick] = TrickCollection.tricks) {
+        let freeCount = tricks.filter { !$0.id.requiresPro }.count
         let proTricks = tricks.compactMap { trick -> PaywallTrick? in
             guard trick.id.requiresPro, let effect = trick.id.paywallEffect else { return nil }
             return PaywallTrick(trick: trick, effect: effect)
@@ -41,7 +42,7 @@ struct PaywallContent {
             highlighted = nil
             others = proTricks
             headline = String(localized: key("title"))
-            subtitle = String.localizedStringWithFormat(String(localized: key("subtitle")), proTricks.count)
+            subtitle = String.localizedStringWithFormat(String(localized: key("subtitle")), freeCount, freeCount + proTricks.count)
         }
     }
 }

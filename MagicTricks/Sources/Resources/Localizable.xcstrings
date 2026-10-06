@@ -6915,13 +6915,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Every trick. One payment."
+            "value" : "Looks ordinary.\nFeels like magic."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Todos los trucos. Un solo pago."
+            "value" : "Parece normal.\nEs pura magia."
           }
         }
       }
@@ -6932,13 +6932,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlock %lld more tricks and keep them forever. No subscription."
+            "value" : "Go from %1$lld trick to %2$lld. One payment, yours forever."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desbloquea %lld trucos más y quédatelos para siempre. Sin suscripción."
+            "value" : "Pasa de %1$lld truco a %2$lld. Un solo pago, tuyos para siempre."
           }
         }
       }
