@@ -27,12 +27,8 @@ struct PaywallScreen: View {
                     VStack(spacing: 14) {
                         header
                             .staggeredAppear(appeared, step: 0)
-                        trickList
-                        Text(key("footnote"))
-                            .font(.system(.footnote, design: .rounded))
-                            .foregroundStyle(.secondary)
-                            .multilineTextAlignment(.center)
-                            .staggeredAppear(appeared, step: content.tricks.count + 1)
+                        PaywallShowcase(tricks: content.tricks)
+                            .staggeredAppear(appeared, step: 1)
                     }
                     .padding(.horizontal, 20)
                     .padding(.top, 4)
@@ -40,7 +36,7 @@ struct PaywallScreen: View {
                 }
 
                 purchaseDock
-                    .staggeredAppear(appeared, step: content.tricks.count + 2)
+                    .staggeredAppear(appeared, step: 2)
             }
             .background { Color.backgroundScreen.ignoresSafeArea() }
             .navigationBarTitleDisplayMode(.inline)
@@ -88,14 +84,16 @@ struct PaywallScreen: View {
     // MARK: Header
 
     private var header: some View {
-        VStack(spacing: 12) {
-            Text(key("pill"))
-                .font(.system(.caption, design: .rounded, weight: .bold))
-                .foregroundStyle(.white)
-                .padding(.horizontal, 12)
-                .padding(.vertical, 5)
-                .background(Capsule().fill(TrickPalette.proGradient))
-                .accessibilityHidden(true)
+        VStack(spacing: 10) {
+            if !PaywallShowcase.isCompactScreen {
+                Text(key("pill"))
+                    .font(.system(.caption, design: .rounded, weight: .bold))
+                    .foregroundStyle(.white)
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 5)
+                    .background(Capsule().fill(TrickPalette.proGradient))
+                    .accessibilityHidden(true)
+            }
 
             Text(content.headline)
                 .font(.system(.title, design: .rounded, weight: .bold))
@@ -107,43 +105,8 @@ struct PaywallScreen: View {
                 .foregroundStyle(.secondary)
         }
         .multilineTextAlignment(.center)
-    }
-
-    // MARK: Tricks
-
-    @ViewBuilder
-    private var trickList: some View {
-        if let highlighted = content.highlighted {
-            VStack(spacing: 7) {
-                PaywallTrickRow(item: highlighted, style: .highlighted)
-                    .staggeredAppear(appeared, step: step(of: highlighted))
-
-                Text(key("alsoIncluded"))
-                    .font(.system(.caption, design: .rounded, weight: .semibold))
-                    .foregroundStyle(.secondary)
-                    .frame(maxWidth: .infinity, alignment: .leading)
-                    .padding(.horizontal, 4)
-                    .padding(.top, 4)
-                    .accessibilityAddTraits(.isHeader)
-                    .staggeredAppear(appeared, step: content.others.first.map(step(of:)) ?? 1)
-
-                ForEach(content.others) { item in
-                    PaywallTrickRow(item: item, style: .compact)
-                        .staggeredAppear(appeared, step: step(of: item))
-                }
-            }
-        } else {
-            VStack(spacing: 7) {
-                ForEach(content.tricks) { item in
-                    PaywallTrickRow(item: item, style: .regular)
-                        .staggeredAppear(appeared, step: step(of: item))
-                }
-            }
-        }
-    }
-
-    private func step(of item: PaywallTrick) -> Int {
-        (content.tricks.firstIndex { $0.id == item.id } ?? 0) + 1
+        // At the very largest sizes the headline alone would fill the screen and push the showcase out of sight.
+        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     // MARK: Purchase
@@ -270,83 +233,6 @@ private struct StaggeredAppear: ViewModifier {
 private extension View {
     func staggeredAppear(_ appeared: Bool, step: Int) -> some View {
         modifier(StaggeredAppear(appeared: appeared, step: step))
-    }
-}
-
-// MARK: - Trick row
-
-private struct PaywallTrickRow: View {
-    enum Style {
-        case regular
-        case highlighted
-        case compact
-    }
-
-    let item: PaywallTrick
-    let style: Style
-
-    private var color: Color { item.trick.id.collectionColor }
-
-    private var chipSize: CGFloat {
-        switch style {
-        case .regular: 40
-        case .highlighted: 46
-        case .compact: 30
-        }
-    }
-
-    private var verticalPadding: CGFloat {
-        switch style {
-        case .regular: 9
-        case .highlighted: 13
-        case .compact: 6
-        }
-    }
-
-    var body: some View {
-        HStack(spacing: 10) {
-            ZStack {
-                RoundedRectangle(cornerRadius: style == .compact ? 8 : 10, style: .continuous)
-                    .fill(color.opacity(style == .highlighted ? 0.2 : 0.14))
-                    .frame(width: chipSize, height: chipSize)
-                Image(systemName: item.trick.image.rawValue)
-                    .font(.system(size: style == .compact ? 14 : style == .highlighted ? 21 : 18, weight: .semibold))
-                    .foregroundStyle(color)
-            }
-            .accessibilityHidden(true)
-
-            VStack(alignment: .leading, spacing: 2) {
-                Text(item.trick.title)
-                    .font(.system(style == .highlighted ? .body : .subheadline, design: .rounded, weight: .semibold))
-                    .foregroundStyle(.textPrimary)
-                if style != .compact {
-                    Text(item.effect)
-                        .font(.system(.footnote, design: .rounded))
-                        .foregroundStyle(.secondary)
-                }
-            }
-            .frame(maxWidth: .infinity, alignment: .leading)
-
-            Image(systemName: style == .highlighted ? "lock.open.fill" : "checkmark.circle.fill")
-                .font(style == .highlighted ? .body : .callout)
-                .foregroundStyle(color)
-                .accessibilityHidden(true)
-        }
-        .padding(.horizontal, 10)
-        .padding(.vertical, verticalPadding)
-        .cardSurface(cornerRadius: 16)
-        .overlay {
-            if style == .highlighted {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(color.opacity(0.08))
-                    .overlay {
-                        RoundedRectangle(cornerRadius: 16, style: .continuous)
-                            .stroke(color, lineWidth: 1.5)
-                    }
-                    .allowsHitTesting(false)
-            }
-        }
-        .accessibilityElement(children: .combine)
     }
 }
 

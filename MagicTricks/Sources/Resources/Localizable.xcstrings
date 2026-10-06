@@ -7079,23 +7079,6 @@
         }
       }
     },
-    "paywall.footnote" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Plus: no watermark during shows"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Además: sin marca de agua en tus shows"
-          }
-        }
-      }
-    },
     "paywall.priceCaption" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7228,23 +7211,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Galería\nMágica"
-          }
-        }
-      }
-    },
-    "paywall.alsoIncluded" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Also included"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "También incluido"
           }
         }
       }
