@@ -100,10 +100,29 @@ struct PaywallScreen: View {
 
     // MARK: Tricks
 
+    @ViewBuilder
     private var trickList: some View {
-        VStack(spacing: 7) {
-            ForEach(content.tricks) { item in
-                PaywallTrickRow(item: item)
+        if let highlighted = content.highlighted {
+            VStack(spacing: 7) {
+                PaywallTrickRow(item: highlighted, style: .highlighted)
+
+                Text(key("alsoIncluded"))
+                    .font(.system(.caption, design: .rounded, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(.horizontal, 4)
+                    .padding(.top, 4)
+                    .accessibilityAddTraits(.isHeader)
+
+                ForEach(content.others) { item in
+                    PaywallTrickRow(item: item, style: .compact)
+                }
+            }
+        } else {
+            VStack(spacing: 7) {
+                ForEach(content.tricks) { item in
+                    PaywallTrickRow(item: item, style: .regular)
+                }
             }
         }
     }
@@ -196,40 +215,76 @@ struct PaywallScreen: View {
 // MARK: - Trick row
 
 private struct PaywallTrickRow: View {
+    enum Style {
+        case regular
+        case highlighted
+        case compact
+    }
+
     let item: PaywallTrick
+    let style: Style
 
     private var color: Color { item.trick.id.collectionColor }
+
+    private var chipSize: CGFloat {
+        switch style {
+        case .regular: 40
+        case .highlighted: 46
+        case .compact: 30
+        }
+    }
+
+    private var verticalPadding: CGFloat {
+        switch style {
+        case .regular: 9
+        case .highlighted: 13
+        case .compact: 6
+        }
+    }
 
     var body: some View {
         HStack(spacing: 10) {
             ZStack {
-                RoundedRectangle(cornerRadius: 10, style: .continuous)
-                    .fill(color.opacity(0.14))
-                    .frame(width: 40, height: 40)
+                RoundedRectangle(cornerRadius: style == .compact ? 8 : 10, style: .continuous)
+                    .fill(color.opacity(style == .highlighted ? 0.2 : 0.14))
+                    .frame(width: chipSize, height: chipSize)
                 Image(systemName: item.trick.image.rawValue)
-                    .font(.system(size: 18, weight: .semibold))
+                    .font(.system(size: style == .compact ? 14 : style == .highlighted ? 21 : 18, weight: .semibold))
                     .foregroundStyle(color)
             }
             .accessibilityHidden(true)
 
             VStack(alignment: .leading, spacing: 2) {
                 Text(item.trick.title)
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .font(.system(style == .highlighted ? .body : .subheadline, design: .rounded, weight: .semibold))
                     .foregroundStyle(.textPrimary)
-                Text(item.effect)
-                    .font(.system(.footnote, design: .rounded))
-                    .foregroundStyle(.secondary)
+                if style != .compact {
+                    Text(item.effect)
+                        .font(.system(.footnote, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
             }
             .frame(maxWidth: .infinity, alignment: .leading)
 
-            Image(systemName: "checkmark.circle.fill")
-                .font(.callout)
+            Image(systemName: style == .highlighted ? "lock.open.fill" : "checkmark.circle.fill")
+                .font(style == .highlighted ? .body : .callout)
                 .foregroundStyle(color)
                 .accessibilityHidden(true)
         }
         .padding(.horizontal, 10)
-        .padding(.vertical, 9)
+        .padding(.vertical, verticalPadding)
         .cardSurface(cornerRadius: 16)
+        .overlay {
+            if style == .highlighted {
+                RoundedRectangle(cornerRadius: 16, style: .continuous)
+                    .fill(color.opacity(0.08))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 16, style: .continuous)
+                            .stroke(color, lineWidth: 1.5)
+                    }
+                    .allowsHitTesting(false)
+            }
+        }
         .accessibilityElement(children: .combine)
     }
 }
@@ -249,6 +304,18 @@ final class PaywallPreviewStoreService: StoreServicing {
 
 #Preview("General") {
     PaywallScreen(context: .general, onDismiss: {})
+        .background(Color.backgroundScreen)
+        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
+}
+
+#Preview("Phantom Draw") {
+    PaywallScreen(context: .trick(.phantomDraw), onDismiss: {})
+        .background(Color.backgroundScreen)
+        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
+}
+
+#Preview("Time Control") {
+    PaywallScreen(context: .trick(.timeControl), onDismiss: {})
         .background(Color.backgroundScreen)
         .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
 }

@@ -7537,6 +7537,23 @@
           }
         }
       }
+    },
+    "paywall.alsoIncluded" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Also included"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "También incluido"
+          }
+        }
+      }
     }
   },
   "version" : "1.1"
