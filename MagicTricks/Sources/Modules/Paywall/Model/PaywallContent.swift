@@ -46,7 +46,7 @@ struct PaywallContent {
     // The tapped Pro trick (contextual paywall) and what it does; nil on the general paywall.
     let focus: Trick?
     let effect: String?
-    // Names, not a count: the sentence can't claim a number that drifts from the catalog.
+    // The count is derived from the catalog (never typed into copy), so it can't drift from what the purchase opens.
     let unlocks: String?
     let freeNote: String?
 
@@ -64,7 +64,9 @@ struct PaywallContent {
             picked = nil
         }
 
-        freeNote = Self.sentence(key("freeNote"), listing: freeTricks)
+        freeNote = Self.names(of: freeTricks).map {
+            String.localizedStringWithFormat(String(localized: key("freeNote")), $0)
+        }
         focus = picked
         highlighted = picked?.id
 
@@ -72,18 +74,25 @@ struct PaywallContent {
             headline = String.localizedStringWithFormat(String(localized: key("contextTitle")), String(localized: picked.title))
             subtitle = String.localizedStringWithFormat(String(localized: key("contextSubtitle")), tricks.count)
             effect = String(localized: picked.subtitle)
-            unlocks = Self.sentence(key("alsoUnlocks"), listing: proTricks.filter { $0.id != picked.id })
+            unlocks = Self.countedSentence(key: "alsoUnlocks", listing: proTricks.filter { $0.id != picked.id })
         } else {
             headline = String(localized: key("title"))
             subtitle = String(localized: key("subtitle"))
             effect = nil
-            unlocks = Self.sentence(key("unlocks"), listing: proTricks)
+            unlocks = Self.countedSentence(key: "unlocks", listing: proTricks)
         }
     }
 
-    private static func sentence(_ format: LocalizedStringResource, listing tricks: [Trick]) -> String? {
+    private static func names(of tricks: [Trick]) -> String? {
         guard !tricks.isEmpty else { return nil }
-        let names = ListFormatter.localizedString(byJoining: tricks.map { String(localized: $0.title) })
-        return String.localizedStringWithFormat(String(localized: format), names)
+        return ListFormatter.localizedString(byJoining: tricks.map { String(localized: $0.title) })
+    }
+
+    // "5 more tricks: A, B and C." One key pair per sentence, like the onboarding pulse counter does.
+    private static func countedSentence(key suffix: String, listing tricks: [Trick]) -> String? {
+        guard let names = names(of: tricks) else { return nil }
+        let variant = tricks.count == 1 ? "one" : "other"
+        let format = String(localized: key("\(suffix).\(variant)"))
+        return String.localizedStringWithFormat(format, tricks.count, names)
     }
 }

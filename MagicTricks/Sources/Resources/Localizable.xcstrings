@@ -6977,40 +6977,6 @@
         }
       }
     },
-    "paywall.unlocks" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Unlocks %@."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Desbloquea %@."
-          }
-        }
-      }
-    },
-    "paywall.alsoUnlocks" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Also unlocks %@."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "También desbloquea %@."
-          }
-        }
-      }
-    },
     "paywall.freeNote" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7028,36 +6994,104 @@
         }
       }
     },
-    "paywall.trail.start" : {
+    "paywall.unlocks.one" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You pay today"
+            "value" : "%lld more trick: %@."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pagas hoy"
+            "value" : "%lld truco más: %@."
           }
         }
       }
     },
-    "paywall.trail.end" : {
+    "paywall.unlocks.other" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Never again"
+            "value" : "%lld more tricks: %@."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nunca más"
+            "value" : "%lld trucos más: %@."
+          }
+        }
+      }
+    },
+    "paywall.alsoUnlocks.one" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus %lld more trick: %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Además, %lld truco más: %@."
+          }
+        }
+      }
+    },
+    "paywall.alsoUnlocks.other" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Plus %lld more tricks: %@."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Además, %lld trucos más: %@."
+          }
+        }
+      }
+    },
+    "paywall.pulse.label" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "today"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "hoy"
+          }
+        }
+      }
+    },
+    "paywall.noRenew" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nothing renews. Nothing to cancel."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Nada se renueva. Nada que cancelar."
           }
         }
       }

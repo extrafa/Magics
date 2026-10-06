@@ -129,13 +129,26 @@ final class PaywallContentTests: XCTestCase {
         XCTAssertNil(content.unlocks)
     }
 
-    func test_copy_neverClaimsACountOfTricks() {
-        let texts = [PaywallContent(context: .general), PaywallContent(context: .trick(.colorSense))]
-            .flatMap { [$0.headline, $0.unlocks, $0.freeNote, $0.effect] }
-            .compactMap { $0 }
+    func test_unlocks_countsOnlyTheProTricksNeverTheWholeCollection() throws {
+        let pro = collection.filter { $0.id.requiresPro }.count
+        XCTAssertNotEqual(pro, collection.count)
 
-        for text in texts {
-            XCTAssertFalse(text.contains("\(collection.count)"), text)
-        }
+        let general = try XCTUnwrap(PaywallContent(context: .general).unlocks)
+        let contextual = try XCTUnwrap(PaywallContent(context: .trick(.colorSense)).unlocks)
+
+        XCTAssertTrue(general.contains("\(pro)"), general)
+        XCTAssertFalse(general.contains("\(collection.count)"), general)
+        XCTAssertTrue(contextual.contains("\(pro - 1)"), contextual)
+        XCTAssertFalse(contextual.contains("\(collection.count)"), contextual)
+    }
+
+    func test_unlocks_withASingleProTrick_usesTheSingularSentence() throws {
+        let freeAndOnePro = collection.filter { !$0.id.requiresPro || $0.id == .phantomDraw }
+        let key = L10nDomain("paywall")
+        let name = String(localized: collection.first { $0.id == .phantomDraw }!.title)
+
+        let single = PaywallContent(context: .general, tricks: freeAndOnePro).unlocks
+
+        XCTAssertEqual(single, String.localizedStringWithFormat(String(localized: key("unlocks.one")), 1, name))
     }
 }

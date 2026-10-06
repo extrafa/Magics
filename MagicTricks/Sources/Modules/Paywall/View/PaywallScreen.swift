@@ -14,6 +14,8 @@ struct PaywallScreen: View {
     @State private var appeared = false
     @ScaledMetric(relativeTo: .largeTitle) private var priceSize: CGFloat = 72
 
+    private static let sidePadding: CGFloat = 24
+
     private let content: PaywallContent
 
     init(context: PaywallContext = .general, onDismiss: @escaping Completion) {
@@ -26,16 +28,16 @@ struct PaywallScreen: View {
             VStack(spacing: 0) {
                 GeometryReader { geo in
                     ScrollView(showsIndicators: false) {
-                        VStack(spacing: 28) {
+                        VStack(alignment: .leading, spacing: 20) {
                             hero
                                 .staggeredAppear(appeared, step: 0)
                             details
                                 .staggeredAppear(appeared, step: 1)
                         }
-                        .padding(.horizontal, 24)
+                        .padding(.horizontal, Self.sidePadding)
                         .padding(.vertical, 8)
                         // Centers the poster on tall screens; at big text sizes it grows and scrolls instead.
-                        .frame(maxWidth: .infinity, minHeight: geo.size.height)
+                        .frame(maxWidth: .infinity, minHeight: geo.size.height, alignment: .leading)
                     }
                     .scrollBouncesOnlyWhenNeeded()
                 }
@@ -89,17 +91,17 @@ struct PaywallScreen: View {
     // MARK: Hero
 
     private var hero: some View {
-        VStack(spacing: 20) {
+        VStack(alignment: .leading, spacing: 16) {
             if let focus = content.focus {
                 TrickIcon(
                     systemName: focus.image.rawValue,
                     color: focus.id.collectionColor,
-                    size: CGSize(width: 72, height: 72)
+                    size: CGSize(width: 56, height: 56)
                 )
                 .accessibilityHidden(true)
             }
 
-            VStack(spacing: 8) {
+            VStack(alignment: .leading, spacing: 8) {
                 Text(content.headline)
                     .font(.system(.title, design: .rounded, weight: .bold))
                     .foregroundStyle(.textPrimary)
@@ -111,21 +113,24 @@ struct PaywallScreen: View {
                         .foregroundStyle(.secondary)
                 }
             }
-            .multilineTextAlignment(.center)
 
             if store.productsLoadError == nil {
                 priceBlock(for: store.products.first)
             }
 
-            PaywallCoinTrail()
+            // Runs to the screen edge on purpose: the line has no end.
+            PaywallPulseLine()
+                .padding(.trailing, -Self.sidePadding)
         }
-        // At the very largest sizes the headline and caption alone would push the coins and the rest out of sight.
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .multilineTextAlignment(.leading)
+        // At the very largest sizes the headline and caption alone would push the pulse and the rest out of sight.
         .dynamicTypeSize(...DynamicTypeSize.accessibility1)
     }
 
     // The price is the biggest thing on the screen: it's the whole deal.
     private func priceBlock(for product: StoreProduct?) -> some View {
-        VStack(spacing: 4) {
+        VStack(alignment: .leading, spacing: 4) {
             Text(product?.displayPrice ?? "$0.00")
                 .font(.system(size: priceSize, weight: .heavy, design: .rounded))
                 .foregroundStyle(.textPrimary)
@@ -136,7 +141,6 @@ struct PaywallScreen: View {
             Text(key("priceCaption"))
                 .font(.system(.headline, design: .rounded, weight: .semibold))
                 .foregroundStyle(.secondary)
-                .multilineTextAlignment(.center)
         }
         .accessibilityElement(children: .combine)
         .accessibilityHidden(product == nil)
@@ -145,7 +149,7 @@ struct PaywallScreen: View {
     // MARK: Details
 
     private var details: some View {
-        VStack(spacing: 10) {
+        VStack(alignment: .leading, spacing: 10) {
             if let unlocks = content.unlocks {
                 Text(unlocks)
                     .font(.system(.subheadline, design: .rounded, weight: .medium))
@@ -156,7 +160,8 @@ struct PaywallScreen: View {
                 .font(.system(.footnote, design: .rounded))
                 .foregroundStyle(.secondary)
         }
-        .multilineTextAlignment(.center)
+        .frame(maxWidth: .infinity, alignment: .leading)
+        .multilineTextAlignment(.leading)
     }
 
     private var notes: String {
@@ -172,16 +177,24 @@ struct PaywallScreen: View {
         return VStack(spacing: 10) {
             purchaseSection(for: product)
 
+            if store.productsLoadError == nil {
+                Text(key("noRenew"))
+                    .font(.system(.footnote, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+            }
+
             Button(action: { Task { await store.restore() } }) {
-                if store.phase == .restoring {
-                    ProgressView()
-                        .padding(.vertical, 8)
-                } else {
-                    Text(key("restore"))
-                        .font(.system(.footnote, design: .rounded, weight: .medium))
-                        .foregroundStyle(.secondary)
-                        .padding(.vertical, 8)
+                Group {
+                    if store.phase == .restoring {
+                        ProgressView()
+                    } else {
+                        Text(key("restore"))
+                            .font(.system(.footnote, design: .rounded, weight: .medium))
+                            .foregroundStyle(.secondary)
+                    }
                 }
+                .frame(minWidth: 44, minHeight: 44)
             }
             .disabled(store.phase != .idle)
 
