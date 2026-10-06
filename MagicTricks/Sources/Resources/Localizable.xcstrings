@@ -6909,19 +6909,36 @@
         }
       }
     },
-    "paywall.title" : {
+    "paywall.title.one" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pay once.\nKeep it forever."
+            "value" : "%lld more trick.\nPay once.\nYours forever."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Paga una vez.\nTuyo para siempre."
+            "value" : "%lld truco más.\nPaga una vez.\nTuyo para siempre."
+          }
+        }
+      }
+    },
+    "paywall.title.other" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld more tricks.\nPay once.\nYours forever."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "%lld trucos más.\nPaga una vez.\nTuyos para siempre."
           }
         }
       }
@@ -6960,36 +6977,19 @@
         }
       }
     },
-    "paywall.unlocks.one" : {
+    "paywall.unlocks" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld more trick: %@."
+            "value" : "%@."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "%lld truco más: %@."
-          }
-        }
-      }
-    },
-    "paywall.unlocks.other" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld more tricks: %@."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld trucos más: %@."
+            "value" : "%@."
           }
         }
       }
@@ -7034,13 +7034,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nothing renews. Nothing to cancel."
+            "value" : "Yours forever. Nothing renews, nothing to cancel."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nada se renueva. Nada que cancelar."
+            "value" : "Tuyo para siempre. Nada se renueva, nada que cancelar."
           }
         }
       }
@@ -7051,13 +7051,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pro also removes the watermark."
+            "value" : "Unlocking also removes the watermark."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pro también quita la marca de agua."
+            "value" : "Al desbloquear también se quita la marca de agua."
           }
         }
       }
@@ -7085,13 +7085,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Unlock all tricks"
+            "value" : "Pay once"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Desbloquear todos los trucos"
+            "value" : "Pagar una vez"
           }
         }
       }

@@ -81,7 +81,7 @@ struct PaywallScreen: View {
 
     // Wide screens get bigger cards; short ones (SE) shrink them so the text and the dock still fit.
     private static func cardWidth(in size: CGSize) -> CGFloat {
-        min(size.width * 0.38, size.height * 0.24, 170)
+        min(size.width * 0.38, size.height * 0.21, 170)
     }
 
     private var text: some View {

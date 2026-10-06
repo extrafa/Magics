@@ -42,9 +42,11 @@ struct PaywallContent {
             effect = String(localized: picked.subtitle)
             unlocks = Self.countedSentence(key: "alsoUnlocks", listing: proTricks.filter { $0.id != picked.id })
         } else {
-            headline = String(localized: key("title"))
+            headline = Self.countedText(key: "title", count: proTricks.count)
             effect = nil
-            unlocks = Self.countedSentence(key: "unlocks", listing: proTricks)
+            unlocks = Self.names(of: proTricks).map {
+                String.localizedStringWithFormat(String(localized: key("unlocks")), $0)
+            }
         }
     }
 
@@ -53,7 +55,13 @@ struct PaywallContent {
         return ListFormatter.localizedString(byJoining: tricks.map { String(localized: $0.title) })
     }
 
-    // "5 more tricks: A, B and C." One key pair per sentence, like the onboarding pulse counter does.
+    // One key pair per counted text ("…one" / "…other"), like the onboarding pulse counter does.
+    private static func countedText(key suffix: String, count: Int) -> String {
+        let variant = count == 1 ? "one" : "other"
+        return String.localizedStringWithFormat(String(localized: key("\(suffix).\(variant)")), count)
+    }
+
+    // "Plus 4 more tricks: A, B and C."
     private static func countedSentence(key suffix: String, listing tricks: [Trick]) -> String? {
         guard let names = names(of: tricks) else { return nil }
         let variant = tricks.count == 1 ? "one" : "other"

@@ -101,11 +101,11 @@ final class PaywallContentTests: XCTestCase {
         XCTAssertNil(content.unlocks)
     }
 
-    func test_unlocks_countsOnlyTheProTricksNeverTheWholeCollection() throws {
+    func test_count_isTheProTricksNeverTheWholeCollection() throws {
         let pro = collection.filter { $0.id.requiresPro }.count
         XCTAssertNotEqual(pro, collection.count)
 
-        let general = try XCTUnwrap(PaywallContent(context: .general).unlocks)
+        let general = PaywallContent(context: .general).headline
         let contextual = try XCTUnwrap(PaywallContent(context: .trick(.colorSense)).unlocks)
 
         XCTAssertTrue(general.contains("\(pro)"), general)
@@ -114,13 +114,24 @@ final class PaywallContentTests: XCTestCase {
         XCTAssertFalse(contextual.contains("\(collection.count)"), contextual)
     }
 
-    func test_unlocks_withASingleProTrick_usesTheSingularSentence() throws {
+    func test_general_withASingleProTrick_usesTheSingularHeadline() throws {
         let freeAndOnePro = collection.filter { !$0.id.requiresPro || $0.id == .phantomDraw }
         let key = L10nDomain("paywall")
         let name = String(localized: collection.first { $0.id == .phantomDraw }!.title)
 
-        let single = PaywallContent(context: .general, tricks: freeAndOnePro).unlocks
+        let content = PaywallContent(context: .general, tricks: freeAndOnePro)
 
-        XCTAssertEqual(single, String.localizedStringWithFormat(String(localized: key("unlocks.one")), 1, name))
+        XCTAssertEqual(content.headline, String.localizedStringWithFormat(String(localized: key("title.one")), 1))
+        XCTAssertEqual(content.unlocks, String.localizedStringWithFormat(String(localized: key("unlocks")), name))
+    }
+
+    func test_contextual_withASingleOtherProTrick_usesTheSingularSentence() throws {
+        let twoPro = collection.filter { !$0.id.requiresPro || $0.id == .phantomDraw || $0.id == .colorSense }
+        let key = L10nDomain("paywall")
+        let name = String(localized: collection.first { $0.id == .phantomDraw }!.title)
+
+        let content = PaywallContent(context: .trick(.colorSense), tricks: twoPro)
+
+        XCTAssertEqual(content.unlocks, String.localizedStringWithFormat(String(localized: key("alsoUnlocks.one")), 1, name))
     }
 }
