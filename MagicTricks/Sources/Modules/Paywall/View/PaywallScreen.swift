@@ -99,9 +99,10 @@ struct PaywallScreen: View {
             }
 
             if let unlocks = content.unlocks {
-                Text(unlocks)
-                    .font(.system(.body, design: .rounded))
-                    .foregroundStyle(.secondary)
+                Text(coloredNames(in: unlocks))
+                    .font(.system(.title3, design: .rounded, weight: .semibold))
+                    .foregroundStyle(.textPrimary)
+                    .fixedSize(horizontal: false, vertical: true)
             }
 
             Text(notes)
@@ -110,6 +111,24 @@ struct PaywallScreen: View {
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .multilineTextAlignment(.leading)
+    }
+
+    // Each trick name takes the colour of its card, so the sentence reads as the hand above it.
+    private func coloredNames(in sentence: String) -> AttributedString {
+        // Non-breaking spaces keep a name on one line: the sentence wraps between tricks, never inside one.
+        var glued = sentence
+        for trick in content.cards {
+            let name = String(localized: trick.title)
+            glued = glued.replacingOccurrences(of: name, with: name.replacingOccurrences(of: " ", with: "\u{00A0}"))
+        }
+        var result = AttributedString(glued)
+        for trick in content.cards {
+            let name = String(localized: trick.title).replacingOccurrences(of: " ", with: "\u{00A0}")
+            if let range = result.range(of: name) {
+                result[range].foregroundColor = trick.id.collectionColor
+            }
+        }
+        return result
     }
 
     private var notes: String {
