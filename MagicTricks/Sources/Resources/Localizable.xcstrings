@@ -6926,23 +6926,6 @@
         }
       }
     },
-    "paywall.subtitle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No subscription. No monthly fees.\nYou never pay again."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sin suscripción. Sin pagos mensuales.\nNunca vuelves a pagar."
-          }
-        }
-      }
-    },
     "paywall.contextTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -6956,23 +6939,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Desbloquea %@"
-          }
-        }
-      }
-    },
-    "paywall.contextSubtitle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pay once and get all %lld tricks.\nYou never pay again."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Paga una vez y consigue los %lld trucos.\nNunca vuelves a pagar."
           }
         }
       }
@@ -7062,23 +7028,6 @@
         }
       }
     },
-    "paywall.pulse.label" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "today"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "hoy"
-          }
-        }
-      }
-    },
     "paywall.noRenew" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -7126,40 +7075,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Pagar %@ una vez"
-          }
-        }
-      }
-    },
-    "paywall.pill" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PRO"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "PRO"
-          }
-        }
-      }
-    },
-    "paywall.priceCaption" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "one payment, no subscription"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "un solo pago, sin suscripción"
           }
         }
       }
@@ -7279,74 +7194,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Galería\nMágica"
-          }
-        }
-      }
-    },
-    "paywall.row.noWatermark" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "No watermark"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Sin marca de agua"
-          }
-        }
-      }
-    },
-    "paywall.column.free" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Free"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gratis"
-          }
-        }
-      }
-    },
-    "paywall.a11y.inBoth" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "included in Free and Pro"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "incluido en Gratis y Pro"
-          }
-        }
-      }
-    },
-    "paywall.a11y.proOnly" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pro only"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "solo en Pro"
           }
         }
       }
