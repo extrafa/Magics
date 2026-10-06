@@ -155,6 +155,8 @@
 		0AML00000000000000000050 /* CalculatorPredictionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */; };
 		0AML00000000000000000052 /* PhantomDrawViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */; };
 		0AML00000000000000000056 /* TimeControlViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000055 /* TimeControlViewModelTests.swift */; };
+		0AML00000000000000000C04 /* PaywallContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C03 /* PaywallContent.swift */; };
+		0AML00000000000000000C06 /* PaywallContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C05 /* PaywallContentTests.swift */; };
 		0AML00000000000000000054 /* GroupedHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */; };
 		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -322,6 +324,8 @@
 		0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModelTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawViewModelTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000055 /* TimeControlViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModelTests.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C03 /* PaywallContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallContent.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C05 /* PaywallContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallContentTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
 		E718EB3DEAA25219A8279ECA /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
@@ -425,6 +429,22 @@
 				0AEE0000000000000000000D /* AppSheetView.swift */,
 			);
 			path = SheetFlow;
+			sourceTree = "<group>";
+		};
+		0AML00000000000000000C01 /* Paywall */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000C02 /* Model */,
+			);
+			path = Paywall;
+			sourceTree = "<group>";
+		};
+		0AML00000000000000000C02 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000C03 /* PaywallContent.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		0AEE0000000000000000001E /* RateApp */ = {
@@ -868,6 +888,7 @@
 				91D289D92EDCA9F10004406B /* Collection */,
 				2875DE902FBA7D6E00B9298C /* HapticTraining */,
 				0A00FF000000000000000001 /* Onboarding */,
+				0AML00000000000000000C01 /* Paywall */,
 				0AEE0000000000000000001E /* RateApp */,
 				0AML00000000000000000014 /* PhantomDraw */,
 			);
@@ -951,6 +972,7 @@
 				91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */,
 				91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */,
 				0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */,
+				0AML00000000000000000C05 /* PaywallContentTests.swift */,
 				0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */,
 				0AML00000000000000000037 /* StoreManagerTests.swift */,
 				0AML00000000000000000045 /* PhantomDrawFramingTests.swift */,
@@ -1280,6 +1302,7 @@
 				0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */,
 				0AEE0000000000000000001D /* RateAppSheet.swift in Sources */,
 				0AEE721D1E7FD163829108F5 /* RateAppViewModel.swift in Sources */,
+				0AML00000000000000000C04 /* PaywallContent.swift in Sources */,
 				0AML00000000000000000002 /* PhantomDrawModels.swift in Sources */,
 				0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */,
 				0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */,
@@ -1327,6 +1350,7 @@
 				0AML00000000000000000050 /* CalculatorPredictionViewModelTests.swift in Sources */,
 				0AML00000000000000000052 /* PhantomDrawViewModelTests.swift in Sources */,
 				0AML00000000000000000056 /* TimeControlViewModelTests.swift in Sources */,
+				0AML00000000000000000C06 /* PaywallContentTests.swift in Sources */,
 				0AML00000000000000000054 /* GroupedHapticPatternBuilderTests.swift in Sources */,
 				92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */,
 			);
