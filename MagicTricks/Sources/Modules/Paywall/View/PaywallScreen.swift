@@ -90,11 +90,28 @@ struct PaywallScreen: View {
 
     private var hero: some View {
         VStack(spacing: 20) {
-            Text(content.headline)
-                .font(.system(.title, design: .rounded, weight: .bold))
-                .foregroundStyle(.textPrimary)
-                .multilineTextAlignment(.center)
-                .accessibilityAddTraits(.isHeader)
+            if let focus = content.focus {
+                TrickIcon(
+                    systemName: focus.image.rawValue,
+                    color: focus.id.collectionColor,
+                    size: CGSize(width: 72, height: 72)
+                )
+                .accessibilityHidden(true)
+            }
+
+            VStack(spacing: 8) {
+                Text(content.headline)
+                    .font(.system(.title, design: .rounded, weight: .bold))
+                    .foregroundStyle(.textPrimary)
+                    .accessibilityAddTraits(.isHeader)
+
+                if let effect = content.effect {
+                    Text(effect)
+                        .font(.system(.subheadline, design: .rounded))
+                        .foregroundStyle(.secondary)
+                }
+            }
+            .multilineTextAlignment(.center)
 
             if store.productsLoadError == nil {
                 priceBlock(for: store.products.first)
@@ -323,6 +340,24 @@ final class PaywallPreviewStoreService: StoreServicing {
 
 #Preview("Time Control") {
     PaywallScreen(context: .trick(.timeControl), onDismiss: {})
+        .background(Color.backgroundScreen)
+        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
+}
+
+#Preview("Color Sense") {
+    PaywallScreen(context: .trick(.colorSense), onDismiss: {})
+        .background(Color.backgroundScreen)
+        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
+}
+
+#Preview("Calculator Prediction") {
+    PaywallScreen(context: .trick(.calculatorPrediction), onDismiss: {})
+        .background(Color.backgroundScreen)
+        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
+}
+
+#Preview("Magic Gallery") {
+    PaywallScreen(context: .trick(.magicGallery), onDismiss: {})
         .background(Color.backgroundScreen)
         .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
 }
