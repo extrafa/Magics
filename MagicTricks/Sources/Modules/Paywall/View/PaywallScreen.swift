@@ -11,9 +11,6 @@ struct PaywallScreen: View {
     let onDismiss: Completion
 
     @EnvironmentObject private var store: StoreManager
-    @State private var appeared = false
-    @ScaledMetric(relativeTo: .largeTitle) private var priceSize: CGFloat = 72
-
     private static let sidePadding: CGFloat = 24
 
     private let content: PaywallContent
@@ -28,22 +25,19 @@ struct PaywallScreen: View {
             VStack(spacing: 0) {
                 GeometryReader { geo in
                     ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 20) {
-                            hero
-                                .staggeredAppear(appeared, step: 0)
-                            details
-                                .staggeredAppear(appeared, step: 1)
+                        VStack(alignment: .leading, spacing: 24) {
+                            PaywallCardFan(cards: content.cards, cardWidth: Self.cardWidth(in: geo.size))
+                            text
                         }
                         .padding(.horizontal, Self.sidePadding)
                         .padding(.vertical, 8)
-                        // Centers the poster on tall screens; at big text sizes it grows and scrolls instead.
+                        // Centers the hand and the text on tall screens; at big text sizes it grows and scrolls instead.
                         .frame(maxWidth: .infinity, minHeight: geo.size.height, alignment: .leading)
                     }
                     .scrollBouncesOnlyWhenNeeded()
                 }
 
                 purchaseDock
-                    .staggeredAppear(appeared, step: 2)
             }
             .background { Color.backgroundScreen.ignoresSafeArea() }
             .navigationBarTitleDisplayMode(.inline)
@@ -56,11 +50,6 @@ struct PaywallScreen: View {
         }
         .task {
             await store.reloadProductsIfNeeded()
-        }
-        .task {
-            // Let the cover finish presenting before the staggered entrance starts.
-            try? await Task.sleep(milliseconds: 200)
-            appeared = true
         }
         .onChange(of: store.hasProAccess) { _ in
             if store.hasProAccess { onDismiss() }
@@ -88,72 +77,31 @@ struct PaywallScreen: View {
         .accessibilityLabel(String(localized: "common.close"))
     }
 
-    // MARK: Hero
+    // MARK: Text
 
-    private var hero: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            if let focus = content.focus {
-                TrickIcon(
-                    systemName: focus.image.rawValue,
-                    color: focus.id.collectionColor,
-                    size: CGSize(width: 56, height: 56)
-                )
-                .accessibilityHidden(true)
-            }
-
-            VStack(alignment: .leading, spacing: 8) {
-                Text(content.headline)
-                    .font(.system(.title, design: .rounded, weight: .bold))
-                    .foregroundStyle(.textPrimary)
-                    .accessibilityAddTraits(.isHeader)
-
-                if let effect = content.effect {
-                    Text(effect)
-                        .font(.system(.subheadline, design: .rounded))
-                        .foregroundStyle(.secondary)
-                }
-            }
-
-            if store.productsLoadError == nil {
-                priceBlock(for: store.products.first)
-            }
-
-            // Runs to the screen edge on purpose: the line has no end.
-            PaywallPulseLine()
-                .padding(.trailing, -Self.sidePadding)
-        }
-        .frame(maxWidth: .infinity, alignment: .leading)
-        .multilineTextAlignment(.leading)
-        // At the very largest sizes the headline and caption alone would push the pulse and the rest out of sight.
-        .dynamicTypeSize(...DynamicTypeSize.accessibility1)
+    // Wide screens get bigger cards; short ones (SE) shrink them so the text and the dock still fit.
+    private static func cardWidth(in size: CGSize) -> CGFloat {
+        min(size.width * 0.38, size.height * 0.24, 170)
     }
 
-    // The price is the biggest thing on the screen: it's the whole deal.
-    private func priceBlock(for product: StoreProduct?) -> some View {
-        VStack(alignment: .leading, spacing: 4) {
-            Text(product?.displayPrice ?? "$0.00")
-                .font(.system(size: priceSize, weight: .heavy, design: .rounded))
+    private var text: some View {
+        VStack(alignment: .leading, spacing: 12) {
+            Text(content.headline)
+                .font(.system(.largeTitle, design: .rounded, weight: .heavy))
                 .foregroundStyle(.textPrimary)
-                .lineLimit(1)
-                .minimumScaleFactor(0.4)
-                .redacted(reason: product == nil ? .placeholder : [])
+                .fixedSize(horizontal: false, vertical: true)
+                .accessibilityAddTraits(.isHeader)
 
-            Text(key("priceCaption"))
-                .font(.system(.headline, design: .rounded, weight: .semibold))
-                .foregroundStyle(.secondary)
-        }
-        .accessibilityElement(children: .combine)
-        .accessibilityHidden(product == nil)
-    }
+            if let effect = content.effect {
+                Text(effect)
+                    .font(.system(.headline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(.textPrimary)
+            }
 
-    // MARK: Details
-
-    private var details: some View {
-        VStack(alignment: .leading, spacing: 10) {
             if let unlocks = content.unlocks {
                 Text(unlocks)
-                    .font(.system(.subheadline, design: .rounded, weight: .medium))
-                    .foregroundStyle(.textPrimary)
+                    .font(.system(.body, design: .rounded))
+                    .foregroundStyle(.secondary)
             }
 
             Text(notes)
@@ -268,29 +216,6 @@ private extension View {
         } else {
             self
         }
-    }
-}
-
-// MARK: - Entrance
-
-private struct StaggeredAppear: ViewModifier {
-    let appeared: Bool
-    let step: Int
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-
-    func body(content: Content) -> some View {
-        if reduceMotion {
-            content
-        } else {
-            content.onboardingAppear(appeared, offset: 12, delay: Double(step) * 0.06)
-        }
-    }
-}
-
-private extension View {
-    func staggeredAppear(_ appeared: Bool, step: Int) -> some View {
-        modifier(StaggeredAppear(appeared: appeared, step: step))
     }
 }
 
