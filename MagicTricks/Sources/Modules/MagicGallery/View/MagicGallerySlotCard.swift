@@ -67,9 +67,9 @@ struct MagicGallerySlotCard: View {
     private var deleteButton: some View {
         Button { isConfirmingDelete = true } label: {
             Image(systemName: "trash")
-                .font(.system(size: 12, weight: .semibold))
+                .font(.system(size: 14, weight: .semibold))
                 .foregroundStyle(.white)
-                .frame(width: 28, height: 28)
+                .frame(width: 34, height: 34)
                 .background(.black.opacity(0.38), in: Circle())
         }
         .buttonStyle(.plain)
