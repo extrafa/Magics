@@ -36,6 +36,8 @@ struct MagicGalleryCameraView: View {
                 },
                 onCancel: onCancel
             )
+            // The cover's background is white in light theme and would show in the safe-area strips.
+            .ignoresSafeArea()
         case .preparing:
             Color.black.ignoresSafeArea()
                 .overlay { ProgressView().tint(.white) }
@@ -45,6 +47,9 @@ struct MagicGalleryCameraView: View {
                 onConfirm: onCaptured,
                 onCancel: { phase = .picking }
             )
+            .ignoresSafeArea()
+            // Black background: dark scheme keeps the status bar text readable in light theme.
+            .preferredColorScheme(.dark)
         }
     }
 }
