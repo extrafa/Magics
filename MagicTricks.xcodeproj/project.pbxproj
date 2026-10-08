@@ -36,6 +36,7 @@
 		0AEE00000000000000000015 /* MagicGalleryInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000014 /* MagicGalleryInstruction.swift */; };
 		0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000016 /* HapticManager+CountSignal.swift */; };
 		0AEE00000000000000000019 /* FloatingMotionModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE00000000000000000018 /* FloatingMotionModifier.swift */; };
+		0AML00000000000000000C11 /* ShimmerModifier.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C10 /* ShimmerModifier.swift */; };
 		0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000001A /* MagicGalleryCropView.swift */; };
 		0AEE0000000000000000001D /* RateAppSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE0000000000000000001C /* RateAppSheet.swift */; };
 		0AEE721D1E7FD163829108F5 /* RateAppViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AEE188C8CC8384A08F96A35 /* RateAppViewModel.swift */; };
@@ -61,7 +62,6 @@
 		280ECC5F30387FF300269CC6 /* MagicTricksIcon.icon in Resources */ = {isa = PBXBuildFile; fileRef = 280ECC5E30387FF300269CC6 /* MagicTricksIcon.icon */; };
 		280FC5D92FCDA5EA00B347F5 /* SettingsStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = 280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */; };
 		28258EC22FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBC2FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift */; };
-		28258EC32FF3E31800DE5695 /* OnboardingPaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28258EBD2FF3E31800DE5695 /* OnboardingPaywallScreen.swift */; };
 		28335ADD2FA55DCD00DE419B /* ColorSenseInstruction.swift in Sources */ = {isa = PBXBuildFile; fileRef = 28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */; };
 		2834370B2FAA196500234419 /* TimeControlViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370A2FAA196500234419 /* TimeControlViewModel.swift */; };
 		2834370D2FAA196500234419 /* TimeControlView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2834370C2FAA196500234419 /* TimeControlView.swift */; };
@@ -156,6 +156,10 @@
 		0AML00000000000000000050 /* CalculatorPredictionViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */; };
 		0AML00000000000000000052 /* PhantomDrawViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */; };
 		0AML00000000000000000056 /* TimeControlViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000055 /* TimeControlViewModelTests.swift */; };
+		0AML00000000000000000C04 /* PaywallContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C03 /* PaywallContent.swift */; };
+		0AML00000000000000000C09 /* PaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C08 /* PaywallScreen.swift */; };
+		0AML00000000000000000C23 /* PaywallCardFan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C22 /* PaywallCardFan.swift */; };
+		0AML00000000000000000C06 /* PaywallContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C05 /* PaywallContentTests.swift */; };
 		0AML00000000000000000054 /* GroupedHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */; };
 		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
 /* End PBXBuildFile section */
@@ -200,6 +204,7 @@
 		0AEE00000000000000000014 /* MagicGalleryInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryInstruction.swift; sourceTree = "<group>"; };
 		0AEE00000000000000000016 /* HapticManager+CountSignal.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HapticManager+CountSignal.swift"; sourceTree = "<group>"; };
 		0AEE00000000000000000018 /* FloatingMotionModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FloatingMotionModifier.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C10 /* ShimmerModifier.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShimmerModifier.swift; sourceTree = "<group>"; };
 		0AEE0000000000000000001A /* MagicGalleryCropView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryCropView.swift; sourceTree = "<group>"; };
 		0AEE0000000000000000001C /* RateAppSheet.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppSheet.swift; sourceTree = "<group>"; };
 		0AEE188C8CC8384A08F96A35 /* RateAppViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModel.swift; sourceTree = "<group>"; };
@@ -225,7 +230,6 @@
 		280ECC5E30387FF300269CC6 /* MagicTricksIcon.icon */ = {isa = PBXFileReference; lastKnownFileType = folder.iconcomposer.icon; path = MagicTricksIcon.icon; sourceTree = "<group>"; };
 		280FC5D82FCDA5EA00B347F5 /* SettingsStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsStore.swift; sourceTree = "<group>"; };
 		28258EBC2FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingFeatureSlideScreen.swift; sourceTree = "<group>"; };
-		28258EBD2FF3E31800DE5695 /* OnboardingPaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingPaywallScreen.swift; sourceTree = "<group>"; };
 		28335ADC2FA55DCD00DE419B /* ColorSenseInstruction.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseInstruction.swift; sourceTree = "<group>"; };
 		28335AE22FA5838300DE419B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		2834370A2FAA196500234419 /* TimeControlViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModel.swift; sourceTree = "<group>"; };
@@ -324,6 +328,10 @@
 		0AML00000000000000000049 /* CalculatorPredictionViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CalculatorPredictionViewModelTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawViewModelTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000055 /* TimeControlViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeControlViewModelTests.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C03 /* PaywallContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallContent.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C08 /* PaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreen.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C22 /* PaywallCardFan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallCardFan.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C05 /* PaywallContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallContentTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
 		E718EB3DEAA25219A8279ECA /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
@@ -388,7 +396,6 @@
 			isa = PBXGroup;
 			children = (
 				28258EBC2FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift */,
-				28258EBD2FF3E31800DE5695 /* OnboardingPaywallScreen.swift */,
 				0A000300000000000000001A /* OnboardingFlowView.swift */,
 				0A000400000000000000001A /* OnboardingProgressBar.swift */,
 				0A000500000000000000001A /* OnboardingOptionRow.swift */,
@@ -427,6 +434,32 @@
 				0AEE0000000000000000000D /* AppSheetView.swift */,
 			);
 			path = SheetFlow;
+			sourceTree = "<group>";
+		};
+		0AML00000000000000000C01 /* Paywall */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000C07 /* View */,
+				0AML00000000000000000C02 /* Model */,
+			);
+			path = Paywall;
+			sourceTree = "<group>";
+		};
+		0AML00000000000000000C07 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000C08 /* PaywallScreen.swift */,
+				0AML00000000000000000C22 /* PaywallCardFan.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		0AML00000000000000000C02 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				0AML00000000000000000C03 /* PaywallContent.swift */,
+			);
+			path = Model;
 			sourceTree = "<group>";
 		};
 		0AEE0000000000000000001E /* RateApp */ = {
@@ -689,6 +722,7 @@
 				28E100002FC9F00000BB0001 /* TrickPalette.swift */,
 				0AFF00000000000000000003 /* AppColors.swift */,
 				0AEE00000000000000000018 /* FloatingMotionModifier.swift */,
+				0AML00000000000000000C10 /* ShimmerModifier.swift */,
 			);
 			path = Design;
 			sourceTree = "<group>";
@@ -870,6 +904,7 @@
 				91D289D92EDCA9F10004406B /* Collection */,
 				2875DE902FBA7D6E00B9298C /* HapticTraining */,
 				0A00FF000000000000000001 /* Onboarding */,
+				0AML00000000000000000C01 /* Paywall */,
 				0AEE0000000000000000001E /* RateApp */,
 				0AML00000000000000000014 /* PhantomDraw */,
 			);
@@ -954,6 +989,7 @@
 				91C7F5462FCE7B0000A00001 /* HapticManagerTests.swift */,
 				91C7F5442FC9EC0000A00001 /* SettingsStoreTests.swift */,
 				0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */,
+				0AML00000000000000000C05 /* PaywallContentTests.swift */,
 				0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */,
 				0AML00000000000000000037 /* StoreManagerTests.swift */,
 				0AML00000000000000000045 /* PhantomDrawFramingTests.swift */,
@@ -1254,7 +1290,6 @@
 				28C1878C2FCE7900001306EE /* InstructionActionSheetDestination.swift in Sources */,
 				28258EC22FF3E31800DE5695 /* OnboardingFeatureSlideScreen.swift in Sources */,
 				28062323301A8966003F0C44 /* GeoMentalismViewModel.swift in Sources */,
-				28258EC32FF3E31800DE5695 /* OnboardingPaywallScreen.swift in Sources */,
 				287D56362FCE770000ECCE14 /* MagicGalleryCaptureFlow.swift in Sources */,
 				0A00FE000000000000000002 /* StoreProduct.swift in Sources */,
 				0A00FE000000000000000004 /* StoreService.swift in Sources */,
@@ -1284,6 +1319,9 @@
 				0AEE0000000000000000001B /* MagicGalleryCropView.swift in Sources */,
 				0AEE0000000000000000001D /* RateAppSheet.swift in Sources */,
 				0AEE721D1E7FD163829108F5 /* RateAppViewModel.swift in Sources */,
+				0AML00000000000000000C04 /* PaywallContent.swift in Sources */,
+				0AML00000000000000000C09 /* PaywallScreen.swift in Sources */,
+				0AML00000000000000000C23 /* PaywallCardFan.swift in Sources */,
 				0AML00000000000000000002 /* PhantomDrawModels.swift in Sources */,
 				0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */,
 				0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */,
@@ -1304,6 +1342,7 @@
 				0A6E00000000000000000004 /* GeoMentalismInstruction.swift in Sources */,
 				0AEE00000000000000000017 /* HapticManager+CountSignal.swift in Sources */,
 				0AEE00000000000000000019 /* FloatingMotionModifier.swift in Sources */,
+				0AML00000000000000000C11 /* ShimmerModifier.swift in Sources */,
 				0AFF00000000000000000004 /* AppColors.swift in Sources */,
 				0AFF00000000000000000006 /* PhoneTiltGestureManager.swift in Sources */,
 				0AFF00000000000000000008 /* CalculatorPredictionInstruction.swift in Sources */,
@@ -1331,6 +1370,7 @@
 				0AML00000000000000000050 /* CalculatorPredictionViewModelTests.swift in Sources */,
 				0AML00000000000000000052 /* PhantomDrawViewModelTests.swift in Sources */,
 				0AML00000000000000000056 /* TimeControlViewModelTests.swift in Sources */,
+				0AML00000000000000000C06 /* PaywallContentTests.swift in Sources */,
 				0AML00000000000000000054 /* GroupedHapticPatternBuilderTests.swift in Sources */,
 				92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */,
 			);

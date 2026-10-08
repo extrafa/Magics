@@ -51,14 +51,14 @@ final class AppFlowCoordinator: ObservableObject {
 
     func open(instruction trick: Trick) {
         if isLocked(trick) {
-            openPaywall()
+            openPaywall(context: .trick(trick.id))
         } else {
             activeSheet = .instruction(instruction: trick.instruction)
         }
     }
 
-    func openPaywall() {
-        activeFlow = .paywall
+    func openPaywall(context: PaywallContext = .general) {
+        activeFlow = .paywall(context: context)
     }
 
     func presentPaywallOverlay() {
@@ -71,7 +71,7 @@ final class AppFlowCoordinator: ObservableObject {
 
     func openStartFlow(for trick: Trick) {
         guard !isLocked(trick) else {
-            openPaywall()
+            openPaywall(context: .trick(trick.id))
             return
         }
         if hasSeenTrick(trick) {

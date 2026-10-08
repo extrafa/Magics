@@ -60,7 +60,7 @@ struct OnboardingFlowView: View {
         case .processing:
             OnboardingProcessingScreen(phases: viewModel.loadingPhases, onComplete: viewModel.advance)
         case .paywall:
-            OnboardingPaywallScreen(onDismiss: dismissPaywall)
+            PaywallScreen(context: .general, onDismiss: dismissPaywall)
         }
     }
 
