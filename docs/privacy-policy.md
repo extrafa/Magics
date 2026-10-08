@@ -1,6 +1,6 @@
 # Privacy Policy for Magic Tricks
 
-_Last updated: September 11, 2026_
+_Last updated: October 8, 2026_
 
 Magic Tricks ("the app") is built to work entirely on your device. This
 policy describes, plainly, what the app does and does not do with your
@@ -11,25 +11,32 @@ data.
 We don't collect anything. The app has no user accounts, no analytics, no
 advertising or tracking SDKs, and no backend server.
 
-## Photos
+## Photos and camera
 
-The Magic Gallery trick reads and writes photos in your own Photos library,
-with your permission, so a chosen image can appear there during a
-performance. Those photos never leave your device — the app has no way to
-upload, transmit, or share them anywhere.
+The Magic Gallery trick uses photos you give it: you can take a photo with
+the camera (with your permission) or pick one from your library with the
+system photo picker. The app only receives the photos you choose. They are
+stored inside the app on your device and never leave it — the app has no
+way to upload, transmit, or share them anywhere.
 
-## Sensors (motion, camera preview, microphone-free haptics)
+When you choose to save a photo to your library, the app asks for permission
+to add photos only. It cannot read, browse, or change the other photos in
+your library.
 
-Some tricks read on-device sensors (motion, for gesture detection) to
+## Motion sensors and haptics
+
+Some tricks read the phone's motion sensor (for gesture detection) to
 trigger haptic feedback. Sensor readings are used momentarily, on the
-device, to drive the trick, and are never stored or transmitted.
+device, to drive the trick, and are never stored or transmitted. The app
+does not use the microphone.
 
-## Local networking (Mind Link / PhantomDraw)
+## Local networking (Phantom Draw)
 
 This trick connects two nearby phones directly over your local network
-(Bonjour discovery, a direct peer-to-peer connection secured by the pairing
-code you enter). Drawing data travels only between those two devices — it
-never passes through, or is stored on, any server we operate.
+(Bonjour discovery and a direct peer-to-peer connection). The two phones pair
+with a short two-digit code you enter; it chooses which nearby phone to
+connect to and is not a password. Drawing data travels only between those two
+devices — it never passes through, or is stored on, any server we operate.
 
 ## Purchases
 
