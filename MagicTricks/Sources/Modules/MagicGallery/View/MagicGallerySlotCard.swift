@@ -53,14 +53,6 @@ struct MagicGallerySlotCard: View {
                 deleteButton
             }
         }
-        .confirmationDialog(
-            String(localized: "magicGallery.deletePhoto.confirm"),
-            isPresented: $isConfirmingDelete,
-            titleVisibility: .visible
-        ) {
-            Button(String(localized: "magicGallery.deletePhoto"), role: .destructive, action: onDelete)
-            Button(String(localized: "common.cancel"), role: .cancel) {}
-        }
     }
 
     private var numberBadge: some View {
@@ -81,6 +73,15 @@ struct MagicGallerySlotCard: View {
                 .background(.black.opacity(0.38), in: Circle())
         }
         .buttonStyle(.plain)
+        // On iOS 26 the dialog is a popover pointing at the view it is attached to, so it lives on the button itself.
+        .confirmationDialog(
+            String(localized: "magicGallery.deletePhoto.confirm"),
+            isPresented: $isConfirmingDelete,
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "magicGallery.deletePhoto"), role: .destructive, action: onDelete)
+            Button(String(localized: "common.cancel"), role: .cancel) {}
+        }
         .padding(10)
         .accessibilityLabel(String(localized: "magicGallery.deletePhoto"))
     }

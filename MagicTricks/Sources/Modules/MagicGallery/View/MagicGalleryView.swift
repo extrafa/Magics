@@ -7,13 +7,9 @@
 
 import SwiftUI
 
-private let sourceKey = L10nDomain("magicGallery.source")
-
 struct MagicGalleryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var vm: MagicGalleryViewModel
-
-    @State private var showSourceDialog = false
 
     init(vm: MagicGalleryViewModel? = nil) {
         _vm = StateObject(wrappedValue: vm ?? MagicGalleryViewModel())
@@ -44,17 +40,6 @@ struct MagicGalleryView: View {
                 .accessibilityLabel(String(localized: "common.close"))
             }
         }
-        .confirmationDialog("", isPresented: $showSourceDialog) {
-            if UIImagePickerController.isSourceTypeAvailable(.camera) {
-                Button(String(localized: sourceKey("camera"))) {
-                    vm.startSequentialCapture(sourceType: .camera)
-                }
-            }
-            Button(String(localized: sourceKey("photoLibrary"))) {
-                vm.startSequentialCapture(sourceType: .photoLibrary)
-            }
-            Button(String(localized: "common.cancel"), role: .cancel) {}
-        }
         .fullScreenCover(item: $vm.activeCaptureSession, onDismiss: {
             vm.presentPendingCaptureIfNeeded()
         }) { session in
@@ -76,7 +61,7 @@ struct MagicGalleryView: View {
             gestureMode: vm.gestureMode,
             onGestureModeChange: vm.setGestureMode,
             canAddMorePhotos: vm.canAddMorePhotos,
-            onCapture: { showSourceDialog = true }
+            onCapture: { vm.startSequentialCapture(sourceType: $0) }
         )
     }
 

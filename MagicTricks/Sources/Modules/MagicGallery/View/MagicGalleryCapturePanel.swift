@@ -9,6 +9,7 @@ import SwiftUI
 
 private let standardSetKey = L10nDomain("magicGallery.standardSet")
 private let gestureKey = L10nDomain("magicGallery.gesture")
+private let sourceKey = L10nDomain("magicGallery.source")
 
 struct MagicGalleryCapturePanel: View {
     let usesStandardSet: Bool
@@ -16,7 +17,9 @@ struct MagicGalleryCapturePanel: View {
     let gestureMode: MagicGalleryGestureMode
     let onGestureModeChange: (MagicGalleryGestureMode) -> Void
     let canAddMorePhotos: Bool
-    let onCapture: () -> Void
+    let onCapture: (UIImagePickerController.SourceType) -> Void
+
+    @State private var showSourceDialog = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -86,7 +89,7 @@ struct MagicGalleryCapturePanel: View {
     }
 
     private var captureButton: some View {
-        Button(action: onCapture) {
+        Button { showSourceDialog = true } label: {
             Label(String(localized: "magicGallery.addPhotos"), systemImage: "photo.badge.plus")
                 .font(.headline)
                 .frame(maxWidth: .infinity)
@@ -97,5 +100,13 @@ struct MagicGalleryCapturePanel: View {
         }
         .buttonStyle(.plain)
         .disabled(!canAddMorePhotos)
+        // Attached here so the iOS 26 popover points at the button, not at the whole screen.
+        .confirmationDialog("", isPresented: $showSourceDialog) {
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                Button(String(localized: sourceKey("camera"))) { onCapture(.camera) }
+            }
+            Button(String(localized: sourceKey("photoLibrary"))) { onCapture(.photoLibrary) }
+            Button(String(localized: "common.cancel"), role: .cancel) {}
+        }
     }
 }
