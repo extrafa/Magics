@@ -129,6 +129,7 @@
 		913FDE052EBED98800B05D99 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 913FDDFF2EBED98800B05D99 /* Assets.xcassets */; };
 		915B2A3E2F120A32002917D7 /* Localizable.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 915B2A3D2F120A32002917D7 /* Localizable.xcstrings */; };
 		917B2A001F120A32002917C2 /* InfoPlist.xcstrings in Resources */ = {isa = PBXBuildFile; fileRef = 917B2A001F120A32002917C1 /* InfoPlist.xcstrings */; };
+		0AML00000000000000000C31 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C30 /* PrivacyInfo.xcprivacy */; };
 		915CE57C2F9285DA00C5B32A /* InstructionShareFormatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 915CE57B2F9285DA00C5B32A /* InstructionShareFormatter.swift */; };
 		918359822F2719DB0068D5BC /* AppFlowCoverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918359812F2719DB0068D5BC /* AppFlowCoverView.swift */; };
 		918FC1D22F13EB4600621893 /* AppFlowCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = 918FC1D12F13EB4600621893 /* AppFlowCoordinator.swift */; };
@@ -294,6 +295,7 @@
 		913FDE012EBED98800B05D99 /* MagicTricksApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicTricksApp.swift; sourceTree = "<group>"; };
 		915B2A3D2F120A32002917D7 /* Localizable.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = Localizable.xcstrings; sourceTree = "<group>"; };
 		917B2A001F120A32002917C1 /* InfoPlist.xcstrings */ = {isa = PBXFileReference; lastKnownFileType = text.json.xcstrings; path = InfoPlist.xcstrings; sourceTree = "<group>"; };
+		0AML00000000000000000C30 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		915CE57B2F9285DA00C5B32A /* InstructionShareFormatter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InstructionShareFormatter.swift; sourceTree = "<group>"; };
 		918359812F2719DB0068D5BC /* AppFlowCoverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoverView.swift; sourceTree = "<group>"; };
 		918C353F2F16B06800EAF6D9 /* Magics.storekit */ = {isa = PBXFileReference; lastKnownFileType = text; path = Magics.storekit; sourceTree = "<group>"; };
@@ -898,6 +900,7 @@
 				913FDDFF2EBED98800B05D99 /* Assets.xcassets */,
 				915B2A3D2F120A32002917D7 /* Localizable.xcstrings */,
 				917B2A001F120A32002917C1 /* InfoPlist.xcstrings */,
+				0AML00000000000000000C30 /* PrivacyInfo.xcprivacy */,
 				918C353F2F16B06800EAF6D9 /* Magics.storekit */,
 				280ECC5E30387FF300269CC6 /* MagicTricksIcon.icon */,
 			);
@@ -1157,6 +1160,7 @@
 			files = (
 				915B2A3E2F120A32002917D7 /* Localizable.xcstrings in Resources */,
 				917B2A001F120A32002917C2 /* InfoPlist.xcstrings in Resources */,
+				0AML00000000000000000C31 /* PrivacyInfo.xcprivacy in Resources */,
 				280ECC5F30387FF300269CC6 /* MagicTricksIcon.icon in Resources */,
 				913FDE052EBED98800B05D99 /* Assets.xcassets in Resources */,
 			);
