@@ -86,9 +86,11 @@ final class MagicGalleryViewModel: ObservableObject {
         customPhotos.count < photoLibrary.maxPhotos
     }
 
-    // The editor grid always shows the real library, regardless of usesStandardSet.
+    // The editor grid mirrors what the spectator will get, so it follows usesStandardSet like revealPhoto does.
     var photosByNumber: [Int: MagicGalleryPhoto] {
-        Dictionary(uniqueKeysWithValues: customPhotos.map { ($0.number, $0) })
+        Dictionary(uniqueKeysWithValues: (1...photoLibrary.maxPhotos).compactMap { number in
+            revealPhoto(for: number).map { (number, $0) }
+        })
     }
 
     func photo(for number: Int) -> MagicGalleryPhoto? {

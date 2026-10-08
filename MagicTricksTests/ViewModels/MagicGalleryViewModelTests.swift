@@ -79,6 +79,38 @@ final class MagicGalleryViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.alertMessage, String(localized: "magicGallery.error.allPhotosReady"))
     }
 
+    func test_photosByNumber_whenStandardSetOn_showsTheStandardPhotoInEverySlot() async {
+        let custom = MagicGalleryPhoto(number: 3, image: Self.image(), fileName: "3.jpg", source: .custom)
+        let viewModel = await makeViewModel(storedPhotos: [custom], usesStandardSet: true)
+
+        let photos = viewModel.photosByNumber
+
+        XCTAssertEqual(Set(photos.keys), Set(1...10))
+        XCTAssertTrue(photos.values.allSatisfy(\.isStandard))
+    }
+
+    func test_photosByNumber_whenStandardSetOff_showsOnlyTheCustomPhotos() async {
+        let stored = [2, 5].map {
+            MagicGalleryPhoto(number: $0, image: Self.image(), fileName: "\($0).jpg", source: .custom)
+        }
+        let viewModel = await makeViewModel(storedPhotos: stored, usesStandardSet: false)
+
+        let photos = viewModel.photosByNumber
+
+        XCTAssertEqual(Set(photos.keys), [2, 5])
+        XCTAssertTrue(photos.values.allSatisfy(\.isCustom))
+    }
+
+    func test_photosByNumber_followsTheStandardSetToggle() async {
+        let custom = MagicGalleryPhoto(number: 4, image: Self.image(), fileName: "4.jpg", source: .custom)
+        let viewModel = await makeViewModel(storedPhotos: [custom], usesStandardSet: false)
+        XCTAssertEqual(Set(viewModel.photosByNumber.keys), [4])
+
+        viewModel.setStandardSet(true)
+
+        XCTAssertEqual(Set(viewModel.photosByNumber.keys), Set(1...10))
+    }
+
     func test_deletePhoto_removesCustomPhoto() async {
         let photo = MagicGalleryPhoto(number: 2, image: Self.image(), fileName: "2.jpg", source: .custom)
         let library = MockMagicGalleryPhotoLibrary(storedPhotos: [photo])
