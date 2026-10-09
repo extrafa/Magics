@@ -70,18 +70,15 @@ struct PhantomDrawReceiverView: View {
             Circle()
                 .fill(session.isReconnecting ? Color.orange : Color.green)
                 .frame(width: 7, height: 7)
-            Text(session.isReconnecting ? String(localized: "phantomDraw.reconnecting") : peerName)
+            Text(session.isReconnecting ? String(localized: "phantomDraw.reconnecting") : String(localized: "phantomDraw.connectedFallback"))
                 .font(.system(size: 13, weight: .medium, design: .rounded))
                 .foregroundStyle(.secondary)
+                .lineLimit(1)
+                .minimumScaleFactor(0.8)
         }
-        .padding(.horizontal, 10)
+        .padding(.horizontal, 4)
         .padding(.vertical, 6)
-    }
-
-    private var peerName: String {
-        guard case .connected(let peerName) = session.connectionState else {
-            return String(localized: "phantomDraw.connectedFallback")
-        }
-        return peerName
+        // Fixed width: a wider badge makes the nav bar push the centred title left, and both texts must take the same room.
+        .frame(width: 96)
     }
 }

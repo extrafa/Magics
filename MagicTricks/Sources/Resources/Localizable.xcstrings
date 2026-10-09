@@ -390,13 +390,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reconnecting..."
+            "value" : "Reconnecting"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Reconectando..."
+            "value" : "Reconectando"
           }
         }
       }
