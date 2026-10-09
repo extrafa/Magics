@@ -7,13 +7,16 @@
 
 import Foundation
 
+private let sectionKey = L10nDomain("instruction.section")
+private let shareKey = L10nDomain("instruction.share")
+
 enum InstructionShareFormatter {
     static func shareText(for instruction: Instruction) -> String {
-        let effect = String(localized: "instruction.section.effect")
-        let secret = String(localized: "instruction.section.secret")
-        let steps = String(localized: "instruction.section.steps")
-        let madeWith = String(localized: "instruction.share.madeWith")
-        let learnMore = String(localized: "instruction.share.learnMore")
+        let effect = String(localized: sectionKey("effect"))
+        let secret = String(localized: sectionKey("secret"))
+        let steps = String(localized: sectionKey("steps"))
+        let madeWith = String(localized: shareKey("madeWith"))
+        let learnMore = String(localized: shareKey("learnMore"))
 
         let stepsText = instruction.steps.enumerated()
             .map { index, step in "\(index + 1). \(step.title)\n\(step.description)" }

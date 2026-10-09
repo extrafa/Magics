@@ -1,3 +1,10 @@
+//
+//  StoreService.swift
+//  Magic Tricks
+//
+//  Created by Ross on 11/06/2026.
+//
+
 import Foundation
 import StoreKit
 
@@ -9,8 +16,14 @@ enum StorePurchaseResult: Equatable {
     case pending
 }
 
+enum StoreError: Error, Equatable {
+    case verificationFailed
+    case productNotFound
+}
+
 // MARK: - Protocol
 
+@MainActor
 protocol StoreServicing {
     func loadProducts(for productIDs: [String]) async throws -> [StoreProduct]
     func purchase(productID: String) async throws -> StorePurchaseResult
@@ -21,6 +34,7 @@ protocol StoreServicing {
 
 // MARK: - StoreKit 2 implementation
 
+@MainActor
 final class StoreKitStoreService: StoreServicing {
     private var productsByID: [String: Product] = [:]
 
@@ -31,7 +45,7 @@ final class StoreKitStoreService: StoreServicing {
     }
 
     func purchase(productID: String) async throws -> StorePurchaseResult {
-        guard let product = productsByID[productID] else { return .userCancelled }
+        guard let product = productsByID[productID] else { throw StoreError.productNotFound }
 
         let result = try await product.purchase()
 
@@ -84,7 +98,7 @@ final class StoreKitStoreService: StoreServicing {
 
     private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {
         switch result {
-        case .unverified: throw StoreKitError.userCancelled
+        case .unverified: throw StoreError.verificationFailed
         case .verified(let value): return value
         }
     }

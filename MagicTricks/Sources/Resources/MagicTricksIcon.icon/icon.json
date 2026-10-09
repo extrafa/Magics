@@ -1,63 +1,38 @@
 {
   "fill" : {
-    "automatic-gradient" : "display-p3:0.00000,0.00000,0.00000,1.00000"
+    "automatic-gradient" : "extended-srgb:0.00000,0.53333,1.00000,1.00000"
   },
   "groups" : [
     {
       "layers" : [
         {
-          "blend-mode-specializations" : [
-            {
-              "value" : "normal"
-            },
+          "glass-specializations" : [
             {
               "appearance" : "tinted",
-              "value" : "normal"
+              "value" : true
             }
           ],
-          "fill" : "automatic",
-          "image-name" : "magic-tricks-icon-light.png",
-          "name" : "magic-tricks-icon-light",
-          "opacity-specializations" : [
+          "image-name" : "image1.png",
+          "name" : "image1",
+          "position-specializations" : [
             {
-              "value" : 1
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
             },
             {
-              "appearance" : "dark",
-              "value" : 0
-            }
-          ],
-          "position" : {
-            "scale" : 1,
-            "translation-in-points" : [
-              0,
-              0
-            ]
-          }
-        }
-      ],
-      "shadow" : {
-        "kind" : "neutral",
-        "opacity" : 0.5
-      },
-      "translucency" : {
-        "enabled" : true,
-        "value" : 0.5
-      }
-    },
-    {
-      "layers" : [
-        {
-          "fill" : "automatic",
-          "image-name" : "magic-tricks-icon-dark.png",
-          "name" : "magic-tricks-icon-dark",
-          "opacity-specializations" : [
-            {
-              "value" : 0
-            },
-            {
-              "appearance" : "dark",
-              "value" : 1
+              "idiom" : "square",
+              "value" : {
+                "scale" : 1,
+                "translation-in-points" : [
+                  0,
+                  0
+                ]
+              }
             }
           ]
         }

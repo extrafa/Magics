@@ -1,26 +1,31 @@
+//
+//  MagicGalleryCapturePanel.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
+
+private let standardSetKey = L10nDomain("magicGallery.standardSet")
+private let sourceKey = L10nDomain("magicGallery.source")
 
 struct MagicGalleryCapturePanel: View {
     let usesStandardSet: Bool
     let onToggleStandardSet: (Bool) -> Void
-    let captureButtonTitle: String
     let canAddMorePhotos: Bool
-    let onCapture: () -> Void
+    let onCapture: (UIImagePickerController.SourceType) -> Void
+
+    @State private var showSourceDialog = false
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
             standardSetControl
+            Divider()
             captureButton
         }
         .padding(18)
-        .background(
-            RoundedRectangle(cornerRadius: 22, style: .continuous)
-                .fill(Color.grayCard)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 22, style: .continuous)
-                        .stroke(Color.grayBorder, lineWidth: 1)
-                }
-        )
+        .cardSurface(cornerRadius: 22)
     }
 
     private var standardSetControl: some View {
@@ -32,15 +37,13 @@ struct MagicGalleryCapturePanel: View {
                 .background(.indigo, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
 
             VStack(alignment: .leading, spacing: 3) {
-                Text(String(localized: "magicGallery.standardSet.title"))
-                    .font(.subheadline)
-                    .fontWeight(.bold)
-                    .foregroundStyle(Color.primaryText)
+                Text(String(localized: standardSetKey("title")))
+                    .font(.subheadline.weight(.bold))
+                    .foregroundStyle(Color.textPrimary)
 
-                Text(String(localized: "magicGallery.standardSet.description"))
-                    .font(.caption)
-                    .fontWeight(.medium)
-                    .foregroundStyle(Color.primaryText.opacity(0.58))
+                Text(String(localized: standardSetKey("description")))
+                    .font(.caption.weight(.medium))
+                    .foregroundStyle(Color.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
 
@@ -48,7 +51,7 @@ struct MagicGalleryCapturePanel: View {
 
             Toggle("", isOn: Binding(
                 get: { usesStandardSet },
-                set: { onToggleStandardSet($0) }
+                set: onToggleStandardSet
             ))
             .labelsHidden()
             .tint(.indigo)
@@ -56,16 +59,24 @@ struct MagicGalleryCapturePanel: View {
     }
 
     private var captureButton: some View {
-        Button(action: onCapture) {
-            Label(captureButtonTitle, systemImage: "camera.fill")
+        Button { showSourceDialog = true } label: {
+            Label(String(localized: "magicGallery.addPhotos"), systemImage: "photo.badge.plus")
                 .font(.headline)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 15)
-                .background(canAddMorePhotos ? Color.button : Color.button.opacity(0.45))
-                .foregroundStyle(.secondaryText)
+                .background(canAddMorePhotos ? Color.buttonPrimary : Color.buttonPrimary.opacity(0.45))
+                .foregroundStyle(Color.backgroundScreen)
                 .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
         }
         .buttonStyle(.plain)
         .disabled(!canAddMorePhotos)
+        // Attached here so the iOS 26 popover points at the button, not at the whole screen.
+        .confirmationDialog("", isPresented: $showSourceDialog) {
+            if UIImagePickerController.isSourceTypeAvailable(.camera) {
+                Button(String(localized: sourceKey("camera"))) { onCapture(.camera) }
+            }
+            Button(String(localized: sourceKey("photoLibrary"))) { onCapture(.photoLibrary) }
+            Button(String(localized: "common.cancel"), role: .cancel) {}
+        }
     }
 }
