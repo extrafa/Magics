@@ -50,7 +50,9 @@ struct PhantomDrawSenderView: View {
             }
             .ignoresSafeArea()
 
-            ExitHintView(isExitHintVisible: $isExitHintVisible, style: .specialWhite, skipsTraining: true)
+            // The canvas is white in both themes, so the hint's material has to stay light too.
+            ExitHintView(isExitHintVisible: $isExitHintVisible, style: .specialBlack, skipsTraining: true)
+                .environment(\.colorScheme, .light)
                 .padding(.top, statusBarHeight)
                 .ignoresSafeArea(edges: .top)
         }
