@@ -33,7 +33,6 @@ protocol MotionPreferenceManaging {
 
 protocol MagicGalleryPreferenceManaging {
     var usesStandardMagicGallerySet: Bool { get set }
-    var magicGalleryGestureMode: MagicGalleryGestureMode { get set }
 }
 
 protocol RateAppPreferenceManaging {
@@ -111,7 +110,6 @@ struct AppPreferences: AppPreferencesProviding {
 
         // MagicGallery
         static let usesStandardMagicGallerySet = "usesStandardMagicGallerySet"
-        static let magicGalleryGestureMode = "magicGalleryGestureMode"
 
         // RateApp
         static let hasRespondedToRating = "hasRespondedToRating"
@@ -131,7 +129,6 @@ struct AppPreferences: AppPreferencesProviding {
         static let screenDownHoldDuration = 0.30
         static let isExitHintEnabled = true
         static let usesStandardMagicGallerySet = true
-        static let magicGalleryGestureMode = MagicGalleryGestureMode.tap
     }
 
     enum Range {
@@ -241,14 +238,6 @@ struct AppPreferences: AppPreferencesProviding {
             return store.bool(forKey: Key.usesStandardMagicGallerySet)
         }
         nonmutating set { store.set(newValue, forKey: Key.usesStandardMagicGallerySet) }
-    }
-
-    var magicGalleryGestureMode: MagicGalleryGestureMode {
-        get {
-            guard store.object(forKey: Key.magicGalleryGestureMode) != nil else { return Default.magicGalleryGestureMode }
-            return MagicGalleryGestureMode(rawValue: store.integer(forKey: Key.magicGalleryGestureMode)) ?? Default.magicGalleryGestureMode
-        }
-        nonmutating set { store.set(newValue.rawValue, forKey: Key.magicGalleryGestureMode) }
     }
 
     func resetHapticSettings() {

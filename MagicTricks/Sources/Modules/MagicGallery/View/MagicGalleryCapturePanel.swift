@@ -8,14 +8,11 @@
 import SwiftUI
 
 private let standardSetKey = L10nDomain("magicGallery.standardSet")
-private let gestureKey = L10nDomain("magicGallery.gesture")
 private let sourceKey = L10nDomain("magicGallery.source")
 
 struct MagicGalleryCapturePanel: View {
     let usesStandardSet: Bool
     let onToggleStandardSet: (Bool) -> Void
-    let gestureMode: MagicGalleryGestureMode
-    let onGestureModeChange: (MagicGalleryGestureMode) -> Void
     let canAddMorePhotos: Bool
     let onCapture: (UIImagePickerController.SourceType) -> Void
 
@@ -25,7 +22,6 @@ struct MagicGalleryCapturePanel: View {
         VStack(alignment: .leading, spacing: 14) {
             standardSetControl
             Divider()
-            gestureModeControl
             captureButton
         }
         .padding(18)
@@ -59,32 +55,6 @@ struct MagicGalleryCapturePanel: View {
             ))
             .labelsHidden()
             .tint(.indigo)
-        }
-    }
-
-    private var gestureModeControl: some View {
-        HStack(spacing: 12) {
-            Image(systemName: "hand.tap.fill")
-                .font(.system(size: 17, weight: .bold))
-                .foregroundStyle(.white)
-                .frame(width: 38, height: 38)
-                .background(.indigo, in: RoundedRectangle(cornerRadius: 13, style: .continuous))
-
-            Text(String(localized: gestureKey("title")))
-                .font(.subheadline.weight(.bold))
-                .foregroundStyle(Color.textPrimary)
-
-            Spacer(minLength: 8)
-
-            Picker("", selection: Binding(
-                get: { gestureMode },
-                set: onGestureModeChange
-            )) {
-                Text(String(localized: gestureKey("tap"))).tag(MagicGalleryGestureMode.tap)
-                Text(String(localized: gestureKey("swipe"))).tag(MagicGalleryGestureMode.swipe)
-            }
-            .pickerStyle(.segmented)
-            .frame(width: 120)
         }
     }
 
