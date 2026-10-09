@@ -184,7 +184,7 @@ final class MagicGalleryViewModel: ObservableObject {
 
     func savePhoto(number: Int) async -> Bool {
         guard let photo = revealPhoto(for: number) else {
-            alertMessage = String(localized: "magicGallery.selectPhotoFirst")
+            alertMessage = String.localizedStringWithFormat(String(localized: "magicGallery.addPhotoFirst"), number)
             return false
         }
         guard await photoLibraryAuthorizer.hasAddAccess() else {
