@@ -157,6 +157,21 @@ final class MagicGalleryViewModelTests: XCTestCase {
         XCTAssertEqual(haptics.successCount, 1)
     }
 
+    func test_savePhoto_withoutAPhotoForTheNumber_asksToAddOneNamingTheNumber() async {
+        let saver = MockMagicGalleryPhotoSaver()
+        let viewModel = await makeViewModel(photoSaver: saver, usesStandardSet: false)
+
+        let success = await viewModel.savePhoto(number: 7)
+
+        XCTAssertFalse(success)
+        XCTAssertEqual(saver.savedImagesCount, 0)
+        XCTAssertEqual(
+            viewModel.alertMessage,
+            String.localizedStringWithFormat(String(localized: "magicGallery.addPhotoFirst"), 7)
+        )
+        XCTAssertTrue(viewModel.alertMessage?.contains("7") == true)
+    }
+
     func test_savePhoto_whenSaveFails_doesNotPlaySuccessAndShowsAlert() async {
         let photo = MagicGalleryPhoto(number: 1, image: Self.image(), fileName: "1.jpg", source: .custom)
         let saver = MockMagicGalleryPhotoSaver()

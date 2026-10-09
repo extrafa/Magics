@@ -4404,19 +4404,19 @@
         }
       }
     },
-    "magicGallery.selectPhotoFirst" : {
+    "magicGallery.addPhotoFirst" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Select a numbered photo first"
+            "value" : "Add a photo for number %lld first"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Selecciona primero una foto numerada"
+            "value" : "Primero añade una foto para el número %lld"
           }
         }
       }
