@@ -4302,57 +4302,6 @@
         }
       }
     },
-    "magicGallery.gesture.swipe" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Swipe"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Deslizar"
-          }
-        }
-      }
-    },
-    "magicGallery.gesture.tap" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tap"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Tocar"
-          }
-        }
-      }
-    },
-    "magicGallery.gesture.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gesture"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gesto"
-          }
-        }
-      }
-    },
     "magicGallery.perform" : {
       "extractionState" : "manual",
       "localizations" : {

@@ -18,7 +18,6 @@ final class AppPreferencesTests: XCTestCase {
         XCTAssertEqual(preferences.screenDownHoldDuration, AppPreferences.Default.screenDownHoldDuration)
         XCTAssertEqual(preferences.isExitHintEnabled, AppPreferences.Default.isExitHintEnabled)
         XCTAssertEqual(preferences.usesStandardMagicGallerySet, AppPreferences.Default.usesStandardMagicGallerySet)
-        XCTAssertEqual(preferences.magicGalleryGestureMode, .tap)
     }
 
     func test_hapticSpeedMultiplier_clampsToRange() {
@@ -55,22 +54,17 @@ final class AppPreferencesTests: XCTestCase {
         let preferences = AppPreferences(store: store)
 
         preferences.trickLaunchCount = 7
-        preferences.magicGalleryGestureMode = .swipe
 
         XCTAssertEqual(preferences.trickLaunchCount, 7)
-        XCTAssertEqual(preferences.magicGalleryGestureMode, .swipe)
         XCTAssertEqual(store.storage[AppPreferences.Key.trickLaunchCount] as? Int, 7)
-        XCTAssertEqual(store.storage[AppPreferences.Key.magicGalleryGestureMode] as? Int, MagicGalleryGestureMode.swipe.rawValue)
     }
 
     func test_integerPreferences_readValuesPreviouslyStoredAsDouble() {
         let store = MockPreferenceStore()
         store.storage[AppPreferences.Key.trickLaunchCount] = 5.0
-        store.storage[AppPreferences.Key.magicGalleryGestureMode] = Double(MagicGalleryGestureMode.swipe.rawValue)
         let preferences = AppPreferences(store: store)
 
         XCTAssertEqual(preferences.trickLaunchCount, 5)
-        XCTAssertEqual(preferences.magicGalleryGestureMode, .swipe)
     }
 
     func test_migrateIfNeeded_migratesLegacyUsesStandardMagicGallerySetValue() {

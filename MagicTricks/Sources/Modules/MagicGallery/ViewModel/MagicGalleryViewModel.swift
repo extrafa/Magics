@@ -18,7 +18,6 @@ final class MagicGalleryViewModel: ObservableObject {
     @Published var alertMessage: String?
     @Published var accessDeniedAlertMessage: String?
     @Published private(set) var usesStandardSet: Bool
-    @Published private(set) var gestureMode: MagicGalleryGestureMode
 
     private let photoLibrary: MagicGalleryPhotoLibraryManaging
     private let photoSaver: MagicGalleryPhotoSaving
@@ -41,7 +40,6 @@ final class MagicGalleryViewModel: ObservableObject {
         self.photoSaver = photoSaver ?? MagicGallerySystemPhotoSaver()
         self.photoLibraryAuthorizer = photoLibraryAuthorizer ?? SystemPhotoLibraryAuthorizer()
         self.usesStandardSet = preferences.usesStandardMagicGallerySet
-        self.gestureMode = preferences.magicGalleryGestureMode
     }
 
     var nextAvailableNumber: Int? {
@@ -75,11 +73,6 @@ final class MagicGalleryViewModel: ObservableObject {
     func setStandardSet(_ value: Bool) {
         usesStandardSet = value
         preferences.usesStandardMagicGallerySet = value
-    }
-
-    func setGestureMode(_ mode: MagicGalleryGestureMode) {
-        gestureMode = mode
-        preferences.magicGalleryGestureMode = mode
     }
 
     var canAddMorePhotos: Bool {

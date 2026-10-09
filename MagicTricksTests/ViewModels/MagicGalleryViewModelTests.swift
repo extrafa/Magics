@@ -282,7 +282,6 @@ private final class MockNotificationHaptics: HapticNotificationPlaying {
 
 private struct MockMagicGalleryPreferences: MagicGalleryPreferenceManaging {
     var usesStandardMagicGallerySet: Bool = true
-    var magicGalleryGestureMode: MagicGalleryGestureMode = .tap
 }
 
 private enum MockMagicGalleryError: Error {

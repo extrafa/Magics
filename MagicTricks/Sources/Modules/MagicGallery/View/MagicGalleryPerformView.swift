@@ -11,7 +11,7 @@ import UIKit
 struct MagicGalleryPerformView: View {
     @ObservedObject var vm: MagicGalleryViewModel
 
-    @State private var swipeCount = 0
+    @State private var tapCount = 0
     @State private var pendingSaveTask: Task<Void, Never>?
     @State private var showSaved = false
 
@@ -23,17 +23,8 @@ struct MagicGalleryPerformView: View {
         ZStack {
             Color.black
                 .ignoresSafeArea()
-                .gesture(
-                    DragGesture(minimumDistance: 10)
-                        .onEnded { value in
-                            guard vm.gestureMode == .swipe else { return }
-                            guard abs(value.translation.width) > abs(value.translation.height) else { return }
-                            registerGesture()
-                        }
-                )
                 .onTapGesture {
-                    guard vm.gestureMode == .tap else { return }
-                    registerGesture()
+                    registerTap()
                 }
 
             if showSaved {
@@ -46,12 +37,12 @@ struct MagicGalleryPerformView: View {
 
             VStack {
                 Spacer()
-                swipeDots
+                tapDots
                     .padding(.bottom, 56)
                     .allowsHitTesting(false)
             }
         }
-        .animation(.easeOut(duration: 0.15), value: swipeCount)
+        .animation(.easeOut(duration: 0.15), value: tapCount)
         .animation(.spring(response: 0.3, dampingFraction: 0.8), value: showSaved)
         .navigationBarTitleDisplayMode(.inline)
         .toolbarColorScheme(.dark, for: .navigationBar)
@@ -64,24 +55,24 @@ struct MagicGalleryPerformView: View {
         }
     }
 
-    private var swipeDots: some View {
+    private var tapDots: some View {
         HStack(spacing: 10) {
             ForEach(1...10, id: \.self) { i in
                 Circle()
-                    .fill(i <= swipeCount ? Color.white.opacity(0.6) : Color.white.opacity(0.1))
+                    .fill(i <= tapCount ? Color.white.opacity(0.6) : Color.white.opacity(0.1))
                     .frame(width: 7, height: 7)
             }
         }
     }
 
-    private func registerGesture() {
-        if swipeCount >= 10 {
+    private func registerTap() {
+        if tapCount >= 10 {
             errorFeedback.notificationOccurred(.error)
-            swipeCount = 0
+            tapCount = 0
             pendingSaveTask?.cancel()
             return
         }
-        swipeCount += 1
+        tapCount += 1
         lightImpact.impactOccurred()
         scheduleSave()
     }
@@ -96,8 +87,8 @@ struct MagicGalleryPerformView: View {
     }
 
     private func save() async {
-        let number = swipeCount
-        swipeCount = 0
+        let number = tapCount
+        tapCount = 0
         let success = await vm.savePhoto(number: number)
         guard !Task.isCancelled else { return }
         if success {
