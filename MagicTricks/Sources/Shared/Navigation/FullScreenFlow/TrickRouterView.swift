@@ -13,8 +13,6 @@ struct TrickRouterView: View {
 
     var body: some View {
         switch type {
-        case .calculatorPrediction:
-            CalculatorPredictionView()
         case .colorSense:
             ColorSenseView()
         case .magicGallery:

@@ -13,7 +13,6 @@ enum TrickType: String, CaseIterable {
     // seenTrickIds, so renaming a case here must not change what's already on disk.
     case geoMentalism = "geoMentalism"
     case colorSense = "colorSense"
-    case calculatorPrediction = "calculatorPrediction"
     case timeControl = "timeControl"
     case magicGallery = "magicGallery"
     case phantomDraw = "phantomDraw"
@@ -21,7 +20,7 @@ enum TrickType: String, CaseIterable {
     var requiresPro: Bool {
         switch self {
         case .geoMentalism: false
-        case .colorSense, .calculatorPrediction, .timeControl, .magicGallery, .phantomDraw: true
+        case .colorSense, .timeControl, .magicGallery, .phantomDraw: true
         }
     }
 }
@@ -29,7 +28,6 @@ enum TrickType: String, CaseIterable {
 enum SFSymbol: String {
     case globeEuropeAfricaFill = "globe.europe.africa.fill"
     case paintpalette = "paintpalette"
-    case ipad = "ipad"
     case stopwatchFill = "stopwatch.fill"
     case photoOnRectangleAngled = "photo.on.rectangle.angled"
     case antennaRadiowavesLeftAndRight = "antenna.radiowaves.left.and.right"
@@ -110,17 +108,6 @@ extension TrickType {
                 image: .paintpalette,
                 difficulty: .easy,
                 instruction: .colorSense
-            )
-        case .calculatorPrediction:
-            let key = L10nDomain("card.calculatorPrediction")
-            return Trick(
-                id: .calculatorPrediction,
-                title: key("title"),
-                cardTitle: key("cardTitle"),
-                subtitle: key("subtitle"),
-                image: .ipad,
-                difficulty: .medium,
-                instruction: .calculatorPrediction
             )
         case .timeControl:
             let key = L10nDomain("card.time")

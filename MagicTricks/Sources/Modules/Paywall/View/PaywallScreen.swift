@@ -307,12 +307,6 @@ final class PaywallPreviewStoreService: StoreServicing {
         .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
 }
 
-#Preview("Calculator Prediction") {
-    PaywallScreen(context: .trick(.calculatorPrediction), onDismiss: {})
-        .background(Color.backgroundScreen)
-        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
-}
-
 #Preview("Magic Gallery") {
     PaywallScreen(context: .trick(.magicGallery), onDismiss: {})
         .background(Color.backgroundScreen)
