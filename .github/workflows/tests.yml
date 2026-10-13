@@ -20,6 +20,9 @@ jobs:
       - name: Show Xcode version
         run: xcodebuild -version
 
+      - name: Check archive configurations
+        run: python3 scripts/check-archive-configs.py
+
       - name: Boot simulator
         run: |
           UDID=$(xcrun simctl list devices available -j | python3 -c '
