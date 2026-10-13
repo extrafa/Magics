@@ -16,6 +16,10 @@ struct HapticHelpSection: View {
             String(localized: key("exitHint.question")),
             String(localized: key("exitHint.answer"))
         ),
+        (
+            String(localized: key("noVibration.question")),
+            String(localized: key("noVibration.answer"))
+        ),
     ]
 
     var body: some View {
@@ -74,7 +78,7 @@ private struct HelpItem: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .padding(.horizontal, 18)
                 .padding(.bottom, isExpanded ? 16 : 0)
-                .frame(maxHeight: isExpanded ? 300 : 0, alignment: .top)
+                .frame(maxHeight: isExpanded ? .infinity : 0, alignment: .top)
                 .opacity(isExpanded ? 1 : 0)
                 .clipped()
         }
