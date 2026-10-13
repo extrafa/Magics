@@ -16,20 +16,25 @@ struct MagicGallerySlotCard: View {
     let onDelete: () -> Void
 
     @State private var isConfirmingDelete = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
             ZStack {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color.cardBackground)
-
                 if let photo {
                     MagicGallerySlotPhotoContent(photo: photo)
+                        .transition(.opacity.combined(with: .scale(scale: 0.85)))
                 } else {
                     MagicGallerySlotEmptyContent()
+                        .transition(.opacity.combined(with: .scale(scale: 0.9)))
                 }
             }
             .frame(height: 184)
+            // A background, not a ZStack child: otherwise the photo that is fading out sits under the opaque fill.
+            .background {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color.cardBackground)
+            }
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
@@ -41,6 +46,7 @@ struct MagicGallerySlotCard: View {
             .overlay(alignment: .bottomLeading) {
                 if let photo {
                     sourceBadge(for: photo)
+                        .transition(.opacity)
                 }
             }
             .onTapGesture {
@@ -51,8 +57,11 @@ struct MagicGallerySlotCard: View {
 
             if let photo, photo.isCustom {
                 deleteButton
+                    .transition(.opacity)
             }
         }
+        // One springy animation for the whole slot: deleting, adding or switching the standard set pops instead of snapping.
+        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.6), value: photo)
     }
 
     private var numberBadge: some View {
