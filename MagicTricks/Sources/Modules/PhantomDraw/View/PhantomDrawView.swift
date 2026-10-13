@@ -127,7 +127,7 @@ struct PhantomDrawView: View {
         if role == .receiver {
             PhantomDrawReceiverView(session: session)
         } else {
-            PhantomDrawSenderView(viewModel: viewModel)
+            PhantomDrawSenderView(viewModel: viewModel, onExit: stop)
         }
     }
 

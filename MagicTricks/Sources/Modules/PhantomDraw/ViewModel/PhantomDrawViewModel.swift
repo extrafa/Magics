@@ -10,6 +10,8 @@ final class PhantomDrawViewModel: ObservableObject {
 
     private static let minPointDistance: CGFloat = 2
     private static let progressSendInterval: TimeInterval = 0.05
+    private static let exitTapCount = 4
+    private static let exitTapWindow: TimeInterval = 1
 
     @Published var role: PhantomDrawRole?
     @Published var currentStroke: [CGPoint] = []
@@ -22,9 +24,13 @@ final class PhantomDrawViewModel: ObservableObject {
     private var lastStrokePoint: CGPoint?
     private var currentStrokeID = UUID()
     private var lastProgressSentAt: Date?
+    private let clock: () -> Date
+    private var trashTaps = 0
+    private var lastTrashTapAt: Date?
 
-    init(session: PhantomDrawSessioning) {
+    init(session: PhantomDrawSessioning, clock: @escaping () -> Date = Date.init) {
         self.session = session
+        self.clock = clock
         session.onNewConnection = { [weak self] in
             guard let self, self.role == .sender else { return }
             self.session.send(.sync(self.completedStrokes))
@@ -93,6 +99,23 @@ final class PhantomDrawViewModel: ObservableObject {
         lastProgressSentAt = now
         let normalized = currentStroke.map { DrawingPoint(normalizing: $0, in: canvasSize) }
         session.send(.strokeProgress(DrawingStroke(id: currentStrokeID, points: normalized)))
+    }
+
+    // Clears the canvas like the trash always did. Four quick taps in a row also say the trick should close:
+    // the spectator's screen has no visible way out, so this is the performer's.
+    func trashTapped() -> Bool {
+        clearDrawing()
+        let tappedAt = clock()
+        if let lastTrashTapAt, tappedAt.timeIntervalSince(lastTrashTapAt) <= Self.exitTapWindow {
+            trashTaps += 1
+        } else {
+            trashTaps = 1
+        }
+        lastTrashTapAt = tappedAt
+        guard trashTaps >= Self.exitTapCount else { return false }
+        trashTaps = 0
+        lastTrashTapAt = nil
+        return true
     }
 
     func clearDrawing() {
