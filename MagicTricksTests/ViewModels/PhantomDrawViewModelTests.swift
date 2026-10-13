@@ -43,6 +43,87 @@ final class PhantomDrawViewModelTests: XCTestCase {
 
         XCTAssertTrue(session.sentMessages.isEmpty)
     }
+
+    // MARK: - Trash exit
+
+    func test_trashTapped_fourQuickTaps_closeTheTrickOnTheFourth() {
+        let clock = FakeClock()
+        let vm = PhantomDrawViewModel(session: MockPhantomDrawSession(), clock: clock.read)
+
+        let results = (0..<4).map { _ -> Bool in
+            clock.advance(by: 0.3)
+            return vm.trashTapped()
+        }
+
+        XCTAssertEqual(results, [false, false, false, true])
+    }
+
+    func test_trashTapped_threeTaps_doNotClose() {
+        let clock = FakeClock()
+        let vm = PhantomDrawViewModel(session: MockPhantomDrawSession(), clock: clock.read)
+
+        let results = (0..<3).map { _ -> Bool in
+            clock.advance(by: 0.3)
+            return vm.trashTapped()
+        }
+
+        XCTAssertEqual(results, [false, false, false])
+    }
+
+    func test_trashTapped_aPauseLongerThanTheWindow_startsTheCountAgain() {
+        let clock = FakeClock()
+        let vm = PhantomDrawViewModel(session: MockPhantomDrawSession(), clock: clock.read)
+        _ = vm.trashTapped()
+        clock.advance(by: 0.3)
+        _ = vm.trashTapped()
+        clock.advance(by: 0.3)
+        _ = vm.trashTapped()
+
+        clock.advance(by: 1.5)
+        let afterPause = vm.trashTapped()
+        clock.advance(by: 0.3)
+        _ = vm.trashTapped()
+        clock.advance(by: 0.3)
+        let third = vm.trashTapped()
+
+        XCTAssertFalse(afterPause)
+        XCTAssertFalse(third, "only three taps since the pause")
+    }
+
+    func test_trashTapped_afterClosing_countsFromZeroAgain() {
+        let clock = FakeClock()
+        let vm = PhantomDrawViewModel(session: MockPhantomDrawSession(), clock: clock.read)
+        for _ in 0..<4 {
+            clock.advance(by: 0.3)
+            _ = vm.trashTapped()
+        }
+
+        clock.advance(by: 0.3)
+
+        XCTAssertFalse(vm.trashTapped())
+    }
+
+    func test_trashTapped_clearsTheCanvasOnEveryTap() {
+        let session = MockPhantomDrawSession()
+        let clock = FakeClock()
+        let vm = PhantomDrawViewModel(session: session, clock: clock.read)
+
+        _ = vm.trashTapped()
+        clock.advance(by: 0.3)
+        _ = vm.trashTapped()
+
+        XCTAssertEqual(session.sentMessages, [.clear, .clear])
+    }
+}
+
+private final class FakeClock {
+    private var now = Date(timeIntervalSince1970: 1_000)
+
+    func advance(by interval: TimeInterval) {
+        now = now.addingTimeInterval(interval)
+    }
+
+    func read() -> Date { now }
 }
 
 @MainActor
