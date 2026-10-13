@@ -2,3 +2,5 @@ exclude:
   - plans
   - achievements.md
   - release-prep.md
+  - session-logs
+  - references
