@@ -6,6 +6,7 @@
 import Foundation
 import Network
 import Security
+import dnssd
 
 // What PhantomDrawViewModel needs from the session, not the full Views-facing surface.
 @MainActor
@@ -140,11 +141,34 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         }
         b.stateUpdateHandler = { [weak self] state in
             Task { @MainActor [weak self] in
-                if case .failed = state { self?.connectionState = .failed }
+                self?.handleBrowserState(state)
             }
         }
         browser = b
         b.start(queue: .main)
+    }
+
+    // Not private: driven directly in tests.
+    func handleBrowserState(_ state: NWBrowser.State) {
+        switch state {
+        case .failed:
+            connectionState = .failed
+        case .waiting(let error) where Self.isLocalNetworkDenied(error):
+            // Keep the browser running: the system prompt may still be open, and .ready follows if the user allows.
+            isReconnecting = false
+            connectionState = .localNetworkDenied
+        case .ready:
+            guard connectionState == .localNetworkDenied else { return }
+            connectionState = .searching
+            scheduleSearchTimeout()
+        default:
+            break
+        }
+    }
+
+    nonisolated static func isLocalNetworkDenied(_ error: NWError) -> Bool {
+        guard case .dns(let code) = error else { return false }
+        return code == DNSServiceErrorType(kDNSServiceErr_PolicyDenied)
     }
 
     // The pairing code is only checked at the TLS/PSK handshake, not visible via Bonjour discovery - if more than one sender is nearby, connect to every candidate and keep whichever one's code actually matches.

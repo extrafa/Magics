@@ -17,6 +17,7 @@ enum PhantomDrawConnectionState: Equatable {
     case searching
     case connected(peerName: String)
     case failed
+    case localNetworkDenied
 }
 
 struct DrawingPoint: Codable, Equatable {

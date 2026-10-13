@@ -12,6 +12,7 @@ private let senderKey = L10nDomain("phantomDraw.role.sender")
 private let enterCodeKey = L10nDomain("phantomDraw.enterCode")
 private let statusKey = L10nDomain("phantomDraw.status")
 private let statusFailedKey = KeyDomain("phantomDraw.status.failed")
+private let statusDeniedKey = KeyDomain("phantomDraw.status.localNetworkDenied")
 
 struct PhantomDrawView: View {
 
@@ -115,6 +116,19 @@ struct PhantomDrawView: View {
                     subtitle: LocalizedStringKey(stringLiteral: statusFailedKey("subtitle")),
                     buttonTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
                     action: retry
+                )
+                .transition(.opacity)
+            }
+
+            if case .localNetworkDenied = state {
+                statusView(
+                    icon: "wifi.exclamationmark",
+                    title: LocalizedStringKey(stringLiteral: statusDeniedKey("title")),
+                    subtitle: LocalizedStringKey(stringLiteral: statusDeniedKey("subtitle")),
+                    buttonTitle: "common.openSettings",
+                    action: openSettings,
+                    secondaryTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
+                    secondaryAction: retry
                 )
                 .transition(.opacity)
             }
@@ -298,7 +312,15 @@ struct PhantomDrawView: View {
 
     // MARK: - Status
 
-    private func statusView(icon: String, title: LocalizedStringKey, subtitle: LocalizedStringKey, buttonTitle: LocalizedStringKey, action: @escaping () -> Void) -> some View {
+    private func statusView(
+        icon: String,
+        title: LocalizedStringKey,
+        subtitle: LocalizedStringKey,
+        buttonTitle: LocalizedStringKey,
+        action: @escaping Completion,
+        secondaryTitle: LocalizedStringKey? = nil,
+        secondaryAction: Completion? = nil
+    ) -> some View {
         VStack(spacing: 0) {
             Spacer()
             Image(systemName: icon)
@@ -317,7 +339,13 @@ struct PhantomDrawView: View {
                 .padding(.horizontal, 40)
             Spacer()
             primaryButton(buttonTitle, action: action)
-                .padding(.bottom, 32)
+                .padding(.bottom, secondaryTitle == nil ? 32 : 16)
+            if let secondaryTitle, let secondaryAction {
+                Button(secondaryTitle, action: secondaryAction)
+                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .padding(.bottom, 32)
+            }
         }
         .frame(maxWidth: .infinity)
     }
@@ -339,6 +367,11 @@ struct PhantomDrawView: View {
     private func retry() {
         guard let currentRole = viewModel.role else { return }
         viewModel.selectRole(currentRole)
+    }
+
+    private func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
     }
 
     private func stop() {
