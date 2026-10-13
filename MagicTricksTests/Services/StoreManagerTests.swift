@@ -164,6 +164,18 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertTrue(manager.hasProAccess)
     }
 
+    func test_start_grantsAccessWithoutWaitingForProductsToLoad() async {
+        let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
+        service.loadProductsNeverReturns = true
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        manager.start()
+        await waitUntil { manager.hasProAccess }
+
+        XCTAssertTrue(manager.hasProAccess)
+        manager.stop()
+    }
+
     func test_retryLoadProducts_whenSuccessful_populatesProductsAndClearsError() async {
         let service = MockStoreService()
         service.products = [StoreProduct(id: "magic_lifetime", displayName: "Lifetime", displayPrice: "$9.99")]
@@ -219,6 +231,7 @@ final class StoreManagerTests: XCTestCase {
 private final class MockStoreService: StoreServicing {
     var products: [StoreProduct] = []
     var loadProductsError: Error?
+    var loadProductsNeverReturns = false
     var loadProductsCallCount = 0
     var purchaseResult: Result<StorePurchaseResult, Error> = .success(.success)
     var entitlementProductIDs: [String]
@@ -232,6 +245,7 @@ private final class MockStoreService: StoreServicing {
 
     func loadProducts(for productIDs: [String]) async throws -> [StoreProduct] {
         loadProductsCallCount += 1
+        if loadProductsNeverReturns { try await Task.sleep(seconds: 3600) }
         if let loadProductsError { throw loadProductsError }
         return products
     }
