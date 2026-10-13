@@ -106,29 +106,25 @@ struct TrickCardView: View {
     @ViewBuilder
     private var badge: some View {
         if isLocked {
-            proBadge
+            lockedBadge
         } else {
             TrickDifficultyBadge(difficulty: trick.difficulty)
         }
     }
 
-    private var proBadge: some View {
-        HStack(spacing: 4) {
-            Image(systemName: "lock.fill")
-                .font(.system(size: 9, weight: .bold))
-                .accessibilityHidden(true)
-            Text(String(localized: "trick.proBadge"))
-                .font(.system(.caption2, design: .rounded, weight: .bold))
-                .tracking(0.4)
-        }
-        .foregroundStyle(Color.primary.opacity(0.45))
-        .padding(.horizontal, 10)
-        .padding(.vertical, 7)
-        .background(Capsule(style: .continuous).fill(Color.primary.opacity(0.07)))
-        .overlay {
-            Capsule(style: .continuous)
-                .stroke(Color.primary.opacity(0.22), lineWidth: 1.2)
-        }
+    // A lock without a word: the paywall never says "Pro", so the badge doesn't either.
+    private var lockedBadge: some View {
+        Image(systemName: "lock.fill")
+            .font(.system(size: 12, weight: .bold))
+            .foregroundStyle(Color.primary.opacity(0.45))
+            .padding(.horizontal, 12)
+            .padding(.vertical, 7)
+            .background(Capsule(style: .continuous).fill(Color.primary.opacity(0.07)))
+            .overlay {
+                Capsule(style: .continuous)
+                    .stroke(Color.primary.opacity(0.22), lineWidth: 1.2)
+            }
+            .accessibilityLabel(String(localized: "trick.lockedBadge"))
     }
 }
 
