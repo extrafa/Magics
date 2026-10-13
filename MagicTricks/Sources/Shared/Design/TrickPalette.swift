@@ -21,7 +21,6 @@ enum TrickPalette {
 
     enum Collection {
         static let colorSense = Color.collectionColorSense
-        static let calculatorPrediction = Color.collectionCalculatorPrediction
         static let timeControl = Color.collectionTimeControl
         static let magicGallery = Color.collectionMagicGallery
         static let geoMentalism = Color.collectionGeoMentalism
@@ -30,7 +29,7 @@ enum TrickPalette {
 
     enum Difficulty {
         static let easy = Color.difficultyEasy
-        static let medium = Collection.calculatorPrediction
+        static let medium = Color.difficultyMedium
         static let hard = Color.difficultyHard
     }
 
@@ -47,7 +46,6 @@ extension TrickType {
     var collectionColor: Color {
         switch self {
         case .colorSense: TrickPalette.Collection.colorSense
-        case .calculatorPrediction: TrickPalette.Collection.calculatorPrediction
         case .timeControl: TrickPalette.Collection.timeControl
         case .magicGallery: TrickPalette.Collection.magicGallery
         case .geoMentalism: TrickPalette.Collection.geoMentalism

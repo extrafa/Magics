@@ -25,7 +25,7 @@ final class InstructionModelsTests: XCTestCase {
 
     func test_allInstructionSteps_imageNamesExistInAssetCatalog() {
         let instructions: [Instruction] = [
-            .calculatorPrediction, .colorSense, .geoMentalism,
+            .colorSense, .geoMentalism,
             .magicGallery, .phantomDraw, .timeControl
         ]
         for instruction in instructions {

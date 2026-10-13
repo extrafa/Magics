@@ -115,6 +115,6 @@ private extension InstructionView {
 
 #Preview {
     NavigationStack {
-        InstructionView(instruction: .calculatorPrediction)
+        InstructionView(instruction: .colorSense)
     }
 }

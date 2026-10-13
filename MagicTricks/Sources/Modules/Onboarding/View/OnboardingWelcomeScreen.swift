@@ -16,7 +16,7 @@ struct OnboardingWelcomeScreen: View {
 
     private let topRow: [(String, Color)] = [
         ("paintpalette",             TrickPalette.Collection.colorSense),
-        ("ipad",                     TrickPalette.Collection.calculatorPrediction),
+        ("antenna.radiowaves.left.and.right", TrickPalette.Collection.phantomDraw),
     ]
 
     private let bottomRow: [(String, Color)] = [
