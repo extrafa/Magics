@@ -54,6 +54,13 @@ enum ExitHintFadeTiming {
     static let hideDuration: TimeInterval = 0.8
 }
 
+// The three phases of the auto fade; tests pass short ones.
+struct ExitHintFadeSchedule {
+    var initialDelay = ExitHintFadeTiming.initialDelay
+    var dimDuration = ExitHintFadeTiming.dimDuration
+    var hideDuration = ExitHintFadeTiming.hideDuration
+}
+
 enum ExitHintFlashTiming {
     static let holdAfterPeak: TimeInterval = 0.09
     static let holdAfterRest: TimeInterval = 0.20

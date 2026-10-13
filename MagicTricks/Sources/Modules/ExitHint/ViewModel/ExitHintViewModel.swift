@@ -19,10 +19,18 @@ final class ExitHintViewModel: ObservableObject {
     private var flashTask: Task<Void, Never>?
     private var preferences: ExitHintPreferenceManaging
     private let skipsTraining: Bool
+    private let fadeSchedule: ExitHintFadeSchedule
+    // Set while an auto fade is unfinished, so a paused fade can pick up where it stopped.
+    private var fadeCompletion: Completion?
 
-    init(preferences: ExitHintPreferenceManaging = AppPreferences.shared, skipsTraining: Bool = false) {
+    init(
+        preferences: ExitHintPreferenceManaging = AppPreferences.shared,
+        skipsTraining: Bool = false,
+        fadeSchedule: ExitHintFadeSchedule = ExitHintFadeSchedule()
+    ) {
         self.preferences = preferences
         self.skipsTraining = skipsTraining
+        self.fadeSchedule = fadeSchedule
     }
 
     deinit {
@@ -55,26 +63,39 @@ final class ExitHintViewModel: ObservableObject {
     }
 
     func configurePresentation(isVisible: Bool, onAutoFadeComplete: @escaping () -> Void) {
-        autoFadeTask?.cancel()
+        cancelAutoFade()
         hintOpacity = ExitHintOpacity.visible
 
         guard isVisible, didLearnExitHint else { return }
 
+        fadeCompletion = onAutoFadeComplete
+        runAutoFade()
+    }
+
+    // Continues from the current phase, so a resumed fade doesn't start over.
+    private func runAutoFade() {
+        autoFadeTask?.cancel()
         autoFadeTask = Task { [weak self] in
-            await self?.pause(ExitHintFadeTiming.initialDelay)
-            guard let self, !Task.isCancelled else { return }
+            guard let self else { return }
 
-            hintOpacity = ExitHintOpacity.dimmed
+            if hintOpacity == ExitHintOpacity.visible {
+                await pause(fadeSchedule.initialDelay)
+                guard !Task.isCancelled else { return }
+                hintOpacity = ExitHintOpacity.dimmed
+            }
 
-            await pause(ExitHintFadeTiming.dimDuration)
+            if hintOpacity == ExitHintOpacity.dimmed {
+                await pause(fadeSchedule.dimDuration)
+                guard !Task.isCancelled else { return }
+                hintOpacity = ExitHintOpacity.hidden
+            }
+
+            await pause(fadeSchedule.hideDuration)
             guard !Task.isCancelled else { return }
 
-            hintOpacity = ExitHintOpacity.hidden
-
-            await pause(ExitHintFadeTiming.hideDuration)
-            guard !Task.isCancelled else { return }
-
-            onAutoFadeComplete()
+            let completion = fadeCompletion
+            fadeCompletion = nil
+            completion?()
         }
     }
 
@@ -93,21 +114,25 @@ final class ExitHintViewModel: ObservableObject {
         }
     }
 
+    // The hint must not fade under a finger, but a touch that ends without exiting lets the fade go on.
     func holdStarted() {
-        cancelAutoFade()
+        autoFadeTask?.cancel()
         holdScale = ExitHintHoldScale.pressed
     }
 
     func holdCancelled() {
         holdScale = ExitHintHoldScale.released
+        guard fadeCompletion != nil else { return }
+        runAutoFade()
     }
 
     func cancelAutoFade() {
         autoFadeTask?.cancel()
+        fadeCompletion = nil
     }
 
     func cancelAll() {
-        autoFadeTask?.cancel()
+        cancelAutoFade()
         flashTask?.cancel()
     }
 
