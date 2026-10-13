@@ -39,6 +39,36 @@ final class MagicGalleryViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.activeCaptureSession?.number, 5)
     }
 
+    func test_startSequentialCapture_withTheStandardSetOn_switchesToCustomPhotos() async {
+        let viewModel = await makeViewModel(usesStandardSet: true)
+
+        viewModel.startSequentialCapture(sourceType: .photoLibrary)
+
+        XCTAssertFalse(viewModel.usesStandardSet)
+        XCTAssertEqual(viewModel.activeCaptureSession?.number, 1)
+    }
+
+    func test_startCapture_withTheStandardSetOn_switchesToCustomPhotos() async {
+        let viewModel = await makeViewModel(usesStandardSet: true)
+
+        viewModel.startCapture(for: 4, sourceType: .photoLibrary)
+
+        XCTAssertFalse(viewModel.usesStandardSet)
+        XCTAssertEqual(viewModel.activeCaptureSession?.number, 4)
+    }
+
+    func test_startSequentialCapture_whenAllCustomPhotosAreReady_keepsTheStandardSet() async {
+        let stored = (1...10).map {
+            MagicGalleryPhoto(number: $0, image: Self.image(), fileName: "\($0).jpg", source: .custom)
+        }
+        let viewModel = await makeViewModel(storedPhotos: stored, usesStandardSet: true)
+
+        viewModel.startSequentialCapture(sourceType: .photoLibrary)
+
+        XCTAssertTrue(viewModel.usesStandardSet)
+        XCTAssertNil(viewModel.activeCaptureSession)
+    }
+
     func test_handleCapturedImage_savesPhoto() async {
         let library = MockMagicGalleryPhotoLibrary()
         let viewModel = await makeViewModel(photoLibrary: library, usesStandardSet: false)
