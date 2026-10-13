@@ -23,7 +23,7 @@ struct HapticPreviewSection: View {
         SettingsSection(title: String(localized: "settings.preview")) {
             VStack(alignment: .leading, spacing: 14) {
                 Text(String.localizedStringWithFormat(String(localized: hapticsKey("testNumber")), testNumber))
-                    .font(.system(size: 17, weight: .bold, design: .rounded))
+                    .font(.system(.body, design: .rounded, weight: .bold))
                     .foregroundStyle(.textPrimary)
 
                 Button(action: action) {
@@ -41,7 +41,7 @@ struct HapticPreviewSection: View {
                     }
                     .font(.headline)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 52)
+                    .frame(minHeight: 52)
                     .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
                 }
                 .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
