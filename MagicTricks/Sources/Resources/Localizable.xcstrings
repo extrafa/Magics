@@ -5468,13 +5468,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Yours forever. Nothing renews, nothing to cancel."
+            "value" : "Yours forever. No subscription."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tuyo para siempre. Nada se renueva, nada que cancelar."
+            "value" : "Tuyo para siempre. Sin suscripción."
           }
         }
       }
