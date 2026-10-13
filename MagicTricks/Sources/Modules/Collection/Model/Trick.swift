@@ -117,7 +117,7 @@ extension TrickType {
                 cardTitle: key("cardTitle"),
                 subtitle: key("subtitle"),
                 image: .stopwatchFill,
-                difficulty: .medium,
+                difficulty: .hard,
                 instruction: .timeControl
             )
         case .magicGallery:
@@ -128,7 +128,7 @@ extension TrickType {
                 cardTitle: key("cardTitle"),
                 subtitle: key("subtitle"),
                 image: .photoOnRectangleAngled,
-                difficulty: .hard,
+                difficulty: .medium,
                 instruction: .magicGallery
             )
         case .phantomDraw:
