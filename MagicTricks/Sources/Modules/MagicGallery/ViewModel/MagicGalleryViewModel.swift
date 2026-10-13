@@ -105,6 +105,7 @@ final class MagicGalleryViewModel: ObservableObject {
         }
         beginCapture(sourceType: sourceType) { [weak self] in
             guard let self else { return }
+            self.useCustomPhotos()
             self.activeCaptureSession = self.captureFlow.startSequential(firstNumber: nextAvailableNumber, sourceType: sourceType)
         }
     }
@@ -112,8 +113,14 @@ final class MagicGalleryViewModel: ObservableObject {
     func startCapture(for number: Int, sourceType: UIImagePickerController.SourceType = .camera) {
         beginCapture(sourceType: sourceType) { [weak self] in
             guard let self else { return }
+            self.useCustomPhotos()
             self.activeCaptureSession = self.captureFlow.startSingle(number: number, sourceType: sourceType)
         }
+    }
+
+    // Adding a photo means the user wants their own set; the standard one would hide it.
+    private func useCustomPhotos() {
+        if usesStandardSet { setStandardSet(false) }
     }
 
     private func beginCapture(sourceType: UIImagePickerController.SourceType, onReady: @escaping () -> Void) {
