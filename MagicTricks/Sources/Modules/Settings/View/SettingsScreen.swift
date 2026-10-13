@@ -205,7 +205,7 @@ private extension SettingsScreen {
                     ProgressView()
                     Spacer()
                 }
-                .frame(height: 58)
+                .frame(minHeight: 58)
             } else {
                 SettingsActionRow(icon: "arrow.clockwise", title: String(localized: "settings.restorePurchases"))
             }
