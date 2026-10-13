@@ -3,6 +3,7 @@
 //  MagicTricksTests
 //
 
+import Network
 import XCTest
 @testable import MagicTricks
 
@@ -84,6 +85,64 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
 
         scheduler.fire()
         XCTAssertEqual(manager.connectionState, .failed)
+    }
+
+    func test_isLocalNetworkDenied_forPolicyDeniedDNSError_isTrue() {
+        let error = NWError.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))
+
+        XCTAssertTrue(PhantomDrawSessionManager.isLocalNetworkDenied(error))
+    }
+
+    func test_isLocalNetworkDenied_forOtherErrors_isFalse() {
+        XCTAssertFalse(PhantomDrawSessionManager.isLocalNetworkDenied(.dns(DNSServiceErrorType(kDNSServiceErr_NoSuchRecord))))
+        XCTAssertFalse(PhantomDrawSessionManager.isLocalNetworkDenied(.posix(.ECONNREFUSED)))
+    }
+
+    func test_browserWaitingWithPolicyDenied_entersLocalNetworkDenied_andSearchTimeoutKeepsIt() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+
+        manager.startAsReceiver(code: "42")
+        manager.handleBrowserState(.waiting(.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))))
+        scheduler.fire()
+
+        XCTAssertEqual(manager.connectionState, .localNetworkDenied)
+    }
+
+    func test_browserWaitingWithOtherError_doesNotEnterLocalNetworkDenied() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        addTeardownBlock { manager.stop() }
+
+        manager.startAsReceiver(code: "42")
+        manager.handleBrowserState(.waiting(.posix(.ENETDOWN)))
+
+        XCTAssertEqual(manager.connectionState, .searching)
+    }
+
+    func test_browserReady_afterDenied_resumesSearchingWithAFreshTimeout() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+
+        manager.startAsReceiver(code: "42")
+        manager.handleBrowserState(.waiting(.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))))
+        manager.handleBrowserState(.ready)
+
+        XCTAssertEqual(manager.connectionState, .searching)
+
+        scheduler.fire(at: 1)
+        XCTAssertEqual(manager.connectionState, .failed)
+    }
+
+    func test_browserReady_whileSearching_changesNothing() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        addTeardownBlock { manager.stop() }
+
+        manager.startAsReceiver(code: "42")
+        manager.handleBrowserState(.ready)
+
+        XCTAssertEqual(manager.connectionState, .searching)
     }
 
     func test_reconnectTimeout_fromEarlierDropDoesNotFailALaterReconnect() {
