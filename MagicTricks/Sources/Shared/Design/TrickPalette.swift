@@ -30,7 +30,7 @@ enum TrickPalette {
 
     enum Difficulty {
         static let easy = Color.difficultyEasy
-        static let medium = Collection.calculatorPrediction
+        static let medium = Color.difficultyMedium
         static let hard = Color.difficultyHard
     }
 
