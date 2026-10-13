@@ -90,8 +90,9 @@ final class StoreManager: ObservableObject {
         hasStarted = true
 
         startupTask = Task { [weak self] in
-            await self?.loadProducts()
+            // Purchases first: that is local and quick, while loading prices needs the network and can be slow.
             await self?.refreshAccess()
+            await self?.loadProducts()
         }
 
         listenerTask = Task { [weak self] in
