@@ -43,6 +43,7 @@ struct SettingsActionRow: View {
             Text(title)
                 .font(.system(.body, design: .rounded, weight: isBold ? .bold : .semibold))
                 .foregroundStyle(tint ?? .textPrimary)
+                .multilineTextAlignment(.leading)
 
             Spacer()
 
@@ -52,8 +53,9 @@ struct SettingsActionRow: View {
                     .foregroundStyle(Color.textPrimary.opacity(0.34))
             }
         }
+        .padding(.vertical, 8)
         .frame(maxWidth: .infinity)
-        .frame(height: 58)
+        .frame(minHeight: 58)
         .contentShape(Rectangle())
     }
 }
