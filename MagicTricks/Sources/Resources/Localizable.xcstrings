@@ -3988,7 +3988,7 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "¿Dónde quieres impresionar a la gente?"
           }
         }
@@ -4022,7 +4022,7 @@
         },
         "es" : {
           "stringUnit" : {
-            "state" : "needs_review",
+            "state" : "translated",
             "value" : "Elige todo lo que aplique."
           }
         }
