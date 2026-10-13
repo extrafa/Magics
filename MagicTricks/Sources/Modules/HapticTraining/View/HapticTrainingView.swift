@@ -25,14 +25,15 @@ struct HapticTrainingView: View {
         ZStack {
             Color.backgroundScreen.ignoresSafeArea()
 
-            VStack(spacing: 18) {
-                signalDeck
-                answerSection
-                Spacer(minLength: 0)
+            ScrollView {
+                VStack(spacing: 18) {
+                    signalDeck
+                    answerSection
+                }
+                .padding(.horizontal, 20)
+                .padding(.top, 24)
+                .padding(.bottom, 24)
             }
-            .padding(.horizontal, 20)
-            .padding(.top, 24)
-            .padding(.bottom, 24)
         }
         .onDisappear {
             viewModel.cancel()
@@ -60,9 +61,7 @@ struct HapticTrainingView: View {
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(Color.textPrimary.opacity(0.54))
                     .multilineTextAlignment(.center)
-                    .lineLimit(1)
-                    .minimumScaleFactor(0.78)
-                    .frame(height: 22)
+                    .frame(minHeight: 22)
             }
 
             hintLegend
@@ -71,7 +70,7 @@ struct HapticTrainingView: View {
                 Label(mode.playButtonTitle, systemImage: "dot.radiowaves.left.and.right")
                     .font(.headline)
                     .frame(maxWidth: .infinity)
-                    .frame(height: 54)
+                    .frame(minHeight: 54)
                     .contentShape(RoundedRectangle(cornerRadius: 18, style: .continuous))
             }
             .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
