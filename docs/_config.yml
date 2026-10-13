@@ -1,3 +1,4 @@
 exclude:
   - plans
   - achievements.md
+  - release-prep.md
