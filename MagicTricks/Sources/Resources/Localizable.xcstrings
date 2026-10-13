@@ -1082,23 +1082,6 @@
         }
       }
     },
-    "app.name" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Magic Tricks"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Magic Tricks"
-          }
-        }
-      }
-    },
     "card.color.cardTitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -1421,74 +1404,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Centro de Trucos"
-          }
-        }
-      }
-    },
-    "color.blue" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Blue"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Azul"
-          }
-        }
-      }
-    },
-    "color.green" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Green"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Verde"
-          }
-        }
-      }
-    },
-    "color.red" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Red"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rojo"
-          }
-        }
-      }
-    },
-    "color.yellow" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Yellow"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Amarillo"
           }
         }
       }
@@ -1952,40 +1867,6 @@
         }
       }
     },
-    "instruction.action.hapticNumberTraining.subtitle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Try it before the demonstration."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Pruébalo antes de la demostración."
-          }
-        }
-      }
-    },
-    "instruction.action.hapticNumberTraining.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Practice Vibrations"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Practicar Vibraciones"
-          }
-        }
-      }
-    },
     "instruction.action.hapticSettings.subtitle" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -2050,40 +1931,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Practicar Vibraciones"
-          }
-        }
-      }
-    },
-    "instruction.action.motionSettings.subtitle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Change how long to hold."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Cambia cuánto tiempo hay que mantenerlo."
-          }
-        }
-      }
-    },
-    "instruction.action.motionSettings.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gesture Settings"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Ajustes de Gestos"
           }
         }
       }
@@ -3414,40 +3261,6 @@
         }
       }
     },
-    "magicGallery.capture.description" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Photograph the image for this number"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Fotografía la imagen para este número"
-          }
-        }
-      }
-    },
-    "magicGallery.capture.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Capture photo %lld"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Capturar foto %lld"
-          }
-        }
-      }
-    },
     "magicGallery.deletePhoto" : {
       "comment" : "The accessibility label and destructive-action title for deleting a custom photo.",
       "isCommentAutoGenerated" : false,
@@ -3637,91 +3450,6 @@
         }
       }
     },
-    "magicGallery.progress.customReady" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld/10 custom photos ready"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "%lld/10 fotos personalizadas listas"
-          }
-        }
-      }
-    },
-    "magicGallery.progress.standardCustom" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Standard set + %lld/10 custom"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set estándar + %lld/10 personalizadas"
-          }
-        }
-      }
-    },
-    "magicGallery.progress.standardReady" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Standard set ready"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Set estándar listo"
-          }
-        }
-      }
-    },
-    "magicGallery.saveNumberToGallery" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save number %lld to Gallery"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guardar número %lld en Galería"
-          }
-        }
-      }
-    },
-    "magicGallery.saveToGallery" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Save to Gallery"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Guardar en Galería"
-          }
-        }
-      }
-    },
     "magicGallery.addPhotoFirst" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -3786,23 +3514,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Foto personalizada"
-          }
-        }
-      }
-    },
-    "magicGallery.status.selected" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Selected for saving"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Seleccionada para guardar"
           }
         }
       }
@@ -5237,74 +4948,6 @@
         }
       }
     },
-    "settings.holdDuration" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Hold to Activate"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Duración"
-          }
-        }
-      }
-    },
-    "settings.motion.gestureTrigger" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gesture Trigger"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Disparador por Gesto"
-          }
-        }
-      }
-    },
-    "settings.motion.secretGesture" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Secret Gesture"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Gesto Secreto"
-          }
-        }
-      }
-    },
-    "settings.motion.secretGestureDescription" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Require the phone gesture before receiving vibrations."
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Requiere el gesto del teléfono antes de recibir vibraciones."
-          }
-        }
-      }
-    },
     "settings.preview" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5318,23 +4961,6 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Vista previa"
-          }
-        }
-      }
-    },
-    "settings.rateUs" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Rate Us"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Califícanos"
           }
         }
       }
@@ -5597,23 +5223,6 @@
         }
       }
     },
-    "training.answer.submit" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Submit"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Enviar"
-          }
-        }
-      }
-    },
     "training.answer.title" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -5666,57 +5275,6 @@
       }
     },
     "training.digits.title" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Practice Signals"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Entrenador de Vibración"
-          }
-        }
-      }
-    },
-    "training.values.playButton" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Play random number"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Reproducir valor aleatorio"
-          }
-        }
-      }
-    },
-    "training.values.subtitle" : {
-      "extractionState" : "manual",
-      "localizations" : {
-        "en" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Practice numbers from 10 to 99"
-          }
-        },
-        "es" : {
-          "stringUnit" : {
-            "state" : "translated",
-            "value" : "Practica valores del 10 al 99"
-          }
-        }
-      }
-    },
-    "training.values.title" : {
       "extractionState" : "manual",
       "localizations" : {
         "en" : {
