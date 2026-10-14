@@ -49,6 +49,7 @@ struct MagicGalleryPerformView: View {
         .magicGalleryAlert(message: $vm.alertMessage)
         .accessDeniedAlert(message: $vm.accessDeniedAlertMessage)
         .keepsScreenAwake()
+        .task { await vm.prepareForPerformance() }
         .onDisappear {
             pendingSaveTask?.cancel()
             pendingSaveTask = nil
