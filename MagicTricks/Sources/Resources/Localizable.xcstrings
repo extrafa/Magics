@@ -2506,13 +2506,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When he says his number, you swipe that many times on the phone screen in your pocket. The app saves the photo to your gallery. He sees nothing."
+            "value" : "When he says his number, you tap that many times on the phone screen in your pocket. The app saves the photo to your gallery. He sees nothing."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuando dice su número, deslizas esa cantidad de veces en la pantalla del teléfono dentro de tu bolsillo. La app guarda la foto en tu galería. Él no ve nada."
+            "value" : "Cuando dice su número, tocas esa cantidad de veces la pantalla del teléfono dentro de tu bolsillo. La app guarda la foto en tu galería. Él no ve nada."
           }
         }
       }
@@ -2591,13 +2591,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "He says a number. Remember it. Say: \"Do you believe in intuition? Sometimes we pick something without knowing why.\" While you talk, swipe on the phone in your pocket. Swipe like you are turning a page, not sliding a finger. Example: if he said 7, swipe 7 times. After a short pause the photo saves to your gallery."
+            "value" : "He says a number. Remember it. Say: \"Do you believe in intuition? Sometimes we pick something without knowing why.\" While you talk, tap the screen of the phone in your pocket. Example: if he said 7, tap 7 times. Each tap gives a light vibration. After a pause of about a second, the photo saves to your gallery and the phone gives a success vibration. A different, error vibration means it did not save, for example because there is no photo for that number. If you tap more than 10 times, the count starts over."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Dice un número. Recuérdalo. Di: \"¿Crees en la intuición? A veces elegimos algo sin saber por qué.\" Mientras hablas, desliza en el teléfono dentro de tu bolsillo. Desliza como si pasaras una página, no como si arrastraras un dedo. Ejemplo: si dijo 7, desliza 7 veces. Tras una breve pausa, la foto se guarda en tu galería."
+            "value" : "Dice un número. Recuérdalo. Di: \"¿Crees en la intuición? A veces elegimos algo sin saber por qué.\" Mientras hablas, toca la pantalla del teléfono dentro de tu bolsillo. Ejemplo: si dijo 7, toca 7 veces. Cada toque da una vibración suave. Tras una pausa de aproximadamente un segundo, la foto se guarda en tu galería y el teléfono da una vibración de éxito. Una vibración de error distinta significa que no se guardó, por ejemplo porque no hay foto para ese número. Si tocas más de 10 veces, la cuenta empieza de nuevo."
           }
         }
       }
@@ -2608,13 +2608,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Talk and swipe"
+            "value" : "Talk and tap"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Habla y desliza"
+            "value" : "Habla y toca"
           }
         }
       }
