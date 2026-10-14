@@ -189,6 +189,13 @@ final class MagicGalleryViewModel: ObservableObject {
         }
     }
 
+    // Asks for add-only Photos access up front, so the system dialog never appears in the middle of the reveal.
+    func prepareForPerformance() async {
+        if await !photoLibraryAuthorizer.hasAddAccess() {
+            accessDeniedAlertMessage = String(localized: key("photoLibraryAccessDenied"))
+        }
+    }
+
     func savePhoto(number: Int) async -> Bool {
         guard let photo = revealPhoto(for: number) else {
             alertMessage = String.localizedStringWithFormat(String(localized: "magicGallery.addPhotoFirst"), number)

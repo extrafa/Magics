@@ -187,6 +187,29 @@ final class MagicGalleryViewModelTests: XCTestCase {
         XCTAssertEqual(haptics.successCount, 1)
     }
 
+    func test_prepareForPerformance_withAccess_showsNoAlert() async {
+        let authorizer = MockPhotoLibraryAuthorizer()
+        let viewModel = await makeViewModel(photoLibraryAuthorizer: authorizer)
+
+        await viewModel.prepareForPerformance()
+
+        XCTAssertEqual(authorizer.requestCount, 1)
+        XCTAssertNil(viewModel.accessDeniedAlertMessage)
+    }
+
+    func test_prepareForPerformance_withoutAccess_showsTheAccessDeniedAlert() async {
+        let authorizer = MockPhotoLibraryAuthorizer()
+        authorizer.hasAccess = false
+        let viewModel = await makeViewModel(photoLibraryAuthorizer: authorizer)
+
+        await viewModel.prepareForPerformance()
+
+        XCTAssertEqual(
+            viewModel.accessDeniedAlertMessage,
+            String(localized: "magicGallery.error.photoLibraryAccessDenied")
+        )
+    }
+
     func test_savePhoto_withoutAPhotoForTheNumber_asksToAddOneNamingTheNumber() async {
         let saver = MockMagicGalleryPhotoSaver()
         let viewModel = await makeViewModel(photoSaver: saver, usesStandardSet: false)
@@ -312,8 +335,12 @@ private final class MockMagicGalleryPhotoSaver: MagicGalleryPhotoSaving {
 @MainActor
 private final class MockPhotoLibraryAuthorizer: PhotoLibraryAuthorizing {
     var hasAccess = true
+    private(set) var requestCount = 0
 
-    func hasAddAccess() async -> Bool { hasAccess }
+    func hasAddAccess() async -> Bool {
+        requestCount += 1
+        return hasAccess
+    }
 }
 
 @MainActor
