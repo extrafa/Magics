@@ -39,6 +39,11 @@ extension Instruction {
                 description: String(localized: key("step5.description")),
                 phase: .demonstration
             ),
+            InstructionStep(
+                title: String(localized: key("step6.title")),
+                description: String(localized: key("step6.description")),
+                phase: .demonstration
+            ),
         ]
     )
 }
