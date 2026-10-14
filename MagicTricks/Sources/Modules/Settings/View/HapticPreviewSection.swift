@@ -47,6 +47,8 @@ struct HapticPreviewSection: View {
                 .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
                 .disabled(isTesting)
                 .animation(.easeInOut(duration: 0.2), value: isWaitingForGesture)
+
+                VibrationHelpLink()
             }
             .padding(18)
             .cardSurface(cornerRadius: 20)

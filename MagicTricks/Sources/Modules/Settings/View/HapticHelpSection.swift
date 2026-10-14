@@ -84,3 +84,79 @@ private struct HelpItem: View {
         }
     }
 }
+
+// MARK: - Vibration help sheet
+
+struct VibrationHelpLink: View {
+
+    @State private var isSheetPresented = false
+
+    var body: some View {
+        Button {
+            isSheetPresented = true
+        } label: {
+            Text(String(localized: key("noVibration.link")))
+                .font(.system(.footnote, design: .rounded, weight: .semibold))
+                .foregroundStyle(Color.textSecondary)
+                .underline()
+                .padding(.vertical, 6)
+                .contentShape(Rectangle())
+        }
+        .buttonStyle(.plain)
+        .sheet(isPresented: $isSheetPresented) {
+            VibrationHelpSheet()
+        }
+    }
+}
+
+private struct VibrationHelpSheet: View {
+
+    var body: some View {
+        ScrollView {
+            VStack(spacing: 20) {
+                Text(String(localized: key("noVibration.question")))
+                    .font(.title3.weight(.bold))
+                    .foregroundStyle(.textPrimary)
+                    .multilineTextAlignment(.center)
+
+                Text(String(localized: key("noVibration.answer")))
+                    .font(.subheadline)
+                    .foregroundStyle(.textSecondary)
+                    .multilineTextAlignment(.center)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Button(action: openSettings) {
+                    Text(String(localized: "common.openSettings"))
+                        .font(.headline)
+                        .frame(maxWidth: .infinity)
+                        .padding(.vertical, 16)
+                }
+                .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
+            }
+            .padding(.horizontal, 24)
+            .padding(.top, 32)
+            .padding(.bottom, 24)
+        }
+        .presentationDragIndicator(.visible)
+        .modifier(VibrationHelpPresentationModifier())
+    }
+
+    private func openSettings() {
+        guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
+        UIApplication.shared.open(url)
+    }
+}
+
+private struct VibrationHelpPresentationModifier: ViewModifier {
+    func body(content: Content) -> some View {
+        if #available(iOS 16.4, *) {
+            content
+                .presentationDetents([.medium, .large])
+                .presentationBackground(Color.backgroundScreen)
+                .presentationCornerRadius(28)
+        } else {
+            content
+                .presentationDetents([.medium, .large])
+        }
+    }
+}

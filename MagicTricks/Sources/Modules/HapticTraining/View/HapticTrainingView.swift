@@ -75,6 +75,8 @@ struct HapticTrainingView: View {
             }
             .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
             .allowsHitTesting(!viewModel.isPlaying)
+
+            VibrationHelpLink()
         }
         .padding(22)
         .frame(maxWidth: .infinity)
