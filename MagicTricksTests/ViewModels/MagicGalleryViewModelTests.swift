@@ -97,6 +97,36 @@ final class MagicGalleryViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.activeCaptureSession?.number, 2)
     }
 
+    func test_sequentialCapture_whenASaveFails_endsTheSeriesAndClosesTheNextCamera() async {
+        let library = MockMagicGalleryPhotoLibrary()
+        library.shouldFailSave = true
+        let viewModel = await makeViewModel(photoLibrary: library, usesStandardSet: false)
+        viewModel.startSequentialCapture(sourceType: .photoLibrary)
+        let save = viewModel.handleCapturedImage(Self.image(), for: 1)
+        // The next camera can already be up by the time the save reports its failure.
+        viewModel.presentPendingCaptureIfNeeded()
+        XCTAssertEqual(viewModel.activeCaptureSession?.number, 2)
+
+        await save.value
+
+        XCTAssertNil(viewModel.activeCaptureSession)
+        XCTAssertEqual(viewModel.alertMessage, String(localized: "magicGallery.error.savePhotoFailed"))
+        viewModel.presentPendingCaptureIfNeeded()
+        XCTAssertNil(viewModel.activeCaptureSession)
+    }
+
+    func test_singleCapture_whenTheSaveFails_showsTheAlertWithoutTouchingAnotherCamera() async {
+        let library = MockMagicGalleryPhotoLibrary()
+        library.shouldFailSave = true
+        let viewModel = await makeViewModel(photoLibrary: library, usesStandardSet: false)
+
+        await viewModel.handleCapturedImage(Self.image(), for: 4).value
+
+        XCTAssertNil(viewModel.activeCaptureSession)
+        XCTAssertEqual(viewModel.alertMessage, String(localized: "magicGallery.error.savePhotoFailed"))
+        XCTAssertTrue(viewModel.customPhotos.isEmpty)
+    }
+
     func test_startSequentialCapture_whenAllCustomPhotosReady_showsAlert() async {
         let storedPhotos = (1...10).map {
             MagicGalleryPhoto(number: $0, image: Self.image(), fileName: "\($0).jpg", source: .custom)
@@ -286,6 +316,7 @@ private final class MockMagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManagi
     var savedNumbers: [Int] = []
     var deletedNumbers: [Int] = []
     var shouldFailDelete = false
+    var shouldFailSave = false
 
     init(storedPhotos: [MagicGalleryPhoto] = []) {
         self.storedPhotos = storedPhotos
@@ -300,6 +331,9 @@ private final class MockMagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManagi
     }
 
     func saveCustomPhoto(_ image: UIImage, for number: Int) async throws -> MagicGalleryPhoto {
+        if shouldFailSave {
+            throw MockMagicGalleryError.requestedFailure
+        }
         savedNumbers.append(number)
         let photo = MagicGalleryPhoto(number: number, image: image, fileName: "\(number).jpg", source: .custom)
         storedPhotos.append(photo)

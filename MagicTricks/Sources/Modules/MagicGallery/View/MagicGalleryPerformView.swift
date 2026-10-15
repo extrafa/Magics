@@ -13,6 +13,7 @@ struct MagicGalleryPerformView: View {
 
     @State private var tapCount = 0
     @State private var pendingSaveTask: Task<Void, Never>?
+    @State private var savingTask: Task<Void, Never>?
     @State private var showSaved = false
 
     private let saveDelay: TimeInterval = 1.2
@@ -53,6 +54,9 @@ struct MagicGalleryPerformView: View {
         .onDisappear {
             pendingSaveTask?.cancel()
             pendingSaveTask = nil
+            savingTask?.cancel()
+            savingTask = nil
+            showSaved = false
         }
     }
 
@@ -83,19 +87,18 @@ struct MagicGalleryPerformView: View {
         pendingSaveTask = Task {
             try? await Task.sleep(for: .seconds(saveDelay))
             guard !Task.isCancelled else { return }
-            await save()
+            let number = tapCount
+            tapCount = 0
+            // Its own task: a tap while the photo is saving restarts the count but must not cancel this save's feedback.
+            savingTask = Task { await save(number: number) }
         }
     }
 
-    private func save() async {
-        let number = tapCount
-        tapCount = 0
+    private func save(number: Int) async {
         let success = await vm.savePhoto(number: number)
-        guard !Task.isCancelled else { return }
         if success {
             withAnimation { showSaved = true }
             try? await Task.sleep(for: .seconds(1.5))
-            guard !Task.isCancelled else { return }
             withAnimation { showSaved = false }
         } else {
             errorFeedback.notificationOccurred(.error)

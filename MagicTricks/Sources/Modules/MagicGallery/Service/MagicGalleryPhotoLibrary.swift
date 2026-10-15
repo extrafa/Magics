@@ -102,7 +102,11 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
         let url = try storageDirectoryURL().appendingPathComponent(photo.fileName)
         let fileManager = fileManager
         try await Task.detached(priority: .utility) {
-            try fileManager.removeItem(at: url)
+            do {
+                try fileManager.removeItem(at: url)
+            } catch let error as NSError where error.domain == NSCocoaErrorDomain && error.code == NSFileNoSuchFileError {
+                // Already gone, which is what a delete wants; reporting a failure would bring back a photo with no file.
+            }
         }.value
     }
 
