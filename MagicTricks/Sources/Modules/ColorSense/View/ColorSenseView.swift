@@ -29,15 +29,13 @@ struct ColorSenseView: View {
                     cardView(card)
                         .rotationEffect(.degrees(card.rotation))
                         .modifier(floatingMotionSettings(for: index))
-                        .gesture(
-                            DragGesture(minimumDistance: 0)
-                                .onChanged { _ in viewModel.handleTap(on: card) }
-                        )
+                        .onTapGesture { viewModel.handleTap(on: card) }
                 }
             }
             .padding(.horizontal, 20)
         }
         .exitHint()
+        .keepsScreenAwake()
         .hapticsUnavailableNoticeOverlay()
         .onDisappear {
             viewModel.cancel()
