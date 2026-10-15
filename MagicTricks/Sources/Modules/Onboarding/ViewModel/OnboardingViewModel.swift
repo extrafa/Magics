@@ -16,6 +16,7 @@ final class OnboardingViewModel: ObservableObject {
 
     private var preferences: OnboardingPreferenceManaging
     private let onComplete: () -> Void
+    private var didComplete = false
 
     init(preferences: OnboardingPreferenceManaging = AppPreferences.shared, onComplete: @escaping () -> Void) {
         self.preferences = preferences
@@ -33,6 +34,8 @@ final class OnboardingViewModel: ObservableObject {
     }
 
     func complete() {
+        guard !didComplete else { return }
+        didComplete = true
         preferences.hasCompletedOnboarding = true
         onComplete()
     }

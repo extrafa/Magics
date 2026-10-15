@@ -75,6 +75,8 @@ struct OnboardingFlowView: View {
     }
 
     private func dismissPaywall() {
+        // The close button and a purchase can both end the paywall; finish only once.
+        guard !isDismissing else { return }
         isDismissing = true
         Task {
             try? await Task.sleep(milliseconds: 300)

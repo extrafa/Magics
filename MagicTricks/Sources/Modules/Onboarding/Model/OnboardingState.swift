@@ -57,6 +57,23 @@ enum OnboardingGoal: String, CaseIterable, Hashable {
 }
 
 extension Set where Element == OnboardingGoal {
+    // One tap on a goal row. "Everywhere" is all goals at once; while it is on, the other rows look unticked, so a tap
+    // on one of them means "just this one". Ticking all four others turns into "Everywhere".
+    func toggled(_ goal: OnboardingGoal) -> Set<OnboardingGoal> {
+        if goal == .everywhere {
+            return contains(.everywhere) ? [] : Set(OnboardingGoal.allCases)
+        }
+        if contains(.everywhere) { return [goal] }
+        var result = self
+        if result.contains(goal) {
+            result.remove(goal)
+        } else {
+            result.insert(goal)
+            if result.isSuperset(of: Set(OnboardingGoal.combinable)) { return Set(OnboardingGoal.allCases) }
+        }
+        return result
+    }
+
     // Combinable goals in this set, in fixed display order - for building a dynamic catalog key or fragment list.
     var orderedCombinableGoals: [OnboardingGoal] {
         OnboardingGoal.combinable.filter(contains)

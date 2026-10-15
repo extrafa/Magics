@@ -74,20 +74,7 @@ struct OnboardingGoalScreen: View {
 
     private func handleTap(_ goal: OnboardingGoal) {
         withAnimation(.easeOut(duration: 0.2)) {
-            if goal == .everywhere {
-                selectedGoals = isEverywhereActive ? [] : Set(OnboardingGoal.allCases)
-            } else if isEverywhereActive {
-                selectedGoals.remove(goal)
-                selectedGoals.remove(.everywhere)
-            } else if selectedGoals.contains(goal) {
-                selectedGoals.remove(goal)
-            } else {
-                selectedGoals.insert(goal)
-                let allFour: Set<OnboardingGoal> = [.parties, .dates, .work, .family]
-                if selectedGoals.isSuperset(of: allFour) {
-                    selectedGoals = Set(OnboardingGoal.allCases)
-                }
-            }
+            selectedGoals = selectedGoals.toggled(goal)
         }
     }
 
