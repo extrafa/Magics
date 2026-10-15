@@ -37,7 +37,7 @@ struct OnboardingProcessingScreen: View {
                     .padding(.horizontal, 28)
                     .onboardingAppear(appeared, offset: 12, delay: 0.18)
 
-                Text(isDone ? String(localized: key("done")) : phases[phaseIndex])
+                Text(isDone ? String(localized: key("done")) : (phases.indices.contains(phaseIndex) ? phases[phaseIndex] : ""))
                     .font(.system(size: 16, weight: .regular, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
@@ -120,7 +120,7 @@ struct OnboardingProcessingScreen: View {
         let total = CGFloat(phases.count + 1)
         withAnimation(.easeInOut(duration: 1.8)) { progress = 1.0 / total }
 
-        for i in 1..<phases.count {
+        for i in 1..<max(phases.count, 1) {
             try? await Task.sleep(milliseconds: 2200)
             withAnimation(.easeInOut(duration: 0.4)) { phaseIndex = i }
             withAnimation(.easeInOut(duration: 1.2)) { progress = CGFloat(i + 1) / total }

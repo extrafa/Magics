@@ -49,6 +49,11 @@ struct PaywallScreen: View {
             }
         }
         .task {
+            // Already owns it (a reinstall, say): nothing to sell, and no change will arrive to close this screen.
+            if store.hasProAccess {
+                onDismiss()
+                return
+            }
             await store.reloadProductsIfNeeded()
         }
         .onChange(of: store.hasProAccess) { _ in
