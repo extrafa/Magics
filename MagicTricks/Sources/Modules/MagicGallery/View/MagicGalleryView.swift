@@ -10,6 +10,7 @@ import SwiftUI
 struct MagicGalleryView: View {
     @Environment(\.dismiss) private var dismiss
     @StateObject private var vm: MagicGalleryViewModel
+    @State private var isPerforming = false
 
     init(vm: MagicGalleryViewModel? = nil) {
         _vm = StateObject(wrappedValue: vm ?? MagicGalleryViewModel())
@@ -50,8 +51,16 @@ struct MagicGalleryView: View {
                 onCancel: vm.handleCaptureCancelled
             )
         }
-        .magicGalleryAlert(message: $vm.alertMessage)
-        .accessDeniedAlert(message: $vm.accessDeniedAlertMessage)
+        .magicGalleryAlert(message: hiddenWhilePerforming($vm.alertMessage))
+        .accessDeniedAlert(message: hiddenWhilePerforming($vm.accessDeniedAlertMessage))
+    }
+
+    // The Perform cover shows these alerts itself; presenting them here too would dismiss the cover.
+    private func hiddenWhilePerforming(_ message: Binding<String?>) -> Binding<String?> {
+        Binding(
+            get: { isPerforming ? nil : message.wrappedValue },
+            set: { message.wrappedValue = $0 }
+        )
     }
 
     private var capturePanel: some View {
@@ -81,8 +90,8 @@ struct MagicGalleryView: View {
             .frame(height: 36)
             .allowsHitTesting(false)
 
-            NavigationLink {
-                MagicGalleryPerformView(vm: vm)
+            Button {
+                isPerforming = true
             } label: {
                 Label(String(localized: "magicGallery.perform"), systemImage: "wand.and.stars")
                     .font(.system(size: 17, weight: .bold, design: .rounded))
@@ -93,6 +102,10 @@ struct MagicGalleryView: View {
             .padding(.horizontal, 20)
             .padding(.bottom, 16)
             .background(Color.backgroundScreen)
+            // A cover, not a push: no back button and no edge swipe to catch in a pocket.
+            .fullScreenCover(isPresented: $isPerforming) {
+                MagicGalleryPerformView(vm: vm)
+            }
         }
     }
 }

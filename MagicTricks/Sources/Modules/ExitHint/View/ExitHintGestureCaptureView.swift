@@ -64,6 +64,8 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
         private var panStartedInRect = false
         private var didTriggerSwipe = false
         private var touchStartTime: Date?
+        // Removing the recognizers cancels a touch that is still down; its callbacks must not publish while the view is being torn down.
+        private var isTearingDown = false
 
         init(onExit: @escaping () -> Void) {
             self.onExit = onExit
@@ -83,6 +85,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
 
         func installRecognizerIfNeeded(on window: UIWindow) {
             guard installedWindow !== window else { return }
+            isTearingDown = false
             removeInstalledRecognizers()
 
             let longPress = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress(_:)))
@@ -97,7 +100,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             tracker.delegate = self
 
             tracker.onTouchDown = { [weak self] location in
-                guard let self else { return }
+                guard let self, !self.isTearingDown else { return }
                 guard self.rect.contains(location) else { return }
                 self.isHoldActive = true
                 self.touchStartTime = Date()
@@ -105,7 +108,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             }
 
             tracker.onTouchMoved = { [weak self] location in
-                guard let self, self.isHoldActive else { return }
+                guard let self, !self.isTearingDown, self.isHoldActive else { return }
                 let activeRect = self.rect.insetBy(dx: -ExitHintZone.hitTestMargin, dy: -ExitHintZone.hitTestMargin)
                 if !activeRect.contains(location) {
                     self.isHoldActive = false
@@ -114,7 +117,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
             }
 
             tracker.onTouchUp = { [weak self] in
-                guard let self, self.isHoldActive else { return }
+                guard let self, !self.isTearingDown, self.isHoldActive else { return }
                 self.isHoldActive = false
                 self.gestureCoordinator?.onHoldCancelled?()
             }
@@ -143,6 +146,7 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
         }
 
         func teardown() {
+            isTearingDown = true
             removeInstalledRecognizers()
             installedWindow = nil
             longPressRecognizer = nil
