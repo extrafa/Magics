@@ -61,7 +61,7 @@ struct MagicGalleryPerformView: View {
 
     private var tapDots: some View {
         HStack(spacing: 10) {
-            ForEach(1...10, id: \.self) { i in
+            ForEach(1...vm.maxPhotos, id: \.self) { i in
                 Circle()
                     .fill(i <= tapCount ? Color.white.opacity(0.6) : Color.white.opacity(0.1))
                     .frame(width: 7, height: 7)
@@ -70,7 +70,7 @@ struct MagicGalleryPerformView: View {
     }
 
     private func registerTap() {
-        if tapCount >= 10 {
+        if tapCount >= vm.maxPhotos {
             errorFeedback.notificationOccurred(.error)
             tapCount = 0
             pendingSaveTask?.cancel()

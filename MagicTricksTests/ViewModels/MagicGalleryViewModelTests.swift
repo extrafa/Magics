@@ -39,22 +39,40 @@ final class MagicGalleryViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.activeCaptureSession?.number, 5)
     }
 
-    func test_startSequentialCapture_withTheStandardSetOn_switchesToCustomPhotos() async {
+    func test_startSequentialCapture_withTheStandardSetOn_keepsItUntilAPhotoIsChosen() async {
         let viewModel = await makeViewModel(usesStandardSet: true)
 
         viewModel.startSequentialCapture(sourceType: .photoLibrary)
 
-        XCTAssertFalse(viewModel.usesStandardSet)
+        XCTAssertTrue(viewModel.usesStandardSet)
         XCTAssertEqual(viewModel.activeCaptureSession?.number, 1)
     }
 
-    func test_startCapture_withTheStandardSetOn_switchesToCustomPhotos() async {
+    func test_cancellingTheCapture_keepsTheStandardSet() async {
         let viewModel = await makeViewModel(usesStandardSet: true)
+        viewModel.startSequentialCapture(sourceType: .photoLibrary)
 
+        viewModel.handleCaptureCancelled()
+
+        XCTAssertTrue(viewModel.usesStandardSet)
+        XCTAssertTrue(viewModel.customPhotos.isEmpty)
+    }
+
+    func test_choosingAPhoto_withTheStandardSetOn_switchesToCustomPhotos() async {
+        let viewModel = await makeViewModel(usesStandardSet: true)
         viewModel.startCapture(for: 4, sourceType: .photoLibrary)
+        XCTAssertTrue(viewModel.usesStandardSet)
+
+        await viewModel.handleCapturedImage(Self.image(), for: 4).value
 
         XCTAssertFalse(viewModel.usesStandardSet)
-        XCTAssertEqual(viewModel.activeCaptureSession?.number, 4)
+        XCTAssertEqual(viewModel.customPhotos.map(\.number), [4])
+    }
+
+    func test_maxPhotos_comesFromTheLibrary() async {
+        let viewModel = await makeViewModel()
+
+        XCTAssertEqual(viewModel.maxPhotos, 10)
     }
 
     func test_startSequentialCapture_whenAllCustomPhotosAreReady_keepsTheStandardSet() async {
