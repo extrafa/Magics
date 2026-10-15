@@ -27,6 +27,11 @@ final class OnboardingViewModel: ObservableObject {
         step = next
     }
 
+    func skip() {
+        guard step.isSkippable else { return }
+        step = .paywall
+    }
+
     func complete() {
         preferences.hasCompletedOnboarding = true
         onComplete()

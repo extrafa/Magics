@@ -23,6 +23,16 @@ struct OnboardingFlowView: View {
                 .id(viewModel.step)
                 .transition(.opacity)
         }
+        .overlay(alignment: .topTrailing) {
+            if viewModel.step.isSkippable {
+                Button(String(localized: "onboarding.skip"), action: viewModel.skip)
+                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
+                    .foregroundStyle(.secondary)
+                    .padding(.horizontal, 24)
+                    .padding(.vertical, 8)
+                    .transition(.opacity)
+            }
+        }
         .safeAreaInset(edge: .top, spacing: 0) {
             Group {
                 if let progress = viewModel.step.progress {
