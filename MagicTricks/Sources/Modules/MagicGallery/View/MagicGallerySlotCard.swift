@@ -65,7 +65,7 @@ struct MagicGallerySlotCard: View {
     }
 
     private var numberBadge: some View {
-        Text("\(number)")
+        Text(verbatim: "\(number)")
             .font(.system(size: 12, weight: .bold, design: .rounded))
             .foregroundStyle(.white)
             .padding(.horizontal, 10)
