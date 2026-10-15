@@ -21,6 +21,9 @@ enum OnboardingStep: Int, CaseIterable {
         return (index + 1, Self.progressSteps.count)
     }
 
+    // The loading screen and the paywall itself have nothing left to skip to.
+    var isSkippable: Bool { self != .processing && self != .paywall }
+
     var next: OnboardingStep? {
         OnboardingStep(rawValue: rawValue + 1)
     }
