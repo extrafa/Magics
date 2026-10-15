@@ -28,6 +28,7 @@ struct HapticSettingsScreen: View {
 
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
+                    HapticsUnavailableNotice()
                     HapticSignalSettingsSection(settings: settings)
                     MotionSettingsSection(settings: settings)
                     HapticPreviewSection(

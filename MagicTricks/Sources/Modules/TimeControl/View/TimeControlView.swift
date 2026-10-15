@@ -38,6 +38,7 @@ struct TimeControlView: View {
             }
         }
         .exitHint(style: .specialWhite)
+        .hapticsUnavailableNoticeOverlay()
         .keepsScreenAwake(while: viewModel.isRunning || viewModel.isTransmitting)
         .onChange(of: scenePhase) { newPhase in
             guard newPhase == .active else { return }
