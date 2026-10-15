@@ -42,6 +42,8 @@ final class MagicGalleryViewModel: ObservableObject {
         self.usesStandardSet = preferences.usesStandardMagicGallerySet
     }
 
+    var maxPhotos: Int { photoLibrary.maxPhotos }
+
     var nextAvailableNumber: Int? {
         firstAvailableNumber(excluding: Set(customPhotos.map(\.number)))
     }
@@ -105,7 +107,6 @@ final class MagicGalleryViewModel: ObservableObject {
         }
         beginCapture(sourceType: sourceType) { [weak self] in
             guard let self else { return }
-            self.useCustomPhotos()
             self.activeCaptureSession = self.captureFlow.startSequential(firstNumber: nextAvailableNumber, sourceType: sourceType)
         }
     }
@@ -113,12 +114,11 @@ final class MagicGalleryViewModel: ObservableObject {
     func startCapture(for number: Int, sourceType: UIImagePickerController.SourceType = .camera) {
         beginCapture(sourceType: sourceType) { [weak self] in
             guard let self else { return }
-            self.useCustomPhotos()
             self.activeCaptureSession = self.captureFlow.startSingle(number: number, sourceType: sourceType)
         }
     }
 
-    // Adding a photo means the user wants their own set; the standard one would hide it.
+    // Once a photo is really added the user wants their own set; the standard one would hide it. Cancelling the picker keeps it.
     private func useCustomPhotos() {
         if usesStandardSet { setStandardSet(false) }
     }
@@ -165,6 +165,7 @@ final class MagicGalleryViewModel: ObservableObject {
             do {
                 let photo = try await photoLibrary.saveCustomPhoto(image, for: number)
                 upsert(photo)
+                useCustomPhotos()
             } catch {
                 // A failed save ends a sequential series, and closes the next camera that may already be up so the alert is seen.
                 if captureFlow.isSequential {
