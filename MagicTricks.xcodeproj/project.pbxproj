@@ -156,6 +156,7 @@
 		0AML00000000000000000C06 /* PaywallContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C05 /* PaywallContentTests.swift */; };
 		0AML00000000000000000054 /* GroupedHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */; };
 		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
+		0AML00000000000000000C39 /* GeoMentalismViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C38 /* GeoMentalismViewModelTests.swift */; };
 		0AML00000000000000000C37 /* OnboardingViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C36 /* OnboardingViewModelTests.swift */; };
 /* End PBXBuildFile section */
 
@@ -323,6 +324,7 @@
 		0AML00000000000000000C05 /* PaywallContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallContentTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C38 /* GeoMentalismViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GeoMentalismViewModelTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000C36 /* OnboardingViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingViewModelTests.swift; sourceTree = "<group>"; };
 		E718EB3DEAA25219A8279ECA /* Shared.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Shared.xcconfig; sourceTree = "<group>"; };
 		905BBBF565F9E4E4297D5225 /* Local.xcconfig.example */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Local.xcconfig.example; sourceTree = "<group>"; };
@@ -959,6 +961,7 @@
 			children = (
 				92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */,
 				92A0000273CB6047599A017B /* RateAppViewModelTests.swift */,
+				0AML00000000000000000C38 /* GeoMentalismViewModelTests.swift */,
 				0AML00000000000000000C36 /* OnboardingViewModelTests.swift */,
 				0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */,
 				0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */,
@@ -1320,6 +1323,7 @@
 				0AML00000000000000000C06 /* PaywallContentTests.swift in Sources */,
 				0AML00000000000000000054 /* GroupedHapticPatternBuilderTests.swift in Sources */,
 				92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */,
+				0AML00000000000000000C39 /* GeoMentalismViewModelTests.swift in Sources */,
 				0AML00000000000000000C37 /* OnboardingViewModelTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
