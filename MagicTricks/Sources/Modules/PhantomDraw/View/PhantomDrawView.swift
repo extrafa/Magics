@@ -130,7 +130,7 @@ struct PhantomDrawView: View {
                     buttonTitle: "common.openSettings",
                     action: openSettings,
                     secondaryTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
-                    secondaryAction: retry
+                    secondaryAction: retryAfterDenial
                 )
                 .transition(.opacity)
             }
@@ -387,6 +387,15 @@ struct PhantomDrawView: View {
     private func retry() {
         guard let currentRole = viewModel.role else { return }
         viewModel.selectRole(currentRole)
+    }
+
+    // Looks again with the code already typed, instead of making the performer enter it a second time.
+    private func retryAfterDenial() {
+        if role == .receiver, codeInput.count == 2 {
+            viewModel.submitReceiverCode(codeInput)
+        } else {
+            retry()
+        }
     }
 
     private func openSettings() {

@@ -98,16 +98,83 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
         XCTAssertFalse(PhantomDrawSessionManager.isLocalNetworkDenied(.posix(.ECONNREFUSED)))
     }
 
-    func test_browserWaitingWithPolicyDenied_entersLocalNetworkDenied_andSearchTimeoutKeepsIt() {
+    func test_browserWaitingWithPolicyDenied_doesNotShowTheDeniedStateRightAway() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        addTeardownBlock { manager.stop() }
+
+        manager.startAsReceiver(code: "42")
+        manager.handleBrowserState(.waiting(.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))))
+
+        XCTAssertEqual(manager.connectionState, .searching)
+    }
+
+    func test_browserWaitingWithPolicyDenied_entersLocalNetworkDeniedAfterTheDelay_andSearchTimeoutKeepsIt() {
         let scheduler = FakeScheduler()
         let manager = PhantomDrawSessionManager(scheduler: scheduler)
         addTeardownBlock { manager.stop() }
 
         manager.startAsReceiver(code: "42")
         manager.handleBrowserState(.waiting(.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))))
-        scheduler.fire()
-
+        scheduler.fire(at: 1)
         XCTAssertEqual(manager.connectionState, .localNetworkDenied)
+
+        scheduler.fire(at: 0)
+        XCTAssertEqual(manager.connectionState, .localNetworkDenied)
+    }
+
+    func test_browserReadyBeforeTheDelay_cancelsThePendingDeniedState() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+
+        manager.startAsReceiver(code: "42")
+        manager.handleBrowserState(.waiting(.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))))
+        manager.handleBrowserState(.ready)
+        scheduler.fire(at: 1)
+
+        XCTAssertEqual(manager.connectionState, .searching)
+    }
+
+    func test_repeatedDeniedEvents_scheduleOneConfirmation() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        manager.startAsReceiver(code: "42")
+        let scheduledBefore = scheduler.pendingCount
+
+        for _ in 0..<3 {
+            manager.handleBrowserState(.waiting(.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))))
+        }
+
+        XCTAssertEqual(scheduler.pendingCount, scheduledBefore + 1)
+    }
+
+    func test_prepareForCodeEntry_afterDenial_stopsTheSearchAndWaitsForACode() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        manager.startAsReceiver(code: "42")
+        manager.handleBrowserState(.waiting(.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))))
+        scheduler.fire(at: 1)
+
+        manager.prepareForCodeEntry()
+        manager.handleBrowserState(.ready)
+        scheduler.fire(at: 0)
+
+        XCTAssertEqual(manager.connectionState, .enteringCode)
+    }
+
+    func test_startAsReceiver_afterDenial_searchesAgainWithTheNewAttempt() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        manager.startAsReceiver(code: "42")
+        manager.handleBrowserState(.waiting(.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))))
+        scheduler.fire(at: 1)
+
+        manager.startAsReceiver(code: "42")
+
+        XCTAssertEqual(manager.connectionState, .searching)
     }
 
     func test_browserWaitingWithOtherError_doesNotEnterLocalNetworkDenied() {
@@ -127,6 +194,8 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
 
         manager.startAsReceiver(code: "42")
         manager.handleBrowserState(.waiting(.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))))
+        scheduler.fire(at: 1)
+        XCTAssertEqual(manager.connectionState, .localNetworkDenied)
         manager.handleBrowserState(.ready)
 
         XCTAssertEqual(manager.connectionState, .searching)
@@ -213,6 +282,8 @@ private final class FakeScheduler: DelayedActionScheduling {
     func schedule(after delay: TimeInterval, action: @escaping Completion) {
         scheduledActions.append(action)
     }
+
+    var pendingCount: Int { scheduledActions.count }
 
     // Fires the oldest pending action by default; pass the index to fire a later one.
     func fire(at index: Int = 0) {
