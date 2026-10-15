@@ -2710,13 +2710,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You give him a phone. You turn away or go to another room. He draws a number on the screen. Then, without looking, you say the number he drew."
+            "value" : "You give him a phone. You turn away. He draws a number on the screen. Then, without looking, you say the number he drew."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Le das un teléfono. Te das la vuelta o vas a otra habitación. Dibuja un número en la pantalla. Luego, sin mirar, dices el número que dibujó."
+            "value" : "Le das un teléfono. Te das la vuelta. Dibuja un número en la pantalla. Luego, sin mirar, dices el número que dibujó."
           }
         }
       }
@@ -2744,13 +2744,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the \"Phantom Draw\" trick on two devices. On the phone you give to him, tap the \"Give to spectator\" button. On the device that stays with you, tap the \"This phone is mine\" button. Wait for both devices to connect. A canvas will appear on both screens."
+            "value" : "Open the \"Phantom Draw\" trick on two devices. On the phone you give to him, tap the \"Give to spectator\" button. On the device that stays with you, tap the \"This phone is mine\" button and enter the two-digit code shown on his phone. Wait for both devices to connect. A canvas will appear on both screens. Do this before the show and keep the devices in the same room."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abre el truco \"Dibujo Fantasma\" en dos dispositivos. En el teléfono que le das a él, toca el botón \"Dar al espectador\". En el dispositivo que se queda contigo, toca el botón \"Este teléfono es mío\". Espera a que ambos dispositivos se conecten. Aparecerá un lienzo en ambas pantallas."
+            "value" : "Abre el truco \"Dibujo Fantasma\" en dos dispositivos. En el teléfono que le das a él, toca el botón \"Dar al espectador\". En el dispositivo que se queda contigo, toca el botón \"Este teléfono es mío\" e introduce el código de dos cifras que aparece en su teléfono. Espera a que ambos dispositivos se conecten. Aparecerá un lienzo en ambas pantallas. Hazlo antes de la función y mantén los dispositivos en la misma habitación."
           }
         }
       }
@@ -2812,13 +2812,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Take the phone he will draw on and give it to him. Say: \"Draw any number from 0 to 9 on the phone.\" Then turn away or leave the room."
+            "value" : "Take the phone he will draw on and give it to him. Say: \"Draw any number from 0 to 9 on the phone.\" Then turn away. Stay in the same room so the devices stay connected."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Toma el teléfono en el que dibujará y dáselo. Di: \"Dibuja cualquier número del 0 al 9 en el teléfono.\" Luego date la vuelta o sal de la habitación."
+            "value" : "Toma el teléfono en el que dibujará y dáselo. Di: \"Dibuja cualquier número del 0 al 9 en el teléfono.\" Luego date la vuelta. Quédate en la misma habitación para que los dispositivos sigan conectados."
           }
         }
       }
@@ -2880,13 +2880,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "If he drew a two-digit number like 15 or 23, do not worry. Use a different method. Say: \"First I will guess the range. It was between 10 and 20.\" Then say each number from 10 to 20. Stop on the number he drew and say: \"That is the number you drew.\""
+            "value" : "If he drew a two-digit number like 15 or 23, do not worry. Use a different method. Say: \"First I will guess the range.\" Then name the ten that holds his number: for 15 say \"It was between 10 and 20\", for 23 say \"between 20 and 30\". Say each number in that range. Stop on the number he drew and say: \"That is the number you drew.\""
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si dibujó un número de dos dígitos como 15 o 23, no te preocupes. Usa un método diferente. Di: \"Primero adivinaré el rango. Estaba entre 10 y 20.\" Luego di cada número del 10 al 20. Deténte en el número que dibujó y di: \"Ese es el número que dibujaste.\""
+            "value" : "Si dibujó un número de dos dígitos como 15 o 23, no te preocupes. Usa un método diferente. Di: \"Primero adivinaré el rango.\" Luego nombra la decena que contiene su número: para 15 di \"Estaba entre 10 y 20\", para 23 di \"entre 20 y 30\". Di cada número de ese rango. Deténte en el número que dibujó y di: \"Ese es el número que dibujaste.\""
           }
         }
       }
@@ -2904,6 +2904,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Si dibujó dos dígitos"
+          }
+        }
+      }
+    },
+    "instruction.phantomDraw.step6.description" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "When you are done, close the trick on his phone: tap the trash (Clear Drawing) button 4 times quickly. The usual way out, holding the top-left corner, does not work on this screen, so that his drawing can never close it by accident."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cuando termines, cierra el truco en su teléfono: toca 4 veces seguidas y rápido el botón de la papelera (Borrar Dibujo). La forma habitual de salir, mantener pulsada la esquina superior izquierda, no funciona en esta pantalla, para que su dibujo nunca la cierre por accidente."
+          }
+        }
+      }
+    },
+    "instruction.phantomDraw.step6.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Close the trick"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Cierra el truco"
           }
         }
       }
