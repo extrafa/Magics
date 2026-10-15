@@ -22,6 +22,34 @@ struct MagicGalleryCropView: UIViewControllerRepresentable {
     func updateUIViewController(_ uiViewController: MagicGalleryCropViewController, context: Context) {}
 }
 
+// MARK: - Crop Geometry
+
+// Portrait 3:4, like a photo taken with the iPhone camera.
+enum MagicGalleryCropGeometry {
+    static let aspectRatio: CGFloat = 3.0 / 4.0
+    static let topReserved: CGFloat = 66
+    static let bottomReserved: CGFloat = 84
+
+    static func frame(in size: CGSize, safeAreaInsets: UIEdgeInsets, padding: CGFloat) -> CGRect {
+        let topClear = safeAreaInsets.top + topReserved
+        let bottomClear = size.height - safeAreaInsets.bottom - bottomReserved
+        let availableHeight = max(bottomClear - topClear, 0)
+
+        var width = size.width - padding * 2
+        var height = width / aspectRatio
+        if height > availableHeight {
+            height = availableHeight
+            width = height * aspectRatio
+        }
+        return CGRect(
+            x: (size.width - width) / 2,
+            y: topClear + (availableHeight - height) / 2,
+            width: width,
+            height: height
+        )
+    }
+}
+
 // MARK: - Crop View Controller
 
 final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelegate {
@@ -70,12 +98,7 @@ final class MagicGalleryCropViewController: UIViewController, UIScrollViewDelega
     // MARK: Crop frame
 
     private var cropFrame: CGRect {
-        let side = view.bounds.width - framePadding * 2
-        let topClear = view.safeAreaInsets.top + 66
-        let bottomClear = view.bounds.height - view.safeAreaInsets.bottom - 84
-        let centerY = (topClear + bottomClear) / 2
-        let y = max(centerY - side / 2, topClear)
-        return CGRect(x: framePadding, y: y, width: side, height: side)
+        MagicGalleryCropGeometry.frame(in: view.bounds.size, safeAreaInsets: view.safeAreaInsets, padding: framePadding)
     }
 
     // MARK: Setup
