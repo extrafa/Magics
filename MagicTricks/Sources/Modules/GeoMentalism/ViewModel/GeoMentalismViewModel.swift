@@ -10,9 +10,17 @@ import Foundation
 @MainActor
 final class GeoMentalismViewModel: ObservableObject {
 
-    @Published var displayedCities: [String] = []
+    @Published private(set) var displayedCities: [String] = []
+
+    private static let otherCitiesCount = 9
+    private static let maxCitiesPerLetter = 2
+    private var generatedCity: String?
 
     func generateList(for city: String) {
+        // The screen can appear again (after the paywall, say): keep the list the spectator already saw.
+        guard generatedCity != city else { return }
+        generatedCity = city
+
         let cityType = GeoMentalismCities.LetterType.of(city)
         
         let pool = switch cityType {
@@ -22,8 +30,14 @@ final class GeoMentalismViewModel: ObservableObject {
             GeoMentalismCities.straight
         }
         
-        let nine = Array(pool.shuffled().prefix(9))
-        displayedCities = (nine + [city]).shuffled()
+        var generator = SystemRandomNumberGenerator()
+        let others = GeoMentalismCities.balancedSample(
+            from: pool,
+            count: Self.otherCitiesCount,
+            maxPerLetter: Self.maxCitiesPerLetter,
+            using: &generator
+        )
+        displayedCities = (others + [city]).shuffled()
     }
     
     func shuffleList() {
