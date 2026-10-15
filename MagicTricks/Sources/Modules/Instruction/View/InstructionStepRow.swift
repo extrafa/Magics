@@ -64,7 +64,7 @@ struct InstructionStepRow: View {
 
     private var stepText: some View {
         HStack(alignment: .top, spacing: 14) {
-            Text("\(number).")
+            Text(verbatim: "\(number).")
                 .font(.system(.callout, design: .rounded, weight: .bold))
                 .foregroundStyle(.textPrimary.opacity(0.9))
                 .frame(width: 32, alignment: .leading)
