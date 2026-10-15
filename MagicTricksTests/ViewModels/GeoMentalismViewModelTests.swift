@@ -81,8 +81,10 @@ final class GeoMentalismViewModelTests: XCTestCase {
 
         viewModel.generateList(for: straightCity)
 
+        XCTAssertEqual(viewModel.displayedCities.count, 10)
         XCTAssertTrue(viewModel.displayedCities.contains(straightCity))
-        XCTAssertFalse(viewModel.displayedCities.contains(curvedCity))
+        let others = viewModel.displayedCities.filter { $0 != straightCity }
+        XCTAssertTrue(others.allSatisfy { GeoMentalismCities.LetterType.of($0) == .curved })
     }
 
     func test_shuffleList_keepsTheSameCities() {
