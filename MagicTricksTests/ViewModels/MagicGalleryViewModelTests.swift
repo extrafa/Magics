@@ -411,3 +411,25 @@ private struct MockMagicGalleryPreferences: MagicGalleryPreferenceManaging {
 private enum MockMagicGalleryError: Error {
     case requestedFailure
 }
+
+@MainActor
+final class MagicGalleryPhotoLibraryStandardPhotoTests: XCTestCase {
+    func test_standardPhoto_isAThumbnail_whileTheFullImageStaysFullSize() async throws {
+        let library = MagicGalleryPhotoLibrary()
+
+        let photo = try XCTUnwrap(library.standardPhoto(for: 1))
+        let full = try await library.fullResolutionImage(for: photo)
+
+        XCTAssertLessThanOrEqual(max(photo.image.size.width, photo.image.size.height), 400)
+        XCTAssertGreaterThan(max(full.size.width, full.size.height), 400)
+    }
+
+    func test_standardPhoto_returnsTheSamePhotoOnRepeatedCalls() throws {
+        let library = MagicGalleryPhotoLibrary()
+
+        let first = try XCTUnwrap(library.standardPhoto(for: 3))
+        let second = try XCTUnwrap(library.standardPhoto(for: 3))
+
+        XCTAssertTrue(first.image === second.image)
+    }
+}
