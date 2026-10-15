@@ -166,6 +166,11 @@ final class MagicGalleryViewModel: ObservableObject {
                 let photo = try await photoLibrary.saveCustomPhoto(image, for: number)
                 upsert(photo)
             } catch {
+                // A failed save ends a sequential series, and closes the next camera that may already be up so the alert is seen.
+                if captureFlow.isSequential {
+                    captureFlow.failCapture()
+                    activeCaptureSession = nil
+                }
                 alertMessage = String(localized: key("savePhotoFailed"))
             }
         }
