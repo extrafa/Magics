@@ -22,6 +22,17 @@ final class PhantomDrawViewModelTests: XCTestCase {
         XCTAssertTrue(session.sentMessages.contains(.canvasAspectRatio(390.0 / 844.0)))
     }
 
+    func test_selectRole_asReceiver_stopsAnySearchAndWaitsForACode() {
+        let session = MockPhantomDrawSession()
+        let vm = PhantomDrawViewModel(session: session)
+
+        vm.selectRole(.receiver)
+
+        XCTAssertEqual(session.preparedForCodeEntryCount, 1)
+        XCTAssertEqual(session.connectionState, .enteringCode)
+        XCTAssertEqual(vm.role, .receiver)
+    }
+
     func test_onNewConnection_beforeCanvasSizeIsKnown_sendsOnlySync() {
         let session = MockPhantomDrawSession()
         let vm = PhantomDrawViewModel(session: session)
@@ -131,8 +142,13 @@ private final class MockPhantomDrawSession: PhantomDrawSessioning {
     var connectionState: PhantomDrawConnectionState = .idle
     var onNewConnection: Completion?
     var sentMessages: [PhantomDrawMessage] = []
+    private(set) var preparedForCodeEntryCount = 0
 
     func startAsReceiver(code: String) {}
+    func prepareForCodeEntry() {
+        preparedForCodeEntryCount += 1
+        connectionState = .enteringCode
+    }
     func startAsSender() {}
     func send(_ message: PhantomDrawMessage) { sentMessages.append(message) }
     func stop() {}

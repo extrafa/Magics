@@ -43,7 +43,7 @@ final class PhantomDrawViewModel: ObservableObject {
     func selectRole(_ role: PhantomDrawRole) {
         self.role = role
         switch role {
-        case .receiver: session.connectionState = .enteringCode
+        case .receiver: session.prepareForCodeEntry()
         case .sender:   session.startAsSender()
         }
     }

@@ -618,13 +618,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Allow Magic Tricks to find nearby devices in Settings > Privacy & Security > Local Network."
+            "value" : "Turn on Local Network for Magic Tricks in Settings."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Permite que Magic Tricks encuentre dispositivos cercanos en Ajustes > Privacidad y seguridad > Red local."
+            "value" : "Activa Red local para Magic Tricks en Ajustes."
           }
         }
       }

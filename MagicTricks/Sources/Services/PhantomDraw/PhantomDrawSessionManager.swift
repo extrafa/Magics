@@ -15,6 +15,7 @@ protocol PhantomDrawSessioning: AnyObject {
     var onNewConnection: Completion? { get set }
 
     func startAsReceiver(code: String)
+    func prepareForCodeEntry()
     func startAsSender()
     func send(_ message: PhantomDrawMessage)
     func stop()
@@ -27,6 +28,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     private static let pskIdentity = "PhantomDraw"
     private static let connectionTimeout: TimeInterval = 10
     private static let searchTimeout: TimeInterval = 15
+    private static let deniedConfirmationDelay: TimeInterval = 1.5
 
     // Peer-sent strokes are untrusted network input.
     nonisolated static let maxStrokes = 500
@@ -42,6 +44,9 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
     // Bumped on every new search and on teardown, so a timer from an earlier search can't fail a later one.
     private var searchGeneration = 0
+    // Same idea for the "Local Network is off" screen: a denial is only shown if no .ready follows within the delay.
+    private var deniedGeneration = 0
+    private var isDeniedConfirmationPending = false
 
     var onNewConnection: Completion?
 
@@ -70,6 +75,13 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         connectionState = .searching
         startBrowsing(code: code)
         scheduleSearchTimeout()
+    }
+
+    // Back to code entry: stops any search still running, so a late answer to the system prompt can't connect behind the screen.
+    func prepareForCodeEntry() {
+        teardown()
+        isReconnecting = false
+        connectionState = .enteringCode
     }
 
     func startAsSender() {
@@ -155,15 +167,34 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
             connectionState = .failed
         case .waiting(let error) where Self.isLocalNetworkDenied(error):
             // Keep the browser running: the system prompt may still be open, and .ready follows if the user allows.
-            isReconnecting = false
-            connectionState = .localNetworkDenied
+            confirmLocalNetworkDenied()
         case .ready:
+            cancelDeniedConfirmation()
             guard connectionState == .localNetworkDenied else { return }
             connectionState = .searching
             scheduleSearchTimeout()
         default:
             break
         }
+    }
+
+    // The system can report a denial before the user has answered its prompt, so wait a moment before saying it's off.
+    private func confirmLocalNetworkDenied() {
+        guard !isDeniedConfirmationPending else { return }
+        isDeniedConfirmationPending = true
+        deniedGeneration += 1
+        let generation = deniedGeneration
+        scheduler.schedule(after: Self.deniedConfirmationDelay) { [weak self] in
+            guard let self, generation == self.deniedGeneration else { return }
+            self.isDeniedConfirmationPending = false
+            self.isReconnecting = false
+            self.connectionState = .localNetworkDenied
+        }
+    }
+
+    private func cancelDeniedConfirmation() {
+        deniedGeneration += 1
+        isDeniedConfirmationPending = false
     }
 
     nonisolated static func isLocalNetworkDenied(_ error: NWError) -> Bool {
@@ -404,6 +435,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
     private func teardown() {
         searchGeneration += 1
+        cancelDeniedConfirmation()
         browser?.cancel()
         listener?.cancel()
         connection?.cancel()
