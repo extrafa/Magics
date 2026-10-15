@@ -3117,13 +3117,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "He starts and stops a stopwatch whenever he wants. Then you say the exact time. Seconds and milliseconds."
+            "value" : "He starts and stops a stopwatch whenever he wants. Then you say the exact time. Seconds and hundredths."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "El espectador inicia y detiene un cronómetro cuando quiera. Luego tú dices el tiempo exacto: segundos y milisegundos."
+            "value" : "El espectador inicia y detiene un cronómetro cuando quiera. Luego tú dices el tiempo exacto: segundos y centésimas."
           }
         }
       }
@@ -3134,13 +3134,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When he stops the stopwatch, the phone sends the seconds and milliseconds through vibrations."
+            "value" : "When he stops the stopwatch, the phone sends the seconds and hundredths through vibrations."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuando el espectador detiene el cronómetro, el teléfono empieza a enviar los segundos y milisegundos mediante vibraciones."
+            "value" : "Cuando el espectador detiene el cronómetro, el teléfono empieza a enviar los segundos y centésimas mediante vibraciones."
           }
         }
       }
@@ -3185,13 +3185,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "When he stops the stopwatch, the phone sends the seconds through vibrations. After 3 seconds, it sends the milliseconds. You can also turn on the \"Face Down\" trigger in Vibration Settings to receive each signal when you are ready."
+            "value" : "When he stops the stopwatch, the phone sends the seconds through vibrations. After 3 seconds, it sends the hundredths. You can also turn on the \"Face Down\" trigger in Vibration Settings to receive each signal when you are ready."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuando el espectador detiene el cronómetro, el teléfono envía los segundos mediante vibraciones. Después de 3 segundos, los milisegundos. O activa el disparador en Ajustes de Vibración para recibir las señales cuando estés listo: toca el botón."
+            "value" : "Cuando el espectador detiene el cronómetro, el teléfono envía los segundos mediante vibraciones. Después de 3 segundos, los centésimas. O activa el disparador en Ajustes de Vibración para recibir las señales cuando estés listo: toca el botón."
           }
         }
       }
@@ -3219,13 +3219,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the \"Time Control\" trick. Hold the phone with the screen facing him. Make sure your fingers can feel the vibrations. Ask him to press Start and stop the stopwatch whenever he wants."
+            "value" : "Open the \"Time Control\" trick. Hold the phone with the screen facing him. Make sure your fingers can feel the vibrations. Ask him to press Start and stop the stopwatch whenever he wants. If he does not stop it, it stops by itself at 59.99."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abre el truco \"Control del Tiempo\". Sostén el teléfono con la pantalla hacia él. Asegúrate de que tus dedos puedan sentir las vibraciones. Pídele que presione Iniciar y detenga el cronómetro cuando quiera."
+            "value" : "Abre el truco \"Control del Tiempo\". Sostén el teléfono con la pantalla hacia él. Asegúrate de que tus dedos puedan sentir las vibraciones. Pídele que presione Iniciar y detenga el cronómetro cuando quiera. Si no lo detiene, se detiene solo en 59.99."
           }
         }
       }
@@ -3253,13 +3253,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Wait for the vibrations. First the seconds, then the milliseconds 3 seconds later. If the \"Face Down\" trigger is on, turn the phone face down to get the seconds, then do it again for the milliseconds."
+            "value" : "Wait for the vibrations. First the seconds, then the hundredths 3 seconds later. If the \"Face Down\" trigger is on, turn the phone face down to get the seconds, then do it again for the hundredths."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Espera las vibraciones: primero los segundos y luego los milisegundos 3 segundos después. Si el disparador está activado, pon el teléfono boca abajo para los segundos y hazlo otra vez para los milisegundos."
+            "value" : "Espera las vibraciones: primero los segundos y luego los centésimas 3 segundos después. Si el disparador está activado, pon el teléfono boca abajo para los segundos y hazlo otra vez para los centésimas."
           }
         }
       }
@@ -3287,13 +3287,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Say the seconds first. Pause. Then say the milliseconds."
+            "value" : "Say the seconds first. Pause. Then say the hundredths."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Di primero los segundos. Haz una pausa y luego los milisegundos."
+            "value" : "Di primero los segundos. Haz una pausa y luego los centésimas."
           }
         }
       }

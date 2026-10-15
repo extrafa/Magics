@@ -71,6 +71,7 @@ struct TimeControlView: View {
                 )
             }
             .disabled(!viewModel.canUsePrimaryAction)
+            .opacity(viewModel.hasReachedLimit ? 0.35 : 1)
         }
     }
 
