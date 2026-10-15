@@ -34,6 +34,8 @@ struct PhantomDrawView: View {
     @State private var role: PhantomDrawRole?
     @State private var pairingCode: String?
     @Environment(\.dismiss) private var dismiss
+    @EnvironmentObject private var flow: AppFlowCoordinator
+    @EnvironmentObject private var store: StoreManager
     @State private var codeInput = ""
     @AppStorage("phantomDrawLastCode") private var lastCode = ""
     @FocusState private var isCodeFieldFocused: Bool
@@ -187,8 +189,13 @@ struct PhantomDrawView: View {
     }
 
     private func roleButton(title: String, subtitle: String, icon: String, role: PhantomDrawRole) -> some View {
-        Button {
-            viewModel.selectRole(role)
+        let isLocked = role.requiresPro && !store.hasProAccess
+        return Button {
+            if isLocked {
+                flow.presentPaywallOverlay(context: .trick(.phantomDraw))
+            } else {
+                viewModel.selectRole(role)
+            }
         } label: {
             HStack(spacing: 16) {
                 ZStack {
@@ -208,6 +215,19 @@ struct PhantomDrawView: View {
                         .foregroundStyle(.secondary)
                 }
                 Spacer()
+                if isLocked {
+                    Image(systemName: "lock.fill")
+                        .font(.system(size: 12, weight: .bold))
+                        .foregroundStyle(Color.primary.opacity(0.45))
+                        .padding(.horizontal, 12)
+                        .padding(.vertical, 7)
+                        .background(Capsule(style: .continuous).fill(Color.primary.opacity(0.07)))
+                        .overlay {
+                            Capsule(style: .continuous)
+                                .stroke(Color.primary.opacity(0.22), lineWidth: 1.2)
+                        }
+                        .accessibilityLabel(String(localized: "trick.lockedBadge"))
+                }
                 Image(systemName: "chevron.right")
                     .font(.system(size: 14, weight: .semibold))
                     .foregroundStyle(.secondary.opacity(0.5))

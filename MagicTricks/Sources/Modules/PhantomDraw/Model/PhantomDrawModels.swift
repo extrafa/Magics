@@ -9,6 +9,9 @@ import CoreGraphics
 enum PhantomDrawRole {
     case receiver
     case sender
+
+    // The performer's phone is Pro; the spectator's phone is free.
+    var requiresPro: Bool { self == .receiver }
 }
 
 enum PhantomDrawConnectionState: Equatable {

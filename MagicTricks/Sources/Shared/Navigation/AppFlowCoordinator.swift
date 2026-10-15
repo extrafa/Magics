@@ -19,6 +19,7 @@ final class AppFlowCoordinator: ObservableObject {
     }
     @Published var activeSheet: SheetFlow?
     @Published var isPaywallOverlayPresented = false
+    private(set) var paywallOverlayContext: PaywallContext = .general
 
     private var pendingFlow: FullScreenFlow?
     private var preferences: FlowPreferenceManaging
@@ -61,7 +62,8 @@ final class AppFlowCoordinator: ObservableObject {
         activeFlow = .paywall(context: context)
     }
 
-    func presentPaywallOverlay() {
+    func presentPaywallOverlay(context: PaywallContext = .general) {
+        paywallOverlayContext = context
         isPaywallOverlayPresented = true
     }
 
@@ -112,6 +114,6 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     private func isLocked(_ trick: Trick) -> Bool {
-        trick.id.requiresPro && !store.hasProAccess
+        trick.id.isLocked(hasProAccess: store.hasProAccess)
     }
 }
