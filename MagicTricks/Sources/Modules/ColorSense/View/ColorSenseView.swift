@@ -38,6 +38,7 @@ struct ColorSenseView: View {
             .padding(.horizontal, 20)
         }
         .exitHint()
+        .hapticsUnavailableNoticeOverlay()
         .onDisappear {
             viewModel.cancel()
         }

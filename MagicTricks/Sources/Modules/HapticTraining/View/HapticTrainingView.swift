@@ -27,6 +27,7 @@ struct HapticTrainingView: View {
 
             ScrollView {
                 VStack(spacing: 18) {
+                    HapticsUnavailableNotice()
                     signalDeck
                     answerSection
                 }
