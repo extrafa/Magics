@@ -207,7 +207,7 @@ private extension SettingsScreen {
                 }
                 .frame(minHeight: 58)
             } else {
-                SettingsActionRow(icon: "arrow.clockwise", title: String(localized: "settings.restorePurchases"))
+                SettingsActionRow(icon: "arrow.clockwise", title: String(localized: paywallKey("restore")))
             }
         }
         .buttonStyle(.plain)

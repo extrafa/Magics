@@ -5,7 +5,6 @@
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_phantomdraw._tcp</string>
-		<string>_phantomdraw._udp</string>
 	</array>
 </dict>
 </plist>
