@@ -23,6 +23,11 @@ enum TrickType: String, CaseIterable {
         case .colorSense, .timeControl, .magicGallery, .phantomDraw: true
         }
     }
+
+    // Phantom Draw opens for everyone: only the performer's phone is Pro, the spectator's side is free.
+    func isLocked(hasProAccess: Bool) -> Bool {
+        requiresPro && self != .phantomDraw && !hasProAccess
+    }
 }
 
 enum SFSymbol: String {

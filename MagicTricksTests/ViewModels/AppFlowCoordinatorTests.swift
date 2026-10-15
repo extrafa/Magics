@@ -175,6 +175,49 @@ final class AppFlowCoordinatorTests: XCTestCase {
 
         XCTAssertEqual(coordinator.activeFlow, .trick(trick: trick))
     }
+
+    func test_openStartFlow_forPhantomDrawWithoutPro_opensTheTrickInsteadOfThePaywall() throws {
+        let coordinator = makeCoordinator()
+        let phantomDraw = try XCTUnwrap(TrickCollection.tricks.first { $0.id == .phantomDraw })
+        coordinator.markTrickAsSeen(phantomDraw)
+
+        coordinator.openStartFlow(for: phantomDraw)
+
+        XCTAssertEqual(coordinator.activeFlow, .trick(trick: phantomDraw))
+    }
+
+    func test_isLocked_onlyLocksProTricksOtherThanPhantomDrawWithoutPro() {
+        XCTAssertFalse(TrickType.geoMentalism.isLocked(hasProAccess: false))
+        XCTAssertTrue(TrickType.colorSense.isLocked(hasProAccess: false))
+        XCTAssertTrue(TrickType.timeControl.isLocked(hasProAccess: false))
+        XCTAssertTrue(TrickType.magicGallery.isLocked(hasProAccess: false))
+        XCTAssertFalse(TrickType.phantomDraw.isLocked(hasProAccess: false))
+        XCTAssertFalse(TrickType.colorSense.isLocked(hasProAccess: true))
+    }
+
+    func test_phantomDrawRole_onlyThePerformersPhoneRequiresPro() {
+        XCTAssertTrue(PhantomDrawRole.receiver.requiresPro)
+        XCTAssertFalse(PhantomDrawRole.sender.requiresPro)
+    }
+
+    func test_presentPaywallOverlay_keepsTheContextItWasPresentedWith() {
+        let coordinator = makeCoordinator()
+
+        coordinator.presentPaywallOverlay(context: .trick(.phantomDraw))
+
+        XCTAssertTrue(coordinator.isPaywallOverlayPresented)
+        XCTAssertEqual(coordinator.paywallOverlayContext, .trick(.phantomDraw))
+    }
+
+    func test_presentPaywallOverlay_withoutContext_isGeneral() {
+        let coordinator = makeCoordinator()
+        coordinator.presentPaywallOverlay(context: .trick(.phantomDraw))
+        coordinator.dismissPaywallOverlay()
+
+        coordinator.presentPaywallOverlay()
+
+        XCTAssertEqual(coordinator.paywallOverlayContext, .general)
+    }
 }
 
 private final class ImmediateScheduler: DelayedActionScheduling {
