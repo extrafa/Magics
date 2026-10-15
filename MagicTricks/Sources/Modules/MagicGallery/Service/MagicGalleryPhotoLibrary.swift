@@ -36,6 +36,7 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     let maxPhotos = 10
 
     private let fileManager: FileManager
+    private var standardThumbnails: [Int: MagicGalleryPhoto] = [:]
 
     init(fileManager: FileManager = .default) {
         self.fileManager = fileManager
@@ -69,6 +70,7 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     }
 
     func standardPhoto(for number: Int) -> MagicGalleryPhoto? {
+        if let cached = standardThumbnails[number] { return cached }
         guard
             let assetName = Self.standardAssetNames[number],
             let image = UIImage(named: assetName)
@@ -76,7 +78,9 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
             return nil
         }
 
-        return MagicGalleryPhoto(number: number, image: image, fileName: assetName, source: .standard)
+        let photo = MagicGalleryPhoto(number: number, image: Self.thumbnail(of: image), fileName: assetName, source: .standard)
+        standardThumbnails[number] = photo
+        return photo
     }
 
     func saveCustomPhoto(_ image: UIImage, for number: Int) async throws -> MagicGalleryPhoto {
@@ -111,7 +115,11 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     }
 
     func fullResolutionImage(for photo: MagicGalleryPhoto) async throws -> UIImage {
-        guard photo.isCustom else { return photo.image }
+        guard photo.isCustom else {
+            // The standard photo carries only a thumbnail; the full asset is read when it is actually saved.
+            guard let image = UIImage(named: photo.fileName) else { throw MagicGalleryPhotoLibraryError.imageDecodingFailed }
+            return image
+        }
         let url = try storageDirectoryURL().appendingPathComponent(photo.fileName)
 
         return try await Task.detached(priority: .userInitiated) {
