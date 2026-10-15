@@ -14,6 +14,8 @@ final class TimeControlViewModel: ObservableObject {
     @Published private(set) var isTransmitting = false
 
     private static let tickIntervalMilliseconds = 16 // matches the display's refresh rate
+    // The stopwatch never reaches a minute, so the signal (seconds and hundredths) can't lose anything.
+    private static let maxHundredths = 5999
 
     private let signalTransmitter: TimeControlSignalTransmitting
     private let hapticEngineManager: HapticEngineManaging
@@ -45,8 +47,14 @@ final class TimeControlViewModel: ObservableObject {
         !isRunning && displayedHundredths > 0
     }
 
+    // After the stopwatch stops itself at the limit, Start stays off until Reset.
+    var hasReachedLimit: Bool {
+        !isRunning && displayedHundredths >= Self.maxHundredths
+    }
+
     var canUsePrimaryAction: Bool {
-        !isTransmitting || transmissionPhase == .waitingForStartTrigger
+        guard !hasReachedLimit else { return false }
+        return !isTransmitting || transmissionPhase == .waitingForStartTrigger
     }
 
     func handlePrimaryAction() {
@@ -99,6 +107,10 @@ final class TimeControlViewModel: ObservableObject {
         guard isRunning, let startDate else { return }
         let elapsed = accumulatedElapsed + now().timeIntervalSince(startDate)
         let hundredths = Int((elapsed * 100).rounded(.down))
+        if hundredths > Self.maxHundredths {
+            stop()
+            return
+        }
         guard hundredths != displayedHundredths else { return }
         displayedHundredths = hundredths
     }
@@ -108,13 +120,13 @@ final class TimeControlViewModel: ObservableObject {
         isRunning = false
 
         let currentElapsed = accumulatedElapsed + (startDate.map { now().timeIntervalSince($0) } ?? 0)
-        let totalHundredths = Int((currentElapsed * 100).rounded(.down))
+        let totalHundredths = min(Int((currentElapsed * 100).rounded(.down)), Self.maxHundredths)
 
         accumulatedElapsed = TimeInterval(totalHundredths) / 100
         displayedHundredths = totalHundredths
         startDate = nil
 
-        transmit(second: (totalHundredths / 100) % 60, hundredths: totalHundredths % 100)
+        transmit(second: totalHundredths / 100, hundredths: totalHundredths % 100)
     }
 
     private func transmit(second: Int, hundredths: Int) {

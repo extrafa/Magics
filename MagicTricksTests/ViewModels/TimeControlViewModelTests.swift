@@ -15,14 +15,14 @@ final class TimeControlViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.formattedTime, "00:00.00")
     }
 
-    func test_stop_afterElapsedTime_formatsMinutesSecondsAndHundredths() {
+    func test_stop_afterElapsedTime_formatsSecondsAndHundredths() {
         let (viewModel, clock, _) = makeViewModel()
 
         viewModel.handlePrimaryAction()
-        clock.advance(by: 65.435)
+        clock.advance(by: 45.435)
         viewModel.handlePrimaryAction()
 
-        XCTAssertEqual(viewModel.formattedTime, "01:05.43")
+        XCTAssertEqual(viewModel.formattedTime, "00:45.43")
         XCTAssertFalse(viewModel.isRunning)
     }
 
@@ -30,12 +30,52 @@ final class TimeControlViewModelTests: XCTestCase {
         let (viewModel, clock, transmitter) = makeViewModel()
 
         viewModel.handlePrimaryAction()
-        clock.advance(by: 65.435)
+        clock.advance(by: 5.435)
         viewModel.handlePrimaryAction()
         await waitUntil { transmitter.transmitted != nil }
 
         XCTAssertEqual(transmitter.transmitted?.second, 5)
         XCTAssertEqual(transmitter.transmitted?.hundredths, 43)
+    }
+
+    func test_runningPastAMinute_stopsItselfAtFiftyNineNinetyNineAndTransmitsIt() async {
+        let (viewModel, clock, transmitter) = makeViewModel()
+
+        viewModel.handlePrimaryAction()
+        clock.advance(by: 75)
+        await waitUntil { !viewModel.isRunning }
+        await waitUntil { transmitter.transmitted != nil }
+
+        XCTAssertEqual(viewModel.formattedTime, "00:59.99")
+        XCTAssertEqual(transmitter.transmitted?.second, 59)
+        XCTAssertEqual(transmitter.transmitted?.hundredths, 99)
+    }
+
+    func test_afterTheLimit_startStaysOffUntilReset() async {
+        let (viewModel, clock, _) = makeViewModel()
+        viewModel.handlePrimaryAction()
+        clock.advance(by: 75)
+        await waitUntil { !viewModel.isRunning }
+        await waitUntil { !viewModel.isTransmitting }
+
+        XCTAssertTrue(viewModel.hasReachedLimit)
+        XCTAssertFalse(viewModel.canUsePrimaryAction)
+        viewModel.handlePrimaryAction()
+        XCTAssertFalse(viewModel.isRunning)
+
+        viewModel.reset()
+
+        XCTAssertFalse(viewModel.hasReachedLimit)
+        XCTAssertTrue(viewModel.canUsePrimaryAction)
+    }
+
+    func test_stoppingBeforeTheLimit_keepsStartAvailable() {
+        let (viewModel, clock, _) = makeViewModel()
+        viewModel.handlePrimaryAction()
+        clock.advance(by: 59.5)
+        viewModel.handlePrimaryAction()
+
+        XCTAssertFalse(viewModel.hasReachedLimit)
     }
 
     func test_reset_afterStop_clearsTheTimeAndDisablesReset() {
