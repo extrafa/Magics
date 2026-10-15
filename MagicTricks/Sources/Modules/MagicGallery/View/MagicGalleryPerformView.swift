@@ -44,8 +44,7 @@ struct MagicGalleryPerformView: View {
         }
         .animation(.easeOut(duration: 0.15), value: tapCount)
         .animation(.spring(response: 0.3, dampingFraction: 0.8), value: showSaved)
-        .navigationBarTitleDisplayMode(.inline)
-        .toolbarColorScheme(.dark, for: .navigationBar)
+        .exitHint(style: .specialWhite)
         .magicGalleryAlert(message: $vm.alertMessage)
         .accessDeniedAlert(message: $vm.accessDeniedAlertMessage)
         .keepsScreenAwake()
