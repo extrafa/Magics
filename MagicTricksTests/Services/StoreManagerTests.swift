@@ -210,6 +210,20 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertEqual(service.loadProductsCallCount, 1)
     }
 
+    func test_manager_isReleasedWhileListeningForTransactions() async {
+        let service = MockStoreService()
+        weak var weakManager: StoreManager?
+
+        do {
+            let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+            weakManager = manager
+            manager.start()
+            await waitUntil { service.isListeningForTransactions }
+        }
+
+        await waitUntil { weakManager == nil }
+    }
+
     // Waits for a state change driven by a fire-and-forget Task inside StoreManager, failing on timeout.
     private func waitUntil(
         timeout: TimeInterval = 2,
