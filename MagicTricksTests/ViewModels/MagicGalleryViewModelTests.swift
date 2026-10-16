@@ -475,3 +475,30 @@ final class MagicGalleryCameraMetadataTests: XCTestCase {
         XCTAssertEqual(decoded.imageOrientation, .up)
     }
 }
+
+final class MagicGalleryCropGeometryTests: XCTestCase {
+    func test_frame_isPortraitThreeByFour_onATallScreen() {
+        let frame = MagicGalleryCropGeometry.frame(
+            in: CGSize(width: 402, height: 874),
+            safeAreaInsets: UIEdgeInsets(top: 62, left: 0, bottom: 34, right: 0),
+            padding: 24
+        )
+
+        XCTAssertEqual(frame.width, 354, accuracy: 0.01)
+        XCTAssertEqual(frame.width / frame.height, 0.75, accuracy: 0.001)
+        XCTAssertEqual(frame.midX, 201, accuracy: 0.01)
+    }
+
+    func test_frame_shrinksToFitAShortScreen_keepingTheRatio() {
+        let size = CGSize(width: 375, height: 500)
+        let insets = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+
+        let frame = MagicGalleryCropGeometry.frame(in: size, safeAreaInsets: insets, padding: 24)
+
+        XCTAssertEqual(frame.width / frame.height, 0.75, accuracy: 0.001)
+        XCTAssertGreaterThanOrEqual(frame.minY, 20 + MagicGalleryCropGeometry.topReserved)
+        XCTAssertLessThanOrEqual(frame.maxY, size.height - MagicGalleryCropGeometry.bottomReserved)
+        XCTAssertLessThan(frame.width, 375 - 48)
+        XCTAssertEqual(frame.midX, 187.5, accuracy: 0.01)
+    }
+}
