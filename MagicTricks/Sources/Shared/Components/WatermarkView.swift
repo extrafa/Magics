@@ -13,7 +13,7 @@ struct WatermarkView: View {
     @State private var isDismissed = false
 
     var body: some View {
-        if !store.hasProAccess && !isDismissed && !store.isWatermarkHidden {
+        if !store.hasProAccess && !isDismissed && !store.isWatermarkSuppressed {
             HStack(spacing: 0) {
                 Button { flow.presentPaywallOverlay() } label: {
                     HStack(spacing: 6) {

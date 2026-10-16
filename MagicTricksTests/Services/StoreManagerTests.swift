@@ -224,6 +224,33 @@ final class StoreManagerTests: XCTestCase {
         await waitUntil { weakManager == nil }
     }
 
+    func test_releaseBuild_ignoresStoredAndSetTesterFlags() {
+        let store = MockPreferenceStore()
+        store.storage["dev.proOverride"] = true
+        store.storage["dev.watermarkHidden"] = true
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: store, isInternalBuild: false)
+
+        XCTAssertFalse(manager.isProOverride)
+        XCTAssertFalse(manager.isWatermarkHidden)
+        XCTAssertEqual(store.storage["dev.proOverride"] as? Bool, false)
+
+        manager.isProOverride = true
+        manager.isWatermarkHidden = true
+
+        XCTAssertFalse(manager.hasProAccess)
+        XCTAssertFalse(manager.isWatermarkSuppressed)
+    }
+
+    func test_internalBuild_honoursTesterFlags() {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: true)
+
+        manager.isProOverride = true
+        manager.isWatermarkHidden = true
+
+        XCTAssertTrue(manager.hasProAccess)
+        XCTAssertTrue(manager.isWatermarkSuppressed)
+    }
+
     // Waits for a state change driven by a fire-and-forget Task inside StoreManager, failing on timeout.
     private func waitUntil(
         timeout: TimeInterval = 2,
