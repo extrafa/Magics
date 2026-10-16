@@ -8,6 +8,7 @@
 import SwiftUI
 
 private let statusKey = L10nDomain("magicGallery.status")
+private let slotKey = L10nDomain("magicGallery.slot")
 
 struct MagicGallerySlotCard: View {
     let number: Int
@@ -52,7 +53,9 @@ struct MagicGallerySlotCard: View {
             .onTapGesture {
                 onTap?()
             }
-            .accessibilityElement(children: onTap != nil ? .combine : .contain)
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(slotAccessibilityLabel)
+            .accessibilityHint(onTap != nil ? String(localized: slotKey("emptyHint")) : "")
             .accessibilityAddTraits(onTap != nil ? .isButton : [])
 
             if let photo, photo.isCustom {
@@ -62,6 +65,16 @@ struct MagicGallerySlotCard: View {
         }
         // One springy animation for the whole slot: deleting, adding or switching the standard set pops instead of snapping.
         .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.6), value: photo)
+    }
+
+    private var slotAccessibilityLabel: String {
+        let format: String
+        switch photo?.source {
+        case .standard: format = String(localized: slotKey("standard"))
+        case .custom: format = String(localized: slotKey("custom"))
+        case nil: format = String(localized: slotKey("empty"))
+        }
+        return String.localizedStringWithFormat(format, number)
     }
 
     private var numberBadge: some View {
