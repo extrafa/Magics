@@ -13,6 +13,8 @@ struct OnboardingProcessingScreen: View {
     let phases: [String]
     let onComplete: () -> Void
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+
     @State private var appeared = false
     @State private var breathing = false
     @State private var phaseIndex = 0
@@ -86,10 +88,10 @@ struct OnboardingProcessingScreen: View {
                 Image(systemName: "wand.and.stars")
                     .font(.system(size: 72, weight: .regular))
                     .foregroundStyle(.textPrimary)
-                    .opacity(breathing ? 1.0 : 0.35)
-                    .scaleEffect(breathing ? 1.08 : 0.94)
+                    .opacity(reduceMotion || breathing ? 1.0 : 0.35)
+                    .scaleEffect(reduceMotion ? 1.0 : (breathing ? 1.08 : 0.94))
                     .animation(
-                        .easeInOut(duration: 1.8).repeatForever(autoreverses: true),
+                        reduceMotion ? nil : .easeInOut(duration: 1.8).repeatForever(autoreverses: true),
                         value: breathing
                     )
                     .transition(.opacity)
