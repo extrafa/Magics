@@ -3555,6 +3555,74 @@
         }
       }
     },
+    "magicGallery.slot.custom" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slot %lld, your photo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casilla %lld, tu foto"
+          }
+        }
+      }
+    },
+    "magicGallery.slot.empty" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slot %lld, empty"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casilla %lld, vacía"
+          }
+        }
+      }
+    },
+    "magicGallery.slot.emptyHint" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Double-tap to take or choose a photo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Toca dos veces para hacer o elegir una foto"
+          }
+        }
+      }
+    },
+    "magicGallery.slot.standard" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Slot %lld, standard photo"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Casilla %lld, foto estándar"
+          }
+        }
+      }
+    },
     "magicGallery.standardSet.description" : {
       "extractionState" : "manual",
       "localizations" : {
