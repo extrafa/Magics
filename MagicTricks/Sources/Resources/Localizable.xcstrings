@@ -2539,13 +2539,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Open the \"Magic Gallery\" trick and tap \"Perform\". A dark screen opens. Put the phone in your pocket. To leave this screen later, press and hold its top-left corner. The standard set already has photos of numbers from 1 to 10."
+            "value" : "Open the \"Magic Gallery\" trick and tap \"Perform\". A dark screen opens. Put the phone in your pocket. To leave this screen later, press and hold its top-left corner. The standard set already has photos of numbers from 1 to 10. Don't take photos on this phone in the 10 minutes before the reveal: the saved photo is dated 10 minutes earlier, so a newer photo would show up as the last one instead."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Abre el truco \"Galería Mágica\" y toca \"Realizar\". Se abre una pantalla oscura. Guarda el teléfono en tu bolsillo. Para salir de esta pantalla después, mantén pulsada su esquina superior izquierda. El set estándar ya tiene fotos de números del 1 al 10."
+            "value" : "Abre el truco \"Galería Mágica\" y toca \"Realizar\". Se abre una pantalla oscura. Guarda el teléfono en tu bolsillo. Para salir de esta pantalla después, mantén pulsada su esquina superior izquierda. El set estándar ya tiene fotos de números del 1 al 10. No tomes fotos con este teléfono en los 10 minutos previos a la revelación: la foto guardada lleva una fecha 10 minutos anterior, así que una foto más reciente aparecería como la última."
           }
         }
       }
