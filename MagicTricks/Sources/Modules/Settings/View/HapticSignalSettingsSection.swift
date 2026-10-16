@@ -8,6 +8,7 @@
 import SwiftUI
 
 private let key = L10nDomain("settings.haptics")
+private let selectionInset: CGFloat = 3
 
 struct HapticSignalSettingsSection: View {
     @ObservedObject var settings: SettingsStore
@@ -27,29 +28,30 @@ struct HapticSignalSettingsSection: View {
                 let selectedIndex = HapticIntensity.allCases.firstIndex(of: settings.hapticIntensity) ?? 0
 
                 ZStack(alignment: .leading) {
-                    RoundedRectangle(cornerRadius: 14, style: .continuous)
-                        .fill(Color.textPrimary.opacity(0.06))
-                        .frame(width: segmentWidth, height: proxy.size.height)
-                        .offset(x: segmentWidth * CGFloat(selectedIndex))
-                        .animation(.easeInOut(duration: 0.18), value: settings.hapticIntensity)
+                    RoundedRectangle(cornerRadius: 11, style: .continuous)
+                        .fill(Color.buttonPrimary)
+                        .frame(width: segmentWidth - selectionInset * 2, height: proxy.size.height - selectionInset * 2)
+                        .offset(x: segmentWidth * CGFloat(selectedIndex) + selectionInset)
 
                     HStack(spacing: 0) {
                         ForEach(HapticIntensity.allCases, id: \.self) { intensity in
-                            Text(intensity.localizedTitle)
-                                .font(.system(size: 15, weight: .semibold, design: .rounded))
-                                .frame(maxWidth: .infinity)
-                                .frame(height: proxy.size.height)
-                                .foregroundStyle(Color.textPrimary)
-                                .contentShape(Rectangle())
-                                .onTapGesture {
-                                    settings.hapticIntensity = intensity
-                                }
-                                .accessibilityAddTraits(
-                                    settings.hapticIntensity == intensity ? [.isButton, .isSelected] : .isButton
-                                )
+                            let isSelected = settings.hapticIntensity == intensity
+                            Button {
+                                settings.hapticIntensity = intensity
+                            } label: {
+                                Text(intensity.localizedTitle)
+                                    .font(.system(size: 15, weight: .semibold, design: .rounded))
+                                    .frame(maxWidth: .infinity)
+                                    .frame(height: proxy.size.height)
+                                    .foregroundStyle(isSelected ? Color.backgroundScreen : Color.textPrimary)
+                                    .contentShape(Rectangle())
+                            }
+                            .buttonStyle(.plain)
+                            .accessibilityAddTraits(isSelected ? .isSelected : [])
                         }
                     }
                 }
+                .animation(.easeInOut(duration: 0.18), value: settings.hapticIntensity)
             }
             .frame(height: 48)
             .background(Color.cardBackground)
