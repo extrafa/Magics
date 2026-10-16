@@ -12,8 +12,7 @@ enum InstructionPresentedSheet: Identifiable {
 
     var id: String {
         switch self {
-        case .action(let action):
-            return "\(action)"
+        case .action(let action): "\(action)"
         }
     }
 }

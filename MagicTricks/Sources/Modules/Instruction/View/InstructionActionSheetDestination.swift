@@ -22,12 +22,8 @@ struct InstructionActionSheetDestination: View {
         switch action {
         case .hapticTraining:
             HapticTrainingView()
-        case .hapticNumberTraining:
-            HapticTrainingView(mode: .timeValues)
         case .hapticSettings:
             HapticSettingsScreen()
-        case .motionSettings:
-            MotionSettingsScreen()
         }
     }
 }

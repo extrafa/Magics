@@ -1,3 +1,10 @@
+//
+//  TimeControlSignalTransmitter.swift
+//  Magic Tricks
+//
+//  Created by Ross on 23/08/2025.
+//
+
 import Foundation
 
 @MainActor
@@ -27,6 +34,8 @@ final class TimeControlSignalTransmitter: TimeControlSignalTransmitting {
     private let automaticStartDelay: TimeInterval = 1
     private let sectionDelay: TimeInterval = 3
 
+    private var pendingHapticCompletion: Completion?
+
     init(
         haptics: TimeHapticPlaying? = nil,
         preferences: MotionPreferenceManaging = AppPreferences.shared,
@@ -49,7 +58,7 @@ final class TimeControlSignalTransmitter: TimeControlSignalTransmitting {
         await playTimeValue(second)
 
         onPhaseChange(.waitingBetweenValues)
-        guard await waitSeconds( sectionDelay) else { return }
+        guard await waitSeconds(sectionDelay) else { return }
 
         if preferences.isSecretGestureEnabled {
             onPhaseChange(.waitingForHundredthsTrigger)
@@ -62,6 +71,8 @@ final class TimeControlSignalTransmitter: TimeControlSignalTransmitting {
 
     func cancel() {
         gestureManager.stopMonitoring()
+        haptics.cancelPendingHaptics()
+        resumePendingHapticCompletion()
     }
 
     private func waitForStartTrigger() async -> Bool {
@@ -69,15 +80,21 @@ final class TimeControlSignalTransmitter: TimeControlSignalTransmitting {
             return await gestureManager.waitForScreenDownGesture()
         }
 
-        return await waitSeconds( automaticStartDelay)
+        return await waitSeconds(automaticStartDelay)
     }
 
     private func playTimeValue(_ value: Int) async {
         await withCheckedContinuation { continuation in
-            haptics.playTimeValue(value, initialDelay: 0, usesGrouping: true) {
-                continuation.resume()
+            pendingHapticCompletion = { continuation.resume() }
+            haptics.playTimeValue(value, initialDelay: 0, usesGrouping: true) { [weak self] in
+                self?.resumePendingHapticCompletion()
             }
         }
     }
 
+    private func resumePendingHapticCompletion() {
+        let completion = pendingHapticCompletion
+        pendingHapticCompletion = nil
+        completion?()
+    }
 }
