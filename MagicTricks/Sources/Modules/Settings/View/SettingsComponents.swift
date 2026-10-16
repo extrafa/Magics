@@ -118,6 +118,7 @@ struct SettingsResetButton: View {
 struct SettingsStepper: View {
 
     @Binding var value: Double
+    let label: String
     let range: ClosedRange<Double>
     let step: Double
     let format: String
@@ -139,6 +140,17 @@ struct SettingsStepper: View {
                 .disabled(value >= range.upperBound)
         }
         .foregroundStyle(TrickPalette.Collection.timeControl)
+        // One adjustable element for VoiceOver: swipe up or down changes the value.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label)
+        .accessibilityValue(String(format: format, value))
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment: increment()
+            case .decrement: decrement()
+            @unknown default: break
+            }
+        }
     }
 
     private func stepButton(icon: String, action: @escaping () -> Void) -> some View {
