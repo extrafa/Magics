@@ -25,6 +25,8 @@ struct OnboardingProgressBar: View {
             }
         }
         .frame(height: 4)
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(String.localizedStringWithFormat(String(localized: "onboarding.progress.value"), step, total))
     }
 
     private var progress: CGFloat {

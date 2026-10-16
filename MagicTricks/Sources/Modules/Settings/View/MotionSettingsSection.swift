@@ -42,9 +42,12 @@ struct MotionSettingsSection: View {
                         Text(String(localized: hapticsKey("holdDurationDescription")))
                             .font(.system(size: 13, weight: .medium, design: .rounded))
                             .foregroundStyle(Color.textSecondary)
+                            // The stepper below is labelled with this same sentence.
+                            .accessibilityHidden(true)
 
                         SettingsStepper(
                             value: $settings.screenDownHoldDuration,
+                            label: String(localized: hapticsKey("holdDurationDescription")),
                             range: AppPreferences.Range.screenDownHoldDuration,
                             step: 0.10,
                             format: "%.2fs"

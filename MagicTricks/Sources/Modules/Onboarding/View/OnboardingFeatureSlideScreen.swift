@@ -122,6 +122,7 @@ private struct InstructionPreviewVisual: View {
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .padding(.horizontal, 24)
+            .accessibilityHidden(true)
     }
 }
 
@@ -134,6 +135,7 @@ private struct TricksPreviewVisual: View {
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .padding(.horizontal, 24)
+            .accessibilityHidden(true)
     }
 }
 
@@ -146,5 +148,6 @@ private struct VibrationsVisual: View {
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .padding(.horizontal, 24)
+            .accessibilityHidden(true)
     }
 }
