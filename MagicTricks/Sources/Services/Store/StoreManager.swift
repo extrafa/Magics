@@ -96,7 +96,14 @@ final class StoreManager: ObservableObject {
         }
 
         listenerTask = Task { [weak self] in
-            await self?.listenForTransactions()
+            guard let updates = self?.service.transactionUpdateProductIDs() else { return }
+            for await productID in updates {
+                // Strong only for one update, so an idle listener doesn't keep the manager alive.
+                guard let self else { return }
+                if productIDs.contains(productID) {
+                    await refreshAccess()
+                }
+            }
         }
     }
 
@@ -208,14 +215,6 @@ final class StoreManager: ObservableObject {
             }
         }
         _hasStoreAccess = found
-    }
-
-    private func listenForTransactions() async {
-        for await productID in service.transactionUpdateProductIDs() {
-            if productIDs.contains(productID) {
-                await refreshAccess()
-            }
-        }
     }
 }
 
