@@ -433,3 +433,45 @@ final class MagicGalleryPhotoLibraryStandardPhotoTests: XCTestCase {
         XCTAssertTrue(first.image === second.image)
     }
 }
+
+final class MagicGalleryCameraMetadataTests: XCTestCase {
+    func test_creationDate_isTenMinutesBeforeNow() {
+        let now = Date(timeIntervalSince1970: 1_800_000_000)
+
+        XCTAssertEqual(MagicGalleryCameraMetadata.creationDate(now: now), now.addingTimeInterval(-600))
+    }
+
+    func test_jpegData_carriesCameraStyleExif() throws {
+        let image = UIGraphicsImageRenderer(size: CGSize(width: 30, height: 40)).image { context in
+            UIColor.red.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 30, height: 40))
+        }
+        let date = Date(timeIntervalSince1970: 1_800_000_000)
+
+        let data = try XCTUnwrap(MagicGalleryCameraMetadata.jpegData(for: image, date: date, deviceModel: "iPhone"))
+        let source = try XCTUnwrap(CGImageSourceCreateWithData(data as CFData, nil))
+        let properties = try XCTUnwrap(CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any])
+        let tiff = try XCTUnwrap(properties[kCGImagePropertyTIFFDictionary] as? [CFString: Any])
+        let exif = try XCTUnwrap(properties[kCGImagePropertyExifDictionary] as? [CFString: Any])
+
+        XCTAssertEqual(tiff[kCGImagePropertyTIFFMake] as? String, "Apple")
+        XCTAssertEqual(tiff[kCGImagePropertyTIFFModel] as? String, "iPhone")
+        XCTAssertNotNil(exif[kCGImagePropertyExifDateTimeOriginal] as? String)
+        XCTAssertEqual(exif[kCGImagePropertyExifDateTimeOriginal] as? String, tiff[kCGImagePropertyTIFFDateTime] as? String)
+        XCTAssertEqual(properties[kCGImagePropertyPixelWidth] as? Int, Int(image.size.width * image.scale))
+    }
+
+    func test_jpegData_bakesInTheOrientation() throws {
+        let landscape = UIGraphicsImageRenderer(size: CGSize(width: 40, height: 30)).image { context in
+            UIColor.blue.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 40, height: 30))
+        }
+        let rotated = UIImage(cgImage: try XCTUnwrap(landscape.cgImage), scale: landscape.scale, orientation: .right)
+
+        let data = try XCTUnwrap(MagicGalleryCameraMetadata.jpegData(for: rotated, date: Date()))
+        let decoded = try XCTUnwrap(UIImage(data: data))
+
+        XCTAssertGreaterThan(decoded.size.height, decoded.size.width)
+        XCTAssertEqual(decoded.imageOrientation, .up)
+    }
+}

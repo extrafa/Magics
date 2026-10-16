@@ -5,8 +5,10 @@
 //  Created by Ross on 28/05/2026.
 //
 
+import ImageIO
 import Photos
 import UIKit
+import UniformTypeIdentifiers
 
 private let photoImage = KeyDomain("gallery.photo")
 
@@ -176,38 +178,69 @@ final class MagicGalleryPhotoLibrary: MagicGalleryPhotoLibraryManaging {
     ]
 }
 
-@MainActor
-final class MagicGallerySystemPhotoSaver: NSObject, MagicGalleryPhotoSaving {
-    private var continuation: CheckedContinuation<Void, Error>?
+// What the Photos app shows for a saved shot: a date a few minutes back and camera-style EXIF.
+enum MagicGalleryCameraMetadata {
+    static let backdate: TimeInterval = 10 * 60
 
-    func saveToGallery(_ image: UIImage) async throws {
-        guard continuation == nil else {
-            throw MagicGalleryPhotoSavingError.saveAlreadyInProgress
-        }
-
-        try await withCheckedThrowingContinuation { continuation in
-            self.continuation = continuation
-            UIImageWriteToSavedPhotosAlbum(
-                image,
-                self,
-                #selector(image(_:didFinishSavingWithError:contextInfo:)),
-                nil
-            )
-        }
+    static func creationDate(now: Date = Date()) -> Date {
+        now.addingTimeInterval(-backdate)
     }
 
-    @objc private func image(
-        _ image: UIImage,
-        didFinishSavingWithError error: Error?,
-        contextInfo: UnsafeRawPointer
-    ) {
-        guard let continuation else { return }
-        self.continuation = nil
+    static func jpegData(for image: UIImage, date: Date, deviceModel: String = UIDevice.current.model) -> Data? {
+        let upright = image.imageOrientation == .up ? image : UIGraphicsImageRenderer(size: image.size).image { _ in
+            image.draw(at: .zero)
+        }
+        guard let cgImage = upright.cgImage else { return nil }
 
-        if let error {
-            continuation.resume(throwing: error)
-        } else {
-            continuation.resume()
+        let formatter = DateFormatter()
+        formatter.locale = Locale(identifier: "en_US_POSIX")
+        formatter.dateFormat = "yyyy:MM:dd HH:mm:ss"
+        let exifDate = formatter.string(from: date)
+
+        let properties: [CFString: Any] = [
+            kCGImageDestinationLossyCompressionQuality: 0.92,
+            kCGImagePropertyTIFFDictionary: [
+                kCGImagePropertyTIFFMake: "Apple",
+                kCGImagePropertyTIFFModel: deviceModel,
+                kCGImagePropertyTIFFSoftware: UIDevice.current.systemVersion,
+                kCGImagePropertyTIFFDateTime: exifDate
+            ],
+            kCGImagePropertyExifDictionary: [
+                kCGImagePropertyExifDateTimeOriginal: exifDate,
+                kCGImagePropertyExifDateTimeDigitized: exifDate,
+                kCGImagePropertyExifPixelXDimension: cgImage.width,
+                kCGImagePropertyExifPixelYDimension: cgImage.height
+            ]
+        ]
+
+        let data = NSMutableData()
+        guard let destination = CGImageDestinationCreateWithData(data, UTType.jpeg.identifier as CFString, 1, nil) else { return nil }
+        CGImageDestinationAddImage(destination, cgImage, properties as CFDictionary)
+        guard CGImageDestinationFinalize(destination) else { return nil }
+        return data as Data
+    }
+}
+
+@MainActor
+final class MagicGallerySystemPhotoSaver: MagicGalleryPhotoSaving {
+    private var isSaving = false
+
+    func saveToGallery(_ image: UIImage) async throws {
+        guard !isSaving else {
+            throw MagicGalleryPhotoSavingError.saveAlreadyInProgress
+        }
+        isSaving = true
+        defer { isSaving = false }
+
+        let date = MagicGalleryCameraMetadata.creationDate()
+        guard let data = MagicGalleryCameraMetadata.jpegData(for: image, date: date) else {
+            throw MagicGalleryPhotoLibraryError.imageEncodingFailed
+        }
+
+        try await PHPhotoLibrary.shared().performChanges {
+            let request = PHAssetCreationRequest.forAsset()
+            request.creationDate = date
+            request.addResource(with: .photo, data: data, options: nil)
         }
     }
 }
