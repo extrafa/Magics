@@ -44,11 +44,14 @@ final class StoreManager: ObservableObject {
         didSet { defaults.set(isWatermarkHidden, forKey: Key.watermarkHidden) }
     }
 
-    var hasProAccess: Bool { _hasStoreAccess || isProOverride }
+    // The tester toggles do nothing in a release build, whatever the stored flags say.
+    var hasProAccess: Bool { _hasStoreAccess || (isInternalBuild && isProOverride) }
+    var isWatermarkSuppressed: Bool { isInternalBuild && isWatermarkHidden }
 
     private let productIDs: [String]
     private let service: StoreServicing
     private let defaults: PreferenceStoring
+    private let isInternalBuild: Bool
 
     private var startupTask: Task<Void, Never>?
     private var listenerTask: Task<Void, Never>?
@@ -58,17 +61,19 @@ final class StoreManager: ObservableObject {
     init(
         productIDs: [String] = StoreProducts.all,
         service: StoreServicing? = nil,
-        defaults: PreferenceStoring = UserDefaults.standard
+        defaults: PreferenceStoring = UserDefaults.standard,
+        isInternalBuild: Bool = AppBuildEnvironment.isInternalBuild
     ) {
         self.productIDs = productIDs
         self.service = service ?? StoreKitStoreService()
         self.defaults = defaults
-        self.isProOverride = Self.internalBuildGatedFlag(forKey: Key.proOverride, defaults: defaults)
-        self.isWatermarkHidden = Self.internalBuildGatedFlag(forKey: Key.watermarkHidden, defaults: defaults)
+        self.isInternalBuild = isInternalBuild
+        self.isProOverride = Self.internalBuildGatedFlag(forKey: Key.proOverride, defaults: defaults, isInternalBuild: isInternalBuild)
+        self.isWatermarkHidden = Self.internalBuildGatedFlag(forKey: Key.watermarkHidden, defaults: defaults, isInternalBuild: isInternalBuild)
     }
 
-    private static func internalBuildGatedFlag(forKey key: String, defaults: PreferenceStoring) -> Bool {
-        guard AppBuildEnvironment.isInternalBuild else {
+    private static func internalBuildGatedFlag(forKey key: String, defaults: PreferenceStoring, isInternalBuild: Bool) -> Bool {
+        guard isInternalBuild else {
             if defaults.bool(forKey: key) {
                 // Property observers don't fire during init, so this write is explicit.
                 defaults.set(false, forKey: key)
