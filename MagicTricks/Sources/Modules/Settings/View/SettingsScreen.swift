@@ -199,7 +199,7 @@ private extension SettingsScreen {
         Button {
             Task { await storeManager.restore() }
         } label: {
-            if storeManager.phase == .restoring {
+            if storeManager.isRestoring {
                 HStack {
                     Spacer()
                     ProgressView()
@@ -211,7 +211,7 @@ private extension SettingsScreen {
             }
         }
         .buttonStyle(.plain)
-        .disabled(storeManager.phase != .idle)
+        .disabled(storeManager.isTransacting)
     }
 }
 

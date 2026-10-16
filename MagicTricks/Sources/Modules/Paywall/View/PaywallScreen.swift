@@ -158,7 +158,7 @@ struct PaywallScreen: View {
 
             Button(action: { Task { await store.restore() } }) {
                 Group {
-                    if store.phase == .restoring {
+                    if store.isRestoring {
                         ProgressView()
                     } else {
                         Text(key("restore"))
@@ -168,7 +168,7 @@ struct PaywallScreen: View {
                 }
                 .frame(minWidth: 44, minHeight: 44)
             }
-            .disabled(store.phase != .idle)
+            .disabled(store.isTransacting)
 
             HStack(spacing: 16) {
                 Link(String(localized: key("terms")), destination: AppConfig.termsOfUseURL)
@@ -202,15 +202,15 @@ struct PaywallScreen: View {
 
                 OnboardingCTAButton(
                     title: String(localized: key("retry")),
-                    isLoading: store.phase == .loadingProducts,
+                    isLoading: store.isLoadingProducts,
                     action: { Task { await store.retryLoadProducts() } }
                 )
             }
         } else {
             OnboardingCTAButton(
                 title: ctaTitle(for: product),
-                isEnabled: product != nil && store.phase != .restoring,
-                isLoading: store.phase == .purchasing || store.phase == .loadingProducts,
+                isEnabled: product != nil && !store.isRestoring,
+                isLoading: store.isPurchasing || store.isLoadingProducts,
                 action: {
                     guard let product else { return }
                     Task { await store.purchase(productID: product.id) }
@@ -218,7 +218,7 @@ struct PaywallScreen: View {
             )
             .shimmer(
                 in: RoundedRectangle(cornerRadius: 16, style: .continuous),
-                isActive: product != nil && store.phase == .idle,
+                isActive: product != nil && !store.isTransacting && !store.isLoadingProducts,
                 highlight: Color.backgroundScreen.opacity(0.22),
                 blend: .normal
             )
