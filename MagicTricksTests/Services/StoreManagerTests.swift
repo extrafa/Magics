@@ -13,7 +13,7 @@ final class StoreManagerTests: XCTestCase {
         let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
-        await manager.restore()
+        _ = await manager.restore()
 
         XCTAssertTrue(manager.hasProAccess)
     }
@@ -22,7 +22,7 @@ final class StoreManagerTests: XCTestCase {
         let service = MockStoreService(entitlementProductIDs: ["some_other_product"])
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
-        await manager.restore()
+        _ = await manager.restore()
 
         XCTAssertFalse(manager.hasProAccess)
     }
@@ -30,13 +30,13 @@ final class StoreManagerTests: XCTestCase {
     func test_restore_whenAlreadyHasStoreAccess_showsAlreadyProAndSkipsSync() async {
         let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
-        await manager.restore()
-        XCTAssertNil(manager.alertMessage)
+        let first = await manager.restore()
+        XCTAssertNil(first)
 
-        await manager.restore()
+        let alert = await manager.restore()
 
-        XCTAssertNotNil(manager.alertMessage)
-        XCTAssertNotEqual(manager.alertTitle, String(localized: "common.error"))
+        XCTAssertNotNil(alert)
+        XCTAssertNotEqual(alert?.title, String(localized: "common.error"))
         XCTAssertEqual(service.syncCallCount, 0)
     }
 
@@ -45,7 +45,7 @@ final class StoreManagerTests: XCTestCase {
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
         manager.isProOverride = true
 
-        await manager.restore()
+        _ = await manager.restore()
 
         XCTAssertEqual(service.syncCallCount, 1)
     }
@@ -55,7 +55,7 @@ final class StoreManagerTests: XCTestCase {
         service.purchaseResult = .success(.userCancelled)
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
-        await manager.purchase(productID: "magic_lifetime")
+        _ = await manager.purchase(productID: "magic_lifetime")
 
         XCTAssertFalse(manager.hasProAccess)
     }
@@ -64,7 +64,7 @@ final class StoreManagerTests: XCTestCase {
         let service = MockStoreService()
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
-        await manager.restore()
+        _ = await manager.restore()
 
         XCTAssertEqual(service.syncCallCount, 1)
     }
@@ -73,9 +73,9 @@ final class StoreManagerTests: XCTestCase {
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore())
         manager.isProOverride = true
 
-        await manager.restore()
+        let alert = await manager.restore()
 
-        XCTAssertNotNil(manager.alertMessage)
+        XCTAssertNotNil(alert)
     }
 
     func test_hasProAccess_isTrueWhenDevOverrideIsSetEvenWithoutStoreAccess() async {
@@ -93,11 +93,11 @@ final class StoreManagerTests: XCTestCase {
         service.syncError = MockStoreServiceError.requestedFailure
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
-        await manager.restore()
+        let alert = await manager.restore()
 
         XCTAssertFalse(manager.hasProAccess)
-        XCTAssertNotNil(manager.alertMessage)
-        XCTAssertEqual(manager.alertTitle, String(localized: "common.error"))
+        XCTAssertNotNil(alert)
+        XCTAssertEqual(alert?.title, String(localized: "common.error"))
     }
 
     func test_isProOverride_writesThroughInjectedDefaultsNotUserDefaultsStandard() {
@@ -113,7 +113,7 @@ final class StoreManagerTests: XCTestCase {
         let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
-        await manager.purchase(productID: "magic_lifetime")
+        _ = await manager.purchase(productID: "magic_lifetime")
 
         XCTAssertTrue(manager.hasProAccess)
     }
@@ -123,10 +123,10 @@ final class StoreManagerTests: XCTestCase {
         service.purchaseResult = .failure(MockStoreServiceError.requestedFailure)
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
-        await manager.purchase(productID: "magic_lifetime")
+        let alert = await manager.purchase(productID: "magic_lifetime")
 
         XCTAssertFalse(manager.hasProAccess)
-        XCTAssertNotNil(manager.alertMessage)
+        XCTAssertNotNil(alert)
     }
 
     func test_storeKitService_purchaseOfUnloadedProduct_throwsProductNotFound() async {
@@ -143,10 +143,10 @@ final class StoreManagerTests: XCTestCase {
         service.purchaseResult = .success(.pending)
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
-        await manager.purchase(productID: "magic_lifetime")
+        let alert = await manager.purchase(productID: "magic_lifetime")
 
         XCTAssertFalse(manager.hasProAccess)
-        XCTAssertNotNil(manager.alertMessage)
+        XCTAssertNotNil(alert)
     }
 
     func test_transactionUpdate_grantsAccess() async {
@@ -258,7 +258,7 @@ final class StoreManagerTests: XCTestCase {
         let loading = Task { await manager.retryLoadProducts() }
         await waitUntil { manager.isLoadingProducts }
 
-        await manager.restore()
+        _ = await manager.restore()
 
         XCTAssertTrue(manager.hasProAccess)
         XCTAssertFalse(manager.isRestoring)
@@ -287,7 +287,7 @@ final class StoreManagerTests: XCTestCase {
         let purchasing = Task { await manager.purchase(productID: "magic_lifetime") }
         await waitUntil { manager.isPurchasing }
 
-        await manager.restore()
+        _ = await manager.restore()
 
         XCTAssertEqual(service.syncCallCount, 0)
         XCTAssertFalse(manager.isRestoring)
@@ -299,8 +299,8 @@ final class StoreManagerTests: XCTestCase {
         let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
 
-        await manager.purchase(productID: "magic_lifetime")
-        await manager.restore()
+        _ = await manager.purchase(productID: "magic_lifetime")
+        _ = await manager.restore()
         await manager.retryLoadProducts()
 
         XCTAssertFalse(manager.isPurchasing)
