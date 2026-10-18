@@ -3,6 +3,7 @@
 //  MagicTricksTests
 //
 
+import StoreKit
 import XCTest
 @testable import MagicTricks
 
@@ -31,7 +32,7 @@ final class StoreManagerTests: XCTestCase {
         let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
         let first = await manager.restore()
-        XCTAssertNil(first)
+        XCTAssertEqual(first?.message, NSLocalizedString("onboarding.paywall.info.restored", comment: ""))
 
         let alert = await manager.restore()
 
@@ -308,6 +309,66 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertFalse(manager.isLoadingProducts)
     }
 
+    func test_restore_afterSyncFindsAPurchase_reportsRestored() async {
+        let service = MockStoreService()
+        service.entitlementProductIDsAfterSync = ["magic_lifetime"]
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        let alert = await manager.restore()
+
+        XCTAssertTrue(manager.hasProAccess)
+        XCTAssertEqual(alert?.title, NSLocalizedString("onboarding.paywall.info.restored.title", comment: ""))
+    }
+
+    func test_restore_whenTheUserCancelsTheSignIn_showsNoAlert() async {
+        let service = MockStoreService()
+        service.syncError = StoreError.cancelled
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        let alert = await manager.restore()
+
+        XCTAssertNil(alert)
+    }
+
+    func test_restore_onANetworkError_asksToCheckTheConnection() async {
+        let service = MockStoreService()
+        service.syncError = StoreError.network
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        let alert = await manager.restore()
+
+        XCTAssertEqual(alert?.message, NSLocalizedString("onboarding.paywall.error.network", comment: ""))
+    }
+
+    func test_purchase_whenVerificationFails_doesNotSuggestTryingAgain() async {
+        let service = MockStoreService()
+        service.purchaseResult = .failure(StoreError.verificationFailed)
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        let alert = await manager.purchase(productID: "magic_lifetime")
+
+        XCTAssertEqual(alert?.message, NSLocalizedString("onboarding.paywall.error.verificationFailed", comment: ""))
+    }
+
+    func test_purchase_whenTheUserCancelsTheSheetWithAnError_showsNoAlert() async {
+        let service = MockStoreService()
+        service.purchaseResult = .failure(StoreError.cancelled)
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        let alert = await manager.purchase(productID: "magic_lifetime")
+
+        XCTAssertNil(alert)
+    }
+
+    func test_classify_mapsStoreKitAndURLFailures() {
+        XCTAssertEqual(StoreError.classify(StoreKitError.userCancelled) as? StoreError, .cancelled)
+        XCTAssertEqual(StoreError.classify(StoreKitError.networkError(URLError(.notConnectedToInternet))) as? StoreError, .network)
+        XCTAssertEqual(StoreError.classify(URLError(.timedOut)) as? StoreError, .network)
+        XCTAssertEqual(StoreError.classify(CancellationError()) as? StoreError, .cancelled)
+        XCTAssertEqual(StoreError.classify(StoreError.verificationFailed) as? StoreError, .verificationFailed)
+        XCTAssertNil(StoreError.classify(MockStoreServiceError.requestedFailure) as? StoreError)
+    }
+
     // Waits for a state change driven by a fire-and-forget Task inside StoreManager, failing on timeout.
     private func waitUntil(
         timeout: TimeInterval = 2,
@@ -336,6 +397,7 @@ private final class MockStoreService: StoreServicing {
     var entitlementProductIDs: [String]
     var syncCallCount = 0
     var syncError: Error?
+    var entitlementProductIDsAfterSync: [String]?
     private var transactionContinuation: AsyncStream<String>.Continuation?
 
     init(entitlementProductIDs: [String] = []) {
@@ -376,6 +438,7 @@ private final class MockStoreService: StoreServicing {
     func sync() async throws {
         syncCallCount += 1
         if let syncError { throw syncError }
+        if let entitlementProductIDsAfterSync { entitlementProductIDs = entitlementProductIDsAfterSync }
     }
 }
 

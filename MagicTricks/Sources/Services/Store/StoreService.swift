@@ -19,6 +19,28 @@ enum StorePurchaseResult: Equatable {
 enum StoreError: Error, Equatable {
     case verificationFailed
     case productNotFound
+    case cancelled
+    case network
+
+    // Known StoreKit and URL failures become a StoreError; anything else passes through unchanged.
+    static func classify(_ error: Error) -> Error {
+        switch error {
+        case let known as StoreError:
+            return known
+        case is CancellationError:
+            return StoreError.cancelled
+        case let kit as StoreKitError:
+            switch kit {
+            case .userCancelled: return StoreError.cancelled
+            case .networkError: return StoreError.network
+            default: return error
+            }
+        case is URLError:
+            return StoreError.network
+        default:
+            return error
+        }
+    }
 }
 
 // MARK: - Protocol
@@ -47,7 +69,12 @@ final class StoreKitStoreService: StoreServicing {
     func purchase(productID: String) async throws -> StorePurchaseResult {
         guard let product = productsByID[productID] else { throw StoreError.productNotFound }
 
-        let result = try await product.purchase()
+        let result: Product.PurchaseResult
+        do {
+            result = try await product.purchase()
+        } catch {
+            throw StoreError.classify(error)
+        }
 
         switch result {
         case .success(let verification):
@@ -93,7 +120,11 @@ final class StoreKitStoreService: StoreServicing {
     }
 
     func sync() async throws {
-        try await AppStore.sync()
+        do {
+            try await AppStore.sync()
+        } catch {
+            throw StoreError.classify(error)
+        }
     }
 
     private func checkVerified<T>(_ result: VerificationResult<T>) throws -> T {

@@ -19,6 +19,17 @@ struct StoreAlert: Equatable {
     }
 
     fileprivate static let alreadyPro = StoreAlert(title: .paywallInfo("alreadyPro.title"), message: .paywallInfo("alreadyPro"))
+    fileprivate static let restored = StoreAlert(title: .paywallInfo("restored.title"), message: .paywallInfo("restored"))
+
+    // A cancelled sign-in or purchase sheet is the user's own choice, not an error, so it gets no alert.
+    fileprivate static func failure(_ error: Error, fallback: String) -> StoreAlert? {
+        switch StoreError.classify(error) as? StoreError {
+        case .cancelled: nil
+        case .verificationFailed: .error("verificationFailed")
+        case .network: .error("network")
+        default: .error(fallback)
+        }
+    }
 }
 
 // MARK: - Manager
@@ -145,7 +156,7 @@ final class StoreManager: ObservableObject {
                 return .error("pending")
             }
         } catch {
-            return .error("purchaseFailed")
+            return .failure(error, fallback: "purchaseFailed")
         }
     }
 
@@ -157,15 +168,15 @@ final class StoreManager: ObservableObject {
         let hadStoreAccess = _hasStoreAccess
         await refreshAccess()
         guard !_hasStoreAccess else {
-            return hadStoreAccess ? .alreadyPro : nil
+            return hadStoreAccess ? .alreadyPro : .restored
         }
 
         do {
             try await service.sync()
             await refreshAccess()
-            return _hasStoreAccess ? nil : .error("noPurchasesFound")
+            return _hasStoreAccess ? .restored : .error("noPurchasesFound")
         } catch {
-            return .error("restoreFailed")
+            return .failure(error, fallback: "restoreFailed")
         }
     }
 
