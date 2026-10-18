@@ -4201,6 +4201,23 @@
         }
       }
     },
+    "onboarding.paywall.error.network" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Couldn't reach the App Store. Check your connection and try again."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No se pudo conectar con la App Store. Comprueba tu conexión e inténtalo de nuevo."
+          }
+        }
+      }
+    },
     "onboarding.paywall.error.noPurchasesFound" : {
       "extractionState" : "manual",
       "localizations" : {
@@ -4258,13 +4275,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Purchase failed. Please try again."
+            "value" : "The purchase didn't go through. If you were charged, tap Restore Purchases."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "La compra ha fallado. Inténtalo de nuevo."
+            "value" : "La compra no se completó. Si se te cobró, toca Restaurar Compras."
           }
         }
       }
@@ -4275,13 +4292,30 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Restore failed. Please try again."
+            "value" : "Couldn't restore purchases. Please try again later."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No se pudo restaurar. Inténtalo de nuevo."
+            "value" : "No se pudieron restaurar las compras. Inténtalo más tarde."
+          }
+        }
+      }
+    },
+    "onboarding.paywall.error.verificationFailed" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "We couldn't verify this purchase with the App Store. If you were charged, tap Restore Purchases or contact support."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "No pudimos verificar esta compra con la App Store. Si se te cobró, toca Restaurar Compras o contacta con soporte."
           }
         }
       }
@@ -5551,6 +5585,40 @@
           "stringUnit" : {
             "state" : "translated",
             "value" : "Ya desbloqueado"
+          }
+        }
+      }
+    },
+    "onboarding.paywall.info.restored" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Your purchase has been restored. Everything is unlocked."
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Se ha restaurado tu compra. Todo está desbloqueado."
+          }
+        }
+      }
+    },
+    "onboarding.paywall.info.restored.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restored"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Restaurado"
           }
         }
       }
