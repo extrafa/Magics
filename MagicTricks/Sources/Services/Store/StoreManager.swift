@@ -51,6 +51,7 @@ final class StoreManager: ObservableObject {
     @Published private(set) var isLoadingProducts = false
     @Published private(set) var isPurchasing = false
     @Published private(set) var isRestoring = false
+    @Published private(set) var hasResolvedAccess = false
     @Published private(set) var productsLoadError: String?
     @Published private var _hasStoreAccess: Bool = false
     @Published var isProOverride: Bool {
@@ -62,6 +63,12 @@ final class StoreManager: ObservableObject {
 
     // Loading prices doesn't count: Restore needs no prices.
     var isTransacting: Bool { isPurchasing || isRestoring }
+
+    // False only until the first purchase check finishes, when an owner would otherwise see locks flash.
+    var isAccessKnown: Bool { hasResolvedAccess || (isInternalBuild && isProOverride) }
+
+    // What the UI shows as the free tier: locks, the Unlock button and the watermark.
+    var showsFreeTier: Bool { isAccessKnown && !hasProAccess }
 
     // The tester toggles do nothing in a release build, whatever the stored flags say.
     var hasProAccess: Bool { _hasStoreAccess || (isInternalBuild && isProOverride) }
@@ -180,6 +187,11 @@ final class StoreManager: ObservableObject {
         }
     }
 
+    func waitForResolvedAccess() async {
+        guard !isAccessKnown else { return }
+        for await resolved in $hasResolvedAccess.values where resolved { return }
+    }
+
     func retryLoadProducts() async {
         await loadProducts()
     }
@@ -232,6 +244,7 @@ final class StoreManager: ObservableObject {
             }
         }
         _hasStoreAccess = found
+        hasResolvedAccess = true
     }
 }
 
