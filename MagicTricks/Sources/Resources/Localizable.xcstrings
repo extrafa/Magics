@@ -4405,6 +4405,23 @@
         }
       }
     },
+    "onboarding.progress.value" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Step %lld of %lld"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Paso %lld de %lld"
+          }
+        }
+      }
+    },
     "onboarding.welcome.cta" : {
       "extractionState" : "manual",
       "localizations" : {

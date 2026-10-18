@@ -67,6 +67,7 @@ struct HapticSignalSettingsSection: View {
         SettingsSection(title: String(localized: key("speed"))) {
             SettingsStepper(
                 value: $settings.hapticSpeedMultiplier,
+                label: String(localized: key("speed")),
                 range: AppPreferences.Range.hapticSpeedMultiplier,
                 step: 0.5,
                 format: "%.1fx"
