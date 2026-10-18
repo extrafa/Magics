@@ -7,15 +7,6 @@
 
 import Foundation
 
-// MARK: - Phase
-
-enum PurchasePhase: Equatable {
-    case idle
-    case purchasing
-    case restoring
-    case loadingProducts
-}
-
 // MARK: - Manager
 
 @MainActor
@@ -32,7 +23,9 @@ final class StoreManager: ObservableObject {
     }
 
     @Published private(set) var products: [StoreProduct] = []
-    @Published private(set) var phase: PurchasePhase = .idle
+    @Published private(set) var isLoadingProducts = false
+    @Published private(set) var isPurchasing = false
+    @Published private(set) var isRestoring = false
     @Published var alertMessage: String?
     @Published private(set) var alertTitle: String = .commonError
     @Published private(set) var productsLoadError: String?
@@ -43,6 +36,9 @@ final class StoreManager: ObservableObject {
     @Published var isWatermarkHidden: Bool {
         didSet { defaults.set(isWatermarkHidden, forKey: Key.watermarkHidden) }
     }
+
+    // Loading prices doesn't count: Restore needs no prices.
+    var isTransacting: Bool { isPurchasing || isRestoring }
 
     // The tester toggles do nothing in a release build, whatever the stored flags say.
     var hasProAccess: Bool { _hasStoreAccess || (isInternalBuild && isProOverride) }
@@ -123,9 +119,9 @@ final class StoreManager: ObservableObject {
     // MARK: Actions
 
     func purchase(productID: String) async {
-        guard phase == .idle else { return }
-        phase = .purchasing
-        defer { phase = .idle }
+        guard !isTransacting else { return }
+        isPurchasing = true
+        defer { isPurchasing = false }
         do {
             switch try await service.purchase(productID: productID) {
             case .success:
@@ -141,9 +137,9 @@ final class StoreManager: ObservableObject {
     }
 
     func restore() async {
-        guard phase == .idle else { return }
-        phase = .restoring
-        defer { phase = .idle }
+        guard !isTransacting else { return }
+        isRestoring = true
+        defer { isRestoring = false }
 
         let hadStoreAccess = _hasStoreAccess
         await refreshAccess()
@@ -191,8 +187,8 @@ final class StoreManager: ObservableObject {
     }
 
     private func performLoadProducts() async {
-        phase = .loadingProducts
-        defer { phase = .idle }
+        isLoadingProducts = true
+        defer { isLoadingProducts = false }
         do {
             products = try await service.loadProducts(for: productIDs)
             #if DEBUG

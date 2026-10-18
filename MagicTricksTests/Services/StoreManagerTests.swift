@@ -251,6 +251,63 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertTrue(manager.isWatermarkSuppressed)
     }
 
+    func test_restore_runsWhileProductsAreStillLoading() async {
+        let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
+        service.loadProductsNeverReturns = true
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+        let loading = Task { await manager.retryLoadProducts() }
+        await waitUntil { manager.isLoadingProducts }
+
+        await manager.restore()
+
+        XCTAssertTrue(manager.hasProAccess)
+        XCTAssertFalse(manager.isRestoring)
+        XCTAssertTrue(manager.isLoadingProducts)
+        loading.cancel()
+    }
+
+    func test_finishingProductsLoad_doesNotClearAnInFlightPurchase() async {
+        let service = MockStoreService()
+        service.purchaseNeverReturns = true
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+        let purchasing = Task { await manager.purchase(productID: "magic_lifetime") }
+        await waitUntil { manager.isPurchasing }
+
+        await manager.retryLoadProducts()
+
+        XCTAssertTrue(manager.isPurchasing)
+        XCTAssertFalse(manager.isLoadingProducts)
+        purchasing.cancel()
+    }
+
+    func test_restore_isIgnoredWhileAPurchaseIsInFlight() async {
+        let service = MockStoreService()
+        service.purchaseNeverReturns = true
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+        let purchasing = Task { await manager.purchase(productID: "magic_lifetime") }
+        await waitUntil { manager.isPurchasing }
+
+        await manager.restore()
+
+        XCTAssertEqual(service.syncCallCount, 0)
+        XCTAssertFalse(manager.isRestoring)
+        XCTAssertTrue(manager.isTransacting)
+        purchasing.cancel()
+    }
+
+    func test_flags_areClearedAfterPurchaseRestoreAndLoad() async {
+        let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore())
+
+        await manager.purchase(productID: "magic_lifetime")
+        await manager.restore()
+        await manager.retryLoadProducts()
+
+        XCTAssertFalse(manager.isPurchasing)
+        XCTAssertFalse(manager.isRestoring)
+        XCTAssertFalse(manager.isLoadingProducts)
+    }
+
     // Waits for a state change driven by a fire-and-forget Task inside StoreManager, failing on timeout.
     private func waitUntil(
         timeout: TimeInterval = 2,
@@ -273,6 +330,7 @@ private final class MockStoreService: StoreServicing {
     var products: [StoreProduct] = []
     var loadProductsError: Error?
     var loadProductsNeverReturns = false
+    var purchaseNeverReturns = false
     var loadProductsCallCount = 0
     var purchaseResult: Result<StorePurchaseResult, Error> = .success(.success)
     var entitlementProductIDs: [String]
@@ -292,7 +350,8 @@ private final class MockStoreService: StoreServicing {
     }
 
     func purchase(productID: String) async throws -> StorePurchaseResult {
-        try purchaseResult.get()
+        if purchaseNeverReturns { try await Task.sleep(seconds: 3600) }
+        return try purchaseResult.get()
     }
 
     func currentEntitlementProductIDs() -> AsyncStream<String> {
