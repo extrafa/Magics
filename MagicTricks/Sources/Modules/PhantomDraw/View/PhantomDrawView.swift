@@ -189,12 +189,15 @@ struct PhantomDrawView: View {
     }
 
     private func roleButton(title: String, subtitle: String, icon: String, role: PhantomDrawRole) -> some View {
-        let isLocked = role.requiresPro && !store.hasProAccess
+        let isLocked = role.requiresPro && store.showsFreeTier
         return Button {
-            if isLocked {
-                flow.presentPaywallOverlay(context: .trick(.phantomDraw))
-            } else {
-                viewModel.selectRole(role)
+            Task {
+                await store.waitForResolvedAccess()
+                if role.requiresPro && !store.hasProAccess {
+                    flow.presentPaywallOverlay(context: .trick(.phantomDraw))
+                } else {
+                    viewModel.selectRole(role)
+                }
             }
         } label: {
             HStack(spacing: 16) {

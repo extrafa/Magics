@@ -369,6 +369,56 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertNil(StoreError.classify(MockStoreServiceError.requestedFailure) as? StoreError)
     }
 
+    func test_access_isUnknownUntilTheFirstCheckFinishes() async {
+        let service = MockStoreService()
+        service.loadProductsNeverReturns = true
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore(), isInternalBuild: false)
+
+        XCTAssertFalse(manager.isAccessKnown)
+        XCTAssertFalse(manager.showsFreeTier)
+
+        manager.start()
+        await waitUntil { manager.isAccessKnown }
+
+        XCTAssertTrue(manager.showsFreeTier)
+        manager.stop()
+    }
+
+    func test_owner_neverShowsTheFreeTier() async {
+        let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore(), isInternalBuild: false)
+
+        XCTAssertFalse(manager.showsFreeTier)
+        manager.start()
+        await waitUntil { manager.isAccessKnown }
+
+        XCTAssertTrue(manager.hasProAccess)
+        XCTAssertFalse(manager.showsFreeTier)
+        manager.stop()
+    }
+
+    func test_waitForResolvedAccess_returnsOnceTheFirstCheckFinishes() async {
+        let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore(), isInternalBuild: false)
+
+        let waiting = Task { await manager.waitForResolvedAccess() }
+        manager.start()
+        await waiting.value
+
+        XCTAssertTrue(manager.isAccessKnown)
+        XCTAssertTrue(manager.hasProAccess)
+        manager.stop()
+    }
+
+    func test_proOverride_makesAccessKnownImmediately_inAnInternalBuild() {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: true)
+
+        manager.isProOverride = true
+
+        XCTAssertTrue(manager.isAccessKnown)
+        XCTAssertFalse(manager.showsFreeTier)
+    }
+
     // Waits for a state change driven by a fire-and-forget Task inside StoreManager, failing on timeout.
     private func waitUntil(
         timeout: TimeInterval = 2,

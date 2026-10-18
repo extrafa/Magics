@@ -21,12 +21,12 @@ struct CollectionView: View {
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         ForEach(TrickCollection.tricks) { trick in
-                            let isLocked = trick.id.isLocked(hasProAccess: store.hasProAccess)
+                            let isLocked = store.showsFreeTier && trick.id.isLocked(hasProAccess: false)
                             TrickCardView(
                                 trick: trick,
                                 isLocked: isLocked,
-                                onStartTap: { flow.openStartFlow(for: trick) },
-                                onHowToTap: { flow.open(instruction: trick) }
+                                onStartTap: { whenAccessKnown { flow.openStartFlow(for: trick) } },
+                                onHowToTap: { whenAccessKnown { flow.open(instruction: trick) } }
                             )
                         }
                     }
@@ -49,7 +49,7 @@ struct CollectionView: View {
             }
         }
         .overlay(alignment: .topLeading) {
-            if !store.hasProAccess {
+            if store.showsFreeTier {
                 ProUpgradeButton(action: { flow.openPaywall() })
                     .padding(.leading, 20)
                     .padding(.top, 4)
@@ -68,6 +68,14 @@ struct CollectionView: View {
             AppFlowCoverView(activeFlow: activeFlow)
                 .environmentObject(store)
                 .environmentObject(flow)
+        }
+    }
+
+    // A tap right after launch waits for the purchase check, so it neither lets a free user in nor shows an owner the paywall.
+    private func whenAccessKnown(_ action: @escaping Completion) {
+        Task {
+            await store.waitForResolvedAccess()
+            action()
         }
     }
 }
