@@ -7,6 +7,20 @@
 
 import Foundation
 
+// MARK: - Alert
+
+// Returned to the screen that started the action, so it shows the alert itself and it can't surface somewhere else.
+struct StoreAlert: Equatable {
+    let title: String
+    let message: String
+
+    fileprivate static func error(_ key: String) -> StoreAlert {
+        StoreAlert(title: .commonError, message: .paywallError(key))
+    }
+
+    fileprivate static let alreadyPro = StoreAlert(title: .paywallInfo("alreadyPro.title"), message: .paywallInfo("alreadyPro"))
+}
+
 // MARK: - Manager
 
 @MainActor
@@ -26,8 +40,6 @@ final class StoreManager: ObservableObject {
     @Published private(set) var isLoadingProducts = false
     @Published private(set) var isPurchasing = false
     @Published private(set) var isRestoring = false
-    @Published var alertMessage: String?
-    @Published private(set) var alertTitle: String = .commonError
     @Published private(set) var productsLoadError: String?
     @Published private var _hasStoreAccess: Bool = false
     @Published var isProOverride: Bool {
@@ -118,44 +130,42 @@ final class StoreManager: ObservableObject {
 
     // MARK: Actions
 
-    func purchase(productID: String) async {
-        guard !isTransacting else { return }
+    func purchase(productID: String) async -> StoreAlert? {
+        guard !isTransacting else { return nil }
         isPurchasing = true
         defer { isPurchasing = false }
         do {
             switch try await service.purchase(productID: productID) {
             case .success:
                 await refreshAccess()
+                return nil
             case .userCancelled:
-                break
+                return nil
             case .pending:
-                showAlert(.paywallError("pending"))
+                return .error("pending")
             }
         } catch {
-            showAlert(.paywallError("purchaseFailed"))
+            return .error("purchaseFailed")
         }
     }
 
-    func restore() async {
-        guard !isTransacting else { return }
+    func restore() async -> StoreAlert? {
+        guard !isTransacting else { return nil }
         isRestoring = true
         defer { isRestoring = false }
 
         let hadStoreAccess = _hasStoreAccess
         await refreshAccess()
         guard !_hasStoreAccess else {
-            if hadStoreAccess { showAlert(.paywallInfo("alreadyPro"), title: .paywallInfo("alreadyPro.title")) }
-            return
+            return hadStoreAccess ? .alreadyPro : nil
         }
 
         do {
             try await service.sync()
             await refreshAccess()
-            if !_hasStoreAccess {
-                showAlert(.paywallError("noPurchasesFound"))
-            }
+            return _hasStoreAccess ? nil : .error("noPurchasesFound")
         } catch {
-            showAlert(.paywallError("restoreFailed"))
+            return .error("restoreFailed")
         }
     }
 
@@ -201,11 +211,6 @@ final class StoreManager: ObservableObject {
             #endif
             productsLoadError = .paywallError("productsLoadFailed")
         }
-    }
-
-    private func showAlert(_ message: String, title: String = .commonError) {
-        alertTitle = title
-        alertMessage = message
     }
 
     private func refreshAccess() async {

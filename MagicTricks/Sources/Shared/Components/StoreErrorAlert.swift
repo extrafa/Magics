@@ -6,17 +6,17 @@
 import SwiftUI
 
 extension View {
-    func storeErrorAlert(_ store: StoreManager) -> some View {
+    func storeErrorAlert(_ storeAlert: Binding<StoreAlert?>) -> some View {
         alert(
-            store.alertTitle,
+            storeAlert.wrappedValue?.title ?? "",
             isPresented: Binding(
-                get: { store.alertMessage != nil },
-                set: { if !$0 { store.alertMessage = nil } }
+                get: { storeAlert.wrappedValue != nil },
+                set: { if !$0 { storeAlert.wrappedValue = nil } }
             )
         ) {
-            Button(String(localized: "common.ok")) { store.alertMessage = nil }
+            Button(String(localized: "common.ok")) { storeAlert.wrappedValue = nil }
         } message: {
-            Text(store.alertMessage ?? "")
+            Text(storeAlert.wrappedValue?.message ?? "")
         }
     }
 }

@@ -11,6 +11,7 @@ struct PaywallScreen: View {
     let onDismiss: Completion
 
     @EnvironmentObject private var store: StoreManager
+    @State private var storeAlert: StoreAlert?
     private static let sidePadding: CGFloat = 24
 
     private let content: PaywallContent
@@ -60,7 +61,7 @@ struct PaywallScreen: View {
             if store.hasProAccess { onDismiss() }
         }
         .tint(.primary)
-        .storeErrorAlert(store)
+        .storeErrorAlert($storeAlert)
     }
 
     // MARK: Close
@@ -156,7 +157,7 @@ struct PaywallScreen: View {
                     .multilineTextAlignment(.center)
             }
 
-            Button(action: { Task { await store.restore() } }) {
+            Button(action: { Task { storeAlert = await store.restore() } }) {
                 Group {
                     if store.isRestoring {
                         ProgressView()
@@ -213,7 +214,7 @@ struct PaywallScreen: View {
                 isLoading: store.isPurchasing || store.isLoadingProducts,
                 action: {
                     guard let product else { return }
-                    Task { await store.purchase(productID: product.id) }
+                    Task { storeAlert = await store.purchase(productID: product.id) }
                 }
             )
             .shimmer(

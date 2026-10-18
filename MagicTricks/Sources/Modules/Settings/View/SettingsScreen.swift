@@ -18,6 +18,7 @@ struct SettingsScreen: View {
     @EnvironmentObject private var store: SettingsStore
     @EnvironmentObject private var storeManager: StoreManager
     @EnvironmentObject private var flow: AppFlowCoordinator
+    @State private var storeAlert: StoreAlert?
 
     var body: some View {
         ZStack {
@@ -43,7 +44,7 @@ struct SettingsScreen: View {
         }
         .navigationTitle(String(localized: "settings.title"))
         .navigationBarTitleDisplayMode(.inline)
-        .storeErrorAlert(storeManager)
+        .storeErrorAlert($storeAlert)
     }
 }
 
@@ -197,7 +198,7 @@ private extension SettingsScreen {
 
     var restoreButton: some View {
         Button {
-            Task { await storeManager.restore() }
+            Task { storeAlert = await storeManager.restore() }
         } label: {
             if storeManager.isRestoring {
                 HStack {
