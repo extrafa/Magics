@@ -55,7 +55,7 @@ final class HapticManagerTests: XCTestCase {
             7,
             initialDelay: 0.5,
             generator: UIImpactFeedbackGenerator(),
-            timings: HapticTimings(preferences: MockHapticPreferences()),
+            timings: HapticTimings(preferences: MockHapticPreferences(groupByThree: true)),
             completion: { completionCount += 1 }
         )
 
@@ -73,20 +73,12 @@ final class HapticManagerTests: XCTestCase {
         manager.playGroupedCountSignal(
             7,
             generator: UIImpactFeedbackGenerator(),
-            timings: HapticTimings(preferences: MockHapticPreferences()),
+            timings: HapticTimings(preferences: MockHapticPreferences(groupByThree: true)),
             completion: { completionCount += 1 }
         )
 
         XCTAssertEqual(completionCount, 1)
     }
-}
-
-private struct MockHapticPreferences: HapticPreferenceManaging {
-    var hapticSpeedMultiplier = 1.0
-    var isHapticGroupByThreeEnabled = true
-    var hapticIntensity: HapticIntensity = .heavy
-
-    func resetHapticSettings() {}
 }
 
 @MainActor

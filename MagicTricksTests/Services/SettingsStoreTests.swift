@@ -12,13 +12,13 @@ import XCTest
 final class SettingsStoreTests: XCTestCase {
 
     func test_init_readsCurrentPreferenceValues() {
-        let store = MockSettingsPreferenceStore()
-        store.doubles[AppPreferences.Key.hapticSpeedMultiplier] = 1.35
-        store.bools[AppPreferences.Key.hapticGroupByThreeEnabled] = true
-        store.doubles[AppPreferences.Key.hapticIntensity] = HapticIntensity.light.storageValue
-        store.bools[AppPreferences.Key.secretGestureEnabled] = true
-        store.doubles[AppPreferences.Key.screenDownHoldDuration] = 0.75
-        store.bools[AppPreferences.Key.isExitHintEnabled] = false
+        let store = MockPreferenceStore()
+        store.storage[AppPreferences.Key.hapticSpeedMultiplier] = 1.35
+        store.storage[AppPreferences.Key.hapticGroupByThreeEnabled] = true
+        store.storage[AppPreferences.Key.hapticIntensity] = HapticIntensity.light.storageValue
+        store.storage[AppPreferences.Key.secretGestureEnabled] = true
+        store.storage[AppPreferences.Key.screenDownHoldDuration] = 0.75
+        store.storage[AppPreferences.Key.isExitHintEnabled] = false
 
         let settings = SettingsStore(preferences: AppPreferences(store: store))
 
@@ -31,7 +31,7 @@ final class SettingsStoreTests: XCTestCase {
     }
 
     func test_assigningValues_writesThroughPreferencesLayer() {
-        let store = MockSettingsPreferenceStore()
+        let store = MockPreferenceStore()
         let settings = SettingsStore(preferences: AppPreferences(store: store))
 
         settings.hapticSpeedMultiplier = 1.5
@@ -41,16 +41,16 @@ final class SettingsStoreTests: XCTestCase {
         settings.screenDownHoldDuration = 0.9
         settings.isExitHintEnabled = false
 
-        XCTAssertEqual(store.doubles[AppPreferences.Key.hapticSpeedMultiplier], 1.5)
-        XCTAssertEqual(store.bools[AppPreferences.Key.hapticGroupByThreeEnabled], true)
-        XCTAssertEqual(store.doubles[AppPreferences.Key.hapticIntensity], HapticIntensity.light.storageValue)
-        XCTAssertEqual(store.bools[AppPreferences.Key.secretGestureEnabled], true)
-        XCTAssertEqual(store.doubles[AppPreferences.Key.screenDownHoldDuration], 0.9)
-        XCTAssertEqual(store.bools[AppPreferences.Key.isExitHintEnabled], false)
+        XCTAssertEqual(store.storage[AppPreferences.Key.hapticSpeedMultiplier] as? Double, 1.5)
+        XCTAssertEqual(store.storage[AppPreferences.Key.hapticGroupByThreeEnabled] as? Bool, true)
+        XCTAssertEqual(store.storage[AppPreferences.Key.hapticIntensity] as? Double, HapticIntensity.light.storageValue)
+        XCTAssertEqual(store.storage[AppPreferences.Key.secretGestureEnabled] as? Bool, true)
+        XCTAssertEqual(store.storage[AppPreferences.Key.screenDownHoldDuration] as? Double, 0.9)
+        XCTAssertEqual(store.storage[AppPreferences.Key.isExitHintEnabled] as? Bool, false)
     }
 
     func test_resetMethods_restoreStateFromPreferencesDefaults() {
-        let store = MockSettingsPreferenceStore()
+        let store = MockPreferenceStore()
         let settings = SettingsStore(preferences: AppPreferences(store: store))
 
         settings.hapticSpeedMultiplier = 2.2
@@ -72,46 +72,9 @@ final class SettingsStoreTests: XCTestCase {
     }
 
     func test_appShareFallbackText_usesDisplayNameWhenURLIsNotConfigured() {
-        let settings = SettingsStore(preferences: AppPreferences(store: MockSettingsPreferenceStore()))
+        let settings = SettingsStore(preferences: AppPreferences(store: MockPreferenceStore()))
 
         XCTAssertNil(settings.appShareURL)
         XCTAssertFalse(settings.appShareText.isEmpty)
-    }
-}
-
-private final class MockSettingsPreferenceStore: PreferenceStoring {
-    var bools: [String: Bool] = [:]
-    var doubles: [String: Double] = [:]
-    var integers: [String: Int] = [:]
-    var stringArrays: [String: [String]] = [:]
-
-    func object(forKey defaultName: String) -> Any? {
-        bools[defaultName] ?? integers[defaultName] ?? doubles[defaultName] ?? stringArrays[defaultName]
-    }
-
-    func bool(forKey defaultName: String) -> Bool {
-        bools[defaultName] ?? false
-    }
-
-    func double(forKey defaultName: String) -> Double {
-        doubles[defaultName] ?? 0
-    }
-
-    func integer(forKey defaultName: String) -> Int {
-        integers[defaultName] ?? 0
-    }
-
-    func stringArray(forKey defaultName: String) -> [String]? {
-        stringArrays[defaultName]
-    }
-
-    func set(_ value: Any?, forKey defaultName: String) {
-        switch value {
-        case let value as Bool:     bools[defaultName] = value
-        case let value as Int:      integers[defaultName] = value
-        case let value as Double:   doubles[defaultName] = value
-        case let value as [String]: stringArrays[defaultName] = value
-        default: break
-        }
     }
 }
