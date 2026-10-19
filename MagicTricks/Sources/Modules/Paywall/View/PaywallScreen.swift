@@ -131,7 +131,7 @@ struct PaywallScreen: View {
         for trick in content.cards {
             let name = String(localized: trick.title).replacingOccurrences(of: " ", with: "\u{00A0}")
             if let range = result.range(of: name) {
-                result[range].foregroundColor = trick.id.collectionColor
+                result[range].foregroundColor = trick.id.textColor
             }
         }
         return result

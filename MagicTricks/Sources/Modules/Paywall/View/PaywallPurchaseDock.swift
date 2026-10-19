@@ -82,6 +82,9 @@ struct PaywallPurchaseDock: View {
                 title: ctaTitle(for: product),
                 isEnabled: product != nil && !store.isRestoring,
                 isLoading: store.isPurchasing || store.isLoadingProducts,
+                accessibilityText: product.map {
+                    String.localizedStringWithFormat(String(localized: key("ctaAccessibility")), $0.displayPrice)
+                },
                 action: {
                     guard let product else { return }
                     Task { storeAlert = await store.purchase(productID: product.id) }

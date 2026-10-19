@@ -5810,6 +5810,23 @@
         }
       }
     },
+    "paywall.ctaAccessibility" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Unlock all tricks, pay once, %@"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Desbloquear todos los trucos, pago único, %@"
+          }
+        }
+      }
+    },
     "paywall.restore" : {
       "extractionState" : "manual",
       "localizations" : {
