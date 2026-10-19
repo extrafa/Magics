@@ -39,16 +39,19 @@ struct PaywallPurchaseDock: View {
             .disabled(store.isTransacting)
 
             HStack(spacing: 16) {
+                // 44 pt tall, so the small legal text is still easy to hit.
                 Link(String(localized: key("terms")), destination: AppConfig.termsOfUseURL)
+                    .frame(minHeight: 44)
                 Text(String(localized: "common.dotSeparator"))
                 Link(String(localized: key("privacy")), destination: AppConfig.privacyPolicyURL)
+                    .frame(minHeight: 44)
             }
             .font(.system(.caption2, design: .rounded))
             .foregroundStyle(.tertiary)
         }
         .padding(.horizontal, 20)
         .padding(.top, 12)
-        .padding(.bottom, 14)
+        .padding(.bottom, 2)
         // The dock is pinned, so at accessibility sizes it would crowd out the scrolling poster; cap it like system bars.
         .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
         .frame(maxWidth: .infinity)
