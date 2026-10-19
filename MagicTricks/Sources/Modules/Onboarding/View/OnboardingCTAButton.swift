@@ -13,6 +13,10 @@ struct OnboardingCTAButton: View {
     var isLoading: Bool = false
     let action: () -> Void
 
+    // Grows with Dynamic Type, so a longer label wraps inside the button instead of being cut off.
+    @ScaledMetric(relativeTo: .headline) private var height: CGFloat = 56
+    @ScaledMetric(relativeTo: .headline) private var fontSize: CGFloat = 18
+
     var body: some View {
         Button(action: action) {
             Group {
@@ -21,11 +25,12 @@ struct OnboardingCTAButton: View {
                         .tint(Color.backgroundScreen)
                 } else {
                     Text(title)
-                        .font(.system(size: 18, weight: .semibold, design: .rounded))
+                        .font(.system(size: fontSize, weight: .semibold, design: .rounded))
+                        .multilineTextAlignment(.center)
                 }
             }
-            .frame(maxWidth: .infinity)
-            .frame(height: 56)
+            .padding(.vertical, 12)
+            .frame(maxWidth: .infinity, minHeight: height)
             .background(isEnabled ? Color.textPrimary : Color.textPrimary.opacity(0.3))
             .foregroundStyle(Color.backgroundScreen)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
