@@ -18,14 +18,6 @@ enum HapticIntensity: Equatable, Hashable {
     static let allCases: [HapticIntensity] = [.light, .medium, .heavy]
     static let defaultValue: HapticIntensity = .heavy
 
-    var feedbackStyle: UIImpactFeedbackGenerator.FeedbackStyle {
-        switch self {
-        case .light: .light
-        case .medium: .medium
-        case .heavy: .heavy
-        }
-    }
-
     var impactIntensity: CGFloat {
         switch self {
         case .light: 1.0 / 3.0
@@ -71,7 +63,6 @@ enum HapticIntensity: Equatable, Hashable {
 
 enum HapticTiming {
     static let initialDelay: TimeInterval = 0
-    static let sectionGap: TimeInterval = 3.0
     static let shortDuration: TimeInterval = 0.08
     static let completionPadding: TimeInterval = 0.1
     static let groupedChunkSize = 3

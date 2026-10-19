@@ -11,7 +11,6 @@ struct OnboardingOptionRow: View {
     let emoji: String
     let title: String
     let isSelected: Bool
-    var isMultiSelect: Bool = true
 
     var body: some View {
         HStack(spacing: 14) {
