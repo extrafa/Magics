@@ -70,6 +70,16 @@ final class StoreManager: ObservableObject {
     // What the UI shows as the free tier: locks, the Unlock button and the watermark.
     var showsFreeTier: Bool { isAccessKnown && !hasProAccess }
 
+    // The one lock rule. The gate is strict: a trick is open only for someone who holds the purchase.
+    func isLocked(_ trick: TrickType) -> Bool {
+        trick.isLocked(hasProAccess: hasProAccess)
+    }
+
+    // What a card shows: the lock appears only once we know the user is on the free tier.
+    func showsLock(for trick: TrickType) -> Bool {
+        showsFreeTier && isLocked(trick)
+    }
+
     // The tester toggles do nothing in a release build, whatever the stored flags say.
     var hasProAccess: Bool { _hasStoreAccess || (isInternalBuild && isProOverride) }
     var isWatermarkSuppressed: Bool { isInternalBuild && isWatermarkHidden }

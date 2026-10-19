@@ -38,7 +38,7 @@ struct PaywallScreen: View {
                     .scrollBouncesOnlyWhenNeeded()
                 }
 
-                purchaseDock
+                PaywallPurchaseDock(storeAlert: $storeAlert)
             }
             .background { Color.backgroundScreen.ignoresSafeArea() }
             .navigationBarTitleDisplayMode(.inline)
@@ -142,95 +142,6 @@ struct PaywallScreen: View {
             .compactMap { $0 }
             .joined(separator: " ")
     }
-
-    // MARK: Purchase
-
-    private var purchaseDock: some View {
-        let product = store.products.first
-        return VStack(spacing: 10) {
-            purchaseSection(for: product)
-
-            if store.productsLoadError == nil {
-                Text(key("noRenew"))
-                    .font(.system(.footnote, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-            }
-
-            Button(action: { Task { storeAlert = await store.restore() } }) {
-                Group {
-                    if store.isRestoring {
-                        ProgressView()
-                    } else {
-                        Text(key("restore"))
-                            .font(.system(.footnote, design: .rounded, weight: .medium))
-                            .foregroundStyle(.secondary)
-                    }
-                }
-                .frame(minWidth: 44, minHeight: 44)
-            }
-            .disabled(store.isTransacting)
-
-            HStack(spacing: 16) {
-                Link(String(localized: key("terms")), destination: AppConfig.termsOfUseURL)
-                Text(String(localized: "common.dotSeparator"))
-                Link(String(localized: key("privacy")), destination: AppConfig.privacyPolicyURL)
-            }
-            .font(.system(.caption2, design: .rounded))
-            .foregroundStyle(.tertiary)
-        }
-        .padding(.horizontal, 20)
-        .padding(.top, 12)
-        .padding(.bottom, 14)
-        // The dock is pinned, so at accessibility sizes it would crowd out the scrolling poster; cap it like system bars.
-        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
-        .frame(maxWidth: .infinity)
-        .background(Color.backgroundScreen)
-        .overlay(alignment: .top) {
-            Rectangle().fill(Color.cardBorder).frame(height: 1)
-        }
-    }
-
-    @ViewBuilder
-    private func purchaseSection(for product: StoreProduct?) -> some View {
-        if let productsLoadError = store.productsLoadError {
-            VStack(spacing: 10) {
-                Text(productsLoadError)
-                    .font(.system(.footnote, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .fixedSize(horizontal: false, vertical: true)
-
-                OnboardingCTAButton(
-                    title: String(localized: key("retry")),
-                    isLoading: store.isLoadingProducts,
-                    action: { Task { await store.retryLoadProducts() } }
-                )
-            }
-        } else {
-            OnboardingCTAButton(
-                title: ctaTitle(for: product),
-                isEnabled: product != nil && !store.isRestoring,
-                isLoading: store.isPurchasing || store.isLoadingProducts,
-                action: {
-                    guard let product else { return }
-                    Task { storeAlert = await store.purchase(productID: product.id) }
-                }
-            )
-            .shimmer(
-                in: RoundedRectangle(cornerRadius: 16, style: .continuous),
-                isActive: product != nil && !store.isTransacting && !store.isLoadingProducts,
-                highlight: Color.backgroundScreen.opacity(0.22),
-                blend: .normal
-            )
-        }
-    }
-
-    // The button repeats the deal at the moment of paying: how much, and that it's once.
-    private func ctaTitle(for product: StoreProduct?) -> String {
-        guard let product else { return String(localized: key("cta")) }
-        return String.localizedStringWithFormat(String(localized: key("ctaPrice")), product.displayPrice)
-    }
 }
 
 private extension View {
@@ -243,79 +154,3 @@ private extension View {
         }
     }
 }
-
-#if DEBUG
-@MainActor
-final class PaywallPreviewStoreService: StoreServicing {
-    enum Mode {
-        case loaded
-        case loadFails
-        case neverLoads
-    }
-
-    private let mode: Mode
-
-    init(mode: Mode = .loaded) {
-        self.mode = mode
-    }
-
-    func loadProducts(for productIDs: [String]) async throws -> [StoreProduct] {
-        switch mode {
-        case .loaded:
-            return [StoreProduct(id: "magic_lifetime", displayName: "Lifetime", displayPrice: "$9.99")]
-        case .loadFails:
-            throw URLError(.notConnectedToInternet)
-        case .neverLoads:
-            try await Task.sleep(seconds: 3600)
-            return []
-        }
-    }
-
-    func purchase(productID: String) async throws -> StorePurchaseResult { .userCancelled }
-    func currentEntitlementProductIDs() -> AsyncStream<String> { AsyncStream { $0.finish() } }
-    func transactionUpdateProductIDs() -> AsyncStream<String> { AsyncStream { _ in } }
-    func sync() async throws {}
-}
-
-#Preview("General") {
-    PaywallScreen(context: .general, onDismiss: {})
-        .background(Color.backgroundScreen)
-        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
-}
-
-#Preview("Phantom Draw") {
-    PaywallScreen(context: .trick(.phantomDraw), onDismiss: {})
-        .background(Color.backgroundScreen)
-        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
-}
-
-#Preview("Store error") {
-    PaywallScreen(context: .general, onDismiss: {})
-        .background(Color.backgroundScreen)
-        .environmentObject(StoreManager(service: PaywallPreviewStoreService(mode: .loadFails)))
-}
-
-#Preview("Loading price") {
-    PaywallScreen(context: .general, onDismiss: {})
-        .background(Color.backgroundScreen)
-        .environmentObject(StoreManager(service: PaywallPreviewStoreService(mode: .neverLoads)))
-}
-
-#Preview("Time Control") {
-    PaywallScreen(context: .trick(.timeControl), onDismiss: {})
-        .background(Color.backgroundScreen)
-        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
-}
-
-#Preview("Color Sense") {
-    PaywallScreen(context: .trick(.colorSense), onDismiss: {})
-        .background(Color.backgroundScreen)
-        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
-}
-
-#Preview("Magic Gallery") {
-    PaywallScreen(context: .trick(.magicGallery), onDismiss: {})
-        .background(Color.backgroundScreen)
-        .environmentObject(StoreManager(service: PaywallPreviewStoreService()))
-}
-#endif

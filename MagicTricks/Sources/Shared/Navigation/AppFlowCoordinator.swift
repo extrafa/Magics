@@ -114,6 +114,6 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     private func isLocked(_ trick: Trick) -> Bool {
-        trick.id.isLocked(hasProAccess: store.hasProAccess)
+        store.isLocked(trick.id)
     }
 }

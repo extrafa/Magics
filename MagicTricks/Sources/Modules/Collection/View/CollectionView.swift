@@ -21,7 +21,7 @@ struct CollectionView: View {
                 ScrollView {
                     LazyVStack(spacing: 16) {
                         ForEach(TrickCollection.tricks) { trick in
-                            let isLocked = store.showsFreeTier && trick.id.isLocked(hasProAccess: false)
+                            let isLocked = store.showsLock(for: trick.id)
                             TrickCardView(
                                 trick: trick,
                                 isLocked: isLocked,

@@ -419,6 +419,41 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertFalse(manager.showsFreeTier)
     }
 
+    func test_isLocked_isStrictAndKeepsPhantomDrawAndGeoOpen() {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: false)
+
+        XCTAssertTrue(manager.isLocked(.colorSense))
+        XCTAssertTrue(manager.isLocked(.timeControl))
+        XCTAssertTrue(manager.isLocked(.magicGallery))
+        XCTAssertFalse(manager.isLocked(.phantomDraw))
+        XCTAssertFalse(manager.isLocked(.geoMentalism))
+    }
+
+    func test_showsLock_appearsOnlyOnceTheFreeTierIsKnown() async {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: false)
+        XCTAssertFalse(manager.showsLock(for: .colorSense))
+
+        manager.start()
+        await waitUntil { manager.isAccessKnown }
+
+        XCTAssertTrue(manager.showsLock(for: .colorSense))
+        XCTAssertFalse(manager.showsLock(for: .phantomDraw))
+        XCTAssertFalse(manager.showsLock(for: .geoMentalism))
+        manager.stop()
+    }
+
+    func test_owner_hasNoLocks() async {
+        let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore(), isInternalBuild: false)
+
+        manager.start()
+        await waitUntil { manager.isAccessKnown }
+
+        XCTAssertFalse(manager.isLocked(.colorSense))
+        XCTAssertFalse(manager.showsLock(for: .colorSense))
+        manager.stop()
+    }
+
     // Waits for a state change driven by a fire-and-forget Task inside StoreManager, failing on timeout.
     private func waitUntil(
         timeout: TimeInterval = 2,
