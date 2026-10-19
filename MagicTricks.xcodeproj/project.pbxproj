@@ -153,6 +153,9 @@
 		0AML00000000000000000C04 /* PaywallContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C03 /* PaywallContent.swift */; };
 		0AML00000000000000000C09 /* PaywallScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C08 /* PaywallScreen.swift */; };
 		0AML00000000000000000C23 /* PaywallCardFan.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C22 /* PaywallCardFan.swift */; };
+		0AML00000000000000000C3D /* PaywallContext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C3C /* PaywallContext.swift */; };
+		0AML00000000000000000C3F /* PaywallScreen+Previews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C3E /* PaywallScreen+Previews.swift */; };
+		0AML00000000000000000C41 /* PaywallPurchaseDock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C40 /* PaywallPurchaseDock.swift */; };
 		0AML00000000000000000C06 /* PaywallContentTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C05 /* PaywallContentTests.swift */; };
 		0AML00000000000000000054 /* GroupedHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */; };
 		92A00003064682003FCE7710 /* RateAppViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A0000273CB6047599A017B /* RateAppViewModelTests.swift */; };
@@ -322,6 +325,9 @@
 		0AML00000000000000000C03 /* PaywallContent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallContent.swift; sourceTree = "<group>"; };
 		0AML00000000000000000C08 /* PaywallScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallScreen.swift; sourceTree = "<group>"; };
 		0AML00000000000000000C22 /* PaywallCardFan.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallCardFan.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C3C /* PaywallContext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallContext.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C3E /* PaywallScreen+Previews.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "PaywallScreen+Previews.swift"; sourceTree = "<group>"; };
+		0AML00000000000000000C40 /* PaywallPurchaseDock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallPurchaseDock.swift; sourceTree = "<group>"; };
 		0AML00000000000000000C05 /* PaywallContentTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PaywallContentTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000053 /* GroupedHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GroupedHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		92A0000273CB6047599A017B /* RateAppViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RateAppViewModelTests.swift; sourceTree = "<group>"; };
@@ -444,6 +450,8 @@
 			children = (
 				0AML00000000000000000C08 /* PaywallScreen.swift */,
 				0AML00000000000000000C22 /* PaywallCardFan.swift */,
+				0AML00000000000000000C3E /* PaywallScreen+Previews.swift */,
+				0AML00000000000000000C40 /* PaywallPurchaseDock.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -452,6 +460,7 @@
 			isa = PBXGroup;
 			children = (
 				0AML00000000000000000C03 /* PaywallContent.swift */,
+				0AML00000000000000000C3C /* PaywallContext.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1278,6 +1287,9 @@
 				0AML00000000000000000C04 /* PaywallContent.swift in Sources */,
 				0AML00000000000000000C09 /* PaywallScreen.swift in Sources */,
 				0AML00000000000000000C23 /* PaywallCardFan.swift in Sources */,
+				0AML00000000000000000C3D /* PaywallContext.swift in Sources */,
+				0AML00000000000000000C3F /* PaywallScreen+Previews.swift in Sources */,
+				0AML00000000000000000C41 /* PaywallPurchaseDock.swift in Sources */,
 				0AML00000000000000000002 /* PhantomDrawModels.swift in Sources */,
 				0AML00000000000000000004 /* PhantomDrawInstruction.swift in Sources */,
 				0AML00000000000000000006 /* PhantomDrawSessionManager.swift in Sources */,
