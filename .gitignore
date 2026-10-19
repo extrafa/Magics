@@ -2,3 +2,10 @@
 *.xcuserstate
 xcuserdata/
 Config/Local.xcconfig
+
+# Signing material and build output must never be committed
+*.p8
+*.p12
+*.mobileprovision
+*.ipa
+DerivedData/
