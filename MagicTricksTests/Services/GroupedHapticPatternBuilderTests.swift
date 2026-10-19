@@ -9,7 +9,7 @@ import XCTest
 final class GroupedHapticPatternBuilderTests: XCTestCase {
 
     // speed 1.0 lands in the slowest grouped tier: pulseGap 0.15, remainderPulseGap 0.19, groupGap 0.53.
-    private let timings = HapticTimings(preferences: MockHapticPreferences(speed: 1.0))
+    private let timings = HapticTimings(preferences: MockHapticPreferences(speed: 1.0, groupByThree: true))
 
     private func times(_ count: Int, initialDelay: TimeInterval = 0) -> [TimeInterval] {
         GroupedHapticPatternBuilder
@@ -52,16 +52,4 @@ final class GroupedHapticPatternBuilderTests: XCTestCase {
     func test_initialDelay_shiftsEveryPulse() {
         assertTimes(times(4, initialDelay: 0.5), [0.5, 0.65, 0.80, 1.33])
     }
-}
-
-private struct MockHapticPreferences: HapticPreferenceManaging {
-    var hapticSpeedMultiplier: Double
-    var isHapticGroupByThreeEnabled = true
-    var hapticIntensity: HapticIntensity = .heavy
-
-    init(speed: Double) {
-        hapticSpeedMultiplier = speed
-    }
-
-    func resetHapticSettings() {}
 }

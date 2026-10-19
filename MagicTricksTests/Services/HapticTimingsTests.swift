@@ -30,16 +30,3 @@ final class HapticTimingsTests: XCTestCase {
         XCTAssertEqual(timings.intensity, .light)
     }
 }
-
-private struct MockHapticPreferences: HapticPreferenceManaging {
-    var hapticSpeedMultiplier: Double
-    var isHapticGroupByThreeEnabled = false
-    var hapticIntensity: HapticIntensity
-
-    init(speed: Double, intensity: HapticIntensity = .heavy) {
-        hapticSpeedMultiplier = speed
-        hapticIntensity = intensity
-    }
-
-    func resetHapticSettings() {}
-}
