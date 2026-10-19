@@ -145,6 +145,7 @@
 		0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */; };
 		0AML00000000000000000038 /* StoreManagerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000037 /* StoreManagerTests.swift */; };
 		0AML00000000000000000C43 /* TestDoubles.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C42 /* TestDoubles.swift */; };
+		0AML00000000000000000C46 /* ColorSenseViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000C45 /* ColorSenseViewModelTests.swift */; };
 		92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */; };
 		0AML00000000000000000042 /* AppFlowCoordinatorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */; };
 		0AML00000000000000000052 /* PhantomDrawViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */; };
@@ -317,6 +318,7 @@
 		0AML00000000000000000035 /* TimeHapticPatternBuilderTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TimeHapticPatternBuilderTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000037 /* StoreManagerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StoreManagerTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000C42 /* TestDoubles.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TestDoubles.swift; sourceTree = "<group>"; };
+		0AML00000000000000000C45 /* ColorSenseViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ColorSenseViewModelTests.swift; sourceTree = "<group>"; };
 		92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MagicGalleryViewModelTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000041 /* AppFlowCoordinatorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppFlowCoordinatorTests.swift; sourceTree = "<group>"; };
 		0AML00000000000000000051 /* PhantomDrawViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhantomDrawViewModelTests.swift; sourceTree = "<group>"; };
@@ -979,6 +981,7 @@
 		9191CE2B2F549D9A00D5BAE8 /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
+				0AML00000000000000000C45 /* ColorSenseViewModelTests.swift */,
 				92A000082FC7600000A00001 /* MagicGalleryViewModelTests.swift */,
 				92A0000273CB6047599A017B /* RateAppViewModelTests.swift */,
 				0AML00000000000000000C38 /* GeoMentalismViewModelTests.swift */,
@@ -1336,6 +1339,7 @@
 				0AML00000000000000000036 /* TimeHapticPatternBuilderTests.swift in Sources */,
 				0AML00000000000000000038 /* StoreManagerTests.swift in Sources */,
 				0AML00000000000000000C43 /* TestDoubles.swift in Sources */,
+				0AML00000000000000000C46 /* ColorSenseViewModelTests.swift in Sources */,
 				91C7F5472FCE7B0000A00001 /* HapticManagerTests.swift in Sources */,
 				91C7F5452FC9EC0000A00001 /* SettingsStoreTests.swift in Sources */,
 				92A000042FC7600000A00001 /* MagicGalleryViewModelTests.swift in Sources */,

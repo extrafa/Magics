@@ -35,3 +35,26 @@ struct MockHapticPreferences: HapticPreferenceManaging {
 
     func resetHapticSettings() {}
 }
+
+// Records the counts a trick asked to vibrate and lets a test decide when the signal "ends".
+@MainActor
+final class MockCountHaptics: CountHapticPlaying {
+    private(set) var playedCounts: [Int] = []
+    private(set) var cancelCount = 0
+    private var completion: Completion?
+
+    func playCount(_ count: Int, completion: Completion?) {
+        playedCounts.append(count)
+        self.completion = completion
+    }
+
+    func cancelPendingHaptics() {
+        cancelCount += 1
+    }
+
+    func finishPlaying() {
+        let finish = completion
+        completion = nil
+        finish?()
+    }
+}
