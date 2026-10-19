@@ -419,6 +419,7 @@ private struct PulsingSignalView: View {
 
     let color: Color
     @State private var animating = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         ZStack {
@@ -426,9 +427,11 @@ private struct PulsingSignalView: View {
                 Circle()
                     .stroke(color, lineWidth: 1.5)
                     .frame(width: 120, height: 120)
-                    .scaleEffect(animating ? 1.0 : 0.25)
-                    .opacity(animating ? 0 : 0.35 - Double(i) * 0.08)
+                    .scaleEffect(reduceMotion || animating ? 1.0 : 0.25)
+                    // Reduce Motion keeps one still ring instead of the rings spreading out forever.
+                    .opacity(reduceMotion ? (i == 0 ? 0.25 : 0) : (animating ? 0 : 0.35 - Double(i) * 0.08))
                     .animation(
+                        reduceMotion ? nil :
                         .easeOut(duration: 1.6)
                         .repeatForever(autoreverses: false)
                         .delay(Double(i) * 0.45),
@@ -443,6 +446,6 @@ private struct PulsingSignalView: View {
                 .font(.system(size: 22, weight: .medium))
                 .foregroundStyle(color)
         }
-        .onAppear { animating = true }
+        .onAppear { animating = !reduceMotion }
     }
 }

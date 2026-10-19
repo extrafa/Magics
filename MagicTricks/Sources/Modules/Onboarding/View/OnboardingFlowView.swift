@@ -10,6 +10,7 @@ import SwiftUI
 struct OnboardingFlowView: View {
     @StateObject private var viewModel: OnboardingViewModel
     @State private var isDismissing = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     init(onComplete: @escaping () -> Void) {
         _viewModel = StateObject(wrappedValue: OnboardingViewModel(onComplete: onComplete))
@@ -46,9 +47,10 @@ struct OnboardingFlowView: View {
             }
             .animation(.easeOut(duration: 0.3), value: viewModel.step)
         }
-        .offset(y: isDismissing ? 900 : 0)
+        .offset(y: isDismissing && !reduceMotion ? 900 : 0)
+        .opacity(isDismissing && reduceMotion ? 0 : 1)
         
-        .animation(.spring(response: 0.35, dampingFraction: 0.82), value: isDismissing)
+        .animation(reduceMotion ? .easeOut(duration: 0.25) : .spring(response: 0.35, dampingFraction: 0.82), value: isDismissing)
         .animation(.easeOut(duration: 0.22), value: viewModel.step)
     }
 
