@@ -94,14 +94,6 @@ enum ExitHintStyle {
         }
     }
 
-    var fillColor: Color {
-        switch self {
-        case .normal: Color.textPrimary.opacity(0.04)
-        case .specialWhite: Color.textOnOverlay.opacity(0.04)
-        case .specialBlack: Color.black.opacity(0.06)
-        }
-    }
-
     var textColor: Color {
         switch self {
         case .normal: Color.textPrimary.opacity(0.62)
