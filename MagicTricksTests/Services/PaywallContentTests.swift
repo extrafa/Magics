@@ -3,6 +3,7 @@
 //  MagicTricksTests
 //
 
+import SwiftUI
 import XCTest
 @testable import MagicTricks
 
@@ -133,5 +134,39 @@ final class PaywallContentTests: XCTestCase {
         let content = PaywallContent(context: .trick(.colorSense), tricks: twoPro)
 
         XCTAssertEqual(content.unlocks, String.localizedStringWithFormat(String(localized: key("alsoUnlocks.one")), 1, name))
+    }
+}
+
+final class TrickTextColorContrastTests: XCTestCase {
+
+    func test_trickNameColors_keepAtLeast4point5ToOneOnTheScreenBackground_inBothThemes() {
+        for style in [UIUserInterfaceStyle.light, .dark] {
+            let traits = UITraitCollection(userInterfaceStyle: style)
+            let background = UIColor(Color.backgroundScreen).resolvedColor(with: traits)
+
+            for trick in TrickType.allCases {
+                let text = UIColor(trick.textColor).resolvedColor(with: traits)
+
+                XCTAssertGreaterThanOrEqual(
+                    Self.contrastRatio(text, background), 4.5,
+                    "\(trick) in \(style == .dark ? "dark" : "light") theme"
+                )
+            }
+        }
+    }
+
+    private static func luminance(_ color: UIColor) -> Double {
+        var r: CGFloat = 0, g: CGFloat = 0, b: CGFloat = 0, a: CGFloat = 0
+        color.getRed(&r, green: &g, blue: &b, alpha: &a)
+        func linear(_ c: CGFloat) -> Double {
+            let v = Double(c)
+            return v <= 0.03928 ? v / 12.92 : pow((v + 0.055) / 1.055, 2.4)
+        }
+        return 0.2126 * linear(r) + 0.7152 * linear(g) + 0.0722 * linear(b)
+    }
+
+    private static func contrastRatio(_ a: UIColor, _ b: UIColor) -> Double {
+        let la = luminance(a), lb = luminance(b)
+        return (max(la, lb) + 0.05) / (min(la, lb) + 0.05)
     }
 }

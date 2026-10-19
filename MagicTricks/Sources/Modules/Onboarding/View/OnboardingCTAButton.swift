@@ -11,6 +11,8 @@ struct OnboardingCTAButton: View {
     let title: String
     var isEnabled: Bool = true
     var isLoading: Bool = false
+    // What VoiceOver says when it should be more than the visible title.
+    var accessibilityText: String?
     let action: () -> Void
 
     // Grows with Dynamic Type, so a longer label wraps inside the button instead of being cut off.
@@ -37,5 +39,6 @@ struct OnboardingCTAButton: View {
             .animation(.easeOut(duration: 0.2), value: isEnabled)
         }
         .disabled(!isEnabled || isLoading)
+        .accessibilityLabel(accessibilityText ?? title)
     }
 }
