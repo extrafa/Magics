@@ -122,6 +122,7 @@ struct SettingsStepper: View {
     let range: ClosedRange<Double>
     let step: Double
     let format: String
+    @ScaledMetric(relativeTo: .body) private var iconSize: CGFloat = 17
 
     var body: some View {
         HStack(spacing: 0) {
@@ -153,11 +154,14 @@ struct SettingsStepper: View {
         }
     }
 
+    // 44 pt is the minimum touch target; the button grows only once the icon outgrows it.
+    private var buttonSide: CGFloat { max(44, iconSize * 1.55) }
+
     private func stepButton(icon: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: icon)
-                .font(.system(size: 17, weight: .bold))
-                .frame(width: 44, height: 44)
+                .font(.system(size: iconSize, weight: .bold))
+                .frame(width: buttonSide, height: buttonSide)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
