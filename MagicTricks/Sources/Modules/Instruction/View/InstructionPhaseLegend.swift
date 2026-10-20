@@ -13,11 +13,18 @@ struct InstructionPhaseLegend: View {
     @ScaledMetric(relativeTo: .footnote) private var titleSize: CGFloat = 14
 
     var body: some View {
-        HStack(spacing: 18) {
-            legendItem(color: InstructionPhase.preparation.color, title: String(localized: key("preparation")))
-            legendItem(color: InstructionPhase.demonstration.color, title: String(localized: key("demonstration")))
+        // Stacks the items once a single row no longer fits, so a word is never split mid-way.
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 18) { items }
+            VStack(alignment: .leading, spacing: 8) { items }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    @ViewBuilder
+    private var items: some View {
+        legendItem(color: InstructionPhase.preparation.color, title: String(localized: key("preparation")))
+        legendItem(color: InstructionPhase.demonstration.color, title: String(localized: key("demonstration")))
     }
 
     private func legendItem(color: Color, title: String) -> some View {
