@@ -67,7 +67,8 @@ struct InstructionStepRow: View {
             Text(verbatim: "\(number).")
                 .font(.system(.callout, design: .rounded, weight: .bold))
                 .foregroundStyle(.textPrimary.opacity(0.9))
-                .frame(width: 32, alignment: .leading)
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(minWidth: 32, alignment: .leading)
                 .padding(.top, 2)
 
             VStack(alignment: .leading, spacing: 12) {

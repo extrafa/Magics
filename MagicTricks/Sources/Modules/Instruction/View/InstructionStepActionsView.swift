@@ -27,6 +27,7 @@ private struct InstructionStepActionButton: View {
     let action: InstructionStepAction
     let onTap: Completion
     @ScaledMetric(relativeTo: .footnote) private var titleSize: CGFloat = 14
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     private let presentation: InstructionStepActionPresentation
 
     init(action: InstructionStepAction, onTap: @escaping Completion) {
@@ -59,15 +60,20 @@ private struct InstructionStepActionButton: View {
         VStack(alignment: .leading, spacing: 2) {
             Text(presentation.title)
                 .font(.system(size: titleSize, weight: .bold, design: .rounded))
-                .lineLimit(1)
+                .lineLimit(textLineLimit)
                 .minimumScaleFactor(0.82)
 
             Text(presentation.subtitle)
                 .font(.system(.caption, design: .rounded))
                 .foregroundStyle(.textSecondary)
-                .lineLimit(1)
+                .lineLimit(textLineLimit)
                 .minimumScaleFactor(0.78)
         }
+    }
+
+    // One line with shrink-to-fit looks tidy at normal sizes; accessibility sizes wrap instead of truncating.
+    private var textLineLimit: Int? {
+        dynamicTypeSize.isAccessibilitySize ? nil : 1
     }
 
     private var chevron: some View {
