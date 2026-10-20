@@ -122,6 +122,10 @@ struct ExitHintView: View {
                     }
                     .foregroundStyle(style.textColor)
                     .multilineTextAlignment(.center)
+                    // The zone has a fixed size (it doubles as the gesture area), so the text is capped to fit it.
+                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                    .lineLimit(2)
+                    .minimumScaleFactor(0.8)
                     .padding(.horizontal, 18)
                     .padding(.bottom, 18)
                 }
