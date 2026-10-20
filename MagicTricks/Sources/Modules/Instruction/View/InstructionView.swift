@@ -32,12 +32,14 @@ struct InstructionView: View {
                     secretSection
                     stepsSection
 
-                    Color.clear.frame(height: onStart != nil ? 100 : 32)
+                    Color.clear.frame(height: 32)
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 8)
             }
-
+        }
+        // An inset (not a fixed spacer) so the scroll area follows the button's height as the text grows.
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             if let onStart {
                 startTrickButton(action: onStart)
             }
@@ -72,8 +74,8 @@ struct InstructionView: View {
             Button(action: action) {
                 Text(String(localized: "instruction.startTrick"))
                     .font(.system(.body, design: .rounded, weight: .bold))
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 54)
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, minHeight: 54)
             }
             .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
             .padding(.horizontal, 20)
