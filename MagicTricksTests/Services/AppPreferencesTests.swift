@@ -100,3 +100,78 @@ final class AppPreferencesTests: XCTestCase {
         XCTAssertEqual(preferences.usesStandardMagicGallerySet, true)
     }
 }
+
+// The same preference rules against a real UserDefaults suite, so a mock that drifts from the real store can't hide a bug.
+final class AppPreferencesOnRealDefaultsTests: XCTestCase {
+
+    private var suiteName: String!
+    private var defaults: UserDefaults!
+
+    override func setUp() {
+        super.setUp()
+        suiteName = "MagicTricksTests.\(UUID().uuidString)"
+        defaults = UserDefaults(suiteName: suiteName)
+    }
+
+    override func tearDown() {
+        defaults.removePersistentDomain(forName: suiteName)
+        defaults = nil
+        suiteName = nil
+        super.tearDown()
+    }
+
+    func test_migrateIfNeeded_carriesTheLegacyGallerySetValueOver() {
+        defaults.set(false, forKey: "ImpossibleGalleryUsesStandardSet")
+        let preferences = AppPreferences(store: defaults)
+
+        preferences.migrateIfNeeded()
+
+        XCTAssertEqual(preferences.usesStandardMagicGallerySet, false)
+        XCTAssertEqual(defaults.integer(forKey: AppPreferences.Key.preferencesSchemaVersion), 1)
+    }
+
+    func test_migrateIfNeeded_onAFreshStore_keepsTheDefaultAndMarksTheSchemaVersion() {
+        let preferences = AppPreferences(store: defaults)
+
+        preferences.migrateIfNeeded()
+
+        XCTAssertEqual(preferences.usesStandardMagicGallerySet, AppPreferences.Default.usesStandardMagicGallerySet)
+        XCTAssertEqual(defaults.integer(forKey: AppPreferences.Key.preferencesSchemaVersion), 1)
+    }
+
+    func test_migrateIfNeeded_runsOnlyOnce() {
+        defaults.set(false, forKey: "ImpossibleGalleryUsesStandardSet")
+        let preferences = AppPreferences(store: defaults)
+        preferences.migrateIfNeeded()
+
+        preferences.usesStandardMagicGallerySet = true
+        preferences.migrateIfNeeded()
+
+        XCTAssertEqual(preferences.usesStandardMagicGallerySet, true)
+    }
+
+    func test_integerPreferences_readValuesPreviouslyStoredAsDouble() {
+        defaults.set(5.0, forKey: AppPreferences.Key.trickLaunchCount)
+        let preferences = AppPreferences(store: defaults)
+
+        XCTAssertEqual(preferences.trickLaunchCount, 5)
+    }
+
+    func test_unsetKeys_fallBackToTheDefaults() {
+        let preferences = AppPreferences(store: defaults)
+
+        XCTAssertEqual(preferences.hapticIntensity, AppPreferences.Default.hapticIntensity)
+        XCTAssertEqual(preferences.hapticSpeedMultiplier, AppPreferences.Default.hapticSpeedMultiplier)
+        XCTAssertEqual(preferences.usesStandardMagicGallerySet, AppPreferences.Default.usesStandardMagicGallerySet)
+    }
+
+    func test_hapticIntensity_roundTripsThroughRealDefaults() {
+        let preferences = AppPreferences(store: defaults)
+
+        for intensity: HapticIntensity in [.light, .medium, .heavy] {
+            preferences.hapticIntensity = intensity
+            XCTAssertEqual(preferences.hapticIntensity, intensity)
+        }
+    }
+}
+

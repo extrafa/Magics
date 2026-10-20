@@ -72,9 +72,16 @@ final class SettingsStoreTests: XCTestCase {
     }
 
     func test_appShareFallbackText_usesDisplayNameWhenURLIsNotConfigured() {
-        let settings = SettingsStore(preferences: AppPreferences(store: MockPreferenceStore()))
+        let settings = SettingsStore(preferences: AppPreferences(store: MockPreferenceStore()), appStoreURL: nil)
 
         XCTAssertNil(settings.appShareURL)
         XCTAssertFalse(settings.appShareText.isEmpty)
+    }
+
+    func test_appShareURL_isTheConfiguredAppStoreLink() {
+        let link = URL(string: "https://apps.apple.com/app/id1234567890")!
+        let settings = SettingsStore(preferences: AppPreferences(store: MockPreferenceStore()), appStoreURL: link)
+
+        XCTAssertEqual(settings.appShareURL, link)
     }
 }

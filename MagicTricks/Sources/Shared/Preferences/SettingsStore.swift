@@ -58,17 +58,19 @@ final class SettingsStore: ObservableObject {
     }
 
     private let preferences: AppPreferences
+    private let appStoreURL: URL?
 
     var appShareURL: URL? {
-        AppConfig.appStoreURL
+        appStoreURL
     }
 
     var appShareText: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? "Magic Tricks"
     }
 
-    init(preferences: AppPreferences = .shared) {
+    init(preferences: AppPreferences = .shared, appStoreURL: URL? = AppConfig.appStoreURL) {
         self.preferences = preferences
+        self.appStoreURL = appStoreURL
     }
 
     func resetHapticSettings() {
