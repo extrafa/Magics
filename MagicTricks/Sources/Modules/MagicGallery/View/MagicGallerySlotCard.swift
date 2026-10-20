@@ -65,6 +65,8 @@ struct MagicGallerySlotCard: View {
         }
         // One springy animation for the whole slot: deleting, adding or switching the standard set pops instead of snapping.
         .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.6), value: photo)
+        // The tile has a fixed height; larger text would cover the photo, and VoiceOver reads the slot label anyway.
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
     }
 
     private var slotAccessibilityLabel: String {
@@ -113,6 +115,8 @@ struct MagicGallerySlotCard: View {
              ? String(localized: statusKey("standard"))
              : String(localized: statusKey("custom")))
             .font(.caption2.weight(.semibold))
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
             .foregroundStyle(.white)
             .padding(.horizontal, 10)
             .padding(.vertical, 7)

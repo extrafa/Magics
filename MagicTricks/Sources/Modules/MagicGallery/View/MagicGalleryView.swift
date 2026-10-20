@@ -27,9 +27,11 @@ struct MagicGalleryView: View {
                 }
                 .padding(.horizontal, 20)
                 .padding(.top, 18)
-                .padding(.bottom, 120)
+                .padding(.bottom, 24)
             }
-
+        }
+        // An inset (not a fixed bottom padding) so the scroll area follows the button's height as the text grows.
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             performButton
         }
         .task { await vm.loadStoredPhotos() }
@@ -95,9 +97,9 @@ struct MagicGalleryView: View {
                 isPerforming = true
             } label: {
                 Label(String(localized: "magicGallery.perform"), systemImage: "wand.and.stars")
-                    .font(.system(size: 17, weight: .bold, design: .rounded))
-                    .frame(maxWidth: .infinity)
-                    .frame(height: 54)
+                    .font(.system(.body, design: .rounded, weight: .bold))
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, minHeight: 54)
             }
             .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
             .padding(.horizontal, 20)

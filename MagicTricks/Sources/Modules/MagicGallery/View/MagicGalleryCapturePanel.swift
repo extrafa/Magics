@@ -17,6 +17,7 @@ struct MagicGalleryCapturePanel: View {
     let onCapture: (UIImagePickerController.SourceType) -> Void
 
     @State private var showSourceDialog = false
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         VStack(alignment: .leading, spacing: 14) {
@@ -28,7 +29,24 @@ struct MagicGalleryCapturePanel: View {
         .cardSurface(cornerRadius: 22)
     }
 
+    // The toggle takes a column next to the title; at accessibility sizes it moves below so words aren't split.
+    @ViewBuilder
     private var standardSetControl: some View {
+        if dynamicTypeSize.isAccessibilitySize {
+            VStack(alignment: .leading, spacing: 12) {
+                standardSetLabel
+                standardSetToggle
+            }
+        } else {
+            HStack(spacing: 12) {
+                standardSetLabel
+                Spacer(minLength: 8)
+                standardSetToggle
+            }
+        }
+    }
+
+    private var standardSetLabel: some View {
         HStack(spacing: 12) {
             Image(systemName: "rectangle.stack.fill")
                 .font(.system(size: 17, weight: .bold))
@@ -46,16 +64,16 @@ struct MagicGalleryCapturePanel: View {
                     .foregroundStyle(Color.textSecondary)
                     .fixedSize(horizontal: false, vertical: true)
             }
-
-            Spacer(minLength: 8)
-
-            Toggle("", isOn: Binding(
-                get: { usesStandardSet },
-                set: onToggleStandardSet
-            ))
-            .labelsHidden()
-            .tint(.indigo)
         }
+    }
+
+    private var standardSetToggle: some View {
+        Toggle("", isOn: Binding(
+            get: { usesStandardSet },
+            set: onToggleStandardSet
+        ))
+        .labelsHidden()
+        .tint(.indigo)
     }
 
     private var captureButton: some View {
