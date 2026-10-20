@@ -17,6 +17,7 @@ struct TrickCardView: View {
     // Seeded close to a typical badge width so the first frame (before GeometryReader
     // reports the real measurement) doesn't render the title with zero trailing space.
     @State private var badgeWidth: CGFloat = 94
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -90,7 +91,8 @@ struct TrickCardView: View {
                 Text(trick.subtitle)
                     .font(.subheadline)
                     .foregroundStyle(.secondary)
-                    .lineLimit(3)
+                    // Truncating the pitch at accessibility sizes hides it; the card height is not fixed.
+                    .lineLimit(dynamicTypeSize.isAccessibilitySize ? nil : 3)
                     .multilineTextAlignment(.leading)
                     .frame(maxWidth: .infinity, alignment: .leading)
                     .padding(.top, 2)
