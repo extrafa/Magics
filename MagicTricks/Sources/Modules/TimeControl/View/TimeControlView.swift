@@ -10,6 +10,10 @@ import SwiftUI
 struct TimeControlView: View {
     @Environment(\.scenePhase) private var scenePhase
     @StateObject private var viewModel: TimeControlViewModel
+    @ScaledMetric(relativeTo: .title3) private var scaledCircleSide: CGFloat = 84
+
+    // Two circles share one row on a narrow screen, so the growth stops here.
+    private var circleSide: CGFloat { min(scaledCircleSide, 140) }
 
     init(viewModel: TimeControlViewModel? = nil) {
         _viewModel = StateObject(wrappedValue: viewModel ?? TimeControlViewModel())
@@ -80,11 +84,14 @@ struct TimeControlView: View {
             Circle()
                 .fill(fill)
                 .overlay { Circle().stroke(Color.white.opacity(0.08), lineWidth: 1) }
-                .frame(width: 84, height: 84)
+                .frame(width: circleSide, height: circleSide)
 
             Text(title)
                 .font(.system(.title3, design: .rounded, weight: .regular))
                 .foregroundStyle(titleColor)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .padding(.horizontal, 8)
         }
     }
 }
