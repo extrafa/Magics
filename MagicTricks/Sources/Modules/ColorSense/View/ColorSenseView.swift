@@ -53,6 +53,10 @@ struct ColorSenseView: View {
                 Text(card.title)
                     .font(.system(.subheadline, design: .rounded, weight: .semibold))
                     .foregroundStyle(.white.opacity(0.35))
+                    // A decoy word on a fixed-size card: capped so it never truncates or splits.
+                    .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.8)
             }
             .padding(16)
             .frame(maxWidth: .infinity, alignment: .leading)
