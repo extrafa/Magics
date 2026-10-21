@@ -39,6 +39,12 @@ struct PhantomDrawView: View {
     @State private var codeInput = ""
     @AppStorage("phantomDrawLastCode") private var lastCode = ""
     @FocusState private var isCodeFieldFocused: Bool
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @ScaledMetric(relativeTo: .largeTitle) private var scaledCodeFieldWidth: CGFloat = 120
+    @ScaledMetric(relativeTo: .largeTitle) private var codeFieldHeight: CGFloat = 60
+
+    // Two digits stay readable well before the field would outgrow a narrow screen.
+    private var codeFieldWidth: CGFloat { min(scaledCodeFieldWidth, 220) }
 
     init(session: PhantomDrawSessionManager? = nil) {
         _dependencies = StateObject(wrappedValue: Dependencies(session: session ?? PhantomDrawSessionManager()))
@@ -147,9 +153,24 @@ struct PhantomDrawView: View {
         }
     }
 
+    // Screens that are a centred column: scrollable so larger text is never cut off, still filling the screen when it fits.
+    private func scrollingScreen<Content: View>(@ViewBuilder _ content: () -> Content) -> some View {
+        let content = content()
+        return GeometryReader { proxy in
+            ScrollView {
+                content
+                    .frame(maxWidth: .infinity, minHeight: proxy.size.height)
+            }
+        }
+    }
+
     // MARK: - Role Selection
 
     private var roleSelectionView: some View {
+        scrollingScreen { roleSelectionContent }
+    }
+
+    private var roleSelectionContent: some View {
         VStack(spacing: 0) {
             VStack(spacing: 10) {
                 Image(systemName: "antenna.radiowaves.left.and.right")
@@ -160,7 +181,7 @@ struct PhantomDrawView: View {
                     Text(String(localized: introKey("line1")))
                     Text(String(localized: introKey("line2")))
                 }
-                .font(.system(size: 15, weight: .regular, design: .rounded))
+                .font(.system(.subheadline, design: .rounded, weight: .regular))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
             }
@@ -200,40 +221,25 @@ struct PhantomDrawView: View {
                 }
             }
         } label: {
-            HStack(spacing: 16) {
-                ZStack {
-                    Circle()
-                        .fill(TrickPalette.Collection.phantomDraw.opacity(0.15))
-                        .frame(width: 48, height: 48)
-                    Image(systemName: icon)
-                        .font(.system(size: 20, weight: .medium))
-                        .foregroundStyle(TrickPalette.Collection.phantomDraw)
-                }
-                VStack(alignment: .leading, spacing: 3) {
-                    Text(title)
-                        .font(.system(size: 16, weight: .semibold, design: .rounded))
-                        .foregroundStyle(.textPrimary)
-                    Text(subtitle)
-                        .font(.system(size: 13, weight: .regular, design: .rounded))
-                        .foregroundStyle(.secondary)
-                }
-                Spacer()
-                if isLocked {
-                    Image(systemName: "lock.fill")
-                        .font(.system(size: 12, weight: .bold))
-                        .foregroundStyle(Color.primary.opacity(0.45))
-                        .padding(.horizontal, 12)
-                        .padding(.vertical, 7)
-                        .background(Capsule(style: .continuous).fill(Color.primary.opacity(0.07)))
-                        .overlay {
-                            Capsule(style: .continuous)
-                                .stroke(Color.primary.opacity(0.22), lineWidth: 1.2)
+            // The icon and chevron flank the text; at accessibility sizes they move to a row above it so words aren't split.
+            Group {
+                if dynamicTypeSize.isAccessibilitySize {
+                    VStack(alignment: .leading, spacing: 12) {
+                        HStack(spacing: 16) {
+                            roleIcon(icon)
+                            Spacer()
+                            roleAccessories(isLocked: isLocked)
                         }
-                        .accessibilityLabel(String(localized: "trick.lockedBadge"))
+                        roleTexts(title: title, subtitle: subtitle)
+                    }
+                } else {
+                    HStack(spacing: 16) {
+                        roleIcon(icon)
+                        roleTexts(title: title, subtitle: subtitle)
+                        Spacer()
+                        roleAccessories(isLocked: isLocked)
+                    }
                 }
-                Image(systemName: "chevron.right")
-                    .font(.system(size: 14, weight: .semibold))
-                    .foregroundStyle(.secondary.opacity(0.5))
             }
             .padding(18)
             .cardSurface(cornerRadius: 18)
@@ -241,9 +247,56 @@ struct PhantomDrawView: View {
         .buttonStyle(.plain)
     }
 
+    private func roleIcon(_ icon: String) -> some View {
+        ZStack {
+            Circle()
+                .fill(TrickPalette.Collection.phantomDraw.opacity(0.15))
+                .frame(width: 48, height: 48)
+            Image(systemName: icon)
+                .font(.system(size: 20, weight: .medium))
+                .foregroundStyle(TrickPalette.Collection.phantomDraw)
+        }
+    }
+
+    private func roleTexts(title: String, subtitle: String) -> some View {
+        VStack(alignment: .leading, spacing: 3) {
+            Text(title)
+                .font(.system(.callout, design: .rounded, weight: .semibold))
+                .foregroundStyle(.textPrimary)
+            Text(subtitle)
+                .font(.system(.footnote, design: .rounded, weight: .regular))
+                .foregroundStyle(.secondary)
+        }
+    }
+
+    private func roleAccessories(isLocked: Bool) -> some View {
+        HStack(spacing: 16) {
+            if isLocked {
+                Image(systemName: "lock.fill")
+                    .font(.system(size: 12, weight: .bold))
+                    .foregroundStyle(Color.primary.opacity(0.45))
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 7)
+                    .background(Capsule(style: .continuous).fill(Color.primary.opacity(0.07)))
+                    .overlay {
+                        Capsule(style: .continuous)
+                            .stroke(Color.primary.opacity(0.22), lineWidth: 1.2)
+                    }
+                    .accessibilityLabel(String(localized: "trick.lockedBadge"))
+            }
+            Image(systemName: "chevron.right")
+                .font(.system(size: 14, weight: .semibold))
+                .foregroundStyle(.secondary.opacity(0.5))
+        }
+    }
+
     // MARK: - Entering Code
 
     private var enteringCodeView: some View {
+        scrollingScreen { enteringCodeContent }
+    }
+
+    private var enteringCodeContent: some View {
         VStack(spacing: 0) {
             Spacer()
             VStack(spacing: 10) {
@@ -252,10 +305,10 @@ struct PhantomDrawView: View {
                     .foregroundStyle(TrickPalette.Collection.phantomDraw)
                     .accessibilityHidden(true)
                 Text(String(localized: enterCodeKey("title")))
-                    .font(.system(size: 20, weight: .semibold, design: .rounded))
+                    .font(.system(.title3, design: .rounded, weight: .semibold))
                     .foregroundStyle(.textPrimary)
                 Text(String(localized: enterCodeKey("description")))
-                    .font(.system(size: 15, design: .rounded))
+                    .font(.system(.subheadline, design: .rounded))
                     .foregroundStyle(.secondary)
                     .multilineTextAlignment(.center)
                     .padding(.horizontal, 40)
@@ -272,8 +325,8 @@ struct PhantomDrawView: View {
                     .multilineTextAlignment(.center)
                     .focused($isCodeFieldFocused)
             }
-            .font(.system(size: 34, weight: .black, design: .rounded))
-            .frame(width: 120, height: 60)
+            .font(.system(.largeTitle, design: .rounded, weight: .black))
+            .frame(width: codeFieldWidth, height: codeFieldHeight)
             .cardSurface(cornerRadius: 16)
             .onChange(of: codeInput) { newValue in
                 codeInput = String(newValue.filter(\.isNumber).prefix(2))
@@ -281,7 +334,7 @@ struct PhantomDrawView: View {
             if !lastCode.isEmpty {
                 Spacer().frame(height: 12)
                 Text(String(format: String(localized: "phantomDraw.lastCodeHint"), lastCode))
-                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .font(.system(.footnote, design: .rounded, weight: .medium))
                     .foregroundStyle(.secondary)
             }
             Spacer().frame(height: 28)
@@ -290,7 +343,7 @@ struct PhantomDrawView: View {
             }
             Spacer()
             Button(String(localized: "common.cancel"), action: stop)
-                .font(.system(size: 16, weight: .medium, design: .rounded))
+                .font(.system(.callout, design: .rounded, weight: .medium))
                 .foregroundStyle(.secondary)
                 .padding(.bottom, 32)
         }
@@ -377,8 +430,8 @@ struct PhantomDrawView: View {
         Button(action: action) {
             Text(title)
                 .font(.headline)
-                .frame(maxWidth: .infinity)
-                .frame(height: 54)
+                .padding(.vertical, 12)
+                .frame(maxWidth: .infinity, minHeight: 54)
         }
         .buttonStyle(PrimaryTrickButtonStyle(color: TrickPalette.Collection.phantomDraw))
         .disabled(disabled)
