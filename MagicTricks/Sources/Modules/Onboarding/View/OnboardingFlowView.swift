@@ -11,6 +11,7 @@ struct OnboardingFlowView: View {
     @StateObject private var viewModel: OnboardingViewModel
     @State private var isDismissing = false
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     init(onComplete: @escaping () -> Void) {
         _viewModel = StateObject(wrappedValue: OnboardingViewModel(onComplete: onComplete))
@@ -24,34 +25,47 @@ struct OnboardingFlowView: View {
                 .id(viewModel.step)
                 .transition(.opacity)
         }
+        // A floating overlay would cover the headline once the button grows, so at accessibility sizes it takes its own row.
         .overlay(alignment: .topTrailing) {
-            if viewModel.step.isSkippable {
-                Button(String(localized: "onboarding.skip"), action: viewModel.skip)
-                    .font(.system(.subheadline, design: .rounded, weight: .semibold))
-                    .foregroundStyle(.secondary)
-                    .padding(.horizontal, 24)
-                    .padding(.vertical, 8)
-                    .transition(.opacity)
+            if viewModel.step.isSkippable && !dynamicTypeSize.isAccessibilitySize {
+                skipButton
             }
         }
         .safeAreaInset(edge: .top, spacing: 0) {
-            Group {
-                if let progress = viewModel.step.progress {
-                    OnboardingProgressBar(step: progress.step, total: progress.total)
-                        .padding(.horizontal, 24)
-                        .padding(.top, 14)
-                        .padding(.bottom, 10)
+            VStack(spacing: 0) {
+                Group {
+                    if let progress = viewModel.step.progress {
+                        OnboardingProgressBar(step: progress.step, total: progress.total)
+                            .padding(.horizontal, 24)
+                            .padding(.top, 14)
+                            .padding(.bottom, 10)
+                            .background(Color.backgroundScreen)
+                            .transition(.opacity)
+                    }
+                }
+                .animation(.easeOut(duration: 0.3), value: viewModel.step)
+
+                if viewModel.step.isSkippable && dynamicTypeSize.isAccessibilitySize {
+                    skipButton
+                        .frame(maxWidth: .infinity, alignment: .trailing)
                         .background(Color.backgroundScreen)
-                        .transition(.opacity)
                 }
             }
-            .animation(.easeOut(duration: 0.3), value: viewModel.step)
         }
         .offset(y: isDismissing && !reduceMotion ? 900 : 0)
         .opacity(isDismissing && reduceMotion ? 0 : 1)
         
         .animation(reduceMotion ? .easeOut(duration: 0.25) : .spring(response: 0.35, dampingFraction: 0.82), value: isDismissing)
         .animation(.easeOut(duration: 0.22), value: viewModel.step)
+    }
+
+    private var skipButton: some View {
+        Button(String(localized: "onboarding.skip"), action: viewModel.skip)
+            .font(.system(.subheadline, design: .rounded, weight: .semibold))
+            .foregroundStyle(.secondary)
+            .padding(.horizontal, 24)
+            .padding(.vertical, 8)
+            .transition(.opacity)
     }
 
     // MARK: Flow

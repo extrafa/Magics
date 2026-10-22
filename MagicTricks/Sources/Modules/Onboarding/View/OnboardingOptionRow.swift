@@ -12,18 +12,31 @@ struct OnboardingOptionRow: View {
     let title: String
     let isSelected: Bool
 
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+    @ScaledMetric(relativeTo: .callout) private var indicatorSize: CGFloat = 22
+
     var body: some View {
-        HStack(spacing: 14) {
-            Text(emoji)
-                .font(.title2)
-
-            Text(title)
-                .font(.system(size: 16, weight: .medium, design: .rounded))
-                .foregroundStyle(.textPrimary)
-
-            Spacer()
-
-            selectionIndicator
+        // The emoji and indicator flank the title; at accessibility sizes they move to a row above it so words aren't split.
+        Group {
+            if dynamicTypeSize.isAccessibilitySize {
+                VStack(alignment: .leading, spacing: 10) {
+                    HStack {
+                        Text(emoji)
+                            .font(.title2)
+                        Spacer()
+                        selectionIndicator
+                    }
+                    titleText
+                }
+            } else {
+                HStack(spacing: 14) {
+                    Text(emoji)
+                        .font(.title2)
+                    titleText
+                    Spacer()
+                    selectionIndicator
+                }
+            }
         }
         .padding(.horizontal, 16)
         .padding(.vertical, 14)
@@ -40,16 +53,22 @@ struct OnboardingOptionRow: View {
         .accessibilityAddTraits(isSelected ? [.isButton, .isSelected] : .isButton)
     }
 
+    private var titleText: some View {
+        Text(title)
+            .font(.system(.callout, design: .rounded, weight: .medium))
+            .foregroundStyle(.textPrimary)
+    }
+
     @ViewBuilder
     private var selectionIndicator: some View {
         if isSelected {
             Image(systemName: "checkmark.circle.fill")
                 .foregroundStyle(.textPrimary)
-                .font(.system(size: 22, weight: .semibold))
+                .font(.system(size: indicatorSize, weight: .semibold))
         } else {
             Circle()
                 .stroke(Color.textPrimary.opacity(0.2), lineWidth: 1.5)
-                .frame(width: 22, height: 22)
+                .frame(width: indicatorSize, height: indicatorSize)
         }
     }
 }

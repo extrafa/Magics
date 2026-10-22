@@ -24,13 +24,13 @@ struct OnboardingGoalScreen: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 8) {
                     Text(String(localized: key("headline")))
-                        .font(.system(size: 28, weight: .bold, design: .rounded))
+                        .font(.system(.title, design: .rounded, weight: .bold))
                         .foregroundStyle(.textPrimary)
                         .padding(.bottom, 4)
                         .onboardingAppear(appeared, offset: 14, delay: 0.06)
 
                     Text(String(localized: key("subheadline")))
-                        .font(.system(size: 16, weight: .regular, design: .rounded))
+                        .font(.system(.callout, design: .rounded, weight: .regular))
                         .foregroundStyle(.secondary)
                         .padding(.bottom, 20)
                         .onboardingAppear(appeared, offset: 10, delay: 0.14)
