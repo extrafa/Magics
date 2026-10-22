@@ -12,6 +12,7 @@ struct CollectionView: View {
     @EnvironmentObject private var flow: AppFlowCoordinator
     @EnvironmentObject private var store: StoreManager
     @State private var showSettings = false
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
 
     var body: some View {
         NavigationStack {
@@ -20,6 +21,9 @@ struct CollectionView: View {
 
                 ScrollView {
                     LazyVStack(spacing: 16) {
+                        if dynamicTypeSize.isAccessibilitySize {
+                            wrappingTitle
+                        }
                         ForEach(TrickCollection.tricks) { trick in
                             let isLocked = store.showsLock(for: trick.id)
                             TrickCardView(
@@ -34,8 +38,10 @@ struct CollectionView: View {
                 }
                 .scrollIndicators(.hidden)
             }
-            .navigationTitle(String(localized: "collection.title"))
-            .navigationBarTitleDisplayMode(.large)
+            // The system large title never wraps and gets cut ("Centro de Tr...") at the biggest sizes, and an inline one
+            // would sit under the Pro button; there the title becomes a wrapping heading in the list instead.
+            .navigationTitle(dynamicTypeSize.isAccessibilitySize ? "" : String(localized: "collection.title"))
+            .navigationBarTitleDisplayMode(dynamicTypeSize.isAccessibilitySize ? .inline : .large)
             .navigationDestination(isPresented: $showSettings) {
                 SettingsScreen()
             }
@@ -69,6 +75,14 @@ struct CollectionView: View {
                 .environmentObject(store)
                 .environmentObject(flow)
         }
+    }
+
+    private var wrappingTitle: some View {
+        Text(String(localized: "collection.title"))
+            .font(.largeTitle.bold())
+            .foregroundStyle(.textPrimary)
+            .frame(maxWidth: .infinity, alignment: .leading)
+            .accessibilityAddTraits(.isHeader)
     }
 
     // A tap right after launch waits for the purchase check, so it neither lets a free user in nor shows an owner the paywall.
