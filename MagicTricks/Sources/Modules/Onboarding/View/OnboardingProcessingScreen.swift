@@ -22,38 +22,18 @@ struct OnboardingProcessingScreen: View {
     @State private var isButtonVisible = false
     @State private var progress: CGFloat = 0
 
+    @ScaledMetric(relativeTo: .title2) private var titleSize: CGFloat = 26
+    @ScaledMetric(relativeTo: .callout) private var phaseMinHeight: CGFloat = 44
+
     var body: some View {
         VStack(spacing: 0) {
-            Spacer()
-
-            processingIcon
-                .onboardingAppear(appeared, offset: 18, delay: 0.06)
-
-            Spacer()
-
-            VStack(spacing: 10) {
-                Text(String(localized: key("title")))
-                    .font(.system(size: 26, weight: .bold, design: .rounded))
-                    .foregroundStyle(.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 28)
-                    .onboardingAppear(appeared, offset: 12, delay: 0.18)
-
-                Text(isDone ? String(localized: key("done")) : (phases.indices.contains(phaseIndex) ? phases[phaseIndex] : ""))
-                    .font(.system(size: 16, weight: .regular, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-                    .id(isDone ? -1 : phaseIndex)
-                    .transition(.opacity)
-                    .frame(minHeight: 44, alignment: .top)
-                    .onboardingAppear(appeared, offset: 10, delay: 0.25)
+            // Scrollable so larger text is never pushed off the screen; the button stays pinned below it.
+            GeometryReader { proxy in
+                ScrollView {
+                    processingContent
+                        .frame(maxWidth: .infinity, minHeight: proxy.size.height)
+                }
             }
-
-            progressBar
-                .padding(.top, 28)
-                .opacity(appeared ? 1 : 0)
-                .animation(.easeOut(duration: 0.3).delay(0.32), value: appeared)
 
             Spacer().frame(height: 24)
 
@@ -74,6 +54,41 @@ struct OnboardingProcessingScreen: View {
             try? await Task.sleep(milliseconds: 350)
             breathing = true
             await phaseAdvance
+        }
+    }
+
+    private var processingContent: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            processingIcon
+                .onboardingAppear(appeared, offset: 18, delay: 0.06)
+
+            Spacer()
+
+            VStack(spacing: 10) {
+                Text(String(localized: key("title")))
+                    .font(.system(size: titleSize, weight: .bold, design: .rounded))
+                    .foregroundStyle(.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 28)
+                    .onboardingAppear(appeared, offset: 12, delay: 0.18)
+
+                Text(isDone ? String(localized: key("done")) : (phases.indices.contains(phaseIndex) ? phases[phaseIndex] : ""))
+                    .font(.system(.callout, design: .rounded, weight: .regular))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+                    .id(isDone ? -1 : phaseIndex)
+                    .transition(.opacity)
+                    .frame(minHeight: phaseMinHeight, alignment: .top)
+                    .onboardingAppear(appeared, offset: 10, delay: 0.25)
+            }
+
+            progressBar
+                .padding(.top, 28)
+                .opacity(appeared ? 1 : 0)
+                .animation(.easeOut(duration: 0.3).delay(0.32), value: appeared)
         }
     }
 
