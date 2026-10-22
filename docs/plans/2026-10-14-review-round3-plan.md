@@ -307,9 +307,12 @@ App Store разрешает любую версию, но после одобр
 
 ## Фаза 5. Доступность и Dynamic Type
 
-- [ ] R-40 Dynamic Type системно (major, старый тред `InstructionStepRow.swift:94`): шаги инструкции и
+- [x] R-40 Dynamic Type системно (major, старый тред `InstructionStepRow.swift:94`): шаги инструкции и
       кнопки действий, подсказка выхода (рамка 250×220), круги Time Control, `SettingsStepper`, кнопка
       удаления фото 44 pt, текст Phantom Draw.
+      Сделано 20–22.10: PR 261–277 (R-40a инструкция, R-40b вибрации, R-40c трюки, R-40d Phantom Draw и
+      онбординг, R-40e две находки сквозного прогона). Не сделано: кнопка удаления фото 44 pt
+      (`MagicGallerySlotCard.swift`, сейчас 34 pt).
 - [ ] R-41 Выбранный сегмент силы вибрации виден, это `Button` а не `onTapGesture` (major, регрессия
       535a5cf, старый тред).
 - [ ] R-42 VoiceOver (моя задача 42): безымянные контролы галереи, `SettingsStepper`, превью онбординга
