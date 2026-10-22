@@ -42,6 +42,7 @@ struct PhantomDrawView: View {
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .largeTitle) private var scaledCodeFieldWidth: CGFloat = 120
     @ScaledMetric(relativeTo: .largeTitle) private var codeFieldHeight: CGFloat = 60
+    @ScaledMetric(relativeTo: .largeTitle) private var pairingCodeSize: CGFloat = 44
 
     // Two digits stay readable well before the field would outgrow a narrow screen.
     private var codeFieldWidth: CGFloat { min(scaledCodeFieldWidth, 220) }
@@ -105,7 +106,7 @@ struct PhantomDrawView: View {
             }
 
             if case .searching = state {
-                searchingView
+                scrollingScreen { searchingView }
                     .transition(.asymmetric(
                         insertion: .opacity.combined(with: .offset(y: -16)),
                         removal: .opacity.combined(with: .offset(y: 16))
@@ -118,26 +119,30 @@ struct PhantomDrawView: View {
             }
 
             if case .failed = state {
-                statusView(
-                    icon: "exclamationmark.triangle",
-                    title: LocalizedStringKey(stringLiteral: statusFailedKey("title")),
-                    subtitle: LocalizedStringKey(stringLiteral: statusFailedKey("subtitle")),
-                    buttonTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
-                    action: retry
-                )
+                scrollingScreen {
+                    statusView(
+                        icon: "exclamationmark.triangle",
+                        title: LocalizedStringKey(stringLiteral: statusFailedKey("title")),
+                        subtitle: LocalizedStringKey(stringLiteral: statusFailedKey("subtitle")),
+                        buttonTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
+                        action: retry
+                    )
+                }
                 .transition(.opacity)
             }
 
             if case .localNetworkDenied = state {
-                statusView(
-                    icon: "wifi.exclamationmark",
-                    title: LocalizedStringKey(stringLiteral: statusDeniedKey("title")),
-                    subtitle: LocalizedStringKey(stringLiteral: statusDeniedKey("subtitle")),
-                    buttonTitle: "common.openSettings",
-                    action: openSettings,
-                    secondaryTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
-                    secondaryAction: retryAfterDenial
-                )
+                scrollingScreen {
+                    statusView(
+                        icon: "wifi.exclamationmark",
+                        title: LocalizedStringKey(stringLiteral: statusDeniedKey("title")),
+                        subtitle: LocalizedStringKey(stringLiteral: statusDeniedKey("subtitle")),
+                        buttonTitle: "common.openSettings",
+                        action: openSettings,
+                        secondaryTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
+                        secondaryAction: retryAfterDenial
+                    )
+                }
                 .transition(.opacity)
             }
         }
@@ -359,26 +364,29 @@ struct PhantomDrawView: View {
                 .frame(width: 120, height: 120)
             Spacer().frame(height: 28)
             Text(String(localized: statusKey(role == .sender ? "waiting" : "connecting")))
-                .font(.system(size: 20, weight: .semibold, design: .rounded))
+                .font(.system(.title3, design: .rounded, weight: .semibold))
                 .foregroundStyle(.textPrimary)
+                .multilineTextAlignment(.center)
             Spacer().frame(height: 8)
             Text(String(localized: statusKey(role == .sender
                  ? "waitingDescription"
                  : "connectingDescription")))
-                .font(.system(size: 15, design: .rounded))
+                .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
             if role == .sender, let code = pairingCode {
                 Spacer().frame(height: 20)
                 Text(code)
-                    .font(.system(size: 44, weight: .heavy, design: .rounded))
+                    .font(.system(size: pairingCodeSize, weight: .heavy, design: .rounded))
                     .foregroundStyle(TrickPalette.Collection.phantomDraw)
                 Text(String(localized: "phantomDraw.enterCodeOnOtherDevice"))
-                    .font(.system(size: 13, weight: .medium, design: .rounded))
+                    .font(.system(.footnote, design: .rounded, weight: .medium))
                     .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
             }
             Spacer()
             Button(String(localized: "common.cancel"), action: stop)
-                .font(.system(size: 16, weight: .medium, design: .rounded))
+                .font(.system(.callout, design: .rounded, weight: .medium))
                 .foregroundStyle(.secondary)
                 .padding(.bottom, 32)
         }
@@ -405,11 +413,12 @@ struct PhantomDrawView: View {
                 .accessibilityHidden(true)
             Spacer().frame(height: 20)
             Text(title)
-                .font(.system(size: 20, weight: .semibold, design: .rounded))
+                .font(.system(.title3, design: .rounded, weight: .semibold))
                 .foregroundStyle(.textPrimary)
+                .multilineTextAlignment(.center)
             Spacer().frame(height: 8)
             Text(subtitle)
-                .font(.system(size: 15, design: .rounded))
+                .font(.system(.subheadline, design: .rounded))
                 .foregroundStyle(.secondary)
                 .multilineTextAlignment(.center)
                 .padding(.horizontal, 40)
@@ -418,7 +427,7 @@ struct PhantomDrawView: View {
                 .padding(.bottom, secondaryTitle == nil ? 32 : 16)
             if let secondaryTitle, let secondaryAction {
                 Button(secondaryTitle, action: secondaryAction)
-                    .font(.system(size: 16, weight: .medium, design: .rounded))
+                    .font(.system(.callout, design: .rounded, weight: .medium))
                     .foregroundStyle(.secondary)
                     .padding(.bottom, 32)
             }
