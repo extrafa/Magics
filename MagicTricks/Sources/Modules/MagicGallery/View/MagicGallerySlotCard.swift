@@ -17,6 +17,9 @@ struct MagicGallerySlotCard: View {
     let onDelete: () -> Void
 
     @State private var isConfirmingDelete = false
+    // Read outside the xxxLarge cap applied below, so they are capped by hand: the tile has a fixed height.
+    @ScaledMetric(relativeTo: .footnote) private var scaledDeleteCircle: CGFloat = 34
+    @ScaledMetric(relativeTo: .footnote) private var scaledDeleteIcon: CGFloat = 14
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
@@ -91,10 +94,13 @@ struct MagicGallerySlotCard: View {
     private var deleteButton: some View {
         Button { isConfirmingDelete = true } label: {
             Image(systemName: "trash")
-                .font(.system(size: 14, weight: .semibold))
+                .font(.system(size: deleteIconSize, weight: .semibold))
                 .foregroundStyle(.white)
-                .frame(width: 34, height: 34)
+                .frame(width: deleteCircleSize, height: deleteCircleSize)
                 .background(.black.opacity(0.38), in: Circle())
+                // The tap area is at least 44 pt even though the visible circle is smaller.
+                .frame(width: deleteTouchSize, height: deleteTouchSize)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
         // On iOS 26 the dialog is a popover pointing at the view it is attached to, so it lives on the button itself.
@@ -106,9 +112,14 @@ struct MagicGallerySlotCard: View {
             Button(String(localized: "magicGallery.deletePhoto"), role: .destructive, action: onDelete)
             Button(String(localized: "common.cancel"), role: .cancel) {}
         }
-        .padding(10)
+        // The padding plus the extra touch margin keeps the circle exactly 10 pt from the corner.
+        .padding(10 - (deleteTouchSize - deleteCircleSize) / 2)
         .accessibilityLabel(String(localized: "magicGallery.deletePhoto"))
     }
+
+    private var deleteCircleSize: CGFloat { min(scaledDeleteCircle, 48) }
+    private var deleteIconSize: CGFloat { min(scaledDeleteIcon, 20) }
+    private var deleteTouchSize: CGFloat { max(44, deleteCircleSize + 10) }
 
     private func sourceBadge(for photo: MagicGalleryPhoto) -> some View {
         Text(photo.isStandard
