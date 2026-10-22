@@ -15,7 +15,7 @@ struct OnboardingCTAButton: View {
     var accessibilityText: String?
     let action: () -> Void
 
-    // Grows with Dynamic Type, so a longer label wraps inside the button instead of being cut off.
+    // Grows with Dynamic Type (up to a cap), so a longer label wraps inside the button instead of being cut off.
     @ScaledMetric(relativeTo: .headline) private var height: CGFloat = 56
     @ScaledMetric(relativeTo: .headline) private var fontSize: CGFloat = 18
 
@@ -32,7 +32,8 @@ struct OnboardingCTAButton: View {
                 }
             }
             .padding(.vertical, 12)
-            .frame(maxWidth: .infinity, minHeight: height)
+            // Only the empty minimum is capped: the label keeps growing and a longer one still wraps inside the button.
+            .frame(maxWidth: .infinity, minHeight: min(height, 72))
             .background(isEnabled ? Color.textPrimary : Color.textPrimary.opacity(0.3))
             .foregroundStyle(Color.backgroundScreen)
             .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
