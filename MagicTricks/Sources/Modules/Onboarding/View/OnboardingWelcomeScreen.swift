@@ -26,28 +26,13 @@ struct OnboardingWelcomeScreen: View {
 
     var body: some View {
         VStack(spacing: 0) {
-            Spacer()
-
-            trickPreview
-                .padding(.bottom, 44)
-
-            VStack(spacing: 12) {
-                Text(String(localized: key("headline")))
-                    .font(.system(size: 34, weight: .bold, design: .rounded))
-                    .foregroundStyle(.textPrimary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 32)
-                    .onboardingAppear(appeared, offset: 12, delay: 0.42)
-
-                Text(String(localized: key("subheadline")))
-                    .font(.system(size: 17, weight: .regular, design: .rounded))
-                    .foregroundStyle(.secondary)
-                    .multilineTextAlignment(.center)
-                    .padding(.horizontal, 40)
-                    .onboardingAppear(appeared, offset: 10, delay: 0.52)
+            // Scrollable so larger text is never pushed off the screen; the button stays pinned below it.
+            GeometryReader { proxy in
+                ScrollView {
+                    welcomeContent
+                        .frame(maxWidth: .infinity, minHeight: proxy.size.height)
+                }
             }
-
-            Spacer()
 
             OnboardingCTAButton(
                 title: String(localized: key("cta")),
@@ -63,6 +48,33 @@ struct OnboardingWelcomeScreen: View {
                 try? await Task.sleep(milliseconds: 150)
                 appeared = true
             }
+        }
+    }
+
+    private var welcomeContent: some View {
+        VStack(spacing: 0) {
+            Spacer()
+
+            trickPreview
+                .padding(.bottom, 44)
+
+            VStack(spacing: 12) {
+                Text(String(localized: key("headline")))
+                    .font(.system(.largeTitle, design: .rounded, weight: .bold))
+                    .foregroundStyle(.textPrimary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 32)
+                    .onboardingAppear(appeared, offset: 12, delay: 0.42)
+
+                Text(String(localized: key("subheadline")))
+                    .font(.system(.body, design: .rounded, weight: .regular))
+                    .foregroundStyle(.secondary)
+                    .multilineTextAlignment(.center)
+                    .padding(.horizontal, 40)
+                    .onboardingAppear(appeared, offset: 10, delay: 0.52)
+            }
+
+            Spacer()
         }
     }
 
