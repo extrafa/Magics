@@ -15,7 +15,7 @@ struct SettingsSection<Content: View>: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 12) {
             Text(title.uppercased())
-                .font(.system(size: 13, weight: .bold, design: .rounded))
+                .font(.system(.caption, design: .rounded, weight: .bold))
                 .foregroundStyle(.secondary.opacity(0.85))
 
             VStack(alignment: .leading, spacing: 0) {
@@ -41,20 +41,47 @@ struct SettingsActionRow: View {
                 .frame(width: 24)
 
             Text(title)
-                .font(.system(size: 17, weight: isBold ? .bold : .semibold, design: .rounded))
-                .foregroundStyle(tint ?? .primaryText)
+                .font(.system(.body, design: .rounded, weight: isBold ? .bold : .semibold))
+                .foregroundStyle(tint ?? .textPrimary)
+                .multilineTextAlignment(.leading)
 
             Spacer()
 
             if showsChevron {
                 Image(systemName: "chevron.right")
                     .font(.system(size: 13, weight: .bold))
-                    .foregroundStyle(Color.primaryText.opacity(0.34))
+                    .foregroundStyle(Color.textPrimary.opacity(0.34))
             }
         }
+        .padding(.vertical, 8)
         .frame(maxWidth: .infinity)
-        .frame(height: 58)
+        .frame(minHeight: 58)
         .contentShape(Rectangle())
+    }
+}
+
+struct SettingsToggleRow: View {
+
+    let title: String
+    let subtitle: String
+    var tint: Color = TrickPalette.Collection.timeControl
+    @Binding var isOn: Bool
+
+    var body: some View {
+        Toggle(isOn: $isOn) {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(title)
+                    .font(.system(.body, design: .rounded, weight: .bold))
+                    .foregroundStyle(.textPrimary)
+
+                Text(subtitle)
+                    .font(.system(.footnote, design: .rounded, weight: .medium))
+                    .foregroundStyle(Color.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .tint(tint)
+        .padding(18)
     }
 }
 
@@ -80,7 +107,7 @@ struct SettingsResetButton: View {
                 isBold: true
             )
             .padding(.horizontal, 18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
         .buttonStyle(.plain)
     }
@@ -91,9 +118,11 @@ struct SettingsResetButton: View {
 struct SettingsStepper: View {
 
     @Binding var value: Double
+    let label: String
     let range: ClosedRange<Double>
     let step: Double
-    let format: String  // e.g. "%.2fx" or "%.2fs"
+    let format: String
+    @ScaledMetric(relativeTo: .body) private var iconSize: CGFloat = 17
 
     var body: some View {
         HStack(spacing: 0) {
@@ -103,8 +132,8 @@ struct SettingsStepper: View {
             Spacer()
 
             Text(String(format: format, value))
-                .font(.system(size: 20, weight: .bold, design: .rounded))
-                .foregroundStyle(.primaryText)
+                .font(.system(.title3, design: .rounded, weight: .bold))
+                .foregroundStyle(.textPrimary)
 
             Spacer()
 
@@ -112,13 +141,27 @@ struct SettingsStepper: View {
                 .disabled(value >= range.upperBound)
         }
         .foregroundStyle(TrickPalette.Collection.timeControl)
+        // One adjustable element for VoiceOver: swipe up or down changes the value.
+        .accessibilityElement(children: .ignore)
+        .accessibilityLabel(label)
+        .accessibilityValue(String(format: format, value))
+        .accessibilityAdjustableAction { direction in
+            switch direction {
+            case .increment: increment()
+            case .decrement: decrement()
+            @unknown default: break
+            }
+        }
     }
+
+    // 44 pt is the minimum touch target; the button grows only once the icon outgrows it.
+    private var buttonSide: CGFloat { max(44, iconSize * 1.55) }
 
     private func stepButton(icon: String, action: @escaping () -> Void) -> some View {
         Button(action: action) {
             Image(systemName: icon)
-                .font(.system(size: 17, weight: .bold))
-                .frame(width: 44, height: 44)
+                .font(.system(size: iconSize, weight: .bold))
+                .frame(width: buttonSide, height: buttonSide)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
@@ -130,20 +173,5 @@ struct SettingsStepper: View {
 
     private func decrement() {
         value = max(range.lowerBound, ((value - step) * 100).rounded() / 100)
-    }
-}
-
-// MARK: - Card background modifier
-
-extension View {
-    func settingsCard() -> some View {
-        self.background(
-            RoundedRectangle(cornerRadius: 20, style: .continuous)
-                .fill(Color.grayCard)
-                .overlay {
-                    RoundedRectangle(cornerRadius: 20, style: .continuous)
-                        .stroke(Color.grayBorder, lineWidth: 1)
-                }
-        )
     }
 }

@@ -1,3 +1,10 @@
+//
+//  MagicGalleryPhoto.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import UIKit
 
 enum MagicGalleryPhotoSource: Equatable {
@@ -14,7 +21,6 @@ struct MagicGalleryPhoto: Identifiable, Equatable {
     var id: Int { number }
     var isCustom: Bool { source == .custom }
     var isStandard: Bool { source == .standard }
-    var isLandscape: Bool { image.size.width > image.size.height }
 
     static func == (lhs: MagicGalleryPhoto, rhs: MagicGalleryPhoto) -> Bool {
         lhs.number == rhs.number && lhs.fileName == rhs.fileName && lhs.source == rhs.source
@@ -23,5 +29,6 @@ struct MagicGalleryPhoto: Identifiable, Equatable {
 
 struct MagicGalleryCaptureSession: Identifiable {
     let number: Int
+    let sourceType: UIImagePickerController.SourceType
     var id: Int { number }
 }

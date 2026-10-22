@@ -63,9 +63,6 @@
             ReferencedContainer = "container:MagicTricks.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
-      <StoreKitConfigurationFileReference
-         identifier = "../../MagicTricks/Sources/Resources/Magics.storekit">
-      </StoreKitConfigurationFileReference>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

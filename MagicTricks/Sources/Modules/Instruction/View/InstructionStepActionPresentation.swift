@@ -1,4 +1,14 @@
+//
+//  InstructionStepActionPresentation.swift
+//  Magic Tricks
+//
+//  Created by Ross on 02/06/2026.
+//
+
 import Foundation
+
+private let hapticTrainingKey = L10nDomain("instruction.action.hapticTraining")
+private let hapticSettingsKey = L10nDomain("instruction.action.hapticSettings")
 
 struct InstructionStepActionPresentation {
     let icon: String
@@ -9,20 +19,12 @@ struct InstructionStepActionPresentation {
         switch action {
         case .hapticTraining:
             icon = "dot.radiowaves.left.and.right"
-            title = String(localized: "instruction.action.hapticTraining.title")
-            subtitle = String(localized: "instruction.action.hapticTraining.subtitle")
-        case .hapticNumberTraining:
-            icon = "dot.radiowaves.left.and.right"
-            title = String(localized: "instruction.action.hapticNumberTraining.title")
-            subtitle = String(localized: "instruction.action.hapticNumberTraining.subtitle")
+            title = String(localized: hapticTrainingKey("title"))
+            subtitle = String(localized: hapticTrainingKey("subtitle"))
         case .hapticSettings:
             icon = "slider.horizontal.3"
-            title = String(localized: "instruction.action.hapticSettings.title")
-            subtitle = String(localized: "instruction.action.hapticSettings.subtitle")
-        case .motionSettings:
-            icon = "iphone.radiowaves.left.and.right"
-            title = String(localized: "instruction.action.motionSettings.title")
-            subtitle = String(localized: "instruction.action.motionSettings.subtitle")
+            title = String(localized: hapticSettingsKey("title"))
+            subtitle = String(localized: hapticSettingsKey("subtitle"))
         }
     }
 }
