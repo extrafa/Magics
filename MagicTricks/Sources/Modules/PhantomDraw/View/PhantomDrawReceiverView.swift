@@ -59,8 +59,9 @@ struct PhantomDrawReceiverView: View {
                 .foregroundStyle(Color.secondary.opacity(0.4))
                 .accessibilityHidden(true)
             Text(String(localized: "phantomDraw.waitingForDrawing"))
-                .font(.system(size: 15, weight: .regular, design: .rounded))
+                .font(.system(.subheadline, design: .rounded, weight: .regular))
                 .foregroundStyle(.secondary)
+                .multilineTextAlignment(.center)
         }
         .allowsHitTesting(false)
     }

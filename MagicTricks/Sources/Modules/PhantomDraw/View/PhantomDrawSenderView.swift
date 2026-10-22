@@ -65,8 +65,9 @@ struct PhantomDrawSenderView: View {
                 .foregroundStyle(Color.black.opacity(0.18))
                 .accessibilityHidden(true)
             Text(String(localized: "phantomDraw.drawAnythingPlaceholder"))
-                .font(.system(size: 17, weight: .regular, design: .rounded))
+                .font(.system(.body, design: .rounded, weight: .regular))
                 .foregroundStyle(Color.black.opacity(0.28))
+                .multilineTextAlignment(.center)
         }
         .allowsHitTesting(false)
     }
