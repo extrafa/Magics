@@ -453,6 +453,17 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
 
         XCTAssertEqual(manager.connectionState, .connected(peerName: "Performer's iPhone"))
     }
+
+    // MARK: - Keepalive
+
+    func test_tcpOptions_enableKeepaliveSoASilentPeerIsDetected() {
+        let options = PhantomDrawSessionManager.makeTCPOptions()
+
+        XCTAssertTrue(options.enableKeepalive)
+        XCTAssertEqual(options.keepaliveIdle, 2)
+        XCTAssertEqual(options.keepaliveInterval, 1)
+        XCTAssertEqual(options.keepaliveCount, 3)
+    }
 }
 
 private final class FakeScheduler: DelayedActionScheduling {

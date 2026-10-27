@@ -32,6 +32,10 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     // The sender's listener is restarted silently with growing pauses, so a flaky network doesn't make it spin.
     private static let listenerRestartInitialDelay: TimeInterval = 1
     private static let listenerRestartMaxDelay: TimeInterval = 5
+    // A silent peer is declared dead after ~5 s (2 + 3 x 1), so the receiver doesn't sit on a stale "Connected".
+    nonisolated static let keepaliveIdle = 2
+    nonisolated static let keepaliveInterval = 1
+    nonisolated static let keepaliveCount = 3
 
     // Peer-sent strokes are untrusted network input.
     nonisolated static let maxStrokes = 500
@@ -470,6 +474,17 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         return DrawingStroke(id: stroke.id, points: clampedPoints)
     }
 
+    // Not private: checked directly in tests.
+    nonisolated static func makeTCPOptions() -> NWProtocolTCP.Options {
+        let tcpOptions = NWProtocolTCP.Options()
+        tcpOptions.connectionTimeout = Int(connectionTimeout)
+        tcpOptions.enableKeepalive = true
+        tcpOptions.keepaliveIdle = keepaliveIdle
+        tcpOptions.keepaliveInterval = keepaliveInterval
+        tcpOptions.keepaliveCount = keepaliveCount
+        return tcpOptions
+    }
+
     private func makeParams(code: String) -> NWParameters {
         let tlsOptions = NWProtocolTLS.Options()
         let secOptions = tlsOptions.securityProtocolOptions
@@ -485,10 +500,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
             }
         }
 
-        let tcpOptions = NWProtocolTCP.Options()
-        tcpOptions.connectionTimeout = Int(Self.connectionTimeout)
-
-        let p = NWParameters(tls: tlsOptions, tcp: tcpOptions)
+        let p = NWParameters(tls: tlsOptions, tcp: Self.makeTCPOptions())
         p.includePeerToPeer = true
         return p
     }
