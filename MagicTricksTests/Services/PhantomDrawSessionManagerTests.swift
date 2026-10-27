@@ -274,12 +274,193 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
 
         XCTAssertNotNil(manager.sanitized(stroke))
     }
+
+    // MARK: - Sender listener
+
+    private let denied = NWError.dns(DNSServiceErrorType(kDNSServiceErr_PolicyDenied))
+    private let listenerFailure = NWError.posix(.ENETDOWN)
+
+    func test_listenerFailed_whileConnected_keepsTheCanvasAndRestartsQuietly() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        manager.connectionState = .connected(peerName: "Performer's iPhone")
+
+        manager.handleListenerState(.failed(listenerFailure), code: "42")
+
+        XCTAssertEqual(manager.connectionState, .connected(peerName: "Performer's iPhone"))
+        XCTAssertEqual(scheduler.pendingCount, 1)
+        scheduler.fire()
+        XCTAssertEqual(manager.connectionState, .connected(peerName: "Performer's iPhone"))
+        XCTAssertEqual(scheduler.pendingCount, 0)
+    }
+
+    func test_listenerFailed_whileReconnecting_alsoKeepsTheCanvas() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        manager.connectionState = .connected(peerName: "Performer's iPhone")
+        manager.isReconnecting = true
+
+        manager.handleListenerState(.failed(listenerFailure), code: "42")
+
+        XCTAssertEqual(manager.connectionState, .connected(peerName: "Performer's iPhone"))
+        XCTAssertEqual(scheduler.pendingCount, 1)
+    }
+
+    func test_listenerFailed_beforeAnyConnection_showsTheFailure() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .searching
+
+        manager.handleListenerState(.failed(listenerFailure), code: "42")
+
+        XCTAssertEqual(manager.connectionState, .failed)
+        XCTAssertEqual(scheduler.pendingCount, 0)
+    }
+
+    func test_listenerFailedTwice_schedulesOneRestart() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        manager.connectionState = .connected(peerName: "Performer's iPhone")
+
+        manager.handleListenerState(.failed(listenerFailure), code: "42")
+        manager.handleListenerState(.failed(listenerFailure), code: "42")
+
+        XCTAssertEqual(scheduler.pendingCount, 1)
+    }
+
+    func test_listenerRestarts_waitLongerEachTime_upToACap() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        manager.connectionState = .connected(peerName: "Performer's iPhone")
+
+        for _ in 0..<5 {
+            manager.handleListenerState(.failed(listenerFailure), code: "42")
+            scheduler.fire()
+        }
+
+        XCTAssertEqual(scheduler.delays, [1, 2, 4, 5, 5])
+    }
+
+    func test_listenerReady_startsTheRestartPausesOver() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        manager.connectionState = .connected(peerName: "Performer's iPhone")
+
+        manager.handleListenerState(.failed(listenerFailure), code: "42")
+        scheduler.fire()
+        manager.handleListenerState(.failed(listenerFailure), code: "42")
+        scheduler.fire()
+        manager.handleListenerState(.ready, code: "42")
+        manager.handleListenerState(.failed(listenerFailure), code: "42")
+
+        XCTAssertEqual(scheduler.delays, [1, 2, 1])
+    }
+
+    func test_stop_beforeTheListenerRestartFires_cancelsIt() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .connected(peerName: "Performer's iPhone")
+        manager.handleListenerState(.failed(listenerFailure), code: "42")
+
+        manager.stop()
+        scheduler.fire()
+
+        XCTAssertEqual(manager.connectionState, .idle)
+    }
+
+    func test_listenerWaitingWithPolicyDenied_beforeConnection_entersDeniedAfterTheDelay() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .searching
+
+        manager.handleListenerState(.waiting(denied), code: "42")
+        XCTAssertEqual(manager.connectionState, .searching)
+        scheduler.fire()
+
+        XCTAssertEqual(manager.connectionState, .localNetworkDenied)
+    }
+
+    func test_listenerRepeatedDeniedEvents_scheduleOneConfirmation() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .searching
+
+        for _ in 0..<3 { manager.handleListenerState(.waiting(denied), code: "42") }
+
+        XCTAssertEqual(scheduler.pendingCount, 1)
+    }
+
+    func test_listenerWaitingWithPolicyDenied_whileConnected_changesNothing() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .connected(peerName: "Performer's iPhone")
+
+        manager.handleListenerState(.waiting(denied), code: "42")
+
+        XCTAssertEqual(manager.connectionState, .connected(peerName: "Performer's iPhone"))
+        XCTAssertEqual(scheduler.pendingCount, 0)
+    }
+
+    func test_listenerWaitingWithOtherError_doesNotEnterDenied() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .searching
+
+        manager.handleListenerState(.waiting(listenerFailure), code: "42")
+
+        XCTAssertEqual(manager.connectionState, .searching)
+        XCTAssertEqual(scheduler.pendingCount, 0)
+    }
+
+    func test_listenerReady_afterDenied_resumesSearching() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .searching
+        manager.handleListenerState(.waiting(denied), code: "42")
+        scheduler.fire()
+        XCTAssertEqual(manager.connectionState, .localNetworkDenied)
+
+        manager.handleListenerState(.ready, code: "42")
+
+        XCTAssertEqual(manager.connectionState, .searching)
+    }
+
+    func test_listenerReady_beforeTheDeniedDelay_cancelsTheConfirmation() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .searching
+        manager.handleListenerState(.waiting(denied), code: "42")
+
+        manager.handleListenerState(.ready, code: "42")
+        scheduler.fire()
+
+        XCTAssertEqual(manager.connectionState, .searching)
+    }
+
+    func test_deniedConfirmation_afterAConnectionArrived_doesNotCoverTheCanvas() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        manager.connectionState = .searching
+        manager.handleListenerState(.waiting(denied), code: "42")
+
+        manager.connectionState = .connected(peerName: "Performer's iPhone")
+        scheduler.fire()
+
+        XCTAssertEqual(manager.connectionState, .connected(peerName: "Performer's iPhone"))
+    }
 }
 
 private final class FakeScheduler: DelayedActionScheduling {
     private var scheduledActions: [Completion] = []
+    private(set) var delays: [TimeInterval] = []
 
     func schedule(after delay: TimeInterval, action: @escaping Completion) {
+        delays.append(delay)
         scheduledActions.append(action)
     }
 
