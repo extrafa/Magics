@@ -20,6 +20,7 @@ struct WatermarkView: View {
                         Image(systemName: "sparkles")
                             .font(.system(size: 11, weight: .semibold))
                             .accessibilityHidden(true)
+                        // "Free Trial" names the free tier, there is no trial period; kept on purpose (monetisation decision).
                         Text(String(localized: "watermark.freeTrialBadge"))
                             .font(.system(size: 13, weight: .semibold, design: .rounded))
                     }
