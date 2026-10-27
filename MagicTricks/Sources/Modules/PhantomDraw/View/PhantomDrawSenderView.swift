@@ -54,6 +54,7 @@ struct PhantomDrawSenderView: View {
                         .foregroundStyle(.black)
                 }
                 .accessibilityLabel(String(localized: "phantomDraw.clearDrawing"))
+                .accessibilityHint(String(localized: "phantomDraw.clearDrawing.hint"))
             }
         }
     }
