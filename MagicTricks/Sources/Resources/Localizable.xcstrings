@@ -2743,13 +2743,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "You use two devices. You give one phone to him so he can draw on it. The second device (iPhone or Apple Watch) stays with you. When he draws a number on the phone, you see it on your device in real time."
+            "value" : "You use two devices. You give one phone to him so he can draw on it. The second device stays with you. When he draws a number on the phone, you see it on your device in real time."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Usas dos dispositivos. Le das uno para que dibuje en él. El segundo dispositivo (iPhone o Apple Watch) se queda contigo. Cuando dibuja un número en el teléfono, lo ves en tu dispositivo en tiempo real."
+            "value" : "Usas dos dispositivos. Le das uno para que dibuje en él. El segundo dispositivo se queda contigo. Cuando dibuja un número en el teléfono, lo ves en tu dispositivo en tiempo real."
           }
         }
       }
@@ -2794,13 +2794,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Hide your device from him. If it is a phone, put it in your pocket. If it is an Apple Watch, put your hand in your pocket or do not show it to him. He must not see your device."
+            "value" : "Hide your device from him. Put it in your pocket. He must not see your device."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Esconde tu dispositivo de él. Si es un teléfono, guárdalo en tu bolsillo. Si es un Apple Watch, pon la mano en el bolsillo o no se lo muestres. No debe ver tu dispositivo."
+            "value" : "Esconde tu dispositivo de él. Guárdalo en tu bolsillo. No debe ver tu dispositivo."
           }
         }
       }
