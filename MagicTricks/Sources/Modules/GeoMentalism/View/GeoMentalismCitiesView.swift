@@ -43,6 +43,7 @@ struct GeoMentalismCitiesView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
+                // Kept on the spectator's screen on purpose: it marks the free tier and Pro removes it (monetisation decision).
                 WatermarkView()
             }
         }
