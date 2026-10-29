@@ -9,20 +9,20 @@ import SwiftUI
 
 struct TrickRouterView: View {
 
-    let trick: Trick
-    
+    let type: TrickType
+
     var body: some View {
-        switch trick.id {
-        case .calculatorPrediction:
-            CalculatorPredictionView()
-        case .colorMentalism:
-            ColorMentalismView()
-        case .mindPattern:
-            MindPatternView()
+        switch type {
+        case .colorSense:
+            ColorSenseView()
         case .magicGallery:
             MagicGalleryView()
         case .timeControl:
             TimeControlView()
+        case .geoMentalism:
+            GeoMentalismView()
+        case .phantomDraw:
+            PhantomDrawView()
         }
     }
 }

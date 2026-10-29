@@ -9,49 +9,77 @@ import Foundation
 
 final class SettingsStore: ObservableObject {
 
-    @Published var hapticSpeedMultiplier: Double {
-        didSet { preferences.hapticSpeedMultiplier = hapticSpeedMultiplier }
+    var hapticSpeedMultiplier: Double {
+        get { preferences.hapticSpeedMultiplier }
+        set {
+            objectWillChange.send()
+            preferences.hapticSpeedMultiplier = newValue
+        }
     }
 
-    @Published var isHapticGroupByThreeEnabled: Bool {
-        didSet { preferences.isHapticGroupByThreeEnabled = isHapticGroupByThreeEnabled }
+    var isHapticGroupByThreeEnabled: Bool {
+        get { preferences.isHapticGroupByThreeEnabled }
+        set {
+            objectWillChange.send()
+            preferences.isHapticGroupByThreeEnabled = newValue
+        }
     }
 
-    @Published var isSecretGestureEnabled: Bool {
-        didSet { preferences.isSecretGestureEnabled = isSecretGestureEnabled }
+    var hapticIntensity: HapticIntensity {
+        get { preferences.hapticIntensity }
+        set {
+            objectWillChange.send()
+            preferences.hapticIntensity = newValue
+        }
     }
 
-    @Published var screenDownHoldDuration: TimeInterval {
-        didSet { preferences.screenDownHoldDuration = screenDownHoldDuration }
+    var isSecretGestureEnabled: Bool {
+        get { preferences.isSecretGestureEnabled }
+        set {
+            objectWillChange.send()
+            preferences.isSecretGestureEnabled = newValue
+        }
+    }
+
+    var screenDownHoldDuration: TimeInterval {
+        get { preferences.screenDownHoldDuration }
+        set {
+            objectWillChange.send()
+            preferences.screenDownHoldDuration = newValue
+        }
+    }
+
+    var isExitHintEnabled: Bool {
+        get { preferences.isExitHintEnabled }
+        set {
+            objectWillChange.send()
+            preferences.isExitHintEnabled = newValue
+        }
     }
 
     private let preferences: AppPreferences
+    private let appStoreURL: URL?
 
     var appShareURL: URL? {
-        AppConfig.appStoreURL
+        appStoreURL
     }
 
     var appShareText: String {
         Bundle.main.object(forInfoDictionaryKey: "CFBundleDisplayName") as? String ?? "Magic Tricks"
     }
 
-    init(preferences: AppPreferences = .shared) {
+    init(preferences: AppPreferences = .shared, appStoreURL: URL? = AppConfig.appStoreURL) {
         self.preferences = preferences
-        self.hapticSpeedMultiplier = preferences.hapticSpeedMultiplier
-        self.isHapticGroupByThreeEnabled = preferences.isHapticGroupByThreeEnabled
-        self.isSecretGestureEnabled = preferences.isSecretGestureEnabled
-        self.screenDownHoldDuration = preferences.screenDownHoldDuration
+        self.appStoreURL = appStoreURL
     }
 
     func resetHapticSettings() {
+        objectWillChange.send()
         preferences.resetHapticSettings()
-        hapticSpeedMultiplier = AppPreferences.Default.hapticSpeedMultiplier
-        isHapticGroupByThreeEnabled = AppPreferences.Default.hapticGroupByThreeEnabled
     }
 
     func resetMotionSettings() {
+        objectWillChange.send()
         preferences.resetMotionSettings()
-        isSecretGestureEnabled = AppPreferences.Default.secretGestureEnabled
-        screenDownHoldDuration = AppPreferences.Default.screenDownHoldDuration
     }
 }

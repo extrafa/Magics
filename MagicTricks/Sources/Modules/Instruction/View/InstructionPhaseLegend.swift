@@ -7,13 +7,24 @@
 
 import SwiftUI
 
+private let key = L10nDomain("instruction.phase")
+
 struct InstructionPhaseLegend: View {
+    @ScaledMetric(relativeTo: .footnote) private var titleSize: CGFloat = 14
+
     var body: some View {
-        HStack(spacing: 18) {
-            legendItem(color: .blue, title: String(localized: "instruction.phase.preparation"))
-            legendItem(color: .green, title: String(localized: "instruction.phase.demonstration"))
+        // Stacks the items once a single row no longer fits, so a word is never split mid-way.
+        ViewThatFits(in: .horizontal) {
+            HStack(spacing: 18) { items }
+            VStack(alignment: .leading, spacing: 8) { items }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    @ViewBuilder
+    private var items: some View {
+        legendItem(color: InstructionPhase.preparation.color, title: String(localized: key("preparation")))
+        legendItem(color: InstructionPhase.demonstration.color, title: String(localized: key("demonstration")))
     }
 
     private func legendItem(color: Color, title: String) -> some View {
@@ -23,7 +34,7 @@ struct InstructionPhaseLegend: View {
                 .frame(width: 8, height: 8)
 
             Text(title)
-                .font(.system(size: 14, weight: .semibold, design: .rounded))
+                .font(.system(size: titleSize, weight: .semibold, design: .rounded))
                 .foregroundStyle(color)
         }
     }

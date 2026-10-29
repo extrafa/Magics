@@ -1,3 +1,10 @@
+//
+//  TrickGradientCard.swift
+//  Magic Tricks
+//
+//  Created by Ross on 05/04/2026.
+//
+
 import SwiftUI
 
 struct TrickGradientCard<Content: View>: View {
