@@ -29,6 +29,9 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     private static let connectionTimeout: TimeInterval = 10
     private static let searchTimeout: TimeInterval = 15
     private static let deniedConfirmationDelay: TimeInterval = 1.5
+    // The sender's listener is restarted silently with growing pauses, so a flaky network doesn't make it spin.
+    private static let listenerRestartInitialDelay: TimeInterval = 1
+    private static let listenerRestartMaxDelay: TimeInterval = 5
 
     // Peer-sent strokes are untrusted network input.
     nonisolated static let maxStrokes = 500
@@ -47,6 +50,10 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     // Same idea for the "Local Network is off" screen: a denial is only shown if no .ready follows within the delay.
     private var deniedGeneration = 0
     private var isDeniedConfirmationPending = false
+    // Bumped on teardown, so a restart scheduled for an earlier session can't revive its listener.
+    private var listenerGeneration = 0
+    private var isListenerRestartPending = false
+    private var listenerRestartDelay = PhantomDrawSessionManager.listenerRestartInitialDelay
 
     var onNewConnection: Completion?
 
@@ -110,16 +117,25 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
     // MARK: - Sender: persistent listener
 
-    private func startListening(code: String) {
+    // `silent` is a restart in the middle of a show: nothing the spectator sees may change, so a failure to create the
+    // listener is just retried later instead of becoming `.failed`.
+    private func startListening(code: String, silent: Bool = false) {
         listener?.cancel()
         let params = makeParams(code: code)
         guard let l = try? NWListener(using: params) else {
-            connectionState = .failed; return
+            if silent {
+                scheduleListenerRestart(code: code)
+            } else {
+                connectionState = .failed
+            }
+            return
         }
         l.service = NWListener.Service(type: Self.bonjourType)
-        l.stateUpdateHandler = { [weak self] state in
-            Task { @MainActor [weak self] in
-                if case .failed = state { self?.connectionState = .failed }
+        l.stateUpdateHandler = { [weak self, weak l] state in
+            Task { @MainActor [weak self, weak l] in
+                // A listener that was already replaced or torn down must not change the session.
+                guard let self, let l, self.listener === l else { return }
+                self.handleListenerState(state, code: code)
             }
         }
         l.newConnectionHandler = { [weak self] conn in
@@ -135,6 +151,48 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         }
         listener = l
         l.start(queue: .main)
+    }
+
+    // Not private: driven directly in tests.
+    func handleListenerState(_ state: NWListener.State, code: String) {
+        switch state {
+        case .failed:
+            // Mid-show the canvas must stay a canvas: restart quietly with the same code instead of showing an error.
+            guard isConnected else {
+                connectionState = .failed
+                return
+            }
+            scheduleListenerRestart(code: code)
+        case .waiting(let error) where Self.isLocalNetworkDenied(error):
+            // Once the spectator's phone is connected the show goes on; before that the performer has to hear about it.
+            guard !isConnected else { return }
+            confirmLocalNetworkDenied()
+        case .ready:
+            listenerRestartDelay = Self.listenerRestartInitialDelay
+            cancelDeniedConfirmation()
+            guard connectionState == .localNetworkDenied else { return }
+            connectionState = .searching
+        default:
+            break
+        }
+    }
+
+    private var isConnected: Bool {
+        if case .connected = connectionState { return true }
+        return false
+    }
+
+    private func scheduleListenerRestart(code: String) {
+        guard !isListenerRestartPending else { return }
+        isListenerRestartPending = true
+        let generation = listenerGeneration
+        let delay = listenerRestartDelay
+        listenerRestartDelay = min(delay * 2, Self.listenerRestartMaxDelay)
+        scheduler.schedule(after: delay) { [weak self] in
+            guard let self, generation == self.listenerGeneration else { return }
+            self.isListenerRestartPending = false
+            self.startListening(code: code, silent: true)
+        }
     }
 
     // MARK: - Receiver: auto-restart browser
@@ -187,6 +245,8 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         scheduler.schedule(after: Self.deniedConfirmationDelay) { [weak self] in
             guard let self, generation == self.deniedGeneration else { return }
             self.isDeniedConfirmationPending = false
+            // A connection that arrived meanwhile wins; a receiver that is only reconnecting still gets the screen.
+            if self.isConnected && !self.isReconnecting { return }
             self.isReconnecting = false
             self.connectionState = .localNetworkDenied
         }
@@ -435,6 +495,9 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
     private func teardown() {
         searchGeneration += 1
+        listenerGeneration += 1
+        isListenerRestartPending = false
+        listenerRestartDelay = Self.listenerRestartInitialDelay
         cancelDeniedConfirmation()
         browser?.cancel()
         listener?.cancel()
