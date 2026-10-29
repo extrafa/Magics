@@ -20,6 +20,7 @@ enum PhantomDrawConnectionState: Equatable {
     case searching
     case connected(peerName: String)
     case failed
+    case ended
     case localNetworkDenied
 }
 
