@@ -464,6 +464,174 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
         XCTAssertEqual(options.keepaliveInterval, 1)
         XCTAssertEqual(options.keepaliveCount, 3)
     }
+
+    // MARK: - Sender: incoming candidates
+
+    // Never started, so no real network is touched; the manager is driven through its state callbacks.
+    private func makeIncoming() -> NWConnection {
+        NWConnection(host: "127.0.0.1", port: 9, using: .tcp)
+    }
+
+    private func makeSenderWithActiveConnection(
+        scheduler: FakeScheduler = FakeScheduler()
+    ) -> (manager: PhantomDrawSessionManager, active: NWConnection, newConnections: () -> Int) {
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        var newConnections = 0
+        manager.onNewConnection = { newConnections += 1 }
+        let active = makeIncoming()
+        XCTAssertTrue(manager.registerIncomingCandidate(active))
+        manager.handleIncomingState(.ready, for: active)
+        return (manager, active, { newConnections })
+    }
+
+    func test_incoming_whileConnected_isOnlyACandidate() {
+        let (manager, _, newConnections) = makeSenderWithActiveConnection()
+        let stateBefore = manager.connectionState
+
+        XCTAssertTrue(manager.registerIncomingCandidate(makeIncoming()))
+
+        XCTAssertEqual(manager.connectionState, stateBefore)
+        XCTAssertFalse(manager.isReconnecting)
+        XCTAssertEqual(newConnections(), 1)
+    }
+
+    func test_incomingCandidate_failedHandshake_leavesTheRunningConnectionAlone() {
+        let (manager, active, newConnections) = makeSenderWithActiveConnection()
+        let stateBefore = manager.connectionState
+        let stranger = makeIncoming()
+        XCTAssertTrue(manager.registerIncomingCandidate(stranger))
+
+        manager.handleIncomingState(.failed(listenerFailure), for: stranger)
+
+        XCTAssertEqual(manager.connectionState, stateBefore)
+        XCTAssertFalse(manager.isReconnecting)
+        XCTAssertEqual(newConnections(), 1)
+        XCTAssertTrue(manager.registerIncomingCandidate(makeIncoming()))
+        // The first connection is still the active one.
+        manager.handleIncomingState(.failed(listenerFailure), for: active)
+        XCTAssertTrue(manager.isReconnecting)
+    }
+
+    func test_incomingCandidate_ready_replacesTheOldConnection() {
+        let (manager, old, newConnections) = makeSenderWithActiveConnection()
+        let replacement = makeIncoming()
+        XCTAssertTrue(manager.registerIncomingCandidate(replacement))
+
+        manager.handleIncomingState(.ready, for: replacement)
+
+        XCTAssertEqual(newConnections(), 2)
+        XCTAssertFalse(manager.isReconnecting)
+        // The old connection's own teardown is stale now and must not look like a lost connection.
+        manager.handleIncomingState(.cancelled, for: old)
+        XCTAssertFalse(manager.isReconnecting)
+        manager.handleIncomingState(.failed(listenerFailure), for: replacement)
+        XCTAssertTrue(manager.isReconnecting)
+    }
+
+    func test_incomingCandidate_ready_afterTheOldOneDropped_connectsAgain() {
+        let (manager, old, newConnections) = makeSenderWithActiveConnection()
+        manager.handleIncomingState(.failed(listenerFailure), for: old)
+        XCTAssertTrue(manager.isReconnecting)
+        let replacement = makeIncoming()
+        XCTAssertTrue(manager.registerIncomingCandidate(replacement))
+
+        manager.handleIncomingState(.ready, for: replacement)
+
+        XCTAssertFalse(manager.isReconnecting)
+        XCTAssertEqual(newConnections(), 2)
+        if case .connected = manager.connectionState {} else { XCTFail("Expected .connected, got \(manager.connectionState)") }
+    }
+
+    func test_secondIncoming_whileACandidateIsPending_isRejected() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        addTeardownBlock { manager.stop() }
+
+        XCTAssertTrue(manager.registerIncomingCandidate(makeIncoming()))
+        XCTAssertFalse(manager.registerIncomingCandidate(makeIncoming()))
+    }
+
+    func test_incomingCandidate_timeout_freesTheSlot() {
+        let scheduler = FakeScheduler()
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        XCTAssertTrue(manager.registerIncomingCandidate(makeIncoming()))
+
+        scheduler.fire()
+
+        XCTAssertEqual(scheduler.delays, [10])
+        XCTAssertTrue(manager.registerIncomingCandidate(makeIncoming()))
+    }
+
+    func test_incomingCandidate_timeoutAfterItBecameActive_changesNothing() {
+        let scheduler = FakeScheduler()
+        let (manager, active, _) = makeSenderWithActiveConnection(scheduler: scheduler)
+        let stateBefore = manager.connectionState
+
+        scheduler.fire()
+
+        XCTAssertEqual(manager.connectionState, stateBefore)
+        XCTAssertFalse(manager.isReconnecting)
+        manager.handleIncomingState(.failed(listenerFailure), for: active)
+        XCTAssertTrue(manager.isReconnecting)
+    }
+
+    func test_stop_dropsThePendingCandidate() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        var newConnections = 0
+        manager.onNewConnection = { newConnections += 1 }
+        let candidate = makeIncoming()
+        XCTAssertTrue(manager.registerIncomingCandidate(candidate))
+
+        manager.stop()
+        manager.handleIncomingState(.ready, for: candidate)
+
+        XCTAssertEqual(manager.connectionState, .idle)
+        XCTAssertEqual(newConnections, 0)
+        XCTAssertTrue(manager.registerIncomingCandidate(makeIncoming()))
+        manager.stop()
+    }
+
+    func test_incoming_beforeAnyConnection_failedHandshakeKeepsSearching() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        addTeardownBlock { manager.stop() }
+        manager.connectionState = .searching
+        let stranger = makeIncoming()
+        XCTAssertTrue(manager.registerIncomingCandidate(stranger))
+
+        manager.handleIncomingState(.failed(listenerFailure), for: stranger)
+
+        XCTAssertEqual(manager.connectionState, .searching)
+        XCTAssertFalse(manager.isReconnecting)
+    }
+
+    func test_incoming_beforeAnyConnection_ready_connects() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        addTeardownBlock { manager.stop() }
+        manager.connectionState = .searching
+        let candidate = makeIncoming()
+        XCTAssertTrue(manager.registerIncomingCandidate(candidate))
+
+        manager.handleIncomingState(.ready, for: candidate)
+
+        if case .connected = manager.connectionState {} else { XCTFail("Expected .connected, got \(manager.connectionState)") }
+    }
+
+    func test_staleCandidateEvents_afterItWasDropped_areIgnored() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        addTeardownBlock { manager.stop() }
+        var newConnections = 0
+        manager.onNewConnection = { newConnections += 1 }
+        manager.connectionState = .searching
+        let candidate = makeIncoming()
+        XCTAssertTrue(manager.registerIncomingCandidate(candidate))
+        manager.handleIncomingState(.failed(listenerFailure), for: candidate)
+
+        manager.handleIncomingState(.ready, for: candidate)
+
+        XCTAssertEqual(manager.connectionState, .searching)
+        XCTAssertEqual(newConnections, 0)
+    }
 }
 
 private final class FakeScheduler: DelayedActionScheduling {

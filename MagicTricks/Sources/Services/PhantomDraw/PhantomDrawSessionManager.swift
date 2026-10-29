@@ -69,6 +69,8 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     private var connection: NWConnection?
     private var receiverCode: String?
     private var waitingTimeoutWorkItem: DispatchWorkItem?
+    // An incoming connection stays a candidate until its PSK handshake succeeds; only then does it replace `connection`.
+    private var pendingIncoming: NWConnection?
     private var candidateConnections: [NWConnection] = []
     private var candidateTimeouts: [ObjectIdentifier: DispatchWorkItem] = [:]
     private let scheduler: DelayedActionScheduling
@@ -144,13 +146,7 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         }
         l.newConnectionHandler = { [weak self] conn in
             Task { @MainActor [weak self] in
-                guard let self else { return }
-                if case .connected = self.connectionState, !self.isReconnecting {
-                    conn.cancel()
-                    return
-                }
-                self.connection?.cancel()
-                self.activateIncomingConnection(conn)
+                self?.acceptIncoming(conn)
             }
         }
         listener = l
@@ -366,37 +362,72 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
     // MARK: - Sender: incoming connection lifecycle
 
-    private func activateIncomingConnection(_ conn: NWConnection) {
-        connection = conn
-        cancelWaitingTimeout()
+    private func acceptIncoming(_ conn: NWConnection) {
+        guard registerIncomingCandidate(conn) else {
+            conn.cancel()
+            return
+        }
         conn.stateUpdateHandler = { [weak self] state in
             Task { @MainActor [weak self] in
-                guard let self else { return }
-                switch state {
-                case .ready:
-                    guard self.connection === conn else { return }
-                    self.cancelWaitingTimeout()
-                    self.isReconnecting = false
-                    self.connectionState = .connected(peerName: conn.endpoint.peerName)
-                    self.receiveLoop(conn)
-                    self.onNewConnection?()
-
-                case .waiting:
-                    guard self.connection === conn else { return }
-                    self.scheduleWaitingTimeout(for: conn)
-
-                case .failed, .cancelled:
-                    guard self.connection === conn else { return }
-                    self.cancelWaitingTimeout()
-                    self.connection = nil
-                    self.isReconnecting = true
-
-                default:
-                    break
-                }
+                self?.handleIncomingState(state, for: conn)
             }
         }
         conn.start(queue: netQueue)
+    }
+
+    // One candidate at a time, with a deadline, so a stalled or wrong-code handshake can't pile up or hold the slot.
+    // Not private: driven directly in tests.
+    func registerIncomingCandidate(_ conn: NWConnection) -> Bool {
+        guard pendingIncoming == nil else { return false }
+        pendingIncoming = conn
+        scheduler.schedule(after: Self.connectionTimeout) { [weak self] in
+            guard let self, self.pendingIncoming === conn else { return }
+            self.pendingIncoming = nil
+            conn.cancel()
+        }
+        return true
+    }
+
+    // Not private: driven directly in tests.
+    func handleIncomingState(_ state: NWConnection.State, for conn: NWConnection) {
+        if conn === pendingIncoming {
+            switch state {
+            case .ready:
+                promoteIncoming(conn)
+            case .failed, .cancelled:
+                // A failed handshake (wrong code, stranger) must not touch the connection that is already running.
+                pendingIncoming = nil
+            default:
+                break
+            }
+            return
+        }
+        guard conn === connection else { return }
+        switch state {
+        case .ready:
+            cancelWaitingTimeout()
+        case .waiting:
+            scheduleWaitingTimeout(for: conn)
+        case .failed, .cancelled:
+            cancelWaitingTimeout()
+            connection = nil
+            isReconnecting = true
+        default:
+            break
+        }
+    }
+
+    private func promoteIncoming(_ conn: NWConnection) {
+        pendingIncoming = nil
+        let previous = connection
+        // Assigned first, so the old connection's .cancelled is recognised as stale and ignored.
+        connection = conn
+        previous?.cancel()
+        cancelWaitingTimeout()
+        isReconnecting = false
+        connectionState = .connected(peerName: conn.endpoint.peerName)
+        receiveLoop(conn)
+        onNewConnection?()
     }
 
     // A connection with no viable path (e.g. AWDL out of range) can sit in .waiting indefinitely on its own.
@@ -514,6 +545,8 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         browser?.cancel()
         listener?.cancel()
         connection?.cancel()
+        pendingIncoming?.cancel()
+        pendingIncoming = nil
         candidateConnections.forEach { $0.cancel() }
         candidateTimeouts.values.forEach { $0.cancel() }
         candidateTimeouts.removeAll()
