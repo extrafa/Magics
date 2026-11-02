@@ -19,6 +19,8 @@ struct StoreAlert: Equatable {
     }
 
     fileprivate static let alreadyPro = StoreAlert(title: .paywallInfo("alreadyPro.title"), message: .paywallInfo("alreadyPro"))
+    // Ask to Buy waits for a parent: that is news, not a failure, so the title is not "Error".
+    fileprivate static let pending = StoreAlert(title: .paywallInfo("pending.title"), message: .paywallError("pending"))
     fileprivate static let restored = StoreAlert(title: .paywallInfo("restored.title"), message: .paywallInfo("restored"))
 
     // A cancelled sign-in or purchase sheet is the user's own choice, not an error, so it gets no alert.
@@ -170,7 +172,7 @@ final class StoreManager: ObservableObject {
             case .userCancelled:
                 return nil
             case .pending:
-                return .error("pending")
+                return .pending
             }
         } catch {
             return .failure(error, fallback: "purchaseFailed")

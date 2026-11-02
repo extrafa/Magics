@@ -5645,6 +5645,23 @@
         }
       }
     },
+    "onboarding.paywall.info.pending.title" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Awaiting approval"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Pendiente de aprobación"
+          }
+        }
+      }
+    },
     "onboarding.paywall.info.restored" : {
       "extractionState" : "manual",
       "localizations" : {
