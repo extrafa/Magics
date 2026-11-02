@@ -8,6 +8,7 @@ import SwiftUI
 struct PhantomDrawReceiverView: View {
 
     @ObservedObject var session: PhantomDrawSessionManager
+    @Environment(\.legibilityWeight) private var legibilityWeight
 
     var body: some View {
         ZStack {
@@ -80,6 +81,7 @@ struct PhantomDrawReceiverView: View {
         .padding(.horizontal, 4)
         .padding(.vertical, 6)
         // Fixed width: a wider badge makes the nav bar push the centred title left, and both texts must take the same room.
-        .frame(width: 96)
+        // Bold Text makes "Reconectando" wider than the usual 96 pt.
+        .frame(width: legibilityWeight == .bold ? 112 : 96)
     }
 }

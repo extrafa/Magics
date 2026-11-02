@@ -16,7 +16,8 @@ struct PhantomDrawSenderView: View {
 
             GeometryReader { geo in
                 ZStack {
-                    if viewModel.totalDrawnLength < 8 {
+                    // A dot counts as drawing too, so the hint goes as soon as anything is on the canvas.
+                    if viewModel.completedStrokes.isEmpty && viewModel.currentStroke.isEmpty {
                         placeholder
                     }
 
