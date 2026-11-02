@@ -16,6 +16,36 @@ final class ColorSenseViewModelTests: XCTestCase {
         XCTAssertEqual(ColorCardType.yellow.vibrations, 4)
     }
 
+    func test_gridHeight_isTheTallestCardOfEachRowPlusTheGaps() {
+        let viewModel = ColorSenseViewModel(haptics: MockCountHaptics())
+        let heights = viewModel.cards.map(\.height)
+        let rows = stride(from: 0, to: heights.count, by: 2).map { max(heights[$0], heights[$0 + 1]) }
+
+        XCTAssertEqual(viewModel.gridHeight, rows.reduce(0, +) + CGFloat(rows.count - 1) * ColorSenseViewModel.gridSpacing)
+    }
+
+    func test_heightScale_onATallScreen_keepsTheCardsAsTheyAre() {
+        let viewModel = ColorSenseViewModel(haptics: MockCountHaptics())
+
+        XCTAssertEqual(viewModel.heightScale(forAvailableHeight: viewModel.gridHeight + 200), 1)
+    }
+
+    func test_heightScale_onAShortScreen_makesTheGridFitExactly() {
+        let viewModel = ColorSenseViewModel(haptics: MockCountHaptics())
+        let available = viewModel.gridHeight - 150
+
+        let scale = viewModel.heightScale(forAvailableHeight: available)
+
+        XCTAssertLessThan(scale, 1)
+        XCTAssertEqual(viewModel.gridHeight * scale, available, accuracy: 0.001)
+    }
+
+    func test_heightScale_withNoMeasuredHeight_changesNothing() {
+        let viewModel = ColorSenseViewModel(haptics: MockCountHaptics())
+
+        XCTAssertEqual(viewModel.heightScale(forAvailableHeight: 0), 1)
+    }
+
     func test_tap_marksTheCardActive_thenClearsItAfterTheTapAnimation() async throws {
         let viewModel = ColorSenseViewModel(haptics: MockCountHaptics())
         let card = try XCTUnwrap(viewModel.cards.first)

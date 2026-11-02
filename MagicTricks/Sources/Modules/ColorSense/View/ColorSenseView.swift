@@ -12,9 +12,11 @@ struct ColorSenseView: View {
     @StateObject private var viewModel: ColorSenseViewModel
 
     private static let columns = [
-        GridItem(.flexible(), spacing: 14),
-        GridItem(.flexible(), spacing: 14)
+        GridItem(.flexible(), spacing: ColorSenseViewModel.gridSpacing),
+        GridItem(.flexible(), spacing: ColorSenseViewModel.gridSpacing)
     ]
+    // Room for the cards' floating motion, so the moving grid never touches the screen edge.
+    private static let motionMargin: CGFloat = 24
 
     init(haptics: CountHapticPlaying? = nil) {
         _viewModel = StateObject(wrappedValue: ColorSenseViewModel(haptics: haptics ?? HapticManager.shared))
@@ -24,15 +26,19 @@ struct ColorSenseView: View {
         ZStack {
             Color.backgroundScreen.ignoresSafeArea()
 
-            LazyVGrid(columns: Self.columns, spacing: 14) {
-                ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
-                    cardView(card)
-                        .rotationEffect(.degrees(card.rotation))
-                        .modifier(floatingMotionSettings(for: index))
-                        .onTapGesture { viewModel.handleTap(on: card) }
+            GeometryReader { geo in
+                let heightScale = viewModel.heightScale(forAvailableHeight: geo.size.height - Self.motionMargin)
+                LazyVGrid(columns: Self.columns, spacing: ColorSenseViewModel.gridSpacing) {
+                    ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
+                        cardView(card, heightScale: heightScale)
+                            .rotationEffect(.degrees(card.rotation))
+                            .modifier(floatingMotionSettings(for: index))
+                            .onTapGesture { viewModel.handleTap(on: card) }
+                    }
                 }
+                .padding(.horizontal, 20)
+                .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
-            .padding(.horizontal, 20)
         }
         .exitHint()
         .keepsScreenAwake()
@@ -42,10 +48,10 @@ struct ColorSenseView: View {
         }
     }
 
-    private func cardView(_ card: ColorCard) -> some View {
+    private func cardView(_ card: ColorCard, heightScale: CGFloat) -> some View {
         TrickGradientCard(
             color: card.colorType.color,
-            height: card.height,
+            height: card.height * heightScale,
             isPressed: viewModel.activeTapCardID == card.id
         ) {
             VStack(alignment: .leading, spacing: 10) {
