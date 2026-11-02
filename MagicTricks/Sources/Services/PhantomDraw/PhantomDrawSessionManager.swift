@@ -276,7 +276,8 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
         }
     }
 
-    private func handleCandidateState(_ state: NWConnection.State, for conn: NWConnection) {
+    // Not private: driven directly in tests.
+    func handleCandidateState(_ state: NWConnection.State, for conn: NWConnection) {
         switch state {
         case .ready:
             guard connection == nil else { conn.cancel(); return }
@@ -449,10 +450,48 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
     // MARK: - Framing
 
+    // A clean EOF means the peer closed the connection on purpose; an error is a drop that is worth retrying.
+    nonisolated private func receiveEnded(_ conn: NWConnection, cleanly: Bool) {
+        guard cleanly else {
+            conn.cancel()
+            return
+        }
+        Task { @MainActor [weak self] in
+            if let self {
+                self.handlePeerClosed(conn)
+            } else {
+                conn.cancel()
+            }
+        }
+    }
+
+    // The performer's phone doesn't reconnect after a deliberate close (e.g. the spectator ended the trick), it says so.
+    // The sender keeps its old behaviour: the cancel below runs the usual lost-connection path.
+    // Not private: driven directly in tests.
+    func handlePeerClosed(_ conn: NWConnection) {
+        guard receiverCode != nil, conn === connection else {
+            conn.cancel()
+            return
+        }
+        searchGeneration += 1
+        isReconnecting = false
+        connection = nil
+        browser?.cancel()
+        browser = nil
+        candidateConnections.forEach { $0.cancel() }
+        candidateConnections = []
+        candidateTimeouts.values.forEach { $0.cancel() }
+        candidateTimeouts.removeAll()
+        conn.cancel()
+        connectionState = .ended
+    }
+
     nonisolated private func receiveLoop(_ conn: NWConnection) {
         conn.receive(minimumIncompleteLength: 4, maximumLength: 4) { [weak self] header, _, done, error in
             guard let self, let header, error == nil, !done else {
-                if done || error != nil { conn.cancel() }
+                if done || error != nil {
+                    if let self { self.receiveEnded(conn, cleanly: error == nil) } else { conn.cancel() }
+                }
                 return
             }
             guard let length = PhantomDrawFraming.bodyLength(header: header) else {
@@ -462,7 +501,9 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
 
             conn.receive(minimumIncompleteLength: Int(length), maximumLength: Int(length)) { [weak self] body, _, done2, error2 in
                 guard let self, let body, !done2, error2 == nil else {
-                    if done2 || error2 != nil { conn.cancel() }
+                    if done2 || error2 != nil {
+                        if let self { self.receiveEnded(conn, cleanly: error2 == nil) } else { conn.cancel() }
+                    }
                     return
                 }
                 guard let msg = try? PhantomDrawFraming.decode(body) else {

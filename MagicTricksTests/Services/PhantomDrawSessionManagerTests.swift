@@ -632,6 +632,79 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
         XCTAssertEqual(manager.connectionState, .searching)
         XCTAssertEqual(newConnections, 0)
     }
+
+    // MARK: - Session ended by the peer
+
+    private func makeReceiverWithActiveConnection(
+        scheduler: FakeScheduler = FakeScheduler()
+    ) -> (manager: PhantomDrawSessionManager, active: NWConnection) {
+        let manager = PhantomDrawSessionManager(scheduler: scheduler)
+        addTeardownBlock { manager.stop() }
+        manager.startAsReceiver(code: "42")
+        let active = NWConnection(host: "127.0.0.1", port: 9, using: .tcp)
+        manager.handleCandidateState(.ready, for: active)
+        return (manager, active)
+    }
+
+    func test_peerClosed_onReceiver_endsTheSessionWithoutReconnecting() {
+        let scheduler = FakeScheduler()
+        let (manager, active) = makeReceiverWithActiveConnection(scheduler: scheduler)
+
+        manager.handlePeerClosed(active)
+
+        XCTAssertEqual(manager.connectionState, .ended)
+        XCTAssertFalse(manager.isReconnecting)
+        // The search timer from before must not turn the ended session into a failure.
+        scheduler.fire()
+        XCTAssertEqual(manager.connectionState, .ended)
+    }
+
+    func test_connectionDrop_onReceiver_stillReconnects() {
+        let (manager, active) = makeReceiverWithActiveConnection()
+
+        manager.handleCandidateState(.failed(listenerFailure), for: active)
+
+        XCTAssertTrue(manager.isReconnecting)
+        if case .connected = manager.connectionState {} else { XCTFail("Expected .connected, got \(manager.connectionState)") }
+    }
+
+    func test_peerClosed_forAConnectionThatIsNotActive_changesNothing() {
+        let (manager, _) = makeReceiverWithActiveConnection()
+        let stateBefore = manager.connectionState
+
+        manager.handlePeerClosed(NWConnection(host: "127.0.0.1", port: 9, using: .tcp))
+
+        XCTAssertEqual(manager.connectionState, stateBefore)
+        XCTAssertFalse(manager.isReconnecting)
+    }
+
+    func test_peerClosed_onSender_doesNotEndTheSession() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        addTeardownBlock { manager.stop() }
+        manager.connectionState = .connected(peerName: "Performer's iPhone")
+
+        manager.handlePeerClosed(NWConnection(host: "127.0.0.1", port: 9, using: .tcp))
+
+        XCTAssertEqual(manager.connectionState, .connected(peerName: "Performer's iPhone"))
+    }
+
+    func test_stop_afterTheSessionEnded_returnsToIdle() {
+        let (manager, active) = makeReceiverWithActiveConnection()
+        manager.handlePeerClosed(active)
+
+        manager.stop()
+
+        XCTAssertEqual(manager.connectionState, .idle)
+    }
+
+    func test_tryAgain_afterTheSessionEnded_searchesAgain() {
+        let (manager, active) = makeReceiverWithActiveConnection()
+        manager.handlePeerClosed(active)
+
+        manager.startAsReceiver(code: "42")
+
+        XCTAssertEqual(manager.connectionState, .searching)
+    }
 }
 
 private final class FakeScheduler: DelayedActionScheduling {
