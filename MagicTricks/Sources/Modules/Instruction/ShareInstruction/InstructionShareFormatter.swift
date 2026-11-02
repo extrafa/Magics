@@ -11,7 +11,7 @@ private let sectionKey = L10nDomain("instruction.section")
 private let shareKey = L10nDomain("instruction.share")
 
 enum InstructionShareFormatter {
-    static func shareText(for instruction: Instruction) -> String {
+    static func shareText(for instruction: Instruction, appStoreURL: URL? = AppConfig.appStoreURL) -> String {
         let effect = String(localized: sectionKey("effect"))
         let secret = String(localized: sectionKey("secret"))
         let steps = String(localized: sectionKey("steps"))
@@ -21,6 +21,8 @@ enum InstructionShareFormatter {
         let stepsText = instruction.steps.enumerated()
             .map { index, step in "\(index + 1). \(step.title)\n\(step.description)" }
             .joined(separator: "\n\n")
+
+        let link = appStoreURL.map { "\n\($0.absoluteString)" } ?? ""
 
         return """
         \(instruction.title)
@@ -35,7 +37,7 @@ enum InstructionShareFormatter {
         \(stepsText)
 
         \(madeWith)
-        \(learnMore)
+        \(learnMore)\(link)
         """
     }
 }

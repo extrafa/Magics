@@ -38,4 +38,22 @@ final class InstructionModelsTests: XCTestCase {
             }
         }
     }
+
+    func test_shareText_endsWithTheAppStoreLinkWhenThereIsOne() throws {
+        let link = try XCTUnwrap(URL(string: "https://apps.apple.com/app/id1"))
+
+        let text = InstructionShareFormatter.shareText(for: .colorSense, appStoreURL: link)
+
+        XCTAssertTrue(text.hasSuffix("\n" + link.absoluteString))
+    }
+
+    func test_shareText_withoutALink_hasNoUrl() {
+        let text = InstructionShareFormatter.shareText(for: .colorSense, appStoreURL: nil)
+
+        XCTAssertFalse(text.contains("http"))
+    }
+
+    func test_theConfiguredAppStoreLink_isTheOneOfTheAppRecord() {
+        XCTAssertEqual(AppConfig.appStoreURL?.absoluteString, "https://apps.apple.com/app/id6782334680")
+    }
 }
