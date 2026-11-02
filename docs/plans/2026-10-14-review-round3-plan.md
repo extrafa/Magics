@@ -227,7 +227,9 @@ App Store разрешает любую версию, но после одобр
       (`instruction.share.*`), убрать неиспользуемый `_phantomdraw._udp` из `Info.plist`, "Restore
       Purchases" одной формой, "Yours forever" не дважды, английские названия трюков в испанских
       инструкциях.
-      Кроме: "Trickly" в шаринге остаётся до выбора названия (решение владельца).
+      "Trickly" в шаринге заменён временным названием из App Store Connect ("Magical Ross");
+      когда владелец выберет настоящее название, его нужно подставить в `instruction.share.*`,
+      политику приватности и Review Notes.
 - [ ] R-07 Каталог строк: 12 мёртвых `settings.help.*` (кроме `noVibration`), `Text(verbatim:)` там, где
       Xcode извлекает `%lld` и `%lld.` (`MagicGallerySlotCard.swift:68`, `InstructionStepRow.swift:67`),
       множественное число через plural variations вместо пар `.one`/`.other`, ошибки пейвола в одном
