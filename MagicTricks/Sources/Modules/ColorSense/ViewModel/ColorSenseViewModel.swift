@@ -25,6 +25,24 @@ final class ColorSenseViewModel: ObservableObject {
         .init(colorType: .blue,   title: String(localized: key("tap")),      height: 180, rotation: -1),
     ]
 
+    // Gap between cards, both ways: the two columns are filled row by row.
+    static let gridSpacing: CGFloat = 14
+    private static let columnCount = 2
+
+    // The cards' natural height: each row is as tall as its tallest card.
+    var gridHeight: CGFloat {
+        let rows = stride(from: 0, to: cards.count, by: Self.columnCount).map { start in
+            cards[start..<min(start + Self.columnCount, cards.count)].map(\.height).max() ?? 0
+        }
+        return rows.reduce(0, +) + CGFloat(max(rows.count - 1, 0)) * Self.gridSpacing
+    }
+
+    // Shrinks the cards on a short screen (SE, mini) so the whole grid is on it; never grows them.
+    func heightScale(forAvailableHeight height: CGFloat) -> CGFloat {
+        guard height > 0, gridHeight > 0 else { return 1 }
+        return min(1, height / gridHeight)
+    }
+
     private let haptics: CountHapticPlaying
     private var tapAnimationTask: Task<Void, Never>?
     private var playSignalTask: Task<Void, Never>?
