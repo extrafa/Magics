@@ -515,15 +515,14 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
                     switch msg {
                     case .stroke(let s):
                         self.inProgressStroke = nil
-                        guard self.receivedStrokes.count < Self.maxStrokes, let sanitized = self.sanitized(s) else { break }
-                        self.receivedStrokes.append(sanitized)
+                        self.appendReceivedStroke(s)
                     case .strokeProgress(let s):
                         self.inProgressStroke = self.sanitized(s)
                     case .clear:
                         self.receivedStrokes = []
                         self.inProgressStroke = nil
                     case .sync(let all):
-                        self.receivedStrokes = Array(all.compactMap(self.sanitized).prefix(Self.maxStrokes))
+                        self.receivedStrokes = Array(all.compactMap(self.sanitized).suffix(Self.maxStrokes))
                         self.inProgressStroke = nil
                     case .canvasAspectRatio(let ratio):
                         guard ratio.isFinite, ratio > 0 else { break }
@@ -536,6 +535,16 @@ final class PhantomDrawSessionManager: ObservableObject, PhantomDrawSessioning {
     }
 
     // MARK: - Helpers
+
+    // The newest strokes win, like on the sender (which keeps the same number), so a long drawing never freezes on the old ones.
+    // Not private: checked directly in tests.
+    func appendReceivedStroke(_ stroke: DrawingStroke) {
+        guard let sanitized = sanitized(stroke) else { return }
+        if receivedStrokes.count >= Self.maxStrokes {
+            receivedStrokes.removeFirst(receivedStrokes.count - Self.maxStrokes + 1)
+        }
+        receivedStrokes.append(sanitized)
+    }
 
     // Clamps a peer-sent stroke to sane bounds; nil if it's malformed enough to just drop.
     nonisolated func sanitized(_ stroke: DrawingStroke) -> DrawingStroke? {

@@ -78,6 +78,16 @@ final class PhantomDrawViewModel: ObservableObject {
         lastStrokePoint = point
         currentStroke.append(point)
         sendProgressIfNeeded()
+        splitStrokeIfTooLong()
+    }
+
+    // The receiver drops a stroke longer than it accepts, so a long line is closed here and goes on as a new stroke.
+    private func splitStrokeIfTooLong() {
+        guard currentStroke.count >= PhantomDrawSessionManager.maxPointsPerStroke, let last = currentStroke.last else { return }
+        commitStroke()
+        currentStrokeID = UUID()
+        currentStroke = [last]
+        lastStrokePoint = last
     }
 
     func commitStroke() {
@@ -85,6 +95,10 @@ final class PhantomDrawViewModel: ObservableObject {
         let normalized = currentStroke.map { DrawingPoint(normalizing: $0, in: canvasSize) }
         let stroke = DrawingStroke(id: currentStrokeID, points: normalized)
         completedStrokes.append(stroke)
+        // The receiver keeps this many too, so a sync after a reconnect leaves both canvases the same.
+        if completedStrokes.count > PhantomDrawSessionManager.maxStrokes {
+            completedStrokes.removeFirst(completedStrokes.count - PhantomDrawSessionManager.maxStrokes)
+        }
         session.send(.stroke(stroke))
         currentStroke = []
         lastStrokePoint = nil
