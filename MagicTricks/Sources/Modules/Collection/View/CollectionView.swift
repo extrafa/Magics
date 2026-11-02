@@ -60,6 +60,8 @@ struct CollectionView: View {
                     .padding(.leading, 20)
                     .padding(.top, 4)
                     .opacity(showSettings ? 0 : 1)
+                    // Hidden is not disabled: it must not catch the tap meant for the back button over Settings.
+                    .allowsHitTesting(!showSettings)
                     .scaleEffect(showSettings ? 0.85 : 1, anchor: .leading)
                     .animation(.spring(response: 0.35, dampingFraction: 0.78), value: showSettings)
             }
