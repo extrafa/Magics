@@ -16,7 +16,6 @@ final class PhantomDrawViewModel: ObservableObject {
     @Published var role: PhantomDrawRole?
     @Published var currentStroke: [CGPoint] = []
     @Published var completedStrokes: [DrawingStroke] = []
-    @Published private(set) var totalDrawnLength: CGFloat = 0
 
     let session: PhantomDrawSessioning
 
@@ -73,7 +72,6 @@ final class PhantomDrawViewModel: ObservableObject {
             let dy = point.y - last.y
             let distance = sqrt(dx * dx + dy * dy)
             guard distance >= Self.minPointDistance else { return }
-            totalDrawnLength += distance
         }
         lastStrokePoint = point
         currentStroke.append(point)
@@ -121,7 +119,6 @@ final class PhantomDrawViewModel: ObservableObject {
     func clearDrawing() {
         completedStrokes = []
         currentStroke = []
-        totalDrawnLength = 0
         lastStrokePoint = nil
         session.send(.clear)
     }
@@ -131,7 +128,6 @@ final class PhantomDrawViewModel: ObservableObject {
         role = nil
         completedStrokes = []
         currentStroke = []
-        totalDrawnLength = 0
         lastStrokePoint = nil
     }
 }
