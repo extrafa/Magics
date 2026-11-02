@@ -632,6 +632,37 @@ final class PhantomDrawSessionManagerTests: XCTestCase {
         XCTAssertEqual(manager.connectionState, .searching)
         XCTAssertEqual(newConnections, 0)
     }
+
+    // MARK: - Received strokes
+
+    private func stroke() -> DrawingStroke {
+        DrawingStroke(id: UUID(), points: [DrawingPoint(x: 0.5, y: 0.5)])
+    }
+
+    func test_receivedStrokes_whenFull_keepTheNewestOnes() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        let full = (0..<PhantomDrawSessionManager.maxStrokes).map { _ in stroke() }
+        manager.receivedStrokes = full
+        let newest = stroke()
+
+        manager.appendReceivedStroke(newest)
+
+        XCTAssertEqual(manager.receivedStrokes.count, PhantomDrawSessionManager.maxStrokes)
+        XCTAssertEqual(manager.receivedStrokes.first, full[1])
+        XCTAssertEqual(manager.receivedStrokes.last, newest)
+    }
+
+    func test_receivedStroke_beyondThePointLimit_isStillDropped() {
+        let manager = PhantomDrawSessionManager(scheduler: FakeScheduler())
+        let tooLong = DrawingStroke(
+            id: UUID(),
+            points: (0...PhantomDrawSessionManager.maxPointsPerStroke).map { _ in DrawingPoint(x: 0, y: 0) }
+        )
+
+        manager.appendReceivedStroke(tooLong)
+
+        XCTAssertTrue(manager.receivedStrokes.isEmpty)
+    }
 }
 
 private final class FakeScheduler: DelayedActionScheduling {

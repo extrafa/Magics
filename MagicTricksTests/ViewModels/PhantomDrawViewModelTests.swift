@@ -125,6 +125,47 @@ final class PhantomDrawViewModelTests: XCTestCase {
 
         XCTAssertEqual(session.sentMessages, [.clear, .clear])
     }
+
+    // MARK: - Limits the receiver enforces
+
+    func test_aVeryLongLine_isSplitIntoStrokesTheReceiverKeeps() {
+        let session = MockPhantomDrawSession()
+        let vm = PhantomDrawViewModel(session: session)
+        vm.role = .sender
+        let maxPoints = PhantomDrawSessionManager.maxPointsPerStroke
+
+        for i in 0..<(maxPoints * 2 + 10) {
+            vm.addPoint(CGPoint(x: CGFloat(i) * 3, y: 0))
+        }
+        vm.commitStroke()
+
+        XCTAssertEqual(vm.completedStrokes.count, 3)
+        XCTAssertTrue(vm.completedStrokes.allSatisfy { $0.points.count <= maxPoints })
+        // The line goes on without a gap: each stroke starts where the one before it ended.
+        for (previous, next) in zip(vm.completedStrokes, vm.completedStrokes.dropFirst()) {
+            XCTAssertEqual(previous.points.last, next.points.first)
+        }
+    }
+
+    func test_moreStrokesThanTheReceiverKeeps_dropTheOldestOnes() {
+        let session = MockPhantomDrawSession()
+        let vm = PhantomDrawViewModel(session: session)
+        vm.role = .sender
+        let limit = PhantomDrawSessionManager.maxStrokes
+
+        for _ in 0..<(limit + 5) {
+            vm.addPoint(.zero)
+            vm.commitStroke()
+        }
+
+        XCTAssertEqual(vm.completedStrokes.count, limit)
+        let sentStrokes = session.sentMessages.compactMap { message -> DrawingStroke? in
+            if case .stroke(let stroke) = message { return stroke }
+            return nil
+        }
+        XCTAssertEqual(vm.completedStrokes.first, sentStrokes[5])
+        XCTAssertEqual(vm.completedStrokes.last, sentStrokes.last)
+    }
 }
 
 private final class FakeClock {
