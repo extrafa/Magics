@@ -126,6 +126,8 @@ Contact for review questions: <your email>.
 версия, поэтому в App Store Connect такие сборки не отличить по номеру.
 
 - [ ] Убрать `Config/Local.xcconfig` (он подменяет bundle id и команду), только потом архивировать
+- [ ] Запустить `python3 scripts/check-archive-configs.py`: он должен пройти без ошибок. Если пишет про bundle id
+      `Rostulik`, `Config/Local.xcconfig` ещё на месте
 - [ ] Архивировать только схемой "Magics" (Release), не "Magics (TestFlight)" и не "Magics (StoreKit Test)"
 - [ ] Версия и номер сборки не повторяют уже загруженные (выбор версии это пункт 36)
 - [ ] Поставить из TestFlight именно загруженную сборку и открыть Настройки: секции "TestFlight"
