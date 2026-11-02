@@ -13,6 +13,7 @@ private let enterCodeKey = L10nDomain("phantomDraw.enterCode")
 private let statusKey = L10nDomain("phantomDraw.status")
 private let statusFailedKey = KeyDomain("phantomDraw.status.failed")
 private let statusDeniedKey = KeyDomain("phantomDraw.status.localNetworkDenied")
+private let statusEndedKey = KeyDomain("phantomDraw.status.ended")
 
 struct PhantomDrawView: View {
 
@@ -126,6 +127,21 @@ struct PhantomDrawView: View {
                         subtitle: LocalizedStringKey(stringLiteral: statusFailedKey("subtitle")),
                         buttonTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
                         action: retry
+                    )
+                }
+                .transition(.opacity)
+            }
+
+            if case .ended = state {
+                scrollingScreen {
+                    statusView(
+                        icon: "checkmark.circle",
+                        title: LocalizedStringKey(stringLiteral: statusEndedKey("title")),
+                        subtitle: LocalizedStringKey(stringLiteral: statusEndedKey("subtitle")),
+                        buttonTitle: "common.close",
+                        action: stop,
+                        secondaryTitle: LocalizedStringKey(stringLiteral: statusFailedKey("retry")),
+                        secondaryAction: retryAfterDenial
                     )
                 }
                 .transition(.opacity)
