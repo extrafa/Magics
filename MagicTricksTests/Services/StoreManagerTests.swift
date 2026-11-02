@@ -148,6 +148,8 @@ final class StoreManagerTests: XCTestCase {
 
         XCTAssertFalse(manager.hasProAccess)
         XCTAssertNotNil(alert)
+        // Waiting for approval is not an error, so it must not carry the error title.
+        XCTAssertNotEqual(alert?.title, String(localized: "common.error"))
     }
 
     func test_transactionUpdate_grantsAccess() async {
