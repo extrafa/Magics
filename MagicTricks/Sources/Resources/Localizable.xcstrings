@@ -2203,13 +2203,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "The phone will vibrate. Count the pulses. Match the number to the color."
+            "value" : "The phone will vibrate. Count the pulses. Match the number to the color. If he taps another card after the vibration ends, the phone vibrates again: the last signal is the one that counts."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuenta los pulsos y encuentra el color."
+            "value" : "Cuenta los pulsos y encuentra el color. Si toca otra carta cuando termina la vibración, el teléfono vibra de nuevo: cuenta la última señal."
           }
         }
       }
