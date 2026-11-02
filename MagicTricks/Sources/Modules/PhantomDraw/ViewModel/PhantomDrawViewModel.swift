@@ -33,7 +33,7 @@ final class PhantomDrawViewModel: ObservableObject {
         self.clock = clock
         session.onNewConnection = { [weak self] in
             guard let self, self.role == .sender else { return }
-            self.session.send(.sync(self.completedStrokes))
+            PhantomDrawFraming.syncMessages(for: self.completedStrokes).forEach(self.session.send)
             if let ratio = self.canvasAspectRatio {
                 self.session.send(.canvasAspectRatio(ratio))
             }
