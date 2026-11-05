@@ -28,7 +28,6 @@ final class RateAppViewModelTests: XCTestCase {
 
         XCTAssertEqual(viewModel.phase, .disliked)
         XCTAssertFalse(preferences.hasRespondedToRating)
-        XCTAssertNil(preferences.ratingSnoozedUntil)
     }
 
     func test_writeToUs_setsHasRespondedToRatingAndReturnsMailURL() {
@@ -42,14 +41,13 @@ final class RateAppViewModelTests: XCTestCase {
         XCTAssertEqual(url?.absoluteString.contains(AppConfig.supportEmail), true)
     }
 
-    func test_markDismissed_snoozesIntoTheFuture() throws {
+    func test_markDismissed_marksTheSheetAsAnswered() {
         let preferences = MockRateAppPreferences()
         let viewModel = RateAppViewModel(preferences: preferences)
 
         viewModel.markDismissed()
 
-        let snoozedUntil = try XCTUnwrap(preferences.ratingSnoozedUntil)
-        XCTAssertGreaterThan(snoozedUntil, Date())
+        XCTAssertTrue(preferences.hasRespondedToRating)
     }
 }
 
@@ -57,6 +55,5 @@ final class RateAppViewModelTests: XCTestCase {
 // preferences value, so a struct mock's mutations wouldn't be visible here.
 private final class MockRateAppPreferences: RateAppPreferenceManaging {
     var hasRespondedToRating = false
-    var ratingSnoozedUntil: Date?
     var trickLaunchCount = 0
 }

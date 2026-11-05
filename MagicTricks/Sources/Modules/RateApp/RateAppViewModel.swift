@@ -18,7 +18,6 @@ final class RateAppViewModel: ObservableObject {
     @Published private(set) var phase: Phase = .question
 
     private var preferences: RateAppPreferenceManaging
-    private static let snoozeDurationDays = 14
 
     init(preferences: RateAppPreferenceManaging = AppPreferences.shared) {
         self.preferences = preferences
@@ -37,11 +36,8 @@ final class RateAppViewModel: ObservableObject {
         return AppConfig.supportMailURL(subject: String(localized: "rateApp.feedback.emailSubject"))
     }
 
+    // The sheet shows once: whatever the person does with it, it doesn't come back.
     func markDismissed() {
-        preferences.ratingSnoozedUntil = Calendar.current.date(
-            byAdding: .day,
-            value: Self.snoozeDurationDays,
-            to: Date()
-        )
+        preferences.hasRespondedToRating = true
     }
 }

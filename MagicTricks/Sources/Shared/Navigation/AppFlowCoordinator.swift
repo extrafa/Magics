@@ -39,7 +39,6 @@ final class AppFlowCoordinator: ObservableObject {
 
     func recordTrickClose() {
         guard !preferences.hasRespondedToRating else { return }
-        if let until = preferences.ratingSnoozedUntil, until > Date() { return }
         preferences.trickLaunchCount += 1
         if preferences.trickLaunchCount >= Self.ratingTriggerCount {
             scheduler.schedule(after: 0.7) { [weak self] in
@@ -86,7 +85,6 @@ final class AppFlowCoordinator: ObservableObject {
     func resetRatingState() {
         preferences.hasRespondedToRating = false
         preferences.trickLaunchCount = 0
-        preferences.ratingSnoozedUntil = nil
     }
 
     func markTrickAsSeen(_ trick: Trick) {
