@@ -38,6 +38,7 @@ protocol MagicGalleryPreferenceManaging {
 protocol RateAppPreferenceManaging {
     var hasRespondedToRating: Bool { get set }
     var trickLaunchCount: Int { get set }
+    var firstLaunchDate: Date? { get set }
 }
 
 protocol OnboardingPreferenceManaging {
@@ -113,6 +114,7 @@ struct AppPreferences: AppPreferencesProviding {
         // RateApp
         static let hasRespondedToRating = "hasRespondedToRating"
         static let trickLaunchCount = "trickLaunchCount"
+        static let firstLaunchDate = "firstLaunchDate"
 
         // Onboarding
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
@@ -216,6 +218,11 @@ struct AppPreferences: AppPreferencesProviding {
     var hasRespondedToRating: Bool {
         get { store.bool(forKey: Key.hasRespondedToRating) }
         nonmutating set { store.set(newValue, forKey: Key.hasRespondedToRating) }
+    }
+
+    var firstLaunchDate: Date? {
+        get { store.object(forKey: Key.firstLaunchDate) as? Date }
+        nonmutating set { store.set(newValue, forKey: Key.firstLaunchDate) }
     }
 
     var seenTrickIds: [String] {

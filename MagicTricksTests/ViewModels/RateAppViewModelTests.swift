@@ -56,4 +56,5 @@ final class RateAppViewModelTests: XCTestCase {
 private final class MockRateAppPreferences: RateAppPreferenceManaging {
     var hasRespondedToRating = false
     var trickLaunchCount = 0
+    var firstLaunchDate: Date?
 }

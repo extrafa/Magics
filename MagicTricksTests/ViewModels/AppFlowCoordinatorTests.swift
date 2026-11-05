@@ -12,6 +12,13 @@ final class AppFlowCoordinatorTests: XCTestCase {
     private let trick = TrickCollection.tricks[0]
     private let proTrick = TrickCollection.tricks.first { $0.id.requiresPro }!
 
+    // Installed long enough for the rating sheet to be allowed.
+    private func agedPreferences() -> AppPreferences {
+        let preferences = AppPreferences(store: MockPreferenceStore())
+        preferences.firstLaunchDate = Date().addingTimeInterval(-4 * 24 * 60 * 60)
+        return preferences
+    }
+
     private func makeCoordinator() -> AppFlowCoordinator {
         AppFlowCoordinator(
             store: StoreManager(defaults: MockPreferenceStore()),
@@ -58,7 +65,7 @@ final class AppFlowCoordinatorTests: XCTestCase {
     func test_recordTrickClose_threeTimes_showsRateAppSheet() {
         let coordinator = AppFlowCoordinator(
             store: StoreManager(defaults: MockPreferenceStore()),
-            preferences: AppPreferences(store: MockPreferenceStore()),
+            preferences: agedPreferences(),
             scheduler: ImmediateScheduler()
         )
 
@@ -66,6 +73,55 @@ final class AppFlowCoordinatorTests: XCTestCase {
         coordinator.recordTrickClose()
         XCTAssertNil(coordinator.activeSheet)
 
+        coordinator.recordTrickClose()
+
+        XCTAssertEqual(coordinator.activeSheet, .rateApp)
+    }
+
+    func test_init_recordsTheFirstLaunchOnlyOnce() {
+        let preferences = AppPreferences(store: MockPreferenceStore())
+        let first = Date(timeIntervalSince1970: 1_800_000_000)
+
+        _ = AppFlowCoordinator(store: StoreManager(defaults: MockPreferenceStore()), preferences: preferences, scheduler: ImmediateScheduler(), now: { first })
+        _ = AppFlowCoordinator(store: StoreManager(defaults: MockPreferenceStore()), preferences: preferences, scheduler: ImmediateScheduler(), now: { first.addingTimeInterval(86_400) })
+
+        XCTAssertEqual(preferences.firstLaunchDate, first)
+    }
+
+    func test_recordTrickClose_beforeThreeDaysOfInstall_countsButDoesNotShowSheet() {
+        let preferences = AppPreferences(store: MockPreferenceStore())
+        let first = Date(timeIntervalSince1970: 1_800_000_000)
+        let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: preferences,
+            scheduler: ImmediateScheduler(),
+            now: { first.addingTimeInterval(3 * 24 * 60 * 60 - 1) }
+        )
+
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+
+        XCTAssertNil(coordinator.activeSheet)
+        XCTAssertEqual(preferences.trickLaunchCount, 3)
+    }
+
+    func test_recordTrickClose_firstCloseAfterThreeDays_showsSheetWhenTheCountIsReached() {
+        let preferences = AppPreferences(store: MockPreferenceStore())
+        let first = Date(timeIntervalSince1970: 1_800_000_000)
+        var current = first
+        let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: preferences,
+            scheduler: ImmediateScheduler(),
+            now: { current }
+        )
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+        coordinator.recordTrickClose()
+        XCTAssertNil(coordinator.activeSheet)
+
+        current = first.addingTimeInterval(3 * 24 * 60 * 60)
         coordinator.recordTrickClose()
 
         XCTAssertEqual(coordinator.activeSheet, .rateApp)
@@ -113,8 +169,7 @@ final class AppFlowCoordinatorTests: XCTestCase {
     }
 
     func test_recordTrickClose_threeTimes_whenAnotherFlowIsActive_doesNotShowSheetAndKeepsCount() {
-        let store = MockPreferenceStore()
-        let preferences = AppPreferences(store: store)
+        let preferences = agedPreferences()
         let coordinator = AppFlowCoordinator(
             store: StoreManager(defaults: MockPreferenceStore()),
             preferences: preferences,

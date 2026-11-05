@@ -25,21 +25,30 @@ final class AppFlowCoordinator: ObservableObject {
     private var preferences: FlowPreferenceManaging
     private let scheduler: DelayedActionScheduling
     private let store: StoreManager
+    private let now: () -> Date
     private static let ratingTriggerCount = 3
+    private static let ratingMinInstallAge: TimeInterval = 3 * 24 * 60 * 60
 
     init(
         store: StoreManager,
         preferences: FlowPreferenceManaging = AppPreferences.shared,
-        scheduler: DelayedActionScheduling = DispatchQueueScheduler()
+        scheduler: DelayedActionScheduling = DispatchQueueScheduler(),
+        now: @escaping () -> Date = Date.init
     ) {
         self.store = store
         self.preferences = preferences
         self.scheduler = scheduler
+        self.now = now
+        if self.preferences.firstLaunchDate == nil {
+            self.preferences.firstLaunchDate = now()
+        }
     }
 
     func recordTrickClose() {
         guard !preferences.hasRespondedToRating else { return }
         preferences.trickLaunchCount += 1
+        // The count keeps growing during the first days, so the sheet comes on the first close after them.
+        guard hasRatingInstallAge else { return }
         if preferences.trickLaunchCount >= Self.ratingTriggerCount {
             scheduler.schedule(after: 0.7) { [weak self] in
                 guard let self, self.activeFlow == nil, self.activeSheet == nil else { return }
@@ -85,6 +94,8 @@ final class AppFlowCoordinator: ObservableObject {
     func resetRatingState() {
         preferences.hasRespondedToRating = false
         preferences.trickLaunchCount = 0
+        // A tester who resets the sheet wants to see it again, not wait three days.
+        preferences.firstLaunchDate = .distantPast
     }
 
     func markTrickAsSeen(_ trick: Trick) {
@@ -105,6 +116,11 @@ final class AppFlowCoordinator: ObservableObject {
         guard let pendingFlow else { return }
         self.pendingFlow = nil
         activeFlow = pendingFlow
+    }
+
+    private var hasRatingInstallAge: Bool {
+        guard let first = preferences.firstLaunchDate else { return false }
+        return now().timeIntervalSince(first) >= Self.ratingMinInstallAge
     }
 
     private func hasSeenTrick(_ trick: Trick) -> Bool {
