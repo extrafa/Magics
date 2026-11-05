@@ -59,4 +59,5 @@ private final class MockRateAppPreferences: RateAppPreferenceManaging {
     var hasRespondedToRating = false
     var ratingSnoozedUntil: Date?
     var trickLaunchCount = 0
+    var firstLaunchDate: Date?
 }

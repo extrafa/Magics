@@ -39,6 +39,7 @@ protocol RateAppPreferenceManaging {
     var hasRespondedToRating: Bool { get set }
     var ratingSnoozedUntil: Date? { get set }
     var trickLaunchCount: Int { get set }
+    var firstLaunchDate: Date? { get set }
 }
 
 protocol OnboardingPreferenceManaging {
@@ -115,6 +116,7 @@ struct AppPreferences: AppPreferencesProviding {
         static let hasRespondedToRating = "hasRespondedToRating"
         static let ratingSnoozedUntil = "ratingSnoozedUntil"
         static let trickLaunchCount = "trickLaunchCount"
+        static let firstLaunchDate = "firstLaunchDate"
 
         // Onboarding
         static let hasCompletedOnboarding = "hasCompletedOnboarding"
@@ -223,6 +225,11 @@ struct AppPreferences: AppPreferencesProviding {
     var ratingSnoozedUntil: Date? {
         get { store.object(forKey: Key.ratingSnoozedUntil) as? Date }
         nonmutating set { store.set(newValue, forKey: Key.ratingSnoozedUntil) }
+    }
+
+    var firstLaunchDate: Date? {
+        get { store.object(forKey: Key.firstLaunchDate) as? Date }
+        nonmutating set { store.set(newValue, forKey: Key.firstLaunchDate) }
     }
 
     var seenTrickIds: [String] {
