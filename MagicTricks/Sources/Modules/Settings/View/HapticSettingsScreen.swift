@@ -12,14 +12,14 @@ struct HapticSettingsScreen: View {
     @State private var isTesting = false
     @State private var isWaitingForGesture = false
     @State private var gestureTask: Task<Void, Never>?
+    // State, not a let: a re-created screen would otherwise stop a different manager than the one waiting.
+    @State private var gestureManager = PhoneTiltGestureManager()
 
     private let haptics: CountHapticPlaying
-    private let gestureManager: PhoneTiltGestureManager
     private let testNumber = 7
 
     init(haptics: CountHapticPlaying? = nil) {
         self.haptics = haptics ?? HapticManager.shared
-        self.gestureManager = PhoneTiltGestureManager()
     }
 
     var body: some View {
