@@ -46,7 +46,6 @@ final class AppFlowCoordinator: ObservableObject {
 
     func recordTrickClose() {
         guard !preferences.hasRespondedToRating else { return }
-        if let until = preferences.ratingSnoozedUntil, until > Date() { return }
         preferences.trickLaunchCount += 1
         // The count keeps growing during the first days, so the sheet comes on the first close after them.
         guard hasRatingInstallAge else { return }
@@ -95,7 +94,6 @@ final class AppFlowCoordinator: ObservableObject {
     func resetRatingState() {
         preferences.hasRespondedToRating = false
         preferences.trickLaunchCount = 0
-        preferences.ratingSnoozedUntil = nil
         // A tester who resets the sheet wants to see it again, not wait three days.
         preferences.firstLaunchDate = .distantPast
     }
