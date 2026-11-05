@@ -187,9 +187,14 @@ enum MagicGalleryCameraMetadata {
     }
 
     static func jpegData(for image: UIImage, date: Date, deviceModel: String = UIDevice.current.model) -> Data? {
-        let upright = image.imageOrientation == .up ? image : UIGraphicsImageRenderer(size: image.size).image { _ in
-            image.draw(at: .zero)
-        }
+        let upright = image.imageOrientation == .up ? image : {
+            // The default format uses the screen scale, which would multiply the pixels of a scale 1 camera photo.
+            let format = UIGraphicsImageRendererFormat()
+            format.scale = image.scale
+            return UIGraphicsImageRenderer(size: image.size, format: format).image { _ in
+                image.draw(at: .zero)
+            }
+        }()
         guard let cgImage = upright.cgImage else { return nil }
 
         let formatter = DateFormatter()

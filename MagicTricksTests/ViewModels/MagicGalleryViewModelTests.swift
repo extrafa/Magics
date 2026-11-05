@@ -474,6 +474,23 @@ final class MagicGalleryCameraMetadataTests: XCTestCase {
         XCTAssertGreaterThan(decoded.size.height, decoded.size.width)
         XCTAssertEqual(decoded.imageOrientation, .up)
     }
+
+    func test_jpegData_keepsThePixelCountOfARotatedScaleOneImage() throws {
+        let format = UIGraphicsImageRendererFormat()
+        format.scale = 1
+        let landscape = UIGraphicsImageRenderer(size: CGSize(width: 40, height: 30), format: format).image { context in
+            UIColor.blue.setFill()
+            context.fill(CGRect(x: 0, y: 0, width: 40, height: 30))
+        }
+        let rotated = UIImage(cgImage: try XCTUnwrap(landscape.cgImage), scale: 1, orientation: .right)
+
+        let data = try XCTUnwrap(MagicGalleryCameraMetadata.jpegData(for: rotated, date: Date()))
+        let source = try XCTUnwrap(CGImageSourceCreateWithData(data as CFData, nil))
+        let properties = try XCTUnwrap(CGImageSourceCopyPropertiesAtIndex(source, 0, nil) as? [CFString: Any])
+
+        XCTAssertEqual(properties[kCGImagePropertyPixelWidth] as? Int, 30)
+        XCTAssertEqual(properties[kCGImagePropertyPixelHeight] as? Int, 40)
+    }
 }
 
 final class MagicGalleryCropGeometryTests: XCTestCase {
