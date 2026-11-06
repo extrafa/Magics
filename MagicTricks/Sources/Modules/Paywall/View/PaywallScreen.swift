@@ -144,7 +144,7 @@ struct PaywallScreen: View {
     }
 }
 
-private extension View {
+extension View {
     @ViewBuilder
     func scrollBouncesOnlyWhenNeeded() -> some View {
         if #available(iOS 16.4, *) {
