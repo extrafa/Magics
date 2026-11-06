@@ -31,7 +31,7 @@ final class TimeControlSignalTransmitter: TimeControlSignalTransmitting {
     private let gestureManager: PhoneTiltGestureManager
     private let preferences: MotionPreferenceManaging
 
-    private let automaticStartDelay: TimeInterval = 1
+    private let automaticStartDelay: TimeInterval = 2
     private let sectionDelay: TimeInterval = 3
 
     private var pendingHapticCompletion: Completion?

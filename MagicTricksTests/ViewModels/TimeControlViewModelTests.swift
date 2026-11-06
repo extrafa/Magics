@@ -134,6 +134,27 @@ final class TimeControlViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.isRunning)
     }
 
+    func test_primaryAction_whileWaitingForHundredthsTrigger_cancelsTransmissionAndRestartsTimer() async {
+        let (viewModel, transmitter) = await makeViewModelTransmitting()
+        let cancelsBefore = transmitter.cancelCount
+        transmitter.emit(.waitingForHundredthsTrigger)
+
+        XCTAssertTrue(viewModel.canUsePrimaryAction)
+        viewModel.handlePrimaryAction()
+
+        XCTAssertEqual(transmitter.cancelCount, cancelsBefore + 1)
+        XCTAssertFalse(viewModel.isTransmitting)
+        XCTAssertTrue(viewModel.isRunning)
+    }
+
+    func test_canUsePrimaryAction_whileWaitingBetweenValues_isFalse() async {
+        let (viewModel, transmitter) = await makeViewModelTransmitting()
+
+        transmitter.emit(.waitingBetweenValues)
+
+        XCTAssertFalse(viewModel.canUsePrimaryAction)
+    }
+
     func test_transmissionFinishing_clearsTransmittingState() async {
         let (viewModel, transmitter) = await makeViewModelTransmitting()
         transmitter.emit(.playingHundredths)
