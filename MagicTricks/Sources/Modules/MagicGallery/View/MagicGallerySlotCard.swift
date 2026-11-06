@@ -1,53 +1,89 @@
+//
+//  MagicGallerySlotCard.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import SwiftUI
+
+private let statusKey = L10nDomain("magicGallery.status")
+private let slotKey = L10nDomain("magicGallery.slot")
 
 struct MagicGallerySlotCard: View {
     let number: Int
     let photo: MagicGalleryPhoto?
-    let isSelected: Bool
-    let onTap: () -> Void
+    let onTap: (() -> Void)?
     let onDelete: () -> Void
 
-    var body: some View {
-        Button(action: onTap) {
-            ZStack {
-                RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .fill(Color.grayCard)
+    @State private var isConfirmingDelete = false
+    // Read outside the xxxLarge cap applied below, so they are capped by hand: the tile has a fixed height.
+    @ScaledMetric(relativeTo: .footnote) private var scaledDeleteCircle: CGFloat = 34
+    @ScaledMetric(relativeTo: .footnote) private var scaledDeleteIcon: CGFloat = 14
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            ZStack {
                 if let photo {
                     MagicGallerySlotPhotoContent(photo: photo)
+                        .transition(.opacity.combined(with: .scale(scale: 0.85)))
                 } else {
                     MagicGallerySlotEmptyContent()
+                        .transition(.opacity.combined(with: .scale(scale: 0.9)))
                 }
             }
             .frame(height: 184)
+            // A background, not a ZStack child: otherwise the photo that is fading out sits under the opaque fill.
+            .background {
+                RoundedRectangle(cornerRadius: 20, style: .continuous)
+                    .fill(Color.cardBackground)
+            }
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
             .overlay {
                 RoundedRectangle(cornerRadius: 20, style: .continuous)
-                    .strokeBorder(
-                        isSelected ? Color.button : Color.primaryText.opacity(0.08),
-                        lineWidth: isSelected ? 3 : 1
-                    )
+                    .strokeBorder(Color.textPrimary.opacity(0.08), lineWidth: 1)
             }
             .overlay(alignment: .topLeading) {
-                numberBadge
-                    .padding(10)
-            }
-            .overlay(alignment: .topTrailing) {
-                if let photo, photo.isCustom {
-                    deleteButton
-                }
+                numberBadge.padding(10)
             }
             .overlay(alignment: .bottomLeading) {
                 if let photo {
-                    statusBadge(for: photo)
+                    sourceBadge(for: photo)
+                        .transition(.opacity)
                 }
             }
+            .onTapGesture {
+                onTap?()
+            }
+            .accessibilityElement(children: .ignore)
+            .accessibilityLabel(slotAccessibilityLabel)
+            .accessibilityHint(onTap != nil ? String(localized: slotKey("emptyHint")) : "")
+            .accessibilityAddTraits(onTap != nil ? .isButton : [])
+
+            if let photo, photo.isCustom {
+                deleteButton
+                    .transition(.opacity)
+            }
         }
-        .buttonStyle(.plain)
+        // One springy animation for the whole slot: deleting, adding or switching the standard set pops instead of snapping.
+        .animation(reduceMotion ? nil : .spring(response: 0.4, dampingFraction: 0.6), value: photo)
+        // The tile has a fixed height; larger text would cover the photo, and VoiceOver reads the slot label anyway.
+        .dynamicTypeSize(...DynamicTypeSize.xxxLarge)
+    }
+
+    private var slotAccessibilityLabel: String {
+        let format: String
+        switch photo?.source {
+        case .standard: format = String(localized: slotKey("standard"))
+        case .custom: format = String(localized: slotKey("custom"))
+        case nil: format = String(localized: slotKey("empty"))
+        }
+        return String.localizedStringWithFormat(format, number)
     }
 
     private var numberBadge: some View {
-        Text("\(number)")
+        Text(verbatim: "\(number)")
             .font(.system(size: 12, weight: .bold, design: .rounded))
             .foregroundStyle(.white)
             .padding(.horizontal, 10)
@@ -56,33 +92,46 @@ struct MagicGallerySlotCard: View {
     }
 
     private var deleteButton: some View {
-        Button(action: onDelete) {
+        Button { isConfirmingDelete = true } label: {
             Image(systemName: "trash")
-                .font(.system(size: 12, weight: .semibold))
+                .font(.system(size: deleteIconSize, weight: .semibold))
                 .foregroundStyle(.white)
-                .frame(width: 28, height: 28)
+                .frame(width: deleteCircleSize, height: deleteCircleSize)
                 .background(.black.opacity(0.38), in: Circle())
+                // The tap area is at least 44 pt even though the visible circle is smaller.
+                .frame(width: deleteTouchSize, height: deleteTouchSize)
+                .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .padding(10)
+        // On iOS 26 the dialog is a popover pointing at the view it is attached to, so it lives on the button itself.
+        .confirmationDialog(
+            String(localized: "magicGallery.deletePhoto.confirm"),
+            isPresented: $isConfirmingDelete,
+            titleVisibility: .visible
+        ) {
+            Button(String(localized: "magicGallery.deletePhoto"), role: .destructive, action: onDelete)
+            Button(String(localized: "common.cancel"), role: .cancel) {}
+        }
+        // The padding plus the extra touch margin keeps the circle exactly 10 pt from the corner.
+        .padding(10 - (deleteTouchSize - deleteCircleSize) / 2)
+        .accessibilityLabel(String(localized: "magicGallery.deletePhoto"))
     }
 
-    private func statusBadge(for photo: MagicGalleryPhoto) -> some View {
-        Text(statusText(for: photo))
-            .font(.caption2)
-            .fontWeight(.semibold)
+    private var deleteCircleSize: CGFloat { min(scaledDeleteCircle, 48) }
+    private var deleteIconSize: CGFloat { min(scaledDeleteIcon, 20) }
+    private var deleteTouchSize: CGFloat { max(44, deleteCircleSize + 10) }
+
+    private func sourceBadge(for photo: MagicGalleryPhoto) -> some View {
+        Text(photo.isStandard
+             ? String(localized: statusKey("standard"))
+             : String(localized: statusKey("custom")))
+            .font(.caption2.weight(.semibold))
+            .lineLimit(1)
+            .minimumScaleFactor(0.8)
             .foregroundStyle(.white)
             .padding(.horizontal, 10)
             .padding(.vertical, 7)
             .background(.black.opacity(0.42), in: Capsule(style: .continuous))
             .padding(10)
-    }
-
-    private func statusText(for photo: MagicGalleryPhoto) -> String {
-        if isSelected {
-            return String(localized: "magicGallery.status.selected")
-        }
-
-        return photo.isStandard ? String(localized: "magicGallery.status.standard") : String(localized: "magicGallery.status.custom")
     }
 }

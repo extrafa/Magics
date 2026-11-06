@@ -10,11 +10,13 @@ import Foundation
 enum FullScreenFlow: Identifiable, Equatable {
 
     case trick(trick: Trick)
+    case paywall(context: PaywallContext)
 
     var id: String {
         switch self {
-        case .trick(let trick):
-            return "trick_\(trick.id)"
+        case .trick(let trick): return "trick_\(trick.id.rawValue)"
+        case .paywall(.general): return "paywall"
+        case .paywall(.trick(let type)): return "paywall_\(type.rawValue)"
         }
     }
 }
