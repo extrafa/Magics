@@ -54,13 +54,18 @@ final class TimeControlViewModel: ObservableObject {
 
     var canUsePrimaryAction: Bool {
         guard !hasReachedLimit else { return false }
-        return !isTransmitting || transmissionPhase == .waitingForStartTrigger
+        return !isTransmitting || isWaitingForTrigger
+    }
+
+    // Face Down has no timeout: while the phone waits for it, Start gives the way out instead of leaving the screen.
+    private var isWaitingForTrigger: Bool {
+        transmissionPhase == .waitingForStartTrigger || transmissionPhase == .waitingForHundredthsTrigger
     }
 
     func handlePrimaryAction() {
         guard canUsePrimaryAction else { return }
 
-        if transmissionPhase == .waitingForStartTrigger {
+        if isWaitingForTrigger {
             cancelTransmission()
         }
 
