@@ -19,6 +19,19 @@ struct RateAppSheet: View {
     @StateObject private var viewModel = RateAppViewModel()
 
     var body: some View {
+        ScrollView {
+            content
+        }
+        .scrollBouncesOnlyWhenNeeded()
+        .padding(.horizontal, 24)
+        .padding(.top, 32)
+        .padding(.bottom, 24)
+        .presentationDragIndicator(.visible)
+        .modifier(RateAppPresentationModifier())
+        .onDisappear { viewModel.markDismissed() }
+    }
+
+    private var content: some View {
         VStack(spacing: 0) {
             switch viewModel.phase {
             case .question:
@@ -36,13 +49,6 @@ struct RateAppSheet: View {
             }
         }
         .animation(.spring(response: 0.4, dampingFraction: 0.85), value: viewModel.phase)
-        .padding(.horizontal, 24)
-        .padding(.top, 32)
-        .padding(.bottom, 24)
-
-        .presentationDragIndicator(.visible)
-        .modifier(RateAppPresentationModifier())
-        .onDisappear { viewModel.markDismissed() }
     }
 
     // MARK: - Question
@@ -139,7 +145,11 @@ struct RateAppSheet: View {
             guard let scene = UIApplication.shared.connectedScenes
                 .first(where: { $0.activationState == .foregroundActive }) as? UIWindowScene
             else { return }
-            SKStoreReviewController.requestReview(in: scene)
+            if #available(iOS 18.0, *) {
+                AppStore.requestReview(in: scene)
+            } else {
+                SKStoreReviewController.requestReview(in: scene)
+            }
             viewModel.recordReviewShown()
         }
     }
@@ -163,15 +173,22 @@ struct RateAppSheet: View {
 // MARK: - Presentation modifier
 
 private struct RateAppPresentationModifier: ViewModifier {
+    @Environment(\.dynamicTypeSize) private var dynamicTypeSize
+
+    // A fixed 300 pt would cut the text off at larger sizes: the sheet opens full height there, and can be pulled up elsewhere.
+    private var detents: Set<PresentationDetent> {
+        dynamicTypeSize.isAccessibilitySize ? [.large] : [.height(300), .large]
+    }
+
     func body(content: Content) -> some View {
         if #available(iOS 16.4, *) {
             content
-                .presentationDetents([.height(300)])
+                .presentationDetents(detents)
                 .presentationBackground(Color.backgroundScreen)
                 .presentationCornerRadius(28)
         } else {
             content
-                .presentationDetents([.height(300)])
+                .presentationDetents(detents)
         }
     }
 }
