@@ -230,10 +230,12 @@ App Store разрешает любую версию, но после одобр
       "Trickly" в шаринге заменён временным названием из App Store Connect ("Magical Ross");
       когда владелец выберет настоящее название, его нужно подставить в `instruction.share.*`,
       политику приватности и Review Notes.
-- [ ] R-07 Каталог строк: 12 мёртвых `settings.help.*` (кроме `noVibration`), `Text(verbatim:)` там, где
+- [x] R-07 Каталог строк: 12 мёртвых `settings.help.*` (кроме `noVibration`), `Text(verbatim:)` там, где
       Xcode извлекает `%lld` и `%lld.` (`MagicGallerySlotCard.swift:68`, `InstructionStepRow.swift:67`),
       множественное число через plural variations вместо пар `.one`/`.other`, ошибки пейвола в одном
       домене ключей.
+      Сделано: 12 ключей удалены; `Text(verbatim:)` в `MagicGallerySlotCard` и `InstructionStepRow` уже стоят.
+      Кроме: plural variations вместо пар `.one`/`.other` и домен ошибок пейвола (работает, правка без выгоды для релиза).
 - [ ] R-08 Review Notes в `docs/release-prep.md`: заменить на проверенный вариант из присланных
       заметок после R-01…R-05 (фразу "no hidden or undocumented features" править последней).
 
