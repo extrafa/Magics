@@ -85,7 +85,8 @@ final class AppFlowCoordinator: ObservableObject {
             openPaywall(context: .trick(trick.id))
             return
         }
-        if hasSeenTrick(trick) {
+        // The first-launch sheet is the instruction too, so the spectator's free-tier phone goes straight to the trick.
+        if hasSeenTrick(trick) || trick.id.hidesInstruction(onFreeTier: store.showsFreeTier) {
             activeFlow = .trick(trick: trick)
         } else {
             activeSheet = .instructionFirstLaunch(instruction: trick.instruction, trick: trick)
