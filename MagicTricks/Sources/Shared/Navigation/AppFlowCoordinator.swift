@@ -20,6 +20,8 @@ final class AppFlowCoordinator: ObservableObject {
     @Published var activeSheet: SheetFlow?
     @Published var isPaywallOverlayPresented = false
     private(set) var paywallOverlayContext: PaywallContext = .general
+    // Set by restartOnboarding(); the app shows the onboarding over everything and clears it.
+    @Published private(set) var isOnboardingRequested = false
 
     private var pendingFlow: FullScreenFlow?
     private var preferences: FlowPreferenceManaging
@@ -96,6 +98,19 @@ final class AppFlowCoordinator: ObservableObject {
         preferences.trickLaunchCount = 0
         // A tester who resets the sheet wants to see it again, not wait three days.
         preferences.firstLaunchDate = .distantPast
+    }
+
+    // TestFlight: forgets what the first run remembers, so the onboarding, the first-trick instructions and the exit tip show again.
+    func restartOnboarding() {
+        preferences.hasCompletedOnboarding = false
+        preferences.seenTrickIds = []
+        preferences.didLearnExitHint = false
+        resetRatingState()
+        isOnboardingRequested = true
+    }
+
+    func onboardingPresented() {
+        isOnboardingRequested = false
     }
 
     func markTrickAsSeen(_ trick: Trick) {

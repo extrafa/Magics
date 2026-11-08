@@ -11,6 +11,7 @@ private let sectionKey = L10nDomain("settings.section")
 private let proOverrideKey = L10nDomain("settings.proOverride")
 private let hideWatermarkKey = L10nDomain("settings.hideWatermark")
 private let hideHapticsNoticeKey = L10nDomain("settings.hideHapticsNotice")
+private let restartOnboardingKey = L10nDomain("settings.restartOnboarding")
 private let exitHintKey = L10nDomain("settings.exitHint")
 private let paywallKey = L10nDomain("paywall")
 
@@ -20,6 +21,7 @@ struct SettingsScreen: View {
     @EnvironmentObject private var storeManager: StoreManager
     @EnvironmentObject private var flow: AppFlowCoordinator
     @State private var storeAlert: StoreAlert?
+    @State private var isRestartOnboardingConfirmPresented = false
     @AppStorage(HapticsUnavailableNotice.testerHiddenKey) private var isHapticsNoticeHidden = false
 
     var body: some View {
@@ -47,6 +49,17 @@ struct SettingsScreen: View {
         .navigationTitle(String(localized: "settings.title"))
         .navigationBarTitleDisplayMode(.inline)
         .storeErrorAlert($storeAlert)
+        .alert(
+            String(localized: restartOnboardingKey("title")),
+            isPresented: $isRestartOnboardingConfirmPresented
+        ) {
+            Button(String(localized: restartOnboardingKey("confirm")), role: .destructive) {
+                flow.restartOnboarding()
+            }
+            Button(String(localized: "common.cancel"), role: .cancel) {}
+        } message: {
+            Text(String(localized: restartOnboardingKey("message")))
+        }
     }
 }
 
@@ -73,6 +86,16 @@ private extension SettingsScreen {
                     flow.activeSheet = .rateApp
                 } label: {
                     SettingsActionRow(icon: "star.bubble", title: String(localized: "settings.showRateAppSheet"))
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 18)
+
+                SettingsDivider()
+
+                Button {
+                    isRestartOnboardingConfirmPresented = true
+                } label: {
+                    SettingsActionRow(icon: "arrow.counterclockwise", title: String(localized: restartOnboardingKey("title")))
                 }
                 .buttonStyle(.plain)
                 .padding(.horizontal, 18)

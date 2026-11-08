@@ -42,6 +42,11 @@ struct MagicTricksApp: App {
                 }
             }
             .task { storeManager.start() }
+            .onChange(of: flow.isOnboardingRequested) { requested in
+                guard requested else { return }
+                flow.onboardingPresented()
+                showOnboarding = true
+            }
             .onChange(of: scenePhase) { newPhase in
                 HapticManager.shared.handleScenePhase(newPhase)
             }
