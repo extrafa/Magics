@@ -152,6 +152,30 @@ final class AppFlowCoordinatorTests: XCTestCase {
         XCTAssertNil(coordinator.activeSheet)
     }
 
+    func test_restartOnboarding_forgetsTheFirstRunAndAsksForTheOnboarding() {
+        let preferences = AppPreferences(store: MockPreferenceStore())
+        preferences.hasCompletedOnboarding = true
+        preferences.seenTrickIds = ["geoMentalism"]
+        preferences.didLearnExitHint = true
+        let coordinator = AppFlowCoordinator(
+            store: StoreManager(defaults: MockPreferenceStore()),
+            preferences: preferences,
+            scheduler: ImmediateScheduler()
+        )
+        XCTAssertFalse(coordinator.isOnboardingRequested)
+
+        coordinator.restartOnboarding()
+
+        XCTAssertFalse(preferences.hasCompletedOnboarding)
+        XCTAssertEqual(preferences.seenTrickIds, [])
+        XCTAssertFalse(preferences.didLearnExitHint)
+        XCTAssertTrue(coordinator.isOnboardingRequested)
+
+        coordinator.onboardingPresented()
+
+        XCTAssertFalse(coordinator.isOnboardingRequested)
+    }
+
     func test_resetRatingState_clearsTheResponse() {
         let store = MockPreferenceStore()
         let preferences = AppPreferences(store: store)
