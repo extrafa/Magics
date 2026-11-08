@@ -11,6 +11,7 @@ struct TrickCardView: View {
 
     let trick: Trick
     let isLocked: Bool
+    var showsHowTo = true
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
 
@@ -59,7 +60,7 @@ struct TrickCardView: View {
         VStack(alignment: .leading, spacing: 0) {
             header
             Spacer(minLength: 16)
-            TrickCardActions(trickName: String(localized: trick.title), onStartTap: onStartTap, onHowToTap: onHowToTap)
+            TrickCardActions(trickName: String(localized: trick.title), showsHowTo: showsHowTo, onStartTap: onStartTap, onHowToTap: onHowToTap)
                 // The locked overlay above exposes one combined element - avoid duplicate "Start"/"Learn" VoiceOver targets.
                 .accessibilityHidden(isLocked)
         }

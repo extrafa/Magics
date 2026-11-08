@@ -59,6 +59,7 @@ final class AppFlowCoordinator: ObservableObject {
     }
 
     func open(instruction trick: Trick) {
+        guard !trick.id.hidesInstruction(onFreeTier: store.showsFreeTier) else { return }
         if isLocked(trick) {
             openPaywall(context: .trick(trick.id))
         } else {

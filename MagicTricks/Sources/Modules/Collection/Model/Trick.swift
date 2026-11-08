@@ -28,6 +28,11 @@ enum TrickType: String, CaseIterable {
     func isLocked(hasProAccess: Bool) -> Bool {
         requiresPro && self != .phantomDraw && !hasProAccess
     }
+
+    // The spectator's phone runs this app on the free tier: it must not be able to read how Phantom Draw works.
+    func hidesInstruction(onFreeTier: Bool) -> Bool {
+        self == .phantomDraw && onFreeTier
+    }
 }
 
 enum SFSymbol: String {
