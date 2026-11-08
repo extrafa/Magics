@@ -386,6 +386,63 @@ final class StoreManagerTests: XCTestCase {
         manager.stop()
     }
 
+    func test_openInstruction_forPhantomDrawOnTheFreeTier_opensNothing() async {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: false)
+        manager.start()
+        await waitUntil { manager.isAccessKnown }
+        let coordinator = AppFlowCoordinator(store: manager, preferences: AppPreferences(store: MockPreferenceStore()))
+
+        coordinator.open(instruction: TrickCollection.tricks.first { $0.id == .phantomDraw }!)
+
+        XCTAssertNil(coordinator.activeSheet)
+        XCTAssertNil(coordinator.activeFlow)
+        manager.stop()
+    }
+
+    func test_openInstruction_forPhantomDrawAsOwner_opensIt() async {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(entitlementProductIDs: ["magic_lifetime"]), defaults: MockPreferenceStore(), isInternalBuild: false)
+        manager.start()
+        await waitUntil { manager.isAccessKnown }
+        let coordinator = AppFlowCoordinator(store: manager, preferences: AppPreferences(store: MockPreferenceStore()))
+        let phantomDraw = TrickCollection.tricks.first { $0.id == .phantomDraw }!
+
+        coordinator.open(instruction: phantomDraw)
+
+        guard case .instruction = coordinator.activeSheet else {
+            return XCTFail("expected the instruction sheet, got \(String(describing: coordinator.activeSheet))")
+        }
+        manager.stop()
+    }
+
+    func test_openStartFlow_forPhantomDrawOnTheFreeTier_skipsTheInstruction() async {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: false)
+        manager.start()
+        await waitUntil { manager.isAccessKnown }
+        let coordinator = AppFlowCoordinator(store: manager, preferences: AppPreferences(store: MockPreferenceStore()))
+        let phantomDraw = TrickCollection.tricks.first { $0.id == .phantomDraw }!
+
+        coordinator.openStartFlow(for: phantomDraw)
+
+        XCTAssertNil(coordinator.activeSheet)
+        XCTAssertEqual(coordinator.activeFlow, .trick(trick: phantomDraw))
+        manager.stop()
+    }
+
+    func test_openStartFlow_forPhantomDrawAsOwner_showsTheInstructionFirstTime() async {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(entitlementProductIDs: ["magic_lifetime"]), defaults: MockPreferenceStore(), isInternalBuild: false)
+        manager.start()
+        await waitUntil { manager.isAccessKnown }
+        let coordinator = AppFlowCoordinator(store: manager, preferences: AppPreferences(store: MockPreferenceStore()))
+
+        coordinator.openStartFlow(for: TrickCollection.tricks.first { $0.id == .phantomDraw }!)
+
+        guard case .instructionFirstLaunch = coordinator.activeSheet else {
+            return XCTFail("expected the first-launch instruction, got \(String(describing: coordinator.activeSheet))")
+        }
+        XCTAssertNil(coordinator.activeFlow)
+        manager.stop()
+    }
+
     func test_owner_neverShowsTheFreeTier() async {
         let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore(), isInternalBuild: false)

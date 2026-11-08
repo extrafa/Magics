@@ -44,6 +44,13 @@ final class AppFlowCoordinatorTests: XCTestCase {
         XCTAssertNil(coordinator.activeSheet)
     }
 
+    func test_hidesInstruction_isOnlyPhantomDrawOnTheFreeTier() {
+        for trick in TrickType.allCases {
+            XCTAssertEqual(trick.hidesInstruction(onFreeTier: true), trick == .phantomDraw, "\(trick)")
+            XCTAssertFalse(trick.hidesInstruction(onFreeTier: false), "\(trick)")
+        }
+    }
+
     func test_openStartFlow_forLockedTrick_opensPaywallForThatTrick() {
         let coordinator = makeCoordinator()
 
