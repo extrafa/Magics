@@ -10,6 +10,7 @@ import SwiftUI
 private let sectionKey = L10nDomain("settings.section")
 private let proOverrideKey = L10nDomain("settings.proOverride")
 private let hideWatermarkKey = L10nDomain("settings.hideWatermark")
+private let hideHapticsNoticeKey = L10nDomain("settings.hideHapticsNotice")
 private let exitHintKey = L10nDomain("settings.exitHint")
 private let paywallKey = L10nDomain("paywall")
 
@@ -19,6 +20,7 @@ struct SettingsScreen: View {
     @EnvironmentObject private var storeManager: StoreManager
     @EnvironmentObject private var flow: AppFlowCoordinator
     @State private var storeAlert: StoreAlert?
+    @AppStorage(HapticsUnavailableNotice.testerHiddenKey) private var isHapticsNoticeHidden = false
 
     var body: some View {
         ZStack {
@@ -82,6 +84,15 @@ private extension SettingsScreen {
                     subtitle: String(localized: hideWatermarkKey("description")),
                     tint: .orange,
                     isOn: $storeManager.isWatermarkHidden
+                )
+
+                SettingsDivider()
+
+                SettingsToggleRow(
+                    title: String(localized: hideHapticsNoticeKey("title")),
+                    subtitle: String(localized: hideHapticsNoticeKey("description")),
+                    tint: .orange,
+                    isOn: $isHapticsNoticeHidden
                 )
             }
             .cardSurface(cornerRadius: 20)

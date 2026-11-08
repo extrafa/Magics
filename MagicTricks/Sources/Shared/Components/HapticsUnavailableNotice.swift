@@ -9,10 +9,24 @@ import SwiftUI
 // Shows nothing on iPhones; explains why nothing vibrates on devices without a haptic engine (iPad, Simulator).
 struct HapticsUnavailableNotice: View {
 
+    // The TestFlight toggle that lets a tester on an iPad hide the badge.
+    static let testerHiddenKey = "dev.hapticsNoticeHidden"
+
     private static let isUnavailable = !CHHapticEngine.capabilitiesForHardware().supportsHaptics
 
+    @AppStorage(testerHiddenKey) private var isHiddenByTester = false
+
+    // The toggle does nothing in a release build, whatever the stored flag says.
+    static func shouldShow(isUnavailable: Bool, isInternalBuild: Bool, isHiddenByTester: Bool) -> Bool {
+        isUnavailable && !(isInternalBuild && isHiddenByTester)
+    }
+
     var body: some View {
-        if Self.isUnavailable {
+        if Self.shouldShow(
+            isUnavailable: Self.isUnavailable,
+            isInternalBuild: AppBuildEnvironment.isInternalBuild,
+            isHiddenByTester: isHiddenByTester
+        ) {
             HStack(spacing: 8) {
                 Image(systemName: "iphone.slash")
                 Text(String(localized: "haptics.unavailable.notice"))
