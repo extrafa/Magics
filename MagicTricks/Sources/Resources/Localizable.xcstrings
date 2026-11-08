@@ -2362,7 +2362,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Pulsa Iniciar en el truco Geo Mentalismo. En la pantalla aparecerá una lista de ciudades. Dale el teléfono a la persona. Pídele que elija cualquier ciudad y la toque."
+            "value" : "Pulsa Empezar en el truco Geo Mentalismo. En la pantalla aparecerá una lista de ciudades. Dale el teléfono a la persona. Pídele que elija cualquier ciudad y la toque."
           }
         }
       }
@@ -2906,7 +2906,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mientras dibuja, revisa tu dispositivo en secreto. Verás su número en la pantalla. Cuando termine, di: \"Tus reflejos me ayudarán a entender qué número dibujaste.\" Pídele que te dé su mano. Tómala y mírale a los ojos. Di cada número del 0 al 9. Deténte en el número que dibujó y di: \"Ese es el número que dibujaste.\""
+            "value" : "Mientras dibuja, revisa tu dispositivo en secreto. Verás su número en la pantalla. Cuando termine, di: \"Tus reflejos me ayudarán a entender qué número dibujaste.\" Pídele que te dé su mano. Tómala y mírale a los ojos. Di cada número del 0 al 9. Detente en el número que dibujó y di: \"Ese es el número que dibujaste.\""
           }
         }
       }
@@ -2940,7 +2940,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Si dibujó un número de dos dígitos como 15 o 23, no te preocupes. Usa un método diferente. Di: \"Primero adivinaré el rango.\" Luego nombra la decena que contiene su número: para 15 di \"Estaba entre 10 y 20\", para 23 di \"entre 20 y 30\". Di cada número de ese rango. Deténte en el número que dibujó y di: \"Ese es el número que dibujaste.\""
+            "value" : "Si dibujó un número de dos dígitos como 15 o 23, no te preocupes. Usa un método diferente. Di: \"Primero adivinaré el rango.\" Luego nombra la decena que contiene su número: para 15 di \"Estaba entre 10 y 20\", para 23 di \"entre 20 y 30\". Di cada número de ese rango. Detente en el número que dibujó y di: \"Ese es el número que dibujaste.\""
           }
         }
       }
@@ -3229,7 +3229,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cuando el espectador detiene el cronómetro, el teléfono envía los segundos mediante vibraciones. Después de 3 segundos, los centésimas. O activa el disparador en Ajustes de Vibración para recibir las señales cuando estés listo: toca el botón."
+            "value" : "Cuando el espectador detiene el cronómetro, el teléfono envía los segundos mediante vibraciones. Después de 3 segundos, envía las centésimas. O activa el disparador \"Boca Abajo\" en Ajustes de Vibración para recibir las señales cuando estés listo: toca el botón."
           }
         }
       }
@@ -3297,7 +3297,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Espera las vibraciones: primero los segundos y luego los centésimas 3 segundos después. Si el disparador está activado, pon el teléfono boca abajo para los segundos y hazlo otra vez para los centésimas."
+            "value" : "Espera las vibraciones: primero los segundos y luego las centésimas 3 segundos después. Si el disparador está activado, pon el teléfono boca abajo para los segundos y hazlo otra vez para las centésimas."
           }
         }
       }
@@ -3331,7 +3331,7 @@
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Di primero los segundos. Haz una pausa y luego los centésimas."
+            "value" : "Di primero los segundos. Haz una pausa y luego las centésimas."
           }
         }
       }
