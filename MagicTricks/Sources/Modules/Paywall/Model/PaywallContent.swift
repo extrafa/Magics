@@ -10,6 +10,13 @@ private let key = L10nDomain("paywall")
 // What the paywall says and which cards it deals: the one place to tune copy.
 // Cards come straight from TrickCollection, so a new Pro trick shows up on the paywall by itself.
 struct PaywallContent {
+    // One line of the deal: what is free, what one payment opens, what else it changes.
+    struct Row: Equatable {
+        let symbol: String
+        let title: String
+        let text: String
+    }
+
     let headline: String
     // The Pro tricks in collection order; the tapped one goes last, so it lies on top of the fan.
     let cards: [Trick]
@@ -17,9 +24,9 @@ struct PaywallContent {
     // The tapped Pro trick (contextual paywall) and what it does; nil on the general paywall.
     let focus: Trick?
     let effect: String?
-    // The count is derived from the catalog (never typed into copy), so it can't drift from what the purchase opens.
-    let unlocks: String?
-    let freeNote: String?
+    // Free now, one payment, no watermark. The names come from the catalog (never typed into copy),
+    // so they can't drift from what the purchase opens.
+    let rows: [Row]
 
     init(context: PaywallContext, tricks: [Trick] = TrickCollection.tricks) {
         let proTricks = tricks.filter { $0.id.requiresPro }
@@ -31,23 +38,43 @@ struct PaywallContent {
             picked = nil
         }
 
-        freeNote = Self.names(of: freeTricks).map {
-            String.localizedStringWithFormat(String(localized: key("freeNote")), $0)
-        }
         focus = picked
         cards = proTricks.filter { $0.id != picked?.id } + (picked.map { [$0] } ?? [])
+        rows = Self.rows(free: freeTricks, pro: proTricks)
 
         if let picked {
             headline = String.localizedStringWithFormat(String(localized: key("contextTitle")), String(localized: picked.title))
             effect = String(localized: picked.subtitle)
-            unlocks = Self.countedSentence(key: "alsoUnlocks", listing: proTricks.filter { $0.id != picked.id })
         } else {
             headline = Self.countedText(key: "title", count: proTricks.count)
             effect = nil
-            unlocks = Self.names(of: proTricks).map {
-                String.localizedStringWithFormat(String(localized: key("unlocks")), $0)
-            }
         }
+    }
+
+    private static func rows(free: [Trick], pro: [Trick]) -> [Row] {
+        var rows: [Row] = []
+        if let freeNames = names(of: free) {
+            rows.append(Row(
+                symbol: "checkmark.circle.fill",
+                title: String(localized: key("row.free.title")),
+                text: String.localizedStringWithFormat(String(localized: key("row.free.text")), freeNames)
+            ))
+        }
+        if let proNames = names(of: pro) {
+            rows.append(Row(
+                symbol: "lock.open.fill",
+                title: String(localized: key("row.pay.title")),
+                text: String.localizedStringWithFormat(String(localized: key("row.pay.text")), proNames)
+            ))
+        }
+        if let freeNames = names(of: free) {
+            rows.append(Row(
+                symbol: "sparkles",
+                title: String(localized: key("row.watermark.title")),
+                text: String.localizedStringWithFormat(String(localized: key("row.watermark.text")), freeNames)
+            ))
+        }
+        return rows
     }
 
     private static func names(of tricks: [Trick]) -> String? {
@@ -59,13 +86,5 @@ struct PaywallContent {
     private static func countedText(key suffix: String, count: Int) -> String {
         let variant = count == 1 ? "one" : "other"
         return String.localizedStringWithFormat(String(localized: key("\(suffix).\(variant)")), count)
-    }
-
-    // "Plus 4 more tricks: A, B and C."
-    private static func countedSentence(key suffix: String, listing tricks: [Trick]) -> String? {
-        guard let names = names(of: tricks) else { return nil }
-        let variant = tricks.count == 1 ? "one" : "other"
-        let format = String(localized: key("\(suffix).\(variant)"))
-        return String.localizedStringWithFormat(format, tricks.count, names)
     }
 }

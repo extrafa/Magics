@@ -5,8 +5,6 @@
 
 import SwiftUI
 
-private let key = L10nDomain("paywall")
-
 struct PaywallScreen: View {
     let onDismiss: Completion
 
@@ -26,7 +24,7 @@ struct PaywallScreen: View {
             VStack(spacing: 0) {
                 GeometryReader { geo in
                     ScrollView(showsIndicators: false) {
-                        VStack(alignment: .leading, spacing: 24) {
+                        VStack(alignment: .leading, spacing: 16) {
                             PaywallCardFan(cards: content.cards, cardWidth: Self.cardWidth(in: geo.size))
                             text
                         }
@@ -87,7 +85,7 @@ struct PaywallScreen: View {
 
     // Wide screens get bigger cards; short ones (SE) shrink them so the text and the dock still fit.
     private static func cardWidth(in size: CGSize) -> CGFloat {
-        min(size.width * 0.38, size.height * 0.21, 170)
+        min(size.width * 0.32, size.height * 0.19, 150)
     }
 
     private var text: some View {
@@ -104,19 +102,36 @@ struct PaywallScreen: View {
                     .foregroundStyle(.textPrimary)
             }
 
-            if let unlocks = content.unlocks {
-                Text(coloredNames(in: unlocks))
-                    .font(.system(.title3, design: .rounded, weight: .semibold))
-                    .foregroundStyle(.textPrimary)
-                    .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 12) {
+                ForEach(content.rows, id: \.title) { row in
+                    rowView(row)
+                }
             }
-
-            Text(notes)
-                .font(.system(.footnote, design: .rounded))
-                .foregroundStyle(.secondary)
+            .padding(.top, 6)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
         .multilineTextAlignment(.leading)
+    }
+
+    // One line of the deal: an icon, what it is in two or three words, then the detail.
+    private func rowView(_ row: PaywallContent.Row) -> some View {
+        HStack(alignment: .top, spacing: 12) {
+            Image(systemName: row.symbol)
+                .font(.system(.title3, design: .rounded, weight: .semibold))
+                .foregroundStyle(Color.textPrimary.opacity(0.85))
+                .frame(width: 28)
+                .accessibilityHidden(true)
+            VStack(alignment: .leading, spacing: 2) {
+                Text(row.title)
+                    .font(.system(.headline, design: .rounded, weight: .bold))
+                    .foregroundStyle(.textPrimary)
+                Text(coloredNames(in: row.text))
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(.secondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+        }
+        .accessibilityElement(children: .combine)
     }
 
     // Each trick name takes the colour of its card, so the sentence reads as the hand above it.
@@ -135,12 +150,6 @@ struct PaywallScreen: View {
             }
         }
         return result
-    }
-
-    private var notes: String {
-        [content.freeNote, String(localized: key("watermarkNote"))]
-            .compactMap { $0 }
-            .joined(separator: " ")
     }
 }
 

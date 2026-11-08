@@ -55,23 +55,41 @@ final class PaywallContentTests: XCTestCase {
         }
     }
 
-    func test_general_unlocksNamesEveryProTrickAndNoFreeOne() throws {
+    func test_general_hasNoFocusAndNoEffect() {
         let content = PaywallContent(context: .general)
-        let unlocks = try XCTUnwrap(content.unlocks)
 
-        for trick in collection {
-            let name = String(localized: trick.title)
-            XCTAssertEqual(unlocks.contains(name), trick.id.requiresPro, name)
-        }
         XCTAssertNil(content.focus)
         XCTAssertNil(content.effect)
     }
 
-    func test_general_freeNoteNamesTheFreeTrick() throws {
-        let freeNote = try XCTUnwrap(PaywallContent(context: .general).freeNote)
+    func test_rows_areFreeThenPayThenWatermark() {
+        let content = PaywallContent(context: .general)
+
+        XCTAssertEqual(content.rows.map(\.symbol), ["checkmark.circle.fill", "lock.open.fill", "sparkles"])
+        XCTAssertEqual(Set(content.rows.map(\.title)).count, 3, "the titles identify the rows")
+    }
+
+    func test_rows_freeAndWatermarkNameOnlyTheFreeTrick_payNamesEveryProTrick() {
+        let rows = PaywallContent(context: .general).rows
+        let free = rows[0].text, pay = rows[1].text, watermark = rows[2].text
 
         for trick in collection {
-            XCTAssertEqual(freeNote.contains(String(localized: trick.title)), !trick.id.requiresPro)
+            let name = String(localized: trick.title)
+            XCTAssertEqual(free.contains(name), !trick.id.requiresPro, "free row: \(name)")
+            XCTAssertEqual(pay.contains(name), trick.id.requiresPro, "pay row: \(name)")
+            XCTAssertEqual(watermark.contains(name), !trick.id.requiresPro, "watermark row: \(name)")
+        }
+    }
+
+    func test_contextual_hasTheSameRowsAsGeneral() {
+        XCTAssertEqual(PaywallContent(context: .trick(.timeControl)).rows, PaywallContent(context: .general).rows)
+    }
+
+    func test_rows_areResolvedNotRawKeys() {
+        for row in PaywallContent(context: .general).rows {
+            XCTAssertFalse(row.title.hasPrefix("paywall."), row.title)
+            XCTAssertFalse(row.text.hasPrefix("paywall."), row.text)
+            XCTAssertFalse(row.text.contains("%@"), row.text)
         }
     }
 
@@ -84,56 +102,39 @@ final class PaywallContentTests: XCTestCase {
         XCTAssertEqual(content.effect, String(localized: tapped.subtitle))
     }
 
-    func test_contextual_unlocksListsOnlyTheOtherProTricks() throws {
-        let content = PaywallContent(context: .trick(.timeControl))
-        let unlocks = try XCTUnwrap(content.unlocks)
+    func test_withNoFreeTrick_hasOnlyThePayRow() {
+        let onlyPro = collection.filter { $0.id.requiresPro }
 
-        for trick in collection {
-            let expected = trick.id.requiresPro && trick.id != .timeControl
-            XCTAssertEqual(unlocks.contains(String(localized: trick.title)), expected, "\(trick.id)")
-        }
+        let content = PaywallContent(context: .general, tricks: onlyPro)
+
+        XCTAssertEqual(content.rows.map(\.symbol), ["lock.open.fill"])
     }
 
-    func test_contextual_withNoOtherProTricks_hasNoUnlocksLine() {
-        let onlyOnePro = collection.filter { !$0.id.requiresPro || $0.id == .phantomDraw }
+    func test_withNoProTrick_hasNoPayRow() {
+        let onlyFree = collection.filter { !$0.id.requiresPro }
 
-        let content = PaywallContent(context: .trick(.phantomDraw), tricks: onlyOnePro)
+        let content = PaywallContent(context: .general, tricks: onlyFree)
 
-        XCTAssertNil(content.unlocks)
+        XCTAssertFalse(content.rows.map(\.symbol).contains("lock.open.fill"))
     }
 
-    func test_count_isTheProTricksNeverTheWholeCollection() throws {
+    func test_count_isTheProTricksNeverTheWholeCollection() {
         let pro = collection.filter { $0.id.requiresPro }.count
         XCTAssertNotEqual(pro, collection.count)
 
         let general = PaywallContent(context: .general).headline
-        let contextual = try XCTUnwrap(PaywallContent(context: .trick(.colorSense)).unlocks)
 
         XCTAssertTrue(general.contains("\(pro)"), general)
         XCTAssertFalse(general.contains("\(collection.count)"), general)
-        XCTAssertTrue(contextual.contains("\(pro - 1)"), contextual)
-        XCTAssertFalse(contextual.contains("\(collection.count)"), contextual)
     }
 
-    func test_general_withASingleProTrick_usesTheSingularHeadline() throws {
+    func test_general_withASingleProTrick_usesTheSingularHeadline() {
         let freeAndOnePro = collection.filter { !$0.id.requiresPro || $0.id == .phantomDraw }
         let key = L10nDomain("paywall")
-        let name = String(localized: collection.first { $0.id == .phantomDraw }!.title)
 
         let content = PaywallContent(context: .general, tricks: freeAndOnePro)
 
         XCTAssertEqual(content.headline, String.localizedStringWithFormat(String(localized: key("title.one")), 1))
-        XCTAssertEqual(content.unlocks, String.localizedStringWithFormat(String(localized: key("unlocks")), name))
-    }
-
-    func test_contextual_withASingleOtherProTrick_usesTheSingularSentence() throws {
-        let twoPro = collection.filter { !$0.id.requiresPro || $0.id == .phantomDraw || $0.id == .colorSense }
-        let key = L10nDomain("paywall")
-        let name = String(localized: collection.first { $0.id == .phantomDraw }!.title)
-
-        let content = PaywallContent(context: .trick(.colorSense), tricks: twoPro)
-
-        XCTAssertEqual(content.unlocks, String.localizedStringWithFormat(String(localized: key("alsoUnlocks.one")), 1, name))
     }
 }
 
