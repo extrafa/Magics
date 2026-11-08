@@ -4517,13 +4517,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Almost ready. Your plan is made just for you…"
+            "value" : "Almost ready. Here is what you get…"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Casi listo. Tu plan es único para ti…"
+            "value" : "Casi listo. Esto es lo que recibes…"
           }
         }
       }
