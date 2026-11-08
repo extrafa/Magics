@@ -175,3 +175,23 @@ final class AppPreferencesOnRealDefaultsTests: XCTestCase {
     }
 }
 
+
+final class HapticsUnavailableNoticeTests: XCTestCase {
+
+    func test_shouldShow_onADeviceThatCanVibrate_isFalse() {
+        XCTAssertFalse(HapticsUnavailableNotice.shouldShow(isUnavailable: false, isInternalBuild: true, isHiddenByTester: false))
+    }
+
+    func test_shouldShow_whenUnavailable_isTrue() {
+        XCTAssertTrue(HapticsUnavailableNotice.shouldShow(isUnavailable: true, isInternalBuild: true, isHiddenByTester: false))
+        XCTAssertTrue(HapticsUnavailableNotice.shouldShow(isUnavailable: true, isInternalBuild: false, isHiddenByTester: false))
+    }
+
+    func test_shouldShow_testerHidesItInAnInternalBuild() {
+        XCTAssertFalse(HapticsUnavailableNotice.shouldShow(isUnavailable: true, isInternalBuild: true, isHiddenByTester: true))
+    }
+
+    func test_shouldShow_testerFlagDoesNothingInAReleaseBuild() {
+        XCTAssertTrue(HapticsUnavailableNotice.shouldShow(isUnavailable: true, isInternalBuild: false, isHiddenByTester: true))
+    }
+}
