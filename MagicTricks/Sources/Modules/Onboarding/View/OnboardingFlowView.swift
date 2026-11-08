@@ -23,7 +23,7 @@ struct OnboardingFlowView: View {
 
             currentScreen
                 .id(viewModel.step)
-                .transition(.opacity)
+                .transition(transition(for: viewModel.step))
         }
         // A floating overlay would cover the headline once the button grows, so at accessibility sizes it takes its own row.
         .overlay(alignment: .topTrailing) {
@@ -56,7 +56,18 @@ struct OnboardingFlowView: View {
         .opacity(isDismissing && reduceMotion ? 0 : 1)
         
         .animation(reduceMotion ? .easeOut(duration: 0.25) : .spring(response: 0.35, dampingFraction: 0.82), value: isDismissing)
-        .animation(.easeOut(duration: 0.22), value: viewModel.step)
+        .animation(stepAnimation, value: viewModel.step)
+    }
+
+    // The paywall rises from the bottom like a sheet, so Skip reads as a move to a new place and not a flicker.
+    private func transition(for step: OnboardingStep) -> AnyTransition {
+        guard step == .paywall, !reduceMotion else { return .opacity }
+        return .asymmetric(insertion: .move(edge: .bottom).combined(with: .opacity), removal: .opacity)
+    }
+
+    private var stepAnimation: Animation {
+        guard viewModel.step == .paywall, !reduceMotion else { return .easeOut(duration: 0.22) }
+        return .spring(response: 0.5, dampingFraction: 0.88)
     }
 
     private var skipButton: some View {
