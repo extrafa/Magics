@@ -4623,13 +4623,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Magic tricks that impress anyone."
+            "value" : "Magic tricks from beginner to pro."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Tu próximo truco de magia está en tu bolsillo."
+            "value" : "Trucos de magia, de principiante a profesional."
           }
         }
       }
@@ -4640,13 +4640,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Real magic with just a phone."
+            "value" : "All you need is your phone."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Muestra magia real solo con tu teléfono."
+            "value" : "Solo necesitas tu teléfono."
           }
         }
       }
