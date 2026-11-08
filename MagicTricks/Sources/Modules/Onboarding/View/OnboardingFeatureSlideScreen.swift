@@ -154,9 +154,18 @@ struct OnboardingFeatureSlideScreen: View {
 
 private let previewImage = KeyDomain("onboarding.preview")
 
+private extension KeyDomain {
+    // The phone mockups come in a dark and a light version: each theme shows its own.
+    func callAsFunction(_ name: String, in scheme: ColorScheme) -> String {
+        self(scheme == .light ? "\(name).light" : name)
+    }
+}
+
 private struct InstructionPreviewVisual: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
-        Image(previewImage("instructions"))
+        Image(previewImage("instructions", in: colorScheme))
             .resizable()
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -168,8 +177,10 @@ private struct InstructionPreviewVisual: View {
 // MARK: - Visual: Tricks Collection
 
 private struct TricksPreviewVisual: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
-        Image(previewImage("everyMoment"))
+        Image(previewImage("everyMoment", in: colorScheme))
             .resizable()
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
@@ -181,8 +192,10 @@ private struct TricksPreviewVisual: View {
 // MARK: - Visual: Vibrations
 
 private struct VibrationsVisual: View {
+    @Environment(\.colorScheme) private var colorScheme
+
     var body: some View {
-        Image(previewImage("phoneOnly"))
+        Image(previewImage("phoneOnly", in: colorScheme))
             .resizable()
             .scaledToFit()
             .clipShape(RoundedRectangle(cornerRadius: 20, style: .continuous))
