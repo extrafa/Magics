@@ -47,6 +47,7 @@ final class StoreManager: ObservableObject {
     private enum Key {
         static let proOverride = "dev.proOverride"
         static let watermarkHidden = "dev.watermarkHidden"
+        static let lastKnownAccess = "store.lastKnownAccess"
     }
 
     @Published private(set) var products: [StoreProduct] = []
@@ -69,8 +70,16 @@ final class StoreManager: ObservableObject {
     // False only until the first purchase check finishes, when an owner would otherwise see locks flash.
     var isAccessKnown: Bool { hasResolvedAccess || (isInternalBuild && isProOverride) }
 
-    // What the UI shows as the free tier: locks, the Unlock button and the watermark.
-    var showsFreeTier: Bool { isAccessKnown && !hasProAccess }
+    // What the UI shows as the free tier: locks, the Unlock button and the watermark. Until the first purchase check
+    // finishes it shows the last answer we got and the free tier on a first launch, so the cards never open up and lock again.
+    var showsFreeTier: Bool { !presentsProAccess }
+
+    private var presentsProAccess: Bool {
+        guard hasResolvedAccess else {
+            return defaults.bool(forKey: Key.lastKnownAccess) || (isInternalBuild && isProOverride)
+        }
+        return hasProAccess
+    }
 
     // The one lock rule. The gate is strict: a trick is open only for someone who holds the purchase.
     func isLocked(_ trick: TrickType) -> Bool {
@@ -256,6 +265,7 @@ final class StoreManager: ObservableObject {
             }
         }
         _hasStoreAccess = found
+        defaults.set(found, forKey: Key.lastKnownAccess)
         hasResolvedAccess = true
     }
 }
