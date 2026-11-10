@@ -67,11 +67,11 @@ struct PaywallContent {
                 text: String.localizedStringWithFormat(String(localized: key("row.pay.text")), proNames)
             ))
         }
-        if let freeNames = names(of: free) {
+        if !free.isEmpty {
             rows.append(Row(
                 symbol: "sparkles",
                 title: String(localized: key("row.watermark.title")),
-                text: String.localizedStringWithFormat(String(localized: key("row.watermark.text")), freeNames)
+                text: String(localized: key("row.watermark.text"))
             ))
         }
         return rows

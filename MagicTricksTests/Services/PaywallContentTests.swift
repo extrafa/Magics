@@ -47,7 +47,7 @@ final class PaywallContentTests: XCTestCase {
 
     func test_copy_isResolvedNotRawKeys() {
         let general = PaywallContent(context: .general)
-        let contextual = PaywallContent(context: .trick(.colorSense))
+        let contextual = PaywallContent(context: .trick(.timeControl))
 
         for text in [general.headline, contextual.headline] {
             XCTAssertFalse(text.hasPrefix("paywall."), "unresolved key: \(text)")
@@ -69,16 +69,22 @@ final class PaywallContentTests: XCTestCase {
         XCTAssertEqual(Set(content.rows.map(\.title)).count, 3, "the titles identify the rows")
     }
 
-    func test_rows_freeAndWatermarkNameOnlyTheFreeTrick_payNamesEveryProTrick() {
+    func test_rows_freeNamesOnlyTheFreeTricks_payNamesEveryProTrick() {
         let rows = PaywallContent(context: .general).rows
-        let free = rows[0].text, pay = rows[1].text, watermark = rows[2].text
+        let free = rows[0].text, pay = rows[1].text
 
         for trick in collection {
             let name = String(localized: trick.title)
             XCTAssertEqual(free.contains(name), !trick.id.requiresPro, "free row: \(name)")
             XCTAssertEqual(pay.contains(name), trick.id.requiresPro, "pay row: \(name)")
-            XCTAssertEqual(watermark.contains(name), !trick.id.requiresPro, "watermark row: \(name)")
         }
+    }
+
+    func test_rows_watermarkRowNeedsAFreeTrick() {
+        let onlyPro = collection.filter { $0.id.requiresPro }
+
+        XCTAssertFalse(PaywallContent(context: .general, tricks: onlyPro).rows.map(\.symbol).contains("sparkles"))
+        XCTAssertTrue(PaywallContent(context: .general).rows.map(\.symbol).contains("sparkles"))
     }
 
     func test_contextual_hasTheSameRowsAsGeneral() {

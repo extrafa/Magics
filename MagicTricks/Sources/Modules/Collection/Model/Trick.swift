@@ -19,8 +19,8 @@ enum TrickType: String, CaseIterable {
 
     var requiresPro: Bool {
         switch self {
-        case .geoMentalism: false
-        case .colorSense, .timeControl, .magicGallery, .phantomDraw: true
+        case .geoMentalism, .colorSense: false
+        case .timeControl, .magicGallery, .phantomDraw: true
         }
     }
 

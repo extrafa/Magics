@@ -35,10 +35,11 @@ Claude их не удаляет. Чек-лист составлен по код�
 - [ ] Проверить правило: 9 городов одного типа первой буквы и 1 другого, в нескольких прогонах
 - [ ] Ватермарка видна без покупки и пропадает после
 
-### Color Sense
+### Color Sense (бесплатный)
 - [ ] Вибрации 1 (красный), 2 (зелёный), 3 (синий), 4 (жёлтый) совпадают с тапами
 - [ ] Сломать: два быстрых тапа подряд, тап во время вибрации, фон во время вибрации
 - [ ] Настройки вибраций: крайние значения скорости и силы, группировка, тренажёр
+- [ ] Ватермарка видна без покупки и пропадает после
 
 ### Time Control
 - [ ] Старт и стоп секундомера; секунды приходят сразу, сотые через 3 секунды
@@ -103,8 +104,8 @@ vibrations, which only the person holding the phone can feel. The vibration code
 to practise it are described in the instructions and in Settings > Practice Signals.
 
 In-app purchase: one non-consumable product, "magic_lifetime" (a one-time payment, no
-subscription). One trick (Geo Mentalism) is free; the purchase unlocks the other four
-tricks and removes the watermark. Restore Purchases is on the paywall and in Settings.
+subscription). Two tricks (Geo Mentalism and Color Sense) are free and carry a small
+watermark; the purchase unlocks the other three tricks and removes the watermark. Restore Purchases is on the paywall and in Settings.
 
 Phantom Draw needs two devices on the same local network (one device is given to the
 spectator, the other stays with the performer; they pair with a two-digit code). The app

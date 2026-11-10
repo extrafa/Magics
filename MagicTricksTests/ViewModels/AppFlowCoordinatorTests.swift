@@ -254,11 +254,11 @@ final class AppFlowCoordinatorTests: XCTestCase {
 
     func test_isLocked_onlyLocksProTricksOtherThanPhantomDrawWithoutPro() {
         XCTAssertFalse(TrickType.geoMentalism.isLocked(hasProAccess: false))
-        XCTAssertTrue(TrickType.colorSense.isLocked(hasProAccess: false))
+        XCTAssertFalse(TrickType.colorSense.isLocked(hasProAccess: false))
         XCTAssertTrue(TrickType.timeControl.isLocked(hasProAccess: false))
         XCTAssertTrue(TrickType.magicGallery.isLocked(hasProAccess: false))
         XCTAssertFalse(TrickType.phantomDraw.isLocked(hasProAccess: false))
-        XCTAssertFalse(TrickType.colorSense.isLocked(hasProAccess: true))
+        XCTAssertFalse(TrickType.timeControl.isLocked(hasProAccess: true))
     }
 
     func test_phantomDrawRole_onlyThePerformersPhoneRequiresPro() {
