@@ -52,6 +52,7 @@ struct InstructionStepRow: View {
                         RoundedRectangle(cornerRadius: 14, style: .continuous)
                             .stroke(Color.cardBorder, lineWidth: 1)
                     }
+                    .overlay(alignment: .topTrailing) { screenshotBadge }
             }
 
             if !step.actions.isEmpty {
@@ -60,6 +61,18 @@ struct InstructionStepRow: View {
             }
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+
+    // The pictures show the app as it looks, they are not buttons: the camera in the corner says so.
+    private var screenshotBadge: some View {
+        Image(systemName: "camera.fill")
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(Color.textPrimary.opacity(0.75))
+            .frame(width: 28, height: 28)
+            .background(.ultraThinMaterial, in: Circle())
+            .overlay(Circle().stroke(Color.cardBorder, lineWidth: 1))
+            .padding(8)
+            .accessibilityHidden(true)
     }
 
     private var stepText: some View {
