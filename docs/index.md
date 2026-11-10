@@ -15,9 +15,9 @@ iPhone, open Settings, then Accessibility, then Touch, and make sure Vibration i
 on. Then open Settings in Magic Tricks, go to "Vibration Settings" and tap "Try
 Vibration" to check it.
 
-### How do I practice the signals?
+### How do I practice the vibrations?
 
-Open Settings in the app and tap "Practice Signals". You can also change speed,
+Open Settings in the app and tap "Practice Vibrations". You can also change speed,
 strength and grouping of the vibrations in "Vibration Settings".
 
 ### How do I close a trick?
