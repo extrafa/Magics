@@ -12,6 +12,8 @@ private let selectionInset: CGFloat = 3
 
 struct HapticSignalSettingsSection: View {
     @ObservedObject var settings: SettingsStore
+    // Called after a strength is picked (the same one again too), so the screen can let the person feel it.
+    var onIntensityChosen: Completion?
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .subheadline) private var segmentHeight: CGFloat = 48
 
@@ -87,6 +89,7 @@ struct HapticSignalSettingsSection: View {
         let isSelected = settings.hapticIntensity == intensity
         return Button {
             settings.hapticIntensity = intensity
+            onIntensityChosen?()
         } label: {
             label(isSelected)
                 .contentShape(Rectangle())
