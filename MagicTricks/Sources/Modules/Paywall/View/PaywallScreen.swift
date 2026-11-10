@@ -25,7 +25,7 @@ struct PaywallScreen: View {
                 GeometryReader { geo in
                     ScrollView(showsIndicators: false) {
                         VStack(alignment: .leading, spacing: 16) {
-                            PaywallCardFan(cards: content.cards, cardWidth: Self.cardWidth(in: geo.size))
+                            PaywallCardFan(cards: content.cards, cardWidth: Self.cardWidth(in: geo.size, hasFocus: content.focus != nil))
                             text
                         }
                         .padding(.horizontal, Self.sidePadding)
@@ -84,8 +84,9 @@ struct PaywallScreen: View {
     // MARK: Text
 
     // Wide screens get bigger cards; short ones (SE) shrink them so the text and the dock still fit.
-    private static func cardWidth(in size: CGSize) -> CGFloat {
-        min(size.width * 0.32, size.height * 0.19, 150)
+    // The contextual paywall has one more line (what the trick does), so its cards give some room back.
+    private static func cardWidth(in size: CGSize, hasFocus: Bool) -> CGFloat {
+        min(size.width * (hasFocus ? 0.22 : 0.32), size.height * 0.19, 150)
     }
 
     private var text: some View {

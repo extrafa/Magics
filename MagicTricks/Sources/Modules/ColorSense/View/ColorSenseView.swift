@@ -43,6 +43,12 @@ struct ColorSenseView: View {
         .exitHint()
         .keepsScreenAwake()
         .hapticsUnavailableNoticeOverlay()
+        .toolbar {
+            ToolbarItem(placement: .topBarTrailing) {
+                // On the spectator's screen like in Geo Mentalism: it marks the free tier and paying removes it.
+                WatermarkView()
+            }
+        }
         .onDisappear {
             viewModel.cancel()
         }

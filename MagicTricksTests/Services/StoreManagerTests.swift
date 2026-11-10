@@ -390,7 +390,7 @@ final class StoreManagerTests: XCTestCase {
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: false)
 
         XCTAssertFalse(manager.isAccessKnown)
-        XCTAssertTrue(manager.showsLock(for: .colorSense))
+        XCTAssertTrue(manager.showsLock(for: .timeControl))
         XCTAssertFalse(manager.showsLock(for: .geoMentalism))
     }
 
@@ -401,7 +401,7 @@ final class StoreManagerTests: XCTestCase {
 
         XCTAssertFalse(manager.isAccessKnown)
         XCTAssertFalse(manager.showsFreeTier)
-        XCTAssertFalse(manager.showsLock(for: .colorSense))
+        XCTAssertFalse(manager.showsLock(for: .timeControl))
     }
 
     func test_firstCheck_remembersTheAnswerForTheNextLaunch() async {
@@ -517,10 +517,10 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertFalse(manager.showsFreeTier)
     }
 
-    func test_isLocked_isStrictAndKeepsPhantomDrawAndGeoOpen() {
+    func test_isLocked_isStrictAndKeepsThePhantomDrawAndTheFreeTricksOpen() {
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: false)
 
-        XCTAssertTrue(manager.isLocked(.colorSense))
+        XCTAssertFalse(manager.isLocked(.colorSense))
         XCTAssertTrue(manager.isLocked(.timeControl))
         XCTAssertTrue(manager.isLocked(.magicGallery))
         XCTAssertFalse(manager.isLocked(.phantomDraw))
@@ -529,12 +529,13 @@ final class StoreManagerTests: XCTestCase {
 
     func test_showsLock_staysTheSameWhenTheFreeTierIsConfirmed() async {
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: false)
-        XCTAssertTrue(manager.showsLock(for: .colorSense))
+        XCTAssertTrue(manager.showsLock(for: .timeControl))
 
         manager.start()
         await waitUntil { manager.isAccessKnown }
 
-        XCTAssertTrue(manager.showsLock(for: .colorSense))
+        XCTAssertTrue(manager.showsLock(for: .timeControl))
+        XCTAssertFalse(manager.showsLock(for: .colorSense))
         XCTAssertFalse(manager.showsLock(for: .phantomDraw))
         XCTAssertFalse(manager.showsLock(for: .geoMentalism))
         manager.stop()
@@ -547,8 +548,8 @@ final class StoreManagerTests: XCTestCase {
         manager.start()
         await waitUntil { manager.isAccessKnown }
 
-        XCTAssertFalse(manager.isLocked(.colorSense))
-        XCTAssertFalse(manager.showsLock(for: .colorSense))
+        XCTAssertFalse(manager.isLocked(.timeControl))
+        XCTAssertFalse(manager.showsLock(for: .timeControl))
         manager.stop()
     }
 
