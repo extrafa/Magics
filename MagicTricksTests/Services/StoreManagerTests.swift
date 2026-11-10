@@ -377,13 +377,50 @@ final class StoreManagerTests: XCTestCase {
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore(), isInternalBuild: false)
 
         XCTAssertFalse(manager.isAccessKnown)
-        XCTAssertFalse(manager.showsFreeTier)
+        XCTAssertTrue(manager.showsFreeTier, "a first launch shows the free tier until the answer comes")
 
         manager.start()
         await waitUntil { manager.isAccessKnown }
 
         XCTAssertTrue(manager.showsFreeTier)
         manager.stop()
+    }
+
+    func test_beforeTheFirstCheck_locksAreShownOnAFirstLaunch() {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: false)
+
+        XCTAssertFalse(manager.isAccessKnown)
+        XCTAssertTrue(manager.showsLock(for: .timeControl))
+        XCTAssertFalse(manager.showsLock(for: .geoMentalism))
+    }
+
+    func test_beforeTheFirstCheck_anOwnerSeesNoLocks() {
+        let defaults = MockPreferenceStore()
+        defaults.set(true, forKey: "store.lastKnownAccess")
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: defaults, isInternalBuild: false)
+
+        XCTAssertFalse(manager.isAccessKnown)
+        XCTAssertFalse(manager.showsFreeTier)
+        XCTAssertFalse(manager.showsLock(for: .timeControl))
+    }
+
+    func test_firstCheck_remembersTheAnswerForTheNextLaunch() async {
+        let owner = MockPreferenceStore()
+        let ownerManager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(entitlementProductIDs: ["magic_lifetime"]), defaults: owner, isInternalBuild: false)
+        ownerManager.start()
+        await waitUntil { ownerManager.isAccessKnown }
+        ownerManager.stop()
+
+        let free = MockPreferenceStore()
+        free.set(true, forKey: "store.lastKnownAccess")
+        let freeManager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: free, isInternalBuild: false)
+        freeManager.start()
+        await waitUntil { freeManager.isAccessKnown }
+        freeManager.stop()
+
+        XCTAssertEqual(owner.bool(forKey: "store.lastKnownAccess"), true)
+        XCTAssertEqual(free.bool(forKey: "store.lastKnownAccess"), false, "a lapsed purchase is forgotten")
+        XCTAssertTrue(freeManager.showsFreeTier)
     }
 
     func test_openInstruction_forPhantomDrawOnTheFreeTier_opensNothing() async {
@@ -445,7 +482,9 @@ final class StoreManagerTests: XCTestCase {
 
     func test_owner_neverShowsTheFreeTier() async {
         let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
-        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: MockPreferenceStore(), isInternalBuild: false)
+        let defaults = MockPreferenceStore()
+        defaults.set(true, forKey: "store.lastKnownAccess")
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: service, defaults: defaults, isInternalBuild: false)
 
         XCTAssertFalse(manager.showsFreeTier)
         manager.start()
@@ -488,9 +527,9 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertFalse(manager.isLocked(.geoMentalism))
     }
 
-    func test_showsLock_appearsOnlyOnceTheFreeTierIsKnown() async {
+    func test_showsLock_staysTheSameWhenTheFreeTierIsConfirmed() async {
         let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: false)
-        XCTAssertFalse(manager.showsLock(for: .timeControl))
+        XCTAssertTrue(manager.showsLock(for: .timeControl))
 
         manager.start()
         await waitUntil { manager.isAccessKnown }

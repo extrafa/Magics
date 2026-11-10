@@ -17,6 +17,8 @@ struct HapticSettingsScreen: View {
 
     private let haptics: CountHapticPlaying
     private let testNumber = 7
+    // A short sample, so choosing Weak, Medium or Strong shows what it feels like without the full preview.
+    private let strengthSampleCount = 3
 
     init(haptics: CountHapticPlaying? = nil) {
         self.haptics = haptics ?? HapticManager.shared
@@ -29,7 +31,7 @@ struct HapticSettingsScreen: View {
             ScrollView {
                 VStack(alignment: .leading, spacing: 28) {
                     HapticsUnavailableNotice()
-                    HapticSignalSettingsSection(settings: settings)
+                    HapticSignalSettingsSection(settings: settings, onIntensityChosen: playStrengthSample)
                     MotionSettingsSection(settings: settings)
                     HapticPreviewSection(
                         testNumber: testNumber,
@@ -63,6 +65,11 @@ struct HapticSettingsScreen: View {
             isWaitingForGesture = false
             isTesting = false
         }
+    }
+
+    private func playStrengthSample() {
+        guard !isTesting else { return }
+        haptics.playCount(strengthSampleCount, completion: nil)
     }
 
     private func playPreview() {

@@ -24,21 +24,26 @@ struct GeoMentalismCitiesView: View {
     }
 
     var body: some View {
-        ZStack(alignment: .bottom) {
+        ZStack {
             Color.backgroundScreen.ignoresSafeArea()
 
-            VStack(spacing: 0) {
-                LazyVGrid(columns: Self.columns, spacing: 12) {
-                    ForEach(viewModel.displayedCities, id: \.self) { displayedCity in
-                        CityCapsule(city: displayedCity)
+            ScrollView {
+                VStack(spacing: 20) {
+                    ReadAloudReminder(citiesCount: GeoMentalismViewModel.listSize)
+
+                    LazyVGrid(columns: Self.columns, spacing: 12) {
+                        ForEach(viewModel.displayedCities, id: \.self) { displayedCity in
+                            CityCapsule(city: displayedCity)
+                        }
                     }
                 }
                 .padding(.horizontal, 20)
-                .padding(.top, 24)
-
-                Spacer()
+                .padding(.top, 16)
+                .padding(.bottom, 12)
             }
-
+            .scrollBouncesOnlyWhenNeeded()
+        }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
             shuffleButton
         }
         .toolbar {
@@ -81,7 +86,63 @@ struct GeoMentalismCitiesView: View {
             }
         }
         .padding(.horizontal, 20)
+        .padding(.top, 8)
         .padding(.bottom, 32)
+    }
+}
+
+// The reminder the spectator sees above the list: what to do now, in two short lines.
+private struct ReadAloudReminder: View {
+    let citiesCount: Int
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isShown = false
+
+    private var tint: Color { TrickType.geoMentalism.collectionColor }
+
+    var body: some View {
+        HStack(spacing: 14) {
+            Image(systemName: "speaker.wave.2.fill")
+                .font(.system(size: 19, weight: .semibold))
+                .foregroundStyle(tint)
+                .frame(width: 44, height: 44)
+                .background(Circle().fill(tint.opacity(0.16)))
+                .speakingPulse(isActive: !reduceMotion)
+                .accessibilityHidden(true)
+
+            VStack(alignment: .leading, spacing: 2) {
+                Text(String(localized: "geo.reminder.title"))
+                    .font(.system(.headline, design: .rounded, weight: .bold))
+                    .foregroundStyle(Color.textPrimary)
+                Text(String.localizedStringWithFormat(String(localized: "geo.reminder.subtitle"), citiesCount))
+                    .font(.system(.subheadline, design: .rounded))
+                    .foregroundStyle(Color.textSecondary)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .padding(14)
+        .cardSurface(cornerRadius: 20)
+        .accessibilityElement(children: .combine)
+        // It comes in right after the list, so the eye first lands on the cities and then on what to do.
+        .opacity(isShown ? 1 : 0)
+        .offset(y: isShown || reduceMotion ? 0 : -8)
+        .task {
+            try? await Task.sleep(milliseconds: 250)
+            withAnimation(.easeOut(duration: 0.35)) { isShown = true }
+        }
+    }
+}
+
+private extension View {
+    // The waves of the speaker keep moving, like someone talking (iOS 17 and later).
+    @ViewBuilder
+    func speakingPulse(isActive: Bool) -> some View {
+        if #available(iOS 17.0, *) {
+            symbolEffect(.variableColor.iterative.reversing, options: .repeating, isActive: isActive)
+        } else {
+            self
+        }
     }
 }
 
