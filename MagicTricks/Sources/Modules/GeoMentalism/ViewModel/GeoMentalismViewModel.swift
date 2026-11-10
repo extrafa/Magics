@@ -13,6 +13,8 @@ final class GeoMentalismViewModel: ObservableObject {
     @Published private(set) var displayedCities: [String] = []
 
     private static let otherCitiesCount = 9
+    // The nine other cities and the picked one: what the screen asks the spectator to read out loud.
+    static let listSize = otherCitiesCount + 1
     private static let maxCitiesPerLetter = 2
     private var generatedCity: String?
 
