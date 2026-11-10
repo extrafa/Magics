@@ -43,6 +43,15 @@ final class GeoMentalismViewModelTests: XCTestCase {
         XCTAssertEqual(Set(sample), Set(pool))
     }
 
+    func test_listSize_isWhatTheScreenAsksToReadOutLoud() {
+        let viewModel = GeoMentalismViewModel()
+
+        viewModel.generateList(for: straightCity)
+
+        XCTAssertEqual(GeoMentalismViewModel.listSize, viewModel.displayedCities.count)
+        XCTAssertEqual(GeoMentalismViewModel.listSize, 10)
+    }
+
     func test_generateList_forAStraightCity_showsItWithNineCurvedCities() {
         let viewModel = GeoMentalismViewModel()
 
