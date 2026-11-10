@@ -100,7 +100,7 @@ undocumented features.
 
 How the secret works: some tricks pass information to the performer through the phone's
 vibrations, which only the person holding the phone can feel. The vibration code and how
-to practise it are described in the instructions and in Settings > Practice Signals.
+to practise it are described in the instructions and in Settings > Practice Vibrations.
 
 In-app purchase: one non-consumable product, "magic_lifetime" (a one-time payment, no
 subscription). One trick (Geo Mentalism) is free; the purchase unlocks the other four
