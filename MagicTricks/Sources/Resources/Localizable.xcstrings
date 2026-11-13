@@ -5779,13 +5779,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Free tricks carry a small watermark. Paying removes it."
+            "value" : "Free tricks have a small watermark. Paying removes it."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Los trucos gratis llevan una marca de agua pequeña. Al pagar se quita."
+            "value" : "Los trucos gratis tienen una marca de agua pequeña. Al pagar se quita."
           }
         }
       }
