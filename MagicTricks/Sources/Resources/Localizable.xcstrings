@@ -2438,13 +2438,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Some letters can be drawn with straight lines only. Others need at least one curve. After they pick a city, the screen shows 9 cities that start with one type of letter and 1 city that starts with the other type. That 1 city is the one they picked."
+            "value" : "Some letters are usually drawn with straight lines only. Others need at least one curve. After they pick a city, the screen shows 9 cities that start with one type of letter and 1 city (the one they picked) that starts with the other type."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Algunas letras se pueden dibujar solo con líneas rectas. Otras necesitan al menos una curva. Cuando la persona elige una ciudad, la pantalla muestra 9 ciudades que empiezan con un tipo de letra y 1 ciudad que empieza con el otro tipo. Esa ciudad es la que eligió."
+            "value" : "Algunas letras se suelen dibujar solo con líneas rectas. Otras necesitan al menos una curva. Cuando la persona elige una ciudad, la pantalla muestra 9 ciudades que empiezan con un tipo de letra y 1 ciudad (la que eligió) que empieza con el otro tipo."
           }
         }
       }
@@ -2455,13 +2455,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Look at a letter and ask yourself: can I draw it with straight lines only? If yes, it is a \"straight\" letter. If it needs at least one curve, it is a \"curved\" letter.\n\n\"Straight\": A E F H I K L M N T V W X Y Z\n\"Curved\": B C D G J O P Q R S U\n\nYou don't need to memorize both groups. Look at the first letter of the city and ask yourself: does it have a curve?"
+            "value" : "Look at a letter and ask yourself: is it usually drawn with straight lines only? If yes, it is a \"straight\" letter (A). If it needs at least one curve, it is a \"curved\" letter (B).\n\n\"Straight\": A E F H I K L M N T V W X Y Z\n\"Curved\": B C D G J O P Q R S U\n\nYou don't need to memorize both groups. Look at the first letter of the city and ask yourself: does it have a curve?"
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Mira una letra y pregúntate: ¿puedo dibujarla solo con líneas rectas? Si es así, es una letra \"recta\". Si necesita al menos una curva, es una letra \"curva\".\n\n\"Rectas\": A E F H I K L M N T V W X Y Z\n\"Curvas\": B C D G J O P Q R S U\n\nNo necesitas memorizar los dos grupos. Mira la primera letra de la ciudad y pregúntate: ¿tiene alguna curva?"
+            "value" : "Mira una letra y pregúntate: ¿se suele dibujar solo con líneas rectas? Si es así, es una letra \"recta\" (A). Si necesita al menos una curva, es una letra \"curva\" (B).\n\n\"Rectas\": A E F H I K L M N T V W X Y Z\n\"Curvas\": B C D G J O P Q R S U\n\nNo necesitas memorizar los dos grupos. Mira la primera letra de la ciudad y pregúntate: ¿tiene alguna curva?"
           }
         }
       }
@@ -2591,13 +2591,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Listen closely while they read. Each city starts with a letter. Nine of the cities start with the same type of letter and one starts with the other type. That one is their city."
+            "value" : "Listen closely while they read. Each city starts with a letter. Nine cities start with the same type of letter and 1 city (the one they picked) starts with the other type. That is their city."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Escucha con atención mientras lee. Cada ciudad empieza con una letra. Nueve ciudades empiezan con el mismo tipo de letra y una con el otro tipo. Esa es su ciudad."
+            "value" : "Escucha con atención mientras lee. Cada ciudad empieza con una letra. Nueve ciudades empiezan con el mismo tipo de letra y 1 ciudad (la que eligió) empieza con el otro tipo. Esa es su ciudad."
           }
         }
       }
