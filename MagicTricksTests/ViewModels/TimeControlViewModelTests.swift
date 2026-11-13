@@ -3,6 +3,7 @@
 //  MagicTricksTests
 //
 
+import CoreMotion
 import XCTest
 @testable import MagicTricks
 
@@ -286,5 +287,58 @@ private final class ControllableTransmitter: TimeControlSignalTransmitting {
     func cancel() {
         cancelCount += 1
         finish()
+    }
+}
+
+// A motion manager that has an accelerometer but never reports a face-down hold.
+private final class SilentMotionManager: CMMotionManager {
+    private(set) var stopCount = 0
+    override var isAccelerometerAvailable: Bool { true }
+    override func startAccelerometerUpdates(to queue: OperationQueue, withHandler handler: @escaping CMAccelerometerHandler) {}
+    override func stopAccelerometerUpdates() { stopCount += 1 }
+}
+
+@MainActor
+final class PhoneTiltGestureManagerTests: XCTestCase {
+
+    func test_waitWithTimeout_whenThePhoneIsNeverTurned_givesUpAfterTheTimeout() async {
+        let motion = SilentMotionManager()
+        let manager = PhoneTiltGestureManager(preferences: AppPreferences(store: MockPreferenceStore()), motionManager: motion)
+
+        let result = await manager.waitForScreenDownGesture(timeout: 0.2)
+
+        XCTAssertEqual(result, .timedOut)
+        XCTAssertGreaterThanOrEqual(motion.stopCount, 1, "the sensor is stopped when the wait ends")
+    }
+
+    func test_waitWithTimeout_whenCancelled_reportsCancelledNotTimedOut() async {
+        let manager = PhoneTiltGestureManager(
+            preferences: AppPreferences(store: MockPreferenceStore()),
+            motionManager: SilentMotionManager()
+        )
+
+        let task = Task { await manager.waitForScreenDownGesture(timeout: 30) }
+        try? await Task.sleep(seconds: 0.1)
+        task.cancel()
+        let result = await task.value
+
+        XCTAssertEqual(result, .cancelled)
+    }
+
+    func test_aCancelledOldWait_doesNotStopANewerOne() async {
+        let manager = PhoneTiltGestureManager(
+            preferences: AppPreferences(store: MockPreferenceStore()),
+            motionManager: SilentMotionManager()
+        )
+        let old = Task { await manager.waitForScreenDownGesture() }
+        try? await Task.sleep(seconds: 0.1)
+        let newer = Task { await manager.waitForScreenDownGesture(timeout: 0.4) }
+        try? await Task.sleep(seconds: 0.1)
+
+        old.cancel()
+        _ = await old.value
+        let result = await newer.value
+
+        XCTAssertEqual(result, .timedOut, "the newer wait kept waiting until its own timeout")
     }
 }

@@ -58,6 +58,12 @@ final class HapticManager {
         }
     }
 
+    func playGroupedCount(_ count: Int, completion: Completion? = nil) {
+        cancelPendingHaptics()
+        let timings = HapticTimings(preferences: preferences)
+        playGroupedCountSignal(count, generator: impactGenerator, timings: timings, completion: completion)
+    }
+
     func playTimeValue(
         _ value: Int,
         initialDelay: TimeInterval = 0,

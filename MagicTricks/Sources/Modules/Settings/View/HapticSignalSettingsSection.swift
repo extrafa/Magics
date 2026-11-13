@@ -14,6 +14,9 @@ struct HapticSignalSettingsSection: View {
     @ObservedObject var settings: SettingsStore
     // Called after a strength is picked (the same one again too), so the screen can let the person feel it.
     var onIntensityChosen: Completion?
+    // The small buttons of the grouping row: what it does, and a try of the example.
+    var onGroupingInfo: Completion?
+    var onGroupingTest: Completion?
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .subheadline) private var segmentHeight: CGFloat = 48
 
@@ -127,7 +130,14 @@ struct HapticSignalSettingsSection: View {
                 title: String(localized: key("groupVibrations")),
                 subtitle: String(localized: key("groupingDescription")),
                 isOn: $settings.isHapticGroupByThreeEnabled
-            )
+            ) {
+                SettingsRoundButton(style: .info, label: String(localized: key("infoButton"))) {
+                    onGroupingInfo?()
+                }
+                SettingsRoundButton(style: .test, label: String(localized: key("testButton"))) {
+                    onGroupingTest?()
+                }
+            }
             .cardSurface(cornerRadius: 20)
         }
     }

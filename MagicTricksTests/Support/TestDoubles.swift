@@ -40,11 +40,17 @@ struct MockHapticPreferences: HapticPreferenceManaging {
 @MainActor
 final class MockCountHaptics: CountHapticPlaying {
     private(set) var playedCounts: [Int] = []
+    private(set) var playedGroupedCounts: [Int] = []
     private(set) var cancelCount = 0
     private var completion: Completion?
 
     func playCount(_ count: Int, completion: Completion?) {
         playedCounts.append(count)
+        self.completion = completion
+    }
+
+    func playGroupedCount(_ count: Int, completion: Completion?) {
+        playedGroupedCounts.append(count)
         self.completion = completion
     }
 
