@@ -195,3 +195,18 @@ final class HapticsUnavailableNoticeTests: XCTestCase {
         XCTAssertTrue(HapticsUnavailableNotice.shouldShow(isUnavailable: true, isInternalBuild: false, isHiddenByTester: true))
     }
 }
+
+final class SettingsStepperDisplayTests: XCTestCase {
+
+    func test_speedDefault_isShownAsOnePointZero_andTheRangeGoesDownAndUp() {
+        let scale = AppPreferences.Default.hapticSpeedMultiplier
+        let shown = [1.0, 1.5, 2.0, 2.5].map { SettingsStepper.displayText(for: $0, format: "%.1fx", displayScale: scale) }
+
+        XCTAssertEqual(shown, ["0.7x", "1.0x", "1.3x", "1.7x"])
+        XCTAssertEqual(SettingsStepper.displayText(for: scale, format: "%.1fx", displayScale: scale), "1.0x")
+    }
+
+    func test_withoutAScale_theValueIsShownAsStored() {
+        XCTAssertEqual(SettingsStepper.displayText(for: 0.3, format: "%.2fs", displayScale: 1), "0.30s")
+    }
+}

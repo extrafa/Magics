@@ -122,6 +122,8 @@ struct SettingsStepper: View {
     let range: ClosedRange<Double>
     let step: Double
     let format: String
+    // The stored value is shown divided by this, so a default that is stored as 1.5 can read 1.0x.
+    var displayScale: Double = 1
     @ScaledMetric(relativeTo: .body) private var iconSize: CGFloat = 17
 
     var body: some View {
@@ -131,7 +133,7 @@ struct SettingsStepper: View {
 
             Spacer()
 
-            Text(String(format: format, value))
+            Text(displayText)
                 .font(.system(.title3, design: .rounded, weight: .bold))
                 .foregroundStyle(.textPrimary)
 
@@ -144,7 +146,7 @@ struct SettingsStepper: View {
         // One adjustable element for VoiceOver: swipe up or down changes the value.
         .accessibilityElement(children: .ignore)
         .accessibilityLabel(label)
-        .accessibilityValue(String(format: format, value))
+        .accessibilityValue(displayText)
         .accessibilityAdjustableAction { direction in
             switch direction {
             case .increment: increment()
@@ -152,6 +154,14 @@ struct SettingsStepper: View {
             @unknown default: break
             }
         }
+    }
+
+    private var displayText: String {
+        Self.displayText(for: value, format: format, displayScale: displayScale)
+    }
+
+    static func displayText(for value: Double, format: String, displayScale: Double) -> String {
+        String(format: format, value / displayScale)
     }
 
     // 44 pt is the minimum touch target; the button grows only once the icon outgrows it.
