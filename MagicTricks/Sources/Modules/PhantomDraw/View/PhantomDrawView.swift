@@ -264,6 +264,9 @@ struct PhantomDrawView: View {
             }
             .padding(18)
             .cardSurface(cornerRadius: 18)
+            // Dimmed like the locked cards of the hub, but still a button: it opens the paywall.
+            .grayscale(isLocked ? 1 : 0)
+            .opacity(isLocked ? 0.52 : 1)
         }
         .buttonStyle(.plain)
     }
