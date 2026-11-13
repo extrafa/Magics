@@ -10,6 +10,8 @@ import SwiftUI
 struct TrickCardActions: View {
     let trickName: String
     var isHowToLocked = false
+    // The button opens the choice of a role instead of starting the trick.
+    var isChoosingRole = false
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
 
@@ -37,7 +39,7 @@ struct TrickCardActions: View {
             .accessibilityLabel(String(format: String(localized: "collection.howTo.accessibilityLabel"), trickName))
 
             Button(action: onStartTap) {
-                Text(String(localized: "collection.start"))
+                Text(isChoosingRole ? String(localized: "collection.chooseRole") : String(localized: "collection.start"))
                     .font(.headline)
                     .padding(.horizontal)
                     .frame(maxWidth: .infinity)
@@ -45,7 +47,14 @@ struct TrickCardActions: View {
                     .contentShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
             }
             .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
-            .accessibilityLabel(String(format: String(localized: "collection.start.accessibilityLabel"), trickName))
+            .accessibilityLabel(
+                String(
+                    format: isChoosingRole
+                        ? String(localized: "collection.chooseRole.accessibilityLabel")
+                        : String(localized: "collection.start.accessibilityLabel"),
+                    trickName
+                )
+            )
         }
     }
 }

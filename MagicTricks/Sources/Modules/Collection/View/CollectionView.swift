@@ -29,7 +29,7 @@ struct CollectionView: View {
                             TrickCardView(
                                 trick: trick,
                                 isLocked: isLocked,
-                                isHowToLocked: trick.id.hidesInstruction(onFreeTier: store.showsFreeTier),
+                                isLimited: trick.id.isLimited(onFreeTier: store.showsFreeTier),
                                 onStartTap: { whenAccessKnown { flow.openStartFlow(for: trick) } },
                                 onHowToTap: { whenAccessKnown { flow.open(instruction: trick) } }
                             )

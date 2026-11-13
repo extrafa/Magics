@@ -11,7 +11,8 @@ struct TrickCardView: View {
 
     let trick: Trick
     let isLocked: Bool
-    var isHowToLocked = false
+    // On a free-tier phone: marked as paid, but not dimmed, because its spectator side opens without a purchase.
+    var isLimited = false
     let onStartTap: () -> Void
     let onHowToTap: () -> Void
 
@@ -60,7 +61,7 @@ struct TrickCardView: View {
         VStack(alignment: .leading, spacing: 0) {
             header
             Spacer(minLength: 16)
-            TrickCardActions(trickName: String(localized: trick.title), isHowToLocked: isHowToLocked, onStartTap: onStartTap, onHowToTap: onHowToTap)
+            TrickCardActions(trickName: String(localized: trick.title), isHowToLocked: isLimited, isChoosingRole: isLimited, onStartTap: onStartTap, onHowToTap: onHowToTap)
                 // The locked overlay above exposes one combined element - avoid duplicate "Start"/"Learn" VoiceOver targets.
                 .accessibilityHidden(isLocked)
         }
@@ -108,7 +109,7 @@ struct TrickCardView: View {
 
     @ViewBuilder
     private var badge: some View {
-        if isLocked {
+        if isLocked || isLimited {
             lockedBadge
         } else {
             TrickDifficultyBadge(difficulty: trick.difficulty)

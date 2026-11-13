@@ -29,9 +29,14 @@ enum TrickType: String, CaseIterable {
         requiresPro && self != .phantomDraw && !hasProAccess
     }
 
-    // The spectator's phone runs this app on the free tier: it must not be able to read how Phantom Draw works.
-    func hidesInstruction(onFreeTier: Bool) -> Bool {
+    // Phantom Draw opens for everyone, but only the spectator's side is free. On a free-tier phone its card is marked
+    // as paid, the instruction stays locked (the spectator must not read how it works) and the button asks for a role.
+    func isLimited(onFreeTier: Bool) -> Bool {
         self == .phantomDraw && onFreeTier
+    }
+
+    func hidesInstruction(onFreeTier: Bool) -> Bool {
+        isLimited(onFreeTier: onFreeTier)
     }
 }
 
