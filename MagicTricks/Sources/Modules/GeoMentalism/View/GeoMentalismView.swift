@@ -20,11 +20,28 @@ struct GeoMentalismView: View {
             .first?.keyWindow?.safeAreaInsets.top ?? 59
     }
 
+    // For the spectator who gets the phone with this list: what to do first.
+    private var tapHint: some View {
+        Label {
+            Text(String(localized: "geo.list.hint"))
+        } icon: {
+            Image(systemName: "hand.tap.fill")
+                .accessibilityHidden(true)
+        }
+        .font(.system(.subheadline, design: .rounded, weight: .semibold))
+        .foregroundStyle(Color.textSecondary)
+        .padding(.vertical, 4)
+    }
+
     var body: some View {
         ZStack {
             Color.backgroundScreen.ignoresSafeArea()
 
             List {
+                tapHint
+                    .listRowBackground(Color.backgroundScreen)
+                    .listRowSeparator(.hidden)
+
                 ForEach(GeoMentalismCities.all, id: \.self) { city in
                     NavigationLink {
                         GeoMentalismCitiesView(city: city, isExitHintVisible: $isExitHintVisible)
