@@ -59,6 +59,8 @@ protocol HapticNotificationPlaying {
 @MainActor
 protocol CountHapticPlaying {
     func playCount(_ count: Int, completion: Completion?)
+    // Always in groups of three, whatever the setting says: it lets the settings screen show what grouping feels like.
+    func playGroupedCount(_ count: Int, completion: Completion?)
     func cancelPendingHaptics()
 }
 
