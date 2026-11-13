@@ -112,7 +112,9 @@ struct HapticSignalSettingsSection: View {
                 label: String(localized: key("speed")),
                 range: AppPreferences.Range.hapticSpeedMultiplier,
                 step: 0.5,
-                format: "%.1fx"
+                format: "%.1fx",
+                // The default is stored as 1.5 (the tuned pace) and shown as 1.0x: from there it goes down and up.
+                displayScale: AppPreferences.Default.hapticSpeedMultiplier
             )
             .padding(18)
             .cardSurface(cornerRadius: 20)
