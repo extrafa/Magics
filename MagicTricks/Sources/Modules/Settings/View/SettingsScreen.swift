@@ -12,6 +12,7 @@ private let proOverrideKey = L10nDomain("settings.proOverride")
 private let hideWatermarkKey = L10nDomain("settings.hideWatermark")
 private let hideHapticsNoticeKey = L10nDomain("settings.hideHapticsNotice")
 private let restartOnboardingKey = L10nDomain("settings.restartOnboarding")
+private let skipOnboardingPaywallKey = L10nDomain("settings.skipOnboardingPaywall")
 private let exitHintKey = L10nDomain("settings.exitHint")
 private let paywallKey = L10nDomain("paywall")
 
@@ -22,6 +23,7 @@ struct SettingsScreen: View {
     @EnvironmentObject private var flow: AppFlowCoordinator
     @State private var storeAlert: StoreAlert?
     @State private var isRestartOnboardingConfirmPresented = false
+    @AppStorage(AppBuildEnvironment.skipOnboardingPaywallKey) private var skipsOnboardingPaywall = false
     @AppStorage(HapticsUnavailableNotice.testerHiddenKey) private var isHapticsNoticeHidden = false
 
     var body: some View {
@@ -69,6 +71,15 @@ private extension SettingsScreen {
         AppBuildEnvironment.isInternalBuild
     }
 
+    // Which build this is and what the store says, so a call can start with "this is the build I mean".
+    var buildInfo: String {
+        let info = Bundle.main.infoDictionary
+        let version = info?["CFBundleShortVersionString"] as? String ?? "?"
+        let build = info?["CFBundleVersion"] as? String ?? "?"
+        let access = storeManager.showsFreeTier ? "Free" : "Pro"
+        return "\(version) (\(build)) · \(AppBuildEnvironment.configurationName)\n\(Bundle.main.bundleIdentifier ?? "?")\nAccess: \(access)"
+    }
+
     var testFlightSection: some View {
         SettingsSection(title: "TestFlight") {
             VStack(spacing: 0) {
@@ -103,6 +114,36 @@ private extension SettingsScreen {
                 SettingsDivider()
 
                 SettingsToggleRow(
+                    title: String(localized: skipOnboardingPaywallKey("title")),
+                    subtitle: String(localized: skipOnboardingPaywallKey("description")),
+                    tint: .orange,
+                    isOn: $skipsOnboardingPaywall
+                )
+
+                SettingsDivider()
+
+                Button {
+                    flow.openPaywall()
+                } label: {
+                    SettingsActionRow(icon: "creditcard", title: String(localized: "settings.showPaywall"))
+                }
+                .buttonStyle(.plain)
+                .padding(.horizontal, 18)
+                // With Pro the paywall closes itself the moment it opens, so the row waits until the override is off.
+                .disabled(storeManager.hasProAccess)
+                .opacity(storeManager.hasProAccess ? 0.4 : 1)
+
+                if storeManager.hasProAccess {
+                    Text(String(localized: "settings.showPaywall.disabledHint"))
+                        .font(.system(.footnote, design: .rounded, weight: .medium))
+                        .foregroundStyle(Color.textSecondary)
+                        .padding(.horizontal, 18)
+                        .padding(.bottom, 10)
+                }
+
+                SettingsDivider()
+
+                SettingsToggleRow(
                     title: String(localized: hideWatermarkKey("title")),
                     subtitle: String(localized: hideWatermarkKey("description")),
                     tint: .orange,
@@ -117,6 +158,15 @@ private extension SettingsScreen {
                     tint: .orange,
                     isOn: $isHapticsNoticeHidden
                 )
+
+                SettingsDivider()
+
+                Text(buildInfo)
+                    .font(.system(.footnote, design: .monospaced))
+                    .foregroundStyle(Color.textSecondary)
+                    .frame(maxWidth: .infinity, alignment: .leading)
+                    .padding(18)
+                    .textSelection(.enabled)
             }
             .cardSurface(cornerRadius: 20)
         }
