@@ -20,6 +20,40 @@ final class OnboardingViewModelTests: XCTestCase {
         }
     }
 
+    func test_skip_whenTheTesterSkipsThePaywall_completesTheOnboardingInstead() {
+        let preferences = MockOnboardingPreferences()
+        var completed = false
+        let viewModel = OnboardingViewModel(preferences: preferences, skipsPaywall: { true }, onComplete: { completed = true })
+
+        viewModel.skip()
+
+        XCTAssertTrue(completed)
+        XCTAssertTrue(preferences.hasCompletedOnboarding)
+        XCTAssertNotEqual(viewModel.step, .paywall)
+    }
+
+    func test_advance_intoThePaywall_whenTheTesterSkipsIt_completesTheOnboarding() {
+        var completed = false
+        let viewModel = OnboardingViewModel(preferences: MockOnboardingPreferences(), skipsPaywall: { true }, onComplete: { completed = true })
+        viewModel.step = .processing
+
+        viewModel.advance()
+
+        XCTAssertTrue(completed)
+        XCTAssertNotEqual(viewModel.step, .paywall)
+    }
+
+    func test_advance_intoThePaywall_byDefault_showsThePaywall() {
+        var completed = false
+        let viewModel = OnboardingViewModel(preferences: MockOnboardingPreferences(), skipsPaywall: { false }, onComplete: { completed = true })
+        viewModel.step = .processing
+
+        viewModel.advance()
+
+        XCTAssertFalse(completed)
+        XCTAssertEqual(viewModel.step, .paywall)
+    }
+
     func test_skip_doesNotCompleteOnboardingByItself() {
         let preferences = MockOnboardingPreferences()
         var completed = false

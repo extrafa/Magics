@@ -15,21 +15,36 @@ final class OnboardingViewModel: ObservableObject {
     @Published var selectedGoals: Set<OnboardingGoal> = []
 
     private var preferences: OnboardingPreferenceManaging
+    // A tester can end the onboarding before its paywall (TestFlight settings).
+    private let skipsPaywall: () -> Bool
     private let onComplete: () -> Void
     private var didComplete = false
 
-    init(preferences: OnboardingPreferenceManaging = AppPreferences.shared, onComplete: @escaping () -> Void) {
+    init(
+        preferences: OnboardingPreferenceManaging = AppPreferences.shared,
+        skipsPaywall: @escaping () -> Bool = { AppBuildEnvironment.skipsOnboardingPaywall },
+        onComplete: @escaping () -> Void
+    ) {
         self.preferences = preferences
+        self.skipsPaywall = skipsPaywall
         self.onComplete = onComplete
     }
 
     func advance() {
         guard let next = step.next else { return }
+        if next == .paywall && skipsPaywall() {
+            complete()
+            return
+        }
         step = next
     }
 
     func skip() {
         guard step.isSkippable else { return }
+        if skipsPaywall() {
+            complete()
+            return
+        }
         step = .paywall
     }
 
