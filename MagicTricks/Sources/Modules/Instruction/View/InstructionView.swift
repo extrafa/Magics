@@ -10,10 +10,19 @@ import SwiftUI
 struct InstructionView: View {
     @State private var presentedSheet: InstructionPresentedSheet?
     let instruction: Instruction
+    var onStart: Completion? = nil
+    @ScaledMetric(relativeTo: .largeTitle) private var headerTitleSize: CGFloat = 32
+    private let shareText: String
+
+    init(instruction: Instruction, onStart: Completion? = nil) {
+        self.instruction = instruction
+        self.onStart = onStart
+        self.shareText = InstructionShareFormatter.shareText(for: instruction)
+    }
 
     var body: some View {
-        ZStack {
-            Color.background
+        ZStack(alignment: .bottom) {
+            Color.backgroundScreen
                 .ignoresSafeArea()
 
             ScrollView(.vertical, showsIndicators: false) {
@@ -29,6 +38,12 @@ struct InstructionView: View {
                 .padding(.top, 8)
             }
         }
+        // An inset (not a fixed spacer) so the scroll area follows the button's height as the text grows.
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            if let onStart {
+                startTrickButton(action: onStart)
+            }
+        }
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $presentedSheet) { sheet in
             NavigationStack {
@@ -38,28 +53,46 @@ struct InstructionView: View {
         }
         .toolbar {
             ToolbarItem(placement: .topBarTrailing) {
-                ShareLink(
-                    item: InstructionShareFormatter.shareText(for: instruction),
-                    preview: SharePreview(instruction.title)
-                ) {
+                ShareLink(item: shareText) {
                     Image(systemName: "square.and.arrow.up")
-                        .foregroundStyle(.primaryText)
+                        .foregroundStyle(.textPrimary)
                 }
+                .accessibilityLabel(String(localized: "common.share"))
             }
+        }
+    }
+
+    private func startTrickButton(action: @escaping Completion) -> some View {
+        VStack(spacing: 0) {
+            LinearGradient(
+                colors: [Color.backgroundScreen.opacity(0), Color.backgroundScreen],
+                startPoint: .top,
+                endPoint: .bottom
+            )
+            .frame(height: 32)
+
+            Button(action: action) {
+                Text(String(localized: "instruction.startTrick"))
+                    .font(.system(.body, design: .rounded, weight: .bold))
+                    .padding(.vertical, 12)
+                    .frame(maxWidth: .infinity, minHeight: 54)
+            }
+            .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
+            .padding(.horizontal, 20)
+            .padding(.bottom, 16)
+            .background(Color.backgroundScreen)
         }
     }
 }
 
 private extension InstructionView {
     var headerSection: some View {
-        VStack(alignment: .leading, spacing: 8) {
-            Text(instruction.title)
-                .font(.system(size: 32, weight: .bold, design: .rounded))
-                .foregroundStyle(.primaryText)
-                .multilineTextAlignment(.leading)
-                .fixedSize(horizontal: false, vertical: true)
-        }
-        .padding(.top)
+        Text(instruction.title)
+            .font(.system(size: headerTitleSize, weight: .bold, design: .rounded))
+            .foregroundStyle(.textPrimary)
+            .multilineTextAlignment(.leading)
+            .fixedSize(horizontal: false, vertical: true)
+            .padding(.top)
     }
 
     var effectSection: some View {
@@ -83,7 +116,7 @@ private extension InstructionView {
 }
 
 #Preview {
-    NavigationView {
-        InstructionView(instruction: .calculatorPrediction)
+    NavigationStack {
+        InstructionView(instruction: .colorSense)
     }
 }

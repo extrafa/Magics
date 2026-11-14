@@ -7,96 +7,90 @@
 
 import SwiftUI
 
+private let hapticsKey = L10nDomain("settings.haptics")
+
+// What the Face Down test is doing, for the row it sits on.
+enum FaceDownTestState: Equatable {
+    case idle
+    case waiting
+    case detected
+}
+
 struct MotionSettingsSection: View {
 
-    enum Copy {
-        case motion
-        case haptics
+    @ObservedObject var settings: SettingsStore
+    var faceDownTest: FaceDownTestState = .idle
+    // How long the test waits, for the countdown ring.
+    var faceDownTestTimeout: TimeInterval = 10
+    var onFaceDownInfo: Completion?
+    var onFaceDownTest: Completion?
 
-        var triggerTitle: String {
-            switch self {
-            case .motion: String(localized: "settings.motion.gestureTrigger")
-            case .haptics: String(localized: "settings.trigger")
-            }
-        }
-
-        var gestureTitle: String {
-            switch self {
-            case .motion: String(localized: "settings.motion.secretGesture")
-            case .haptics: String(localized: "settings.faceDown")
-            }
-        }
-
-        var gestureDescription: String {
-            switch self {
-            case .motion: String(localized: "settings.motion.secretGestureDescription")
-            case .haptics: String(localized: "settings.haptics.faceDownDescription")
-            }
-        }
-
-        var holdDescription: String? {
-            switch self {
-            case .motion: nil
-            case .haptics: String(localized: "settings.haptics.holdDurationDescription")
-            }
-        }
+    private var cardDivider: some View {
+        Rectangle()
+            .fill(
+                LinearGradient(
+                    colors: [.clear, Color.primary.opacity(0.12), .clear],
+                    startPoint: .leading,
+                    endPoint: .trailing
+                )
+            )
+            .frame(height: 1)
+            .padding(.horizontal, 18)
     }
 
-    @ObservedObject var settings: SettingsStore
-    let copy: Copy
-    var resetAction: (() -> Void)? = nil
+    private var faceDownStatus: String? {
+        switch faceDownTest {
+        case .idle: nil
+        case .waiting: String(localized: hapticsKey("faceDownTest.waiting"))
+        case .detected: String(localized: hapticsKey("faceDownTest.detected"))
+        }
+    }
 
     var body: some View {
-        VStack(alignment: .leading, spacing: 28) {
-            secretGestureSection
-            holdDurationSection
-
-            if let resetAction {
-                SettingsResetButton(action: resetAction)
-            }
-        }
-    }
-
-    private var secretGestureSection: some View {
-        SettingsSection(title: copy.triggerTitle) {
-            Toggle(isOn: $settings.isSecretGestureEnabled) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(copy.gestureTitle)
-                        .font(.system(size: 17, weight: .bold, design: .rounded))
-                        .foregroundStyle(.primaryText)
-
-                    Text(copy.gestureDescription)
-                        .font(.system(size: 13, weight: .medium, design: .rounded))
-                        .foregroundStyle(Color.primaryText.opacity(0.58))
-                }
-            }
-            .tint(TrickPalette.Collection.timeControl)
-            .padding(18)
-            .settingsCard()
-        }
-    }
-
-    private var holdDurationSection: some View {
-        SettingsSection(title: String(localized: "settings.holdDuration")) {
-            VStack(alignment: .leading, spacing: 16) {
-                if let holdDescription = copy.holdDescription {
-                    Text(holdDescription)
-                        .font(.system(size: 13, weight: .medium, design: .rounded))
-                        .foregroundStyle(Color.primaryText.opacity(0.58))
+        SettingsSection(title: String(localized: "settings.trigger")) {
+            VStack(spacing: 0) {
+                SettingsToggleRow(
+                    title: String(localized: "settings.faceDown"),
+                    subtitle: String(localized: hapticsKey("faceDownDescription")),
+                    isOn: $settings.isSecretGestureEnabled.animation(),
+                    status: faceDownStatus
+                ) {
+                    SettingsRoundButton(style: .info, label: String(localized: hapticsKey("infoButton"))) {
+                        onFaceDownInfo?()
+                    }
+                    SettingsRoundButton(
+                        style: .test,
+                        isActive: faceDownTest == .waiting,
+                        isDone: faceDownTest == .detected,
+                        countdown: faceDownTestTimeout,
+                        label: String(localized: hapticsKey("testButton"))
+                    ) {
+                        onFaceDownTest?()
+                    }
                 }
 
-                SettingsStepper(
-                    value: $settings.screenDownHoldDuration,
-                    range: AppPreferences.Range.screenDownHoldDuration,
-                    step: 0.10,
-                    format: "%.2fs"
-                )
-                .disabled(!settings.isSecretGestureEnabled)
+                if settings.isSecretGestureEnabled {
+                    cardDivider
+
+                    VStack(alignment: .leading, spacing: 12) {
+                        Text(String(localized: hapticsKey("holdDurationDescription")))
+                            .font(.system(size: 13, weight: .medium, design: .rounded))
+                            .foregroundStyle(Color.textSecondary)
+                            // The stepper below is labelled with this same sentence.
+                            .accessibilityHidden(true)
+
+                        SettingsStepper(
+                            value: $settings.screenDownHoldDuration,
+                            label: String(localized: hapticsKey("holdDurationDescription")),
+                            range: AppPreferences.Range.screenDownHoldDuration,
+                            step: 0.10,
+                            format: "%.2fs"
+                        )
+                    }
+                    .padding(18)
+                }
             }
-            .opacity(settings.isSecretGestureEnabled ? 1 : 0.42)
-            .padding(18)
-            .settingsCard()
+            .cardSurface(cornerRadius: 20)
         }
     }
 }
-

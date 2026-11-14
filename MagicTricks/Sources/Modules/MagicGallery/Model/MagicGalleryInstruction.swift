@@ -7,40 +7,39 @@
 
 import Foundation
 
+private let key = L10nDomain("instruction.magicGallery")
+
 extension Instruction {
     static let magicGallery = Instruction(
-        title: String(localized: "instruction.magicGallery.title"),
-        effect: String(localized: "instruction.magicGallery.effect"),
-        secret: String(localized: "instruction.magicGallery.secret"),
+        trickType: .magicGallery,
+        title: String(localized: key("title")),
+        effect: String(localized: key("effect")),
+        secret: String(localized: key("secret")),
         steps: [
             InstructionStep(
-                title: String(localized: "instruction.magicGallery.step1.title"),
-                description: String(localized: "instruction.magicGallery.step1.description"),
-                phase: .preparation
+                title: String(localized: key("step1.title")),
+                description: String(localized: key("step1.description")),
+                phase: .preparation,
+                imageName: "step.gallery.collection"
             ),
             InstructionStep(
-                title: String(localized: "instruction.magicGallery.step2.title"),
-                description: String(localized: "instruction.magicGallery.step2.description"),
+                title: String(localized: key("step2.title")),
+                description: String(localized: key("step2.description")),
                 phase: .demonstration
             ),
             InstructionStep(
-                title: String(localized: "instruction.magicGallery.step3.title"),
-                description: String(localized: "instruction.magicGallery.step3.description"),
+                title: String(localized: key("step3.title")),
+                description: String(localized: key("step3.description")),
                 phase: .demonstration
             ),
             InstructionStep(
-                title: String(localized: "instruction.magicGallery.step4.title"),
-                description: String(localized: "instruction.magicGallery.step4.description"),
+                title: String(localized: key("step4.title")),
+                description: String(localized: key("step4.description")),
                 phase: .demonstration
             ),
             InstructionStep(
-                title: String(localized: "instruction.magicGallery.step5.title"),
-                description: String(localized: "instruction.magicGallery.step5.description"),
-                phase: .demonstration
-            ),
-            InstructionStep(
-                title: String(localized: "instruction.magicGallery.step6.title"),
-                description: String(localized: "instruction.magicGallery.step6.description"),
+                title: String(localized: key("step5.title")),
+                description: String(localized: key("step5.description")),
                 phase: .demonstration
             ),
         ]

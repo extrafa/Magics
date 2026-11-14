@@ -7,47 +7,44 @@
 
 import Foundation
 
+private let key = L10nDomain("instruction.time")
+private let stepImage = KeyDomain("step.time")
+
 extension Instruction {
     static let timeControl = Instruction(
-        title: String(localized: "instruction.time.title"),
-        effect: String(localized: "instruction.time.effect"),
-        secret: String(localized: "instruction.time.secret"),
+        trickType: .timeControl,
+        title: String(localized: key("title")),
+        effect: String(localized: key("effect")),
+        secret: String(localized: key("secret")),
         steps: [
             InstructionStep(
-                title: String(localized: "instruction.time.step1.title"),
-                description: String(localized: "instruction.time.step1.description"),
+                title: String(localized: key("step1.title")),
+                description: String(localized: key("step1.description")),
                 phase: .preparation,
-                actions: [.hapticNumberTraining]
+                actions: [.hapticTraining]
             ),
             InstructionStep(
-                title: String(localized: "instruction.time.step2.title"),
-                description: String(localized: "instruction.time.step2.description"),
-                phase: .preparation
+                title: String(localized: key("step2.title")),
+                description: String(localized: key("step2.description")),
+                phase: .preparation,
+                actions: [.hapticSettings],
+                imageName: stepImage("faceDown"),
+                imageRatio: .compact
             ),
             InstructionStep(
-                title: String(localized: "instruction.time.step3.title"),
-                description: String(localized: "instruction.time.step3.description"),
-                phase: .preparation
-            ),
-            InstructionStep(
-                title: String(localized: "instruction.time.step4.title"),
-                description: String(localized: "instruction.time.step4.description"),
-                phase: .demonstration
-            ),
-            InstructionStep(
-                title: String(localized: "instruction.time.step5.title"),
-                description: String(localized: "instruction.time.step5.description"),
+                title: String(localized: key("step3.title")),
+                description: String(localized: key("step3.description")),
                 phase: .demonstration,
-                actions: [.motionSettings]
+                imageName: stepImage("timer")
             ),
             InstructionStep(
-                title: String(localized: "instruction.time.step6.title"),
-                description: String(localized: "instruction.time.step6.description"),
+                title: String(localized: key("step4.title")),
+                description: String(localized: key("step4.description")),
                 phase: .demonstration
             ),
             InstructionStep(
-                title: String(localized: "instruction.time.step7.title"),
-                description: String(localized: "instruction.time.step7.description"),
+                title: String(localized: key("step5.title")),
+                description: String(localized: key("step5.description")),
                 phase: .demonstration
             ),
         ]
