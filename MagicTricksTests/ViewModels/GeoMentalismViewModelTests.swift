@@ -3,6 +3,7 @@
 //  MagicTricksTests
 //
 
+import UIKit
 import XCTest
 @testable import MagicTricks
 
@@ -107,3 +108,75 @@ final class GeoMentalismViewModelTests: XCTestCase {
         XCTAssertEqual(viewModel.displayedCities.count, 10)
     }
 }
+
+// The window hears the system's shake and passes it on, so any screen can react to it.
+@MainActor
+final class DeviceShakeNotificationTests: XCTestCase {
+
+    func test_aWindow_passesTheShakeOn_asItStartsEndsAndIsCancelled() {
+        let window = UIWindow(frame: .zero)
+        let began = expectation(forNotification: .deviceShakeBegan, object: nil)
+        let ended = expectation(forNotification: .deviceShakeEnded, object: nil)
+        let cancelled = expectation(forNotification: .deviceShakeCancelled, object: nil)
+
+        window.motionBegan(.motionShake, with: nil)
+        window.motionEnded(.motionShake, with: nil)
+        window.motionCancelled(.motionShake, with: nil)
+
+        wait(for: [began, ended, cancelled], timeout: 1)
+    }
+
+    func test_aMotionThatIsNotAShake_isNotPassedOn() {
+        let window = UIWindow(frame: .zero)
+        let began = expectation(forNotification: .deviceShakeBegan, object: nil)
+        let ended = expectation(forNotification: .deviceShakeEnded, object: nil)
+        let cancelled = expectation(forNotification: .deviceShakeCancelled, object: nil)
+        [began, ended, cancelled].forEach { $0.isInverted = true }
+
+        window.motionBegan(.none, with: nil)
+        window.motionEnded(.none, with: nil)
+        window.motionCancelled(.none, with: nil)
+
+        wait(for: [began, ended, cancelled], timeout: 0.3)
+    }
+}
+
+final class ShakeShuffleGateTests: XCTestCase {
+
+    func test_aShakeShufflesAtOnce_whenItBegins() {
+        var gate = ShakeShuffleGate()
+
+        XCTAssertTrue(gate.began())
+    }
+
+    func test_theEndOfAShakeThatWasHandled_doesNotShuffleAgain() {
+        var gate = ShakeShuffleGate()
+        _ = gate.began()
+
+        XCTAssertFalse(gate.ended())
+    }
+
+    func test_theEndOfAShakeWhoseBeginningWasMissed_shufflesThen() {
+        var gate = ShakeShuffleGate()
+
+        XCTAssertTrue(gate.ended())
+    }
+
+    func test_eachShakeStartsFresh() {
+        var gate = ShakeShuffleGate()
+        _ = gate.began()
+        _ = gate.ended()
+
+        XCTAssertTrue(gate.began())
+        XCTAssertFalse(gate.ended())
+    }
+
+    func test_aCancelledShake_doesNotLeaveTheNextOneHandled() {
+        var gate = ShakeShuffleGate()
+        _ = gate.began()
+        gate.cancelled()
+
+        XCTAssertTrue(gate.ended())
+    }
+}
+

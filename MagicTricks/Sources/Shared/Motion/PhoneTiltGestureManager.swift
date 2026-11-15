@@ -1,5 +1,6 @@
 import CoreMotion
 import Foundation
+import SwiftUI
 
 enum ScreenDownResult: Equatable {
     case detected
@@ -135,5 +136,45 @@ final class PhoneTiltGestureManager {
         pendingCompletion = nil
         stopMonitoring()
         handler?(true)
+    }
+}
+
+// MARK: - Shake
+
+extension Notification.Name {
+    // The system's shake gesture: when it starts, when it ends, and when the system gives up on it.
+    static let deviceShakeBegan = Notification.Name("MagicTricks.deviceShakeBegan")
+    static let deviceShakeEnded = Notification.Name("MagicTricks.deviceShakeEnded")
+    static let deviceShakeCancelled = Notification.Name("MagicTricks.deviceShakeCancelled")
+}
+
+// The window is the end of the responder chain, so it hears every shake whatever has the focus. It only passes the news on.
+extension UIWindow {
+    open override func motionBegan(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake { NotificationCenter.default.post(name: .deviceShakeBegan, object: nil) }
+        super.motionBegan(motion, with: event)
+    }
+
+    open override func motionEnded(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake { NotificationCenter.default.post(name: .deviceShakeEnded, object: nil) }
+        super.motionEnded(motion, with: event)
+    }
+
+    open override func motionCancelled(_ motion: UIEvent.EventSubtype, with event: UIEvent?) {
+        if motion == .motionShake { NotificationCenter.default.post(name: .deviceShakeCancelled, object: nil) }
+        super.motionCancelled(motion, with: event)
+    }
+}
+
+extension View {
+    // Runs `began` when the phone starts to be shaken and `ended` when the shake finishes; `cancelled` if the system drops it.
+    func onShake(
+        began: @escaping () -> Void,
+        ended: @escaping () -> Void,
+        cancelled: @escaping () -> Void
+    ) -> some View {
+        onReceive(NotificationCenter.default.publisher(for: .deviceShakeBegan).receive(on: DispatchQueue.main)) { _ in began() }
+            .onReceive(NotificationCenter.default.publisher(for: .deviceShakeEnded).receive(on: DispatchQueue.main)) { _ in ended() }
+            .onReceive(NotificationCenter.default.publisher(for: .deviceShakeCancelled).receive(on: DispatchQueue.main)) { _ in cancelled() }
     }
 }
