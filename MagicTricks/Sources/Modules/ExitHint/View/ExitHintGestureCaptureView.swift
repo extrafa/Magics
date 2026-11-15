@@ -171,6 +171,8 @@ private struct ExitHintGestureCaptureView: UIViewRepresentable {
                     return
                 }
                 didTriggerExit = true
+                // The hold registered: a buzz tells the performer to let go, no need to look at the screen.
+                HapticManager.shared.playSuccessNotification()
                 if gestureCoordinator?.isTrainingActive == true {
                     gestureCoordinator?.onTrainingHold?()
                 } else {
