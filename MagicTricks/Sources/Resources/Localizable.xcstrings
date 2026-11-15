@@ -5324,13 +5324,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "With this setting, you choose when the vibrations start. They start when the phone is face down. That means the phone is flat and its screen faces the floor. You can hold it in your hand or put it on a table. This setting works only in the Time Control trick."
+            "value" : "With this setting, you choose when the vibrations start. They start when you hold the phone with the screen facing down for a moment. This setting works only in the Time Control trick."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Con este ajuste, tú eliges cuándo empiezan las vibraciones. Empiezan cuando el teléfono está boca abajo. Eso significa que el teléfono está plano y su pantalla mira hacia el suelo. Puedes sostenerlo en la mano o ponerlo sobre una mesa. Este ajuste funciona solo en el truco Control del Tiempo."
+            "value" : "Con este ajuste, tú eliges cuándo empiezan las vibraciones. Empiezan cuando sostienes el teléfono con la pantalla hacia abajo durante un momento. Este ajuste funciona solo en el truco Control del Tiempo."
           }
         }
       }
@@ -5343,13 +5343,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "To try it: close this, switch Face Down on, press Try Vibration, then turn the phone face down."
+            "value" : "To try it: close this, turn on the Face Down setting, press the \"Try Vibration\" button, then hold the phone with the screen facing down."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Para probarlo: cierra esto, activa Boca Abajo, pulsa Probar Vibración y luego pon el teléfono boca abajo."
+            "value" : "Para probarlo: cierra esto, activa el ajuste Boca Abajo, pulsa el botón \"Probar Vibración\" y luego sostén el teléfono con la pantalla hacia abajo."
           }
         }
       }
@@ -5381,13 +5381,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Nothing happened in %lld seconds. To be detected, the phone must lie almost flat, with the screen toward the floor or a table, for a moment. Held upright or at a steep angle, it is not detected."
+            "value" : "Nothing happened in %lld seconds. The phone needs to be held with the screen facing down for a moment. If the screen faces the side or the ceiling, it does not work."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "No pasó nada en %lld segundos. Para detectarlo, el teléfono debe estar casi plano, con la pantalla hacia el suelo o hacia una mesa, durante un momento. De pie o muy inclinado, no se detecta."
+            "value" : "No pasó nada en %lld segundos. El teléfono debe sostenerse con la pantalla hacia abajo durante un momento. Si la pantalla mira hacia un lado o hacia el techo, no funciona."
           }
         }
       }
@@ -5400,13 +5400,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Close this and press Try Vibration to try again."
+            "value" : "Close this and press the \"Try Vibration\" button to try again."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Cierra esto y pulsa Probar Vibración para intentarlo de nuevo."
+            "value" : "Cierra esto y pulsa el botón \"Probar Vibración\" para intentarlo de nuevo."
           }
         }
       }
