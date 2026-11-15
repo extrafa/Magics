@@ -166,7 +166,6 @@ struct SettingsInfoSheet: View {
     var faceDownTimeout: Int = 10
 
     @Environment(\.dismiss) private var dismiss
-    @State private var contentHeight: CGFloat = 0
 
     private var icon: String {
         switch topic {
@@ -233,22 +232,29 @@ struct SettingsInfoSheet: View {
         .padding(.horizontal, 24)
         .padding(.top, 68)
         .padding(.bottom, 24)
-        .background(GeometryReader { proxy in
-            Color.clear.preference(key: InfoSheetHeightKey.self, value: proxy.size.height)
-        })
-        .frame(maxWidth: .infinity, alignment: .leading)
+        // Pinned to the top, the button right under the text: the free room is below it, not in between.
+        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(Color.backgroundScreen.ignoresSafeArea())
         .sheetCloseOverlay()
-        .onPreferenceChange(InfoSheetHeightKey.self) { contentHeight = $0 }
-        // The sheet is as tall as its content, so no empty gap opens between the text and the button; larger text can still pull it up.
-        .presentationDetents(contentHeight > 0 ? [.height(contentHeight), .large] : [.medium, .large])
+        .modifier(InfoSheetPresentation())
         .presentationDragIndicator(.visible)
     }
 }
 
-private struct InfoSheetHeightKey: PreferenceKey {
-    static var defaultValue: CGFloat = 0
-    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
+// The sheet itself takes the screen colour, so no strip of the system sheet shows around the content.
+private struct InfoSheetPresentation: ViewModifier {
+
+    func body(content: Content) -> some View {
+        if #available(iOS 16.4, *) {
+            content
+                .presentationDetents([.medium, .large])
+                .presentationBackground(Color.backgroundScreen)
+                .presentationCornerRadius(28)
+        } else {
+            content
+                .presentationDetents([.medium, .large])
+        }
+    }
 }
 
 // Dots in groups: the number 7 as 3 + 3 + 1.
