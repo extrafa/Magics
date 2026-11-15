@@ -68,31 +68,52 @@ final class GroupedHapticPatternBuilderTests: XCTestCase {
     }
 }
 
-final class GroupingDemoTimelineTests: XCTestCase {
+final class GroupingDemoClockTests: XCTestCase {
 
-    func test_everyPulseLightsItsDot_thenTheDotGoesBackDown() {
-        let steps = GroupingDemoTimeline.steps(pulseTimes: [0, 0.5, 1.0], holdDuration: 0.09)
+    private let pulseTimes: [TimeInterval] = [0, 0.1, 0.2, 0.56, 0.66, 0.76, 1.12]
 
-        XCTAssertEqual(steps.map(\.activeDot), [0, nil, 1, nil, 2, nil])
-        XCTAssertEqual(steps.map(\.time), [0, 0.09, 0.5, 0.59, 1.0, 1.09])
+    func test_nothingHasFiredBeforeTheFirstPulse() {
+        XCTAssertEqual(GroupingDemoClock.firedPulses(pulseTimes: pulseTimes, elapsed: -0.01), 0)
     }
 
-    func test_closePulses_putTheDotDownBeforeTheNextOne() {
-        // The fastest grouped gap is 0.10 s: a 0.09 s hold would leave no pause.
-        let steps = GroupingDemoTimeline.steps(pulseTimes: [0, 0.10], holdDuration: 0.09)
-
-        XCTAssertEqual(steps[1].time, 0.06, accuracy: 0.0001)
-        XCTAssertLessThan(steps[1].time, steps[2].time)
+    func test_pulsesCountAsFiredFromTheirOwnTime() {
+        XCTAssertEqual(GroupingDemoClock.firedPulses(pulseTimes: pulseTimes, elapsed: 0), 1)
+        XCTAssertEqual(GroupingDemoClock.firedPulses(pulseTimes: pulseTimes, elapsed: 0.2), 3)
+        XCTAssertEqual(GroupingDemoClock.firedPulses(pulseTimes: pulseTimes, elapsed: 0.56), 4)
     }
 
-    func test_stepTimes_neverGoBackwards() {
-        let pulseTimes = GroupedHapticPatternBuilder.pulseTimes(
-            count: 7,
-            initialDelay: 0,
-            timings: HapticTimings(preferences: MockHapticPreferences(speed: 2.25, groupByThree: true))
-        )
-        let times = GroupingDemoTimeline.steps(pulseTimes: pulseTimes).map(\.time)
+    func test_aLateWakeUp_catchesUpOnEveryPulseItMissed() {
+        // The screen woke 0.3 s late, right across the start of the second group: no dot is skipped.
+        XCTAssertEqual(GroupingDemoClock.firedPulses(pulseTimes: pulseTimes, elapsed: 0.7), 5)
+    }
 
-        XCTAssertEqual(times, times.sorted())
+    func test_afterTheLastPulse_allSevenHaveFired() {
+        XCTAssertEqual(GroupingDemoClock.firedPulses(pulseTimes: pulseTimes, elapsed: 5), 7)
+    }
+}
+
+final class PulseDotMemoryTests: XCTestCase {
+
+    func test_aDotJumpsOnceWhenItsPulseIsReached() {
+        var memory = PulseDotMemory()
+
+        XCTAssertFalse(memory.shouldJump(index: 2, progress: GroupingDemoProgress(run: 1, fired: 2)))
+        XCTAssertTrue(memory.shouldJump(index: 2, progress: GroupingDemoProgress(run: 1, fired: 3)))
+        XCTAssertFalse(memory.shouldJump(index: 2, progress: GroupingDemoProgress(run: 1, fired: 4)))
+    }
+
+    func test_aDotJumpsEvenWhenTheScreenSawSeveralPulsesAtOnce() {
+        var memory = PulseDotMemory()
+
+        XCTAssertTrue(memory.shouldJump(index: 3, progress: GroupingDemoProgress(run: 1, fired: 5)))
+    }
+
+    func test_aReplayThatStartsBeforeTheScreenSawZero_stillMakesEveryDotJumpAgain() {
+        var memory = PulseDotMemory()
+        XCTAssertTrue(memory.shouldJump(index: 0, progress: GroupingDemoProgress(run: 1, fired: 7)))
+
+        // The second run goes from 7 pulses straight to 1: the new run number tells the dot to start over.
+        XCTAssertTrue(memory.shouldJump(index: 0, progress: GroupingDemoProgress(run: 2, fired: 1)))
+        XCTAssertFalse(memory.shouldJump(index: 0, progress: GroupingDemoProgress(run: 2, fired: 2)))
     }
 }

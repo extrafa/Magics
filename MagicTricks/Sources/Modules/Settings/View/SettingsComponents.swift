@@ -173,8 +173,8 @@ struct SettingsInfoSheet: View {
 
     @Environment(\.dismiss) private var dismiss
     @State private var contentHeight: CGFloat = 0
-    // The dot of the example that is moving with the pulse right now.
-    @State private var activeDot: Int?
+    // Which run of the example this is and how many of its pulses have fired; each dot jumps when its own pulse is reached.
+    @State private var progress = GroupingDemoProgress()
     // Counts the taps on the replay button; a new value starts the example again.
     @State private var replayCount = 0
     // The pulses are playing: a tap on the replay button does nothing until they end.
@@ -182,6 +182,8 @@ struct SettingsInfoSheet: View {
 
     // A short wait after the sheet opens, so the person is looking at the dots when they start to move.
     private static let demoStartDelay: TimeInterval = 0.8
+    // The dot starts a little before the pulse: the screen draws a frame later than the phone buzzes.
+    private static let dotLead: TimeInterval = 0.04
     private static let exampleGroups = [3, 3, 1]
 
     private var icon: String {
@@ -210,6 +212,24 @@ struct SettingsInfoSheet: View {
     }
 
     var body: some View {
+        ScrollView {
+            content
+        }
+        // Only the height of its text: it cannot be pulled up to full screen; larger text scrolls inside it.
+        .scrollBouncesOnlyWhenNeeded()
+        .background(Color.backgroundScreen.ignoresSafeArea())
+        .sheetCloseOverlay()
+        .modifier(InfoSheetPresentation(height: contentHeight))
+        .presentationDragIndicator(.visible)
+        // The first run waits a moment; a replay starts at once.
+        .task(id: replayCount) { await playGroupingDemo(startDelay: replayCount == 0 ? Self.demoStartDelay : 0) }
+        .onDisappear {
+            guard topic == .grouping else { return }
+            haptics?.cancelPendingHaptics()
+        }
+    }
+
+    private var content: some View {
         VStack(alignment: .leading, spacing: 18) {
             HStack(spacing: 14) {
                 Image(systemName: icon)
@@ -234,7 +254,7 @@ struct SettingsInfoSheet: View {
             if topic == .grouping {
                 GroupingExample(
                     groups: Self.exampleGroups,
-                    activeDot: activeDot,
+                    progress: progress,
                     onReplay: haptics == nil ? nil : {
                         guard !isPlaying else { return }
                         replayCount += 1
@@ -262,62 +282,63 @@ struct SettingsInfoSheet: View {
                 .onAppear { contentHeight = proxy.size.height }
                 .onChange(of: proxy.size.height) { contentHeight = $0 }
         })
-        .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
-        .background(Color.backgroundScreen.ignoresSafeArea())
-        .sheetCloseOverlay()
-        .modifier(InfoSheetPresentation(height: contentHeight))
-        .presentationDragIndicator(.visible)
-        // The first run waits a moment; a replay starts at once.
-        .task(id: replayCount) { await playGroupingDemo(startDelay: replayCount == 0 ? Self.demoStartDelay : 0) }
-        .onDisappear {
-            guard topic == .grouping else { return }
-            haptics?.cancelPendingHaptics()
-        }
+        .frame(maxWidth: .infinity, alignment: .leading)
     }
 
     // The example of the text, felt and seen: the phone pulses 3, 3 and 1 while the dots jump with each pulse.
     private func playGroupingDemo(startDelay: TimeInterval) async {
         guard topic == .grouping, let haptics else { return }
-        activeDot = nil
+        progress = GroupingDemoProgress(run: progress.run + 1, fired: 0)
         if startDelay > 0 { try? await Task.sleep(seconds: startDelay) }
         guard !Task.isCancelled else { return }
 
         let count = Self.exampleGroups.reduce(0, +)
-        let steps = GroupingDemoTimeline.steps(pulseTimes: haptics.groupedPulseTimes(count))
+        let pulseTimes = haptics.groupedPulseTimes(count)
         haptics.playGroupedCount(count, completion: nil)
         isPlaying = true
         defer { isPlaying = false }
 
         let start = Date()
-        for step in steps {
-            let wait = step.time - Date().timeIntervalSince(start)
+        for time in pulseTimes {
+            let wait = (time - Self.dotLead) - Date().timeIntervalSince(start)
             if wait > 0 { try? await Task.sleep(seconds: wait) }
             guard !Task.isCancelled else {
-                activeDot = nil
+                progress.fired = 0
                 return
             }
-            activeDot = step.activeDot
+            // Counted from the clock, not one by one: a late wake-up lets the dots catch up instead of skipping one.
+            let elapsed = Date().timeIntervalSince(start) + Self.dotLead
+            progress.fired = GroupingDemoClock.firedPulses(pulseTimes: pulseTimes, elapsed: elapsed)
         }
     }
 }
 
-// Which dot of the example is lit at which moment while it plays, so the dots move with the pulses.
-enum GroupingDemoTimeline {
+// Where the example is: which run it is, and how many of that run's pulses have fired.
+struct GroupingDemoProgress: Equatable {
+    var run = 0
+    var fired = 0
+}
 
-    struct Step: Equatable {
-        let time: TimeInterval
-        let activeDot: Int?
-    }
+// What one dot remembers, so it jumps once per run, even when the run restarts before the screen has seen it at zero.
+struct PulseDotMemory {
+    private var run = 0
+    private var hasJumped = false
 
-    static func steps(pulseTimes: [TimeInterval], holdDuration: TimeInterval = 0.09) -> [Step] {
-        var steps: [Step] = []
-        for (index, time) in pulseTimes.enumerated() {
-            steps.append(Step(time: time, activeDot: index))
-            // The dot is back down before the next pulse, even at the fastest speed.
-            let nextTime = index + 1 < pulseTimes.count ? pulseTimes[index + 1] : .infinity
-            steps.append(Step(time: min(time + holdDuration, time + (nextTime - time) * 0.6), activeDot: nil))
+    mutating func shouldJump(index: Int, progress: GroupingDemoProgress) -> Bool {
+        if progress.run != run {
+            run = progress.run
+            hasJumped = false
         }
-        return steps
+        guard progress.fired > index, !hasJumped else { return false }
+        hasJumped = true
+        return true
+    }
+}
+
+// How many pulses of the example have fired after this long.
+enum GroupingDemoClock {
+    static func firedPulses(pulseTimes: [TimeInterval], elapsed: TimeInterval) -> Int {
+        pulseTimes.filter { $0 <= elapsed }.count
     }
 }
 
@@ -327,7 +348,7 @@ private struct InfoSheetPresentation: ViewModifier {
     let height: CGFloat
 
     private var detents: Set<PresentationDetent> {
-        height > 0 ? [.height(height), .large] : [.medium, .large]
+        height > 0 ? [.height(height)] : [.medium]
     }
 
     func body(content: Content) -> some View {
@@ -343,22 +364,20 @@ private struct InfoSheetPresentation: ViewModifier {
     }
 }
 
-// Dots in groups: the number 7 as 3 + 3 + 1. The active dot jumps while its pulse is felt.
+// Dots in groups: the number 7 as 3 + 3 + 1. A dot jumps when its pulse is felt.
 private struct GroupingExample: View {
 
     let groups: [Int]
-    var activeDot: Int?
+    var progress = GroupingDemoProgress()
     // Plays the example again; nil hides the button.
     var onReplay: Completion?
-
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         HStack(spacing: 18) {
             ForEach(Array(groups.enumerated()), id: \.offset) { groupIndex, count in
                 HStack(spacing: 5) {
                     ForEach(0..<count, id: \.self) { dot in
-                        dotView(index: groups.prefix(groupIndex).reduce(0, +) + dot)
+                        PulseDot(index: groups.prefix(groupIndex).reduce(0, +) + dot, progress: progress)
                     }
                 }
             }
@@ -386,17 +405,41 @@ private struct GroupingExample: View {
             }
         }
     }
+}
 
-    // With Reduce Motion the dots stay in place and only the one that pulses stays bright.
-    private func dotView(index: Int) -> some View {
-        let isActive = activeDot == index
-        return Circle()
+// One dot of the example. It sees how many pulses have fired and, when its own is reached, jumps and comes back on its own
+// clock, so a pulse that arrives late or together with the next one still shows.
+private struct PulseDot: View {
+
+    let index: Int
+    let progress: GroupingDemoProgress
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var isUp = false
+    @State private var memory = PulseDotMemory()
+
+    private static let holdDuration: TimeInterval = 0.09
+
+    var body: some View {
+        Circle()
             .fill(TrickPalette.Collection.timeControl)
             .frame(width: 12, height: 12)
-            .scaleEffect(isActive && !reduceMotion ? 1.5 : 1)
-            .offset(y: isActive && !reduceMotion ? -7 : 0)
-            .opacity(reduceMotion && activeDot != nil && !isActive ? 0.45 : 1)
-            .animation(reduceMotion ? nil : .spring(response: 0.2, dampingFraction: 0.45), value: activeDot)
+            .scaleEffect(isUp ? 1.5 : 1)
+            .offset(y: isUp ? -7 : 0)
+            // With Reduce Motion the dots stay in place and light up one after another instead.
+            .opacity(reduceMotion && progress.fired > 0 && index >= progress.fired ? 0.45 : 1)
+            .onChange(of: progress) { newValue in
+                if memory.shouldJump(index: index, progress: newValue) { jump() }
+            }
+    }
+
+    private func jump() {
+        guard !reduceMotion else { return }
+        withAnimation(.spring(response: 0.18, dampingFraction: 0.5)) { isUp = true }
+        Task {
+            try? await Task.sleep(seconds: Self.holdDuration)
+            withAnimation(.spring(response: 0.22, dampingFraction: 0.6)) { isUp = false }
+        }
     }
 }
 
