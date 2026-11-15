@@ -227,3 +227,59 @@ final class SettingsStepperDisplayTests: XCTestCase {
         XCTAssertEqual(SettingsStepper.displayText(for: 0.3, format: "%.2fs", displayScale: 1), "0.30s")
     }
 }
+
+final class InfoSheetTextsTests: XCTestCase {
+
+    private let keys = [
+        "settings.info.grouping.title", "settings.info.grouping.message", "settings.info.grouping.hint",
+        "settings.info.faceDown.title", "settings.info.faceDown.message", "settings.info.faceDown.hint",
+        "settings.info.faceDownMissed.title", "settings.info.faceDownMissed.message", "settings.info.faceDownMissed.hint"
+    ]
+
+    private func bundle(_ language: String) throws -> Bundle {
+        let path = try XCTUnwrap(Bundle(for: SettingsStore.self).path(forResource: language, ofType: "lproj"))
+        return try XCTUnwrap(Bundle(path: path))
+    }
+
+    func test_everyInfoSheetText_existsInBothLanguages_andTheSpanishIsNotTheEnglish() throws {
+        let english = try bundle("en")
+        let spanish = try bundle("es")
+
+        for key in keys {
+            let en = english.localizedString(forKey: key, value: "MISSING", table: nil)
+            let es = spanish.localizedString(forKey: key, value: "MISSING", table: nil)
+
+            XCTAssertNotEqual(en, "MISSING", "\(key) has no English text")
+            XCTAssertNotEqual(es, "MISSING", "\(key) has no Spanish text")
+            XCTAssertNotEqual(en, es, "\(key) is not translated")
+        }
+    }
+
+    func test_theHints_nameTheRealButtonsAndTheSettingTheyPointTo() throws {
+        for language in ["en", "es"] {
+            let bundle = try bundle(language)
+            func text(_ key: String) -> String { bundle.localizedString(forKey: key, value: "MISSING", table: nil) }
+            let gotIt = text("common.gotIt")
+            let tryVibration = text("settings.haptics.tryVibration")
+            let faceDown = text("settings.faceDown")
+
+            let faceDownHint = text("settings.info.faceDown.hint")
+            for name in [gotIt, tryVibration, faceDown] {
+                XCTAssertTrue(faceDownHint.contains(name), "\(language): the Face Down hint does not name \"\(name)\"")
+            }
+            let missedHint = text("settings.info.faceDownMissed.hint")
+            for name in [gotIt, tryVibration] {
+                XCTAssertTrue(missedHint.contains(name), "\(language): the not-detected hint does not name \"\(name)\"")
+            }
+        }
+    }
+
+    func test_theNotDetectedText_keepsTheNumberOfSecondsItWaited() throws {
+        for language in ["en", "es"] {
+            let text = try bundle(language).localizedString(forKey: "settings.info.faceDownMissed.message", value: nil, table: nil)
+
+            XCTAssertTrue(text.contains("%lld"), "the \(language) text lost the seconds")
+        }
+    }
+}
+

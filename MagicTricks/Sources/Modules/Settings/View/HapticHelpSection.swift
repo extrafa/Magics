@@ -111,6 +111,8 @@ struct VibrationHelpLink: View {
 
 private struct VibrationHelpSheet: View {
 
+    @State private var contentHeight: CGFloat = 0
+
     var body: some View {
         ScrollView {
             VStack(spacing: 20) {
@@ -135,29 +137,17 @@ private struct VibrationHelpSheet: View {
             }
             .padding(.horizontal, 24)
             .padding(.top, 56)
-            .padding(.bottom, 24)
+            .padding(.bottom, 16)
+            .readHeight(into: $contentHeight)
         }
+        .scrollBouncesOnlyWhenNeeded()
         .sheetCloseOverlay()
         .presentationDragIndicator(.visible)
-        .modifier(VibrationHelpPresentationModifier())
+        .fittedSheet(height: contentHeight)
     }
 
     private func openSettings() {
         guard let url = URL(string: UIApplication.openSettingsURLString) else { return }
         UIApplication.shared.open(url)
-    }
-}
-
-private struct VibrationHelpPresentationModifier: ViewModifier {
-    func body(content: Content) -> some View {
-        if #available(iOS 16.4, *) {
-            content
-                .presentationDetents([.medium, .large])
-                .presentationBackground(Color.backgroundScreen)
-                .presentationCornerRadius(28)
-        } else {
-            content
-                .presentationDetents([.medium, .large])
-        }
     }
 }

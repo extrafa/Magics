@@ -9,17 +9,17 @@ import CoreHaptics
 import Foundation
 
 enum GroupedHapticPatternBuilder {
-    static func groupedCountEvents(
+
+    // When each pulse fires, in groups of three with a longer pause between the groups; the screen can follow the same clock.
+    static func pulseTimes(
         count: Int,
         initialDelay: TimeInterval,
         timings: HapticTimings
-    ) -> (events: [CHHapticEvent], duration: TimeInterval) {
-        let intensity = timings.intensity.coreHapticsValue
+    ) -> [TimeInterval] {
         let chunkSize = HapticTiming.groupedChunkSize
 
-        var events: [CHHapticEvent] = []
+        var times: [TimeInterval] = []
         var time = initialDelay
-        var lastPulseTime = initialDelay
         var remaining = count
 
         while remaining > 0 {
@@ -29,24 +29,35 @@ enum GroupedHapticPatternBuilder {
                 : timings.grouped.pulseGap
 
             for index in 0..<groupCount {
-                let pulseTime = time + Double(index) * pulseGap
-                events.append(
-                    CHHapticEvent(
-                        eventType: .hapticTransient,
-                        parameters: [
-                            CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity),
-                            CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.85)
-                        ],
-                        relativeTime: pulseTime
-                    )
-                )
-                lastPulseTime = pulseTime
+                times.append(time + Double(index) * pulseGap)
             }
 
             time += Double(groupCount - 1) * pulseGap + timings.grouped.groupGap
             remaining -= groupCount
         }
 
-        return (events, lastPulseTime - initialDelay)
+        return times
+    }
+
+    static func groupedCountEvents(
+        count: Int,
+        initialDelay: TimeInterval,
+        timings: HapticTimings
+    ) -> (events: [CHHapticEvent], duration: TimeInterval) {
+        let intensity = timings.intensity.coreHapticsValue
+        let times = pulseTimes(count: count, initialDelay: initialDelay, timings: timings)
+
+        let events = times.map { pulseTime in
+            CHHapticEvent(
+                eventType: .hapticTransient,
+                parameters: [
+                    CHHapticEventParameter(parameterID: .hapticIntensity, value: intensity),
+                    CHHapticEventParameter(parameterID: .hapticSharpness, value: 0.85)
+                ],
+                relativeTime: pulseTime
+            )
+        }
+
+        return (events, (times.last ?? initialDelay) - initialDelay)
     }
 }

@@ -64,6 +64,14 @@ final class HapticManager {
         playGroupedCountSignal(count, generator: impactGenerator, timings: timings, completion: completion)
     }
 
+    func groupedPulseTimes(_ count: Int) -> [TimeInterval] {
+        GroupedHapticPatternBuilder.pulseTimes(
+            count: count,
+            initialDelay: HapticTiming.initialDelay,
+            timings: HapticTimings(preferences: preferences)
+        )
+    }
+
     func playTimeValue(
         _ value: Int,
         initialDelay: TimeInterval = 0,
