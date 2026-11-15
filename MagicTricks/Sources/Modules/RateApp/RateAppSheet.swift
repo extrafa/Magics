@@ -24,8 +24,9 @@ struct RateAppSheet: View {
         }
         .scrollBouncesOnlyWhenNeeded()
         .padding(.horizontal, 24)
-        .padding(.top, 32)
+        .padding(.top, 56)
         .padding(.bottom, 24)
+        .sheetCloseOverlay()
         .presentationDragIndicator(.visible)
         .modifier(RateAppPresentationModifier())
         .onDisappear { viewModel.markDismissed() }

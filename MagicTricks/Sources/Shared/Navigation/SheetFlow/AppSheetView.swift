@@ -56,3 +56,34 @@ extension View {
         modifier(SheetCloseToolbar())
     }
 }
+
+// The same button for a sheet without a navigation bar; the content keeps clear of that corner.
+private struct SheetCloseOverlay: ViewModifier {
+    @Environment(\.dismiss) private var dismiss
+
+    func body(content: Content) -> some View {
+        content.overlay(alignment: .topLeading) {
+            Button {
+                dismiss()
+            } label: {
+                Image(systemName: "xmark")
+                    .font(.system(size: 13, weight: .bold))
+                    .foregroundStyle(.textPrimary)
+                    .frame(width: 32, height: 32)
+                    .background(Circle().fill(Color.textPrimary.opacity(0.08)))
+                    .frame(width: 44, height: 44)
+                    .contentShape(Rectangle())
+            }
+            .buttonStyle(.plain)
+            .accessibilityLabel(String(localized: "common.close"))
+            .padding(.leading, 12)
+            .padding(.top, 14)
+        }
+    }
+}
+
+extension View {
+    func sheetCloseOverlay() -> some View {
+        modifier(SheetCloseOverlay())
+    }
+}

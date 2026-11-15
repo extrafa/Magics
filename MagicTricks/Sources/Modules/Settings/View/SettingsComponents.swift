@@ -291,9 +291,12 @@ struct SettingsInfoSheet: View {
             }
             .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
         }
-        .padding(24)
+        .padding(.horizontal, 24)
+        .padding(.top, 56)
+        .padding(.bottom, 24)
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.backgroundScreen.ignoresSafeArea())
+        .sheetCloseOverlay()
         .presentationDetents([.medium, .large])
         .presentationDragIndicator(.visible)
     }
