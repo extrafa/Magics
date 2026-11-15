@@ -211,6 +211,15 @@ struct SettingsInfoSheet: View {
         }
     }
 
+    // What to do with it, kept apart from the description: the description says what happens in the trick, so it never reads as an order.
+    private var hint: String {
+        switch topic {
+        case .grouping: String(localized: "settings.info.grouping.hint")
+        case .faceDown: String(localized: "settings.info.faceDown.hint")
+        case .faceDownMissed: String(localized: "settings.info.faceDownMissed.hint")
+        }
+    }
+
     var body: some View {
         ScrollView {
             content
@@ -245,11 +254,19 @@ struct SettingsInfoSheet: View {
                     .fixedSize(horizontal: false, vertical: true)
             }
 
-            Text(message)
-                .font(.system(.body, design: .rounded))
-                .foregroundStyle(Color.textSecondary)
-                .lineSpacing(3)
-                .fixedSize(horizontal: false, vertical: true)
+            VStack(alignment: .leading, spacing: 12) {
+                Text(message)
+                    .font(.system(.body, design: .rounded))
+                    .foregroundStyle(Color.textSecondary)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
+
+                Text(hint)
+                    .font(.system(.body, design: .rounded, weight: .semibold))
+                    .foregroundStyle(.textPrimary)
+                    .lineSpacing(3)
+                    .fixedSize(horizontal: false, vertical: true)
+            }
 
             if topic == .grouping {
                 GroupingExample(
