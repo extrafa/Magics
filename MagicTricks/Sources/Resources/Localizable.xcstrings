@@ -5250,13 +5250,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "With this setting, the phone sends the pulses in groups of three, with a longer pause between the groups. Big numbers are easier to count this way. Without it, the pulses come one after another at an even pace."
+            "value" : "With this setting, the phone sends the pulses in groups of three, with a longer pause between the groups. Big numbers are easier to count this way. Without it, there are no groups: the pulses come one after another."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Con este ajuste, el teléfono envía los pulsos en grupos de tres, con una pausa más larga entre los grupos. Así es más fácil contar números grandes. Sin él, los pulsos llegan uno tras otro, a un ritmo constante."
+            "value" : "Con este ajuste, el teléfono envía los pulsos en grupos de tres, con una pausa más larga entre los grupos. Así es más fácil contar números grandes. Sin él, no hay grupos: los pulsos llegan uno tras otro."
           }
         }
       }
