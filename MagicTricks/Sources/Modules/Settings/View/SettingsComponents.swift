@@ -175,6 +175,8 @@ struct SettingsInfoSheet: View {
     @State private var contentHeight: CGFloat = 0
     // The dot of the example that is moving with the pulse right now.
     @State private var activeDot: Int?
+    // Counts the taps on the replay button; a new value starts the example again.
+    @State private var replayCount = 0
 
     // A short wait after the sheet opens, so the person is looking at the dots when they start to move.
     private static let demoStartDelay: TimeInterval = 0.8
@@ -228,7 +230,11 @@ struct SettingsInfoSheet: View {
                 .fixedSize(horizontal: false, vertical: true)
 
             if topic == .grouping {
-                GroupingExample(groups: Self.exampleGroups, activeDot: activeDot)
+                GroupingExample(
+                    groups: Self.exampleGroups,
+                    activeDot: activeDot,
+                    onReplay: haptics == nil ? nil : { replayCount += 1 }
+                )
             }
 
             Button {
@@ -256,7 +262,8 @@ struct SettingsInfoSheet: View {
         .sheetCloseOverlay()
         .modifier(InfoSheetPresentation(height: contentHeight))
         .presentationDragIndicator(.visible)
-        .task { await playGroupingDemo() }
+        // The first run waits a moment; a replay starts at once.
+        .task(id: replayCount) { await playGroupingDemo(startDelay: replayCount == 0 ? Self.demoStartDelay : 0) }
         .onDisappear {
             guard topic == .grouping else { return }
             haptics?.cancelPendingHaptics()
@@ -264,9 +271,10 @@ struct SettingsInfoSheet: View {
     }
 
     // The example of the text, felt and seen: the phone pulses 3, 3 and 1 while the dots jump with each pulse.
-    private func playGroupingDemo() async {
+    private func playGroupingDemo(startDelay: TimeInterval) async {
         guard topic == .grouping, let haptics else { return }
-        try? await Task.sleep(seconds: Self.demoStartDelay)
+        activeDot = nil
+        if startDelay > 0 { try? await Task.sleep(seconds: startDelay) }
         guard !Task.isCancelled else { return }
 
         let count = Self.exampleGroups.reduce(0, +)
@@ -333,6 +341,8 @@ private struct GroupingExample: View {
 
     let groups: [Int]
     var activeDot: Int?
+    // Plays the example again; nil hides the button.
+    var onReplay: Completion?
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
@@ -351,8 +361,23 @@ private struct GroupingExample: View {
         }
         .padding(16)
         .frame(maxWidth: .infinity)
-        .cardSurface(cornerRadius: 16)
         .accessibilityHidden(true)
+        .cardSurface(cornerRadius: 16)
+        .overlay(alignment: .trailing) {
+            if let onReplay {
+                Button(action: onReplay) {
+                    Image(systemName: "arrow.counterclockwise")
+                        .font(.system(.body, design: .rounded, weight: .semibold))
+                        .foregroundStyle(TrickPalette.Collection.timeControl)
+                        // 44 pt is the minimum hit region.
+                        .frame(width: 44, height: 44)
+                        .contentShape(Rectangle())
+                }
+                .buttonStyle(InfoButtonStyle())
+                .accessibilityLabel(String(localized: "settings.info.grouping.replay"))
+                .padding(.trailing, 4)
+            }
+        }
     }
 
     // With Reduce Motion the dots stay in place and only the one that pulses stays bright.

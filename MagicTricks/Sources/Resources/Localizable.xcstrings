@@ -5261,6 +5261,23 @@
         }
       }
     },
+    "settings.info.grouping.replay" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "en" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Play again"
+          }
+        },
+        "es" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Reproducir de nuevo"
+          }
+        }
+      }
+    },
     "settings.info.faceDown.title" : {
       "comment" : "Title of the info sheet of Face Down.",
       "extractionState" : "manual",
