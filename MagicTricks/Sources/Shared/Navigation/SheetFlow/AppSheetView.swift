@@ -13,12 +13,7 @@ struct AppSheetView: View {
 
     var body: some View {
         switch activeSheet {
-        case .instruction(let instruction):
-            NavigationStack {
-                InstructionView(instruction: instruction)
-                    .sheetCloseToolbar()
-            }
-        case .instructionFirstLaunch(let instruction, let trick):
+        case .instruction(let instruction, let trick):
             NavigationStack {
                 InstructionView(instruction: instruction) {
                     flow.startTrickAfterInstruction(trick)

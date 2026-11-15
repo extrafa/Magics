@@ -223,7 +223,7 @@ final class AppFlowCoordinatorTests: XCTestCase {
         XCTAssertEqual(preferences.trickLaunchCount, 3)
     }
 
-    func test_openStartFlow_forUnseenTrick_showsInstructionFirstLaunch() {
+    func test_openStartFlow_forUnseenTrick_showsTheInstructionWithItsTrick() {
         let coordinator = AppFlowCoordinator(
             store: StoreManager(defaults: MockPreferenceStore()),
             preferences: AppPreferences(store: MockPreferenceStore())
@@ -233,8 +233,36 @@ final class AppFlowCoordinatorTests: XCTestCase {
 
         XCTAssertEqual(
             coordinator.activeSheet,
-            .instructionFirstLaunch(instruction: trick.instruction, trick: trick)
+            .instruction(instruction: trick.instruction, trick: trick)
         )
+    }
+
+    // Learn shows the same instruction as the first start, with the Start Trick button that starts the trick.
+    func test_openInstruction_showsTheSameInstructionAsTheFirstStart() {
+        let coordinator = makeCoordinator()
+
+        coordinator.open(instruction: trick)
+
+        XCTAssertEqual(
+            coordinator.activeSheet,
+            .instruction(instruction: trick.instruction, trick: trick)
+        )
+    }
+
+    func test_startingFromTheInstructionOpenedByLearn_startsTheTrickAndRemembersIt() {
+        let coordinator = makeCoordinator()
+        coordinator.open(instruction: trick)
+
+        coordinator.startTrickAfterInstruction(trick)
+        XCTAssertNil(coordinator.activeSheet)
+        coordinator.sheetDidDismiss()
+
+        XCTAssertEqual(coordinator.activeFlow, .trick(trick: trick))
+        // It has been seen now, so the next Start goes straight to the trick.
+        coordinator.activeFlow = nil
+        coordinator.openStartFlow(for: trick)
+        XCTAssertEqual(coordinator.activeFlow, .trick(trick: trick))
+        XCTAssertNil(coordinator.activeSheet)
     }
 
     func test_openStartFlow_forSeenTrick_opensTrickDirectly() {

@@ -473,8 +473,8 @@ final class StoreManagerTests: XCTestCase {
 
         coordinator.openStartFlow(for: TrickCollection.tricks.first { $0.id == .phantomDraw }!)
 
-        guard case .instructionFirstLaunch = coordinator.activeSheet else {
-            return XCTFail("expected the first-launch instruction, got \(String(describing: coordinator.activeSheet))")
+        guard case .instruction = coordinator.activeSheet else {
+            return XCTFail("expected the instruction, got \(String(describing: coordinator.activeSheet))")
         }
         XCTAssertNil(coordinator.activeFlow)
         manager.stop()
