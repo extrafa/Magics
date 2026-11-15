@@ -8,14 +8,13 @@
 import Foundation
 
 enum SheetFlow: Identifiable, Equatable {
-    case instruction(instruction: Instruction)
-    case instructionFirstLaunch(instruction: Instruction, trick: Trick)
+    // The instruction always comes with the trick, so its Start Trick button can start it.
+    case instruction(instruction: Instruction, trick: Trick)
     case rateApp
 
     var id: String {
         switch self {
-        case .instruction(let instruction): return "instruction_\(instruction.trickType.rawValue)"
-        case .instructionFirstLaunch(let instruction, _): return "firstLaunch_\(instruction.trickType.rawValue)"
+        case .instruction(let instruction, _): return "instruction_\(instruction.trickType.rawValue)"
         case .rateApp: return "rateApp"
         }
     }

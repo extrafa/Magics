@@ -65,7 +65,7 @@ final class AppFlowCoordinator: ObservableObject {
         if isLocked(trick) {
             openPaywall(context: .trick(trick.id))
         } else {
-            activeSheet = .instruction(instruction: trick.instruction)
+            activeSheet = .instruction(instruction: trick.instruction, trick: trick)
         }
     }
 
@@ -87,11 +87,11 @@ final class AppFlowCoordinator: ObservableObject {
             openPaywall(context: .trick(trick.id))
             return
         }
-        // The first-launch sheet is the instruction too, so the spectator's free-tier phone goes straight to the trick.
+        // The instruction is shown before the first start; the spectator's free-tier phone skips it and goes straight to the trick.
         if hasSeenTrick(trick) || trick.id.hidesInstruction(onFreeTier: store.showsFreeTier) {
             activeFlow = .trick(trick: trick)
         } else {
-            activeSheet = .instructionFirstLaunch(instruction: trick.instruction, trick: trick)
+            activeSheet = .instruction(instruction: trick.instruction, trick: trick)
         }
     }
 
