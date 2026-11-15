@@ -124,7 +124,7 @@ extension SettingsToggleRow where Accessories == EmptyView {
 
 // MARK: - Info button
 
-// A small round "i" next to a setting; it opens the sheet that explains the setting.
+// A small "i" next to a setting's title, the size of the title text; it opens the sheet that explains the setting.
 struct SettingsInfoButton: View {
 
     let label: String
@@ -132,18 +132,15 @@ struct SettingsInfoButton: View {
 
     var body: some View {
         Button(action: action) {
-            Image(systemName: "info")
-                .font(.system(size: 12, weight: .bold))
-                .foregroundStyle(Color.textPrimary.opacity(0.75))
-                .frame(width: 28, height: 28)
-                .background(Circle().fill(Color.primary.opacity(0.07)))
-                .overlay(Circle().stroke(Color.primary.opacity(0.18), lineWidth: 1))
-                // 44 pt is the minimum touch target; the circle itself stays small.
-                .padding(8)
+            Image(systemName: "info.circle")
+                .font(.system(.body, design: .rounded, weight: .semibold))
+                .foregroundStyle(Color.textSecondary)
+                // 44 pt is the minimum touch target; the icon itself stays the size of the title.
+                .padding(11)
                 .contentShape(Rectangle())
         }
         .buttonStyle(.plain)
-        .padding(-8)
+        .padding(-11)
         .accessibilityLabel(label)
     }
 }
@@ -166,6 +163,7 @@ struct SettingsInfoSheet: View {
     var faceDownTimeout: Int = 10
 
     @Environment(\.dismiss) private var dismiss
+    @State private var contentHeight: CGFloat = 0
 
     private var icon: String {
         switch topic {
@@ -232,27 +230,38 @@ struct SettingsInfoSheet: View {
         .padding(.horizontal, 24)
         .padding(.top, 68)
         .padding(.bottom, 24)
-        // Pinned to the top, the button right under the text: the free room is below it, not in between.
+        // The sheet is as tall as its text, so no empty room opens under the button (a preference key did not report here).
+        .background(GeometryReader { proxy in
+            Color.clear
+                .onAppear { contentHeight = proxy.size.height }
+                .onChange(of: proxy.size.height) { contentHeight = $0 }
+        })
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
         .background(Color.backgroundScreen.ignoresSafeArea())
         .sheetCloseOverlay()
-        .modifier(InfoSheetPresentation())
+        .modifier(InfoSheetPresentation(height: contentHeight))
         .presentationDragIndicator(.visible)
     }
 }
 
 // The sheet itself takes the screen colour, so no strip of the system sheet shows around the content.
 private struct InfoSheetPresentation: ViewModifier {
+    // The measured height of the content; 0 until it is known.
+    let height: CGFloat
+
+    private var detents: Set<PresentationDetent> {
+        height > 0 ? [.height(height), .large] : [.medium, .large]
+    }
 
     func body(content: Content) -> some View {
         if #available(iOS 16.4, *) {
             content
-                .presentationDetents([.medium, .large])
+                .presentationDetents(detents)
                 .presentationBackground(Color.backgroundScreen)
                 .presentationCornerRadius(28)
         } else {
             content
-                .presentationDetents([.medium, .large])
+                .presentationDetents(detents)
         }
     }
 }
