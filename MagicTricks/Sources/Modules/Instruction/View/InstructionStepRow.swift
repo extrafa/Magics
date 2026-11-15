@@ -22,21 +22,12 @@ struct InstructionStepRow: View {
         self.onAction = onAction
     }
 
-    private var phaseColor: Color {
-        switch step.phase {
-        case .preparation:
-            return .blue
-        case .demonstration:
-            return .green
-        }
-    }
-
     var body: some View {
         HStack(alignment: .top, spacing: 12) {
             content
 
             RoundedRectangle(cornerRadius: 999)
-                .fill(phaseColor)
+                .fill(step.phase.color)
                 .frame(width: 3)
         }
         .padding(.vertical, 12)
@@ -46,6 +37,24 @@ struct InstructionStepRow: View {
         VStack(alignment: .leading, spacing: 12) {
             stepText
 
+            if let imageName = step.imageName {
+                Color.clear
+                    .aspectRatio(step.imageRatio.rawValue, contentMode: .fit)
+                    .overlay {
+                        Image(imageName)
+                            .resizable()
+                            .scaledToFill()
+                            // The title/description right above already say what this step shows.
+                            .accessibilityHidden(true)
+                    }
+                    .clipShape(RoundedRectangle(cornerRadius: 14, style: .continuous))
+                    .overlay {
+                        RoundedRectangle(cornerRadius: 14, style: .continuous)
+                            .stroke(Color.cardBorder, lineWidth: 1)
+                    }
+                    .overlay(alignment: .topTrailing) { screenshotBadge }
+            }
+
             if !step.actions.isEmpty {
                 InstructionStepActionsView(actions: step.actions, onAction: onAction)
                     .frame(maxWidth: .infinity, alignment: .leading)
@@ -54,12 +63,25 @@ struct InstructionStepRow: View {
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
+    // The pictures show the app as it looks, they are not buttons: the camera in the corner says so.
+    private var screenshotBadge: some View {
+        Image(systemName: "camera.fill")
+            .font(.system(size: 12, weight: .semibold))
+            .foregroundStyle(Color.textPrimary.opacity(0.75))
+            .frame(width: 28, height: 28)
+            .background(.ultraThinMaterial, in: Circle())
+            .overlay(Circle().stroke(Color.cardBorder, lineWidth: 1))
+            .padding(8)
+            .accessibilityHidden(true)
+    }
+
     private var stepText: some View {
         HStack(alignment: .top, spacing: 14) {
-            Text("\(number).")
-                .font(.system(size: 16, weight: .bold, design: .rounded))
-                .foregroundStyle(.primaryText.opacity(0.9))
-                .frame(width: 32, alignment: .leading)
+            Text(verbatim: "\(number).")
+                .font(.system(.callout, design: .rounded, weight: .bold))
+                .foregroundStyle(.textPrimary.opacity(0.9))
+                .fixedSize(horizontal: true, vertical: false)
+                .frame(minWidth: 32, alignment: .leading)
                 .padding(.top, 2)
 
             VStack(alignment: .leading, spacing: 12) {
@@ -73,16 +95,31 @@ struct InstructionStepRow: View {
     private var titleAndDescription: some View {
         VStack(alignment: .leading, spacing: 5) {
             Text(step.title)
-                .font(.system(size: 17, weight: .semibold, design: .rounded))
-                .foregroundStyle(.primaryText)
+                .font(.system(.body, design: .rounded, weight: .semibold))
+                .foregroundStyle(.textPrimary)
                 .fixedSize(horizontal: false, vertical: true)
 
             Text(step.description)
-                .font(.system(size: 15, weight: .regular, design: .rounded))
-                .foregroundStyle(.primaryText.opacity(0.72))
+                .font(.system(.subheadline, design: .rounded))
+                .foregroundStyle(.textPrimary.opacity(0.72))
                 .lineSpacing(4)
                 .fixedSize(horizontal: false, vertical: true)
         }
         .frame(maxWidth: .infinity, alignment: .leading)
+    }
+}
+
+#Preview {
+    ScrollView {
+        InstructionStepRow(
+            number: 1,
+            step: InstructionStep(
+                title: "Познакомьтесь с вибрациями",
+                description: "Потренируйтесь различать сигналы вибрации.",
+                phase: .preparation,
+                actions: [.hapticTraining]
+            )
+        )
+        .padding()
     }
 }

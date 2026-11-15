@@ -8,10 +8,16 @@
 import SwiftUI
 
 struct TimeControlView: View {
-    @Environment(\.dismiss) private var dismiss
     @Environment(\.scenePhase) private var scenePhase
-    @StateObject private var viewModel = TimeControlViewModel()
-    @State private var isVisible = true
+    @StateObject private var viewModel: TimeControlViewModel
+    @ScaledMetric(relativeTo: .title3) private var scaledCircleSide: CGFloat = 84
+
+    // Two circles share one row on a narrow screen, so the growth stops here.
+    private var circleSide: CGFloat { min(scaledCircleSide, 140) }
+
+    init(viewModel: TimeControlViewModel? = nil) {
+        _viewModel = StateObject(wrappedValue: viewModel ?? TimeControlViewModel())
+    }
 
     var body: some View {
         ZStack {
@@ -34,10 +40,11 @@ struct TimeControlView: View {
                     .padding(.horizontal, 24)
                     .padding(.bottom, 34)
             }
-
-            ExitHintView(isVisible: $isVisible, style: .specialWhite)
         }
-        .onChange(of: scenePhase) { _, newPhase in
+        .exitHint(style: .specialWhite)
+        .hapticsUnavailableNoticeOverlay()
+        .keepsScreenAwake(while: viewModel.isRunning || viewModel.isTransmitting)
+        .onChange(of: scenePhase) { newPhase in
             guard newPhase == .active else { return }
             viewModel.handleSceneBecameActive()
         }
@@ -48,9 +55,7 @@ struct TimeControlView: View {
 
     private var controls: some View {
         HStack {
-            Button {
-                viewModel.reset()
-            } label: {
+            Button(action: viewModel.reset) {
                 controlCircle(
                     title: String(localized: "timeControl.reset"),
                     fill: Color.white.opacity(0.12),
@@ -62,9 +67,7 @@ struct TimeControlView: View {
 
             Spacer()
 
-            Button {
-                viewModel.handlePrimaryAction()
-            } label: {
+            Button(action: viewModel.handlePrimaryAction) {
                 controlCircle(
                     title: viewModel.isRunning ? String(localized: "timeControl.stop") : String(localized: "timeControl.start"),
                     fill: viewModel.isRunning ? Color.red.opacity(0.22) : Color.green.opacity(0.22),
@@ -72,6 +75,7 @@ struct TimeControlView: View {
                 )
             }
             .disabled(!viewModel.canUsePrimaryAction)
+            .opacity(viewModel.hasReachedLimit ? 0.35 : 1)
         }
     }
 
@@ -79,15 +83,19 @@ struct TimeControlView: View {
         ZStack {
             Circle()
                 .fill(fill)
-                .frame(width: 84, height: 84)
-
-            Circle()
-                .stroke(Color.white.opacity(0.08), lineWidth: 1)
-                .frame(width: 84, height: 84)
+                .overlay { Circle().stroke(Color.white.opacity(0.08), lineWidth: 1) }
+                .frame(width: circleSide, height: circleSide)
 
             Text(title)
-                .font(.system(size: 20, weight: .regular, design: .rounded))
+                .font(.system(.title3, design: .rounded, weight: .regular))
                 .foregroundStyle(titleColor)
+                .lineLimit(1)
+                .minimumScaleFactor(0.5)
+                .padding(.horizontal, 8)
         }
     }
+}
+
+#Preview {
+    TimeControlView()
 }

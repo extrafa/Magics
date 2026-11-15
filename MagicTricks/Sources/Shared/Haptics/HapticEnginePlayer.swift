@@ -1,9 +1,21 @@
+//
+//  HapticEnginePlayer.swift
+//  Magic Tricks
+//
+//  Created by Ross on 28/05/2026.
+//
+
 import CoreHaptics
 import Foundation
 
 @MainActor
 final class HapticEnginePlayer {
+    private enum HapticPlaybackError: Error {
+        case engineUnavailable
+    }
+
     private var engine: CHHapticEngine?
+    private var currentPlayer: CHHapticPatternPlayer?
     private var supportsHaptics = CHHapticEngine.capabilitiesForHardware().supportsHaptics
 
     init() {
@@ -26,7 +38,7 @@ final class HapticEnginePlayer {
         }
     }
 
-    func playEvents(_ events: [CHHapticEvent], fallback: () -> Void) {
+    func playEvents(_ events: [CHHapticEvent], fallback: Completion) {
         guard supportsHaptics else {
             fallback()
             return
@@ -39,12 +51,24 @@ final class HapticEnginePlayer {
         }
     }
 
+    func stop() {
+        guard let engine, let currentPlayer else { return }
+        try? currentPlayer.stop(atTime: engine.currentTime)
+        self.currentPlayer = nil
+    }
+
+    func stopEngine() {
+        engine?.stop()
+    }
+
     private func configureEngine() {
         guard supportsHaptics else { return }
 
         do {
             let engine = try CHHapticEngine()
-            engine.stoppedHandler = { [weak self] _ in
+            engine.stoppedHandler = { [weak self] reason in
+                // .idleTimeout is autoShutdown's normal sleep - the engine restarts cheaply, don't discard and rebuild it.
+                guard reason != .idleTimeout else { return }
                 Task { @MainActor in
                     self?.engine = nil
                 }
@@ -55,10 +79,10 @@ final class HapticEnginePlayer {
                     self?.restartEngineIfNeeded()
                 }
             }
+            engine.isAutoShutdownEnabled = true
             try engine.start()
             self.engine = engine
         } catch {
-            supportsHaptics = false
             engine = nil
         }
     }
@@ -73,11 +97,8 @@ final class HapticEnginePlayer {
         let pattern = try CHHapticPattern(events: events, parameters: [])
         let player = try engine.makePlayer(with: pattern)
         try player.start(atTime: 0)
+        currentPlayer = player
     }
 }
 
 extension HapticEnginePlayer: HapticEnginePlaying {}
-
-enum HapticPlaybackError: Error {
-    case engineUnavailable
-}

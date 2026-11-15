@@ -8,6 +8,7 @@
 import Foundation
 
 struct Instruction: Equatable, Hashable {
+    let trickType: TrickType
     let title: String
     let effect: String
     let secret: String
@@ -16,27 +17,37 @@ struct Instruction: Equatable, Hashable {
 
 enum InstructionStepAction: Hashable {
     case hapticTraining
-    case hapticNumberTraining
     case hapticSettings
-    case motionSettings
+}
+
+enum InstructionImageRatio: CGFloat {
+    case standard = 0.75  // 3:4
+    case compact  = 1.5   // 3:2
 }
 
 struct InstructionStep: Identifiable, Hashable {
-    let id = UUID()
+    // Computed (not stored) so it's excluded from the synthesized Hashable/Equatable.
+    var id: String { title }
     let title: String
     let description: String
     let phase: InstructionPhase
     let actions: [InstructionStepAction]
+    let imageName: String?
+    let imageRatio: InstructionImageRatio
 
     init(
         title: String,
         description: String,
         phase: InstructionPhase,
-        actions: [InstructionStepAction] = []
+        actions: [InstructionStepAction] = [],
+        imageName: String? = nil,
+        imageRatio: InstructionImageRatio = .standard
     ) {
         self.title = title
         self.description = description
         self.phase = phase
         self.actions = actions
+        self.imageName = imageName
+        self.imageRatio = imageRatio
     }
 }

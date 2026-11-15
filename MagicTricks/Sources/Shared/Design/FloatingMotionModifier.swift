@@ -14,12 +14,14 @@ struct FloatingMotionModifier: ViewModifier {
     let duration: Double
 
     @State private var isAnimating = false
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     func body(content: Content) -> some View {
         content
             .offset(y: isAnimating ? travel : -travel)
             .rotationEffect(.degrees(isAnimating ? rotation : -rotation))
             .onAppear {
+                guard !reduceMotion else { return }
                 withAnimation(
                     .easeInOut(duration: duration)
                     .repeatForever(autoreverses: true)

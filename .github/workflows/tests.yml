@@ -1,0 +1,82 @@
+name: Tests
+
+on:
+  pull_request:
+    branches: [develop]
+  push:
+    branches: [develop]
+
+concurrency:
+  group: tests-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    runs-on: macos-26
+    timeout-minutes: 30
+    # Pinned on purpose: a runner image update must not change the toolchain under us. Bump these in a commit.
+    env:
+      XCODE_APP: /Applications/Xcode_26.6.app
+      SIM_RUNTIME: com.apple.CoreSimulator.SimRuntime.iOS-26-5
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Select Xcode
+        run: |
+          if [ ! -d "$XCODE_APP" ]; then
+            echo "::error::$XCODE_APP is missing on this runner image; update XCODE_APP in .github/workflows/tests.yml"
+            ls /Applications | grep -i xcode || true
+            exit 1
+          fi
+          sudo xcode-select -s "$XCODE_APP/Contents/Developer"
+
+      - name: Show Xcode version
+        run: xcodebuild -version
+
+      - name: Check archive configurations
+        run: python3 scripts/check-archive-configs.py
+
+      - name: Boot simulator
+        run: |
+          UDID=$(xcrun simctl list devices available -j | python3 -c '
+          import json, os, sys
+          runtime = os.environ["SIM_RUNTIME"]
+          devices = json.load(sys.stdin)["devices"].get(runtime, [])
+          match = next((d["udid"] for d in devices if d["name"] == "iPhone 17"), None)
+          if match is None:
+              sys.exit(f"No iPhone 17 simulator for {runtime}; update SIM_RUNTIME in .github/workflows/tests.yml")
+          print(match)
+          ')
+          echo "SIM_UDID=$UDID" >> "$GITHUB_ENV"
+          xcrun simctl bootstatus "$UDID" -b
+
+      - name: Build and test
+        run: |
+          xcodebuild test \
+            -project MagicTricks.xcodeproj \
+            -scheme Magics \
+            -destination "platform=iOS Simulator,id=$SIM_UDID" \
+            -parallel-testing-enabled NO \
+            -enableCodeCoverage YES \
+            -resultBundlePath TestResults.xcresult \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Coverage summary
+        if: success()
+        run: xcrun xccov view --report --only-targets TestResults.xcresult
+
+      - name: Build Beta configuration
+        run: |
+          xcodebuild build \
+            -project MagicTricks.xcodeproj \
+            -scheme "Magics (TestFlight)" \
+            -configuration Beta \
+            -destination "generic/platform=iOS Simulator" \
+            CODE_SIGNING_ALLOWED=NO
+
+      - name: Upload test results
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: TestResults
+          path: TestResults.xcresult
