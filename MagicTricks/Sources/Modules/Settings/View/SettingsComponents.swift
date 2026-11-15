@@ -177,6 +177,8 @@ struct SettingsInfoSheet: View {
     @State private var activeDot: Int?
     // Counts the taps on the replay button; a new value starts the example again.
     @State private var replayCount = 0
+    // The pulses are playing: a tap on the replay button does nothing until they end.
+    @State private var isPlaying = false
 
     // A short wait after the sheet opens, so the person is looking at the dots when they start to move.
     private static let demoStartDelay: TimeInterval = 0.8
@@ -233,7 +235,10 @@ struct SettingsInfoSheet: View {
                 GroupingExample(
                     groups: Self.exampleGroups,
                     activeDot: activeDot,
-                    onReplay: haptics == nil ? nil : { replayCount += 1 }
+                    onReplay: haptics == nil ? nil : {
+                        guard !isPlaying else { return }
+                        replayCount += 1
+                    }
                 )
             }
 
@@ -280,6 +285,8 @@ struct SettingsInfoSheet: View {
         let count = Self.exampleGroups.reduce(0, +)
         let steps = GroupingDemoTimeline.steps(pulseTimes: haptics.groupedPulseTimes(count))
         haptics.playGroupedCount(count, completion: nil)
+        isPlaying = true
+        defer { isPlaying = false }
 
         let start = Date()
         for step in steps {
