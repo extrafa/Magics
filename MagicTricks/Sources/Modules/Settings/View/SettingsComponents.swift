@@ -66,9 +66,7 @@ struct SettingsToggleRow<Accessories: View>: View {
     let subtitle: String
     var tint: Color = TrickPalette.Collection.timeControl
     @Binding var isOn: Bool
-    // A line under the subtitle that says what is happening now, for example while a test waits.
-    var status: String?
-    // Small round buttons (info, test) that sit next to the title, outside the switch.
+    // The small info button that sits next to the title, outside the switch.
     @ViewBuilder let accessories: Accessories
 
     var body: some View {
@@ -84,13 +82,6 @@ struct SettingsToggleRow<Accessories: View>: View {
                         accessories
                     }
                     subtitleText
-                    if let status {
-                        Text(status)
-                            .font(.system(.footnote, design: .rounded, weight: .semibold))
-                            .foregroundStyle(tint)
-                            .fixedSize(horizontal: false, vertical: true)
-                            .transition(.opacity)
-                    }
                 }
                 .frame(maxWidth: .infinity, alignment: .leading)
                 .contentShape(Rectangle())
@@ -101,7 +92,6 @@ struct SettingsToggleRow<Accessories: View>: View {
                     .tint(tint)
             }
             .padding(18)
-            .animation(.easeInOut(duration: 0.2), value: status)
         }
     }
 
@@ -128,57 +118,26 @@ struct SettingsToggleRow<Accessories: View>: View {
 
 extension SettingsToggleRow where Accessories == EmptyView {
     init(title: String, subtitle: String, tint: Color = TrickPalette.Collection.timeControl, isOn: Binding<Bool>) {
-        self.init(title: title, subtitle: subtitle, tint: tint, isOn: isOn, status: nil, accessories: { EmptyView() })
+        self.init(title: title, subtitle: subtitle, tint: tint, isOn: isOn, accessories: { EmptyView() })
     }
 }
 
-// MARK: - Round buttons
+// MARK: - Info button
 
-// A small round button next to a setting: the "i" that explains it and the dot that lets you try it.
-struct SettingsRoundButton: View {
+// A small round "i" next to a setting; it opens the sheet that explains the setting.
+struct SettingsInfoButton: View {
 
-    enum Style {
-        case info
-        case test
-    }
-
-    let style: Style
-    // The test is running: the dot keeps moving.
-    var isActive = false
-    // The test has an answer: shows a check instead of the dot.
-    var isDone = false
-    // How long the running test waits, so a ring can count the time down; nil for a test without a deadline.
-    var countdown: TimeInterval?
     let label: String
     let action: () -> Void
 
-    @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    @State private var ringProgress: CGFloat = 1
-
-    private var symbol: String {
-        switch style {
-        case .info: "info"
-        case .test: isDone ? "checkmark" : "dot.radiowaves.left.and.right"
-        }
-    }
-
     var body: some View {
         Button(action: action) {
-            Image(systemName: symbol)
+            Image(systemName: "info")
                 .font(.system(size: 12, weight: .bold))
                 .foregroundStyle(Color.textPrimary.opacity(0.75))
                 .frame(width: 28, height: 28)
                 .background(Circle().fill(Color.primary.opacity(0.07)))
                 .overlay(Circle().stroke(Color.primary.opacity(0.18), lineWidth: 1))
-                .overlay {
-                    if isActive, countdown != nil {
-                        Circle()
-                            .trim(from: 0, to: ringProgress)
-                            .stroke(TrickPalette.Collection.timeControl, style: StrokeStyle(lineWidth: 2, lineCap: .round))
-                            .rotationEffect(.degrees(-90))
-                    }
-                }
-                .speakingPulse(isActive: isActive && !reduceMotion)
                 // 44 pt is the minimum touch target; the circle itself stays small.
                 .padding(8)
                 .contentShape(Rectangle())
@@ -186,25 +145,6 @@ struct SettingsRoundButton: View {
         .buttonStyle(.plain)
         .padding(-8)
         .accessibilityLabel(label)
-        .onChange(of: isActive) { active in
-            guard let countdown else { return }
-            ringProgress = 1
-            if active {
-                withAnimation(.linear(duration: countdown)) { ringProgress = 0 }
-            }
-        }
-    }
-}
-
-private extension View {
-    // The waves keep moving while a test runs (iOS 17 and later).
-    @ViewBuilder
-    func speakingPulse(isActive: Bool) -> some View {
-        if #available(iOS 17.0, *) {
-            symbolEffect(.variableColor.iterative.reversing, options: .repeating, isActive: isActive)
-        } else {
-            self
-        }
     }
 }
 
@@ -226,6 +166,7 @@ struct SettingsInfoSheet: View {
     var faceDownTimeout: Int = 10
 
     @Environment(\.dismiss) private var dismiss
+    @State private var contentHeight: CGFloat = 0
 
     private var icon: String {
         switch topic {
@@ -278,8 +219,6 @@ struct SettingsInfoSheet: View {
                 GroupingExample(groups: [3, 3, 1])
             }
 
-            Spacer(minLength: 0)
-
             Button {
                 dismiss()
             } label: {
@@ -292,14 +231,24 @@ struct SettingsInfoSheet: View {
             .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
         }
         .padding(.horizontal, 24)
-        .padding(.top, 56)
+        .padding(.top, 68)
         .padding(.bottom, 24)
+        .background(GeometryReader { proxy in
+            Color.clear.preference(key: InfoSheetHeightKey.self, value: proxy.size.height)
+        })
         .frame(maxWidth: .infinity, alignment: .leading)
         .background(Color.backgroundScreen.ignoresSafeArea())
         .sheetCloseOverlay()
-        .presentationDetents([.medium, .large])
+        .onPreferenceChange(InfoSheetHeightKey.self) { contentHeight = $0 }
+        // The sheet is as tall as its content, so no empty gap opens between the text and the button; larger text can still pull it up.
+        .presentationDetents(contentHeight > 0 ? [.height(contentHeight), .large] : [.medium, .large])
         .presentationDragIndicator(.visible)
     }
+}
+
+private struct InfoSheetHeightKey: PreferenceKey {
+    static var defaultValue: CGFloat = 0
+    static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) { value = nextValue() }
 }
 
 // Dots in groups: the number 7 as 3 + 3 + 1.
@@ -422,10 +371,15 @@ struct SettingsStepper: View {
     }
 
     private func increment() {
-        value = min(range.upperBound, ((value + step) * 100).rounded() / 100)
+        value = Self.stepped(value, by: step, in: range)
     }
 
     private func decrement() {
-        value = max(range.lowerBound, ((value - step) * 100).rounded() / 100)
+        value = Self.stepped(value, by: -step, in: range)
+    }
+
+    // Rounded to three decimals so repeated steps of 0.375 land on 1.125, 1.5, 1.875 and do not drift.
+    static func stepped(_ value: Double, by delta: Double, in range: ClosedRange<Double>) -> Double {
+        min(range.upperBound, max(range.lowerBound, ((value + delta) * 1000).rounded() / 1000))
     }
 }

@@ -14,9 +14,8 @@ struct HapticSignalSettingsSection: View {
     @ObservedObject var settings: SettingsStore
     // Called after a strength is picked (the same one again too), so the screen can let the person feel it.
     var onIntensityChosen: Completion?
-    // The small buttons of the grouping row: what it does, and a try of the example.
+    // The small button of the grouping row: what it does.
     var onGroupingInfo: Completion?
-    var onGroupingTest: Completion?
     @Environment(\.dynamicTypeSize) private var dynamicTypeSize
     @ScaledMetric(relativeTo: .subheadline) private var segmentHeight: CGFloat = 48
 
@@ -114,9 +113,10 @@ struct HapticSignalSettingsSection: View {
                 value: $settings.hapticSpeedMultiplier,
                 label: String(localized: key("speed")),
                 range: AppPreferences.Range.hapticSpeedMultiplier,
-                step: 0.5,
-                format: "%.1fx",
-                // The default is stored as 1.5 (the tuned pace) and shown as 1.0x: from there it goes down and up.
+                // A shown step of 0.25x: 0.50x, 0.75x, 1.00x, 1.25x, 1.50x.
+                step: 0.25 * AppPreferences.Default.hapticSpeedMultiplier,
+                format: "%.2fx",
+                // The default is stored as 1.5 (the tuned pace) and shown as 1.00x: from there it goes down and up.
                 displayScale: AppPreferences.Default.hapticSpeedMultiplier
             )
             .padding(18)
@@ -131,11 +131,8 @@ struct HapticSignalSettingsSection: View {
                 subtitle: String(localized: key("groupingDescription")),
                 isOn: $settings.isHapticGroupByThreeEnabled
             ) {
-                SettingsRoundButton(style: .info, label: String(localized: key("infoButton"))) {
+                SettingsInfoButton(label: String(localized: key("infoButton"))) {
                     onGroupingInfo?()
-                }
-                SettingsRoundButton(style: .test, label: String(localized: key("testButton"))) {
-                    onGroupingTest?()
                 }
             }
             .cardSurface(cornerRadius: 20)

@@ -12,15 +12,13 @@ struct HapticSettingsScreen: View {
     @State private var isTesting = false
     @State private var isWaitingForGesture = false
     @State private var gestureTask: Task<Void, Never>?
-    @State private var faceDownTest = FaceDownTestState.idle
-    @State private var faceDownTestTask: Task<Void, Never>?
     @State private var infoTopic: SettingsInfoTopic?
     // State, not a let: a re-created screen would otherwise stop a different manager than the one waiting.
     @State private var gestureManager = PhoneTiltGestureManager()
 
     private let haptics: CountHapticPlaying
     private let testNumber = 7
-    // How long a Face Down test waits before it gives up and says how to do it.
+    // How long the preview waits for Face Down before it gives up and says how to do it.
     private static let faceDownTimeout: TimeInterval = 10
     // A short sample, so choosing Weak, Medium or Strong shows what it feels like without the full preview.
     private let strengthSampleCount = 3
@@ -39,15 +37,11 @@ struct HapticSettingsScreen: View {
                     HapticSignalSettingsSection(
                         settings: settings,
                         onIntensityChosen: playStrengthSample,
-                        onGroupingInfo: { infoTopic = .grouping },
-                        onGroupingTest: playGroupingSample
+                        onGroupingInfo: { infoTopic = .grouping }
                     )
                     MotionSettingsSection(
                         settings: settings,
-                        faceDownTest: faceDownTest,
-                        faceDownTestTimeout: Self.faceDownTimeout,
-                        onFaceDownInfo: { infoTopic = .faceDown },
-                        onFaceDownTest: startFaceDownTest
+                        onFaceDownInfo: { infoTopic = .faceDown }
                     )
                     HapticPreviewSection(
                         testNumber: testNumber,
@@ -79,12 +73,9 @@ struct HapticSettingsScreen: View {
             haptics.cancelPendingHaptics()
             gestureTask?.cancel()
             gestureTask = nil
-            faceDownTestTask?.cancel()
-            faceDownTestTask = nil
             gestureManager.stopMonitoring()
             isWaitingForGesture = false
             isTesting = false
-            faceDownTest = .idle
         }
     }
 
@@ -93,38 +84,8 @@ struct HapticSettingsScreen: View {
         haptics.playCount(strengthSampleCount, completion: nil)
     }
 
-    // The example from the grouping description (7 as 3, 3 and 1), always grouped so the row can be tried before it is switched on.
-    private func playGroupingSample() {
-        guard !isTesting, faceDownTest != .waiting else { return }
-        haptics.playGroupedCount(testNumber, completion: nil)
-    }
-
-    // Waits for the phone to be put face down; after the timeout it stops and shows how to do it.
-    private func startFaceDownTest() {
-        guard !isTesting, faceDownTest != .waiting else { return }
-        haptics.cancelPendingHaptics()
-        faceDownTest = .waiting
-        faceDownTestTask = Task { @MainActor in
-            let result = await gestureManager.waitForScreenDownGesture(timeout: Self.faceDownTimeout)
-            switch result {
-            case .detected:
-                faceDownTest = .detected
-                // One short buzz: the phone felt it.
-                haptics.playCount(1, completion: nil)
-                try? await Task.sleep(seconds: 2)
-                faceDownTest = .idle
-            case .timedOut:
-                faceDownTest = .idle
-                infoTopic = .faceDownMissed
-            case .cancelled:
-                faceDownTest = .idle
-            }
-            faceDownTestTask = nil
-        }
-    }
-
     private func playPreview() {
-        guard !isTesting, faceDownTest != .waiting else { return }
+        guard !isTesting else { return }
         isTesting = true
 
         if settings.isSecretGestureEnabled {

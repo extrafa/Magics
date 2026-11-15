@@ -198,12 +198,29 @@ final class HapticsUnavailableNoticeTests: XCTestCase {
 
 final class SettingsStepperDisplayTests: XCTestCase {
 
-    func test_speedDefault_isShownAsOnePointZero_andTheRangeGoesDownAndUp() {
+    func test_speedDefault_isShownAsOne_withTwoEvenStepsDownAndTwoUp() {
         let scale = AppPreferences.Default.hapticSpeedMultiplier
-        let shown = [1.0, 1.5, 2.0, 2.5].map { SettingsStepper.displayText(for: $0, format: "%.1fx", displayScale: scale) }
+        let step = 0.25 * scale
+        let range = AppPreferences.Range.hapticSpeedMultiplier
+        let stops = (-2...2).map { scale + Double($0) * step }
+        let shown = stops.map { SettingsStepper.displayText(for: $0, format: "%.2fx", displayScale: scale) }
 
-        XCTAssertEqual(shown, ["0.7x", "1.0x", "1.3x", "1.7x"])
-        XCTAssertEqual(SettingsStepper.displayText(for: scale, format: "%.1fx", displayScale: scale), "1.0x")
+        XCTAssertEqual(shown, ["0.50x", "0.75x", "1.00x", "1.25x", "1.50x"])
+        XCTAssertEqual(stops.first, range.lowerBound)
+        XCTAssertEqual(stops.last, range.upperBound)
+    }
+
+    func test_speedSteps_landOnTheSameFiveStopsInBothDirections() {
+        let range = AppPreferences.Range.hapticSpeedMultiplier
+        let step = 0.25 * AppPreferences.Default.hapticSpeedMultiplier
+
+        var up = [range.lowerBound]
+        for _ in 0..<5 { up.append(SettingsStepper.stepped(up.last!, by: step, in: range)) }
+        var down = [range.upperBound]
+        for _ in 0..<5 { down.append(SettingsStepper.stepped(down.last!, by: -step, in: range)) }
+
+        XCTAssertEqual(up, [0.75, 1.125, 1.5, 1.875, 2.25, 2.25])
+        XCTAssertEqual(down, [2.25, 1.875, 1.5, 1.125, 0.75, 0.75])
     }
 
     func test_withoutAScale_theValueIsShownAsStored() {
