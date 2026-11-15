@@ -255,6 +255,25 @@ final class InfoSheetTextsTests: XCTestCase {
         }
     }
 
+    func test_theHints_nameTheRealButtonsAndTheSettingTheyPointTo() throws {
+        for language in ["en", "es"] {
+            let bundle = try bundle(language)
+            func text(_ key: String) -> String { bundle.localizedString(forKey: key, value: "MISSING", table: nil) }
+            let gotIt = text("common.gotIt")
+            let tryVibration = text("settings.haptics.tryVibration")
+            let faceDown = text("settings.faceDown")
+
+            let faceDownHint = text("settings.info.faceDown.hint")
+            for name in [gotIt, tryVibration, faceDown] {
+                XCTAssertTrue(faceDownHint.contains(name), "\(language): the Face Down hint does not name \"\(name)\"")
+            }
+            let missedHint = text("settings.info.faceDownMissed.hint")
+            for name in [gotIt, tryVibration] {
+                XCTAssertTrue(missedHint.contains(name), "\(language): the not-detected hint does not name \"\(name)\"")
+            }
+        }
+    }
+
     func test_theNotDetectedText_keepsTheNumberOfSecondsItWaited() throws {
         for language in ["en", "es"] {
             let text = try bundle(language).localizedString(forKey: "settings.info.faceDownMissed.message", value: nil, table: nil)

@@ -227,7 +227,7 @@ struct SettingsInfoSheet: View {
         // Only the height of its text: it cannot be pulled up to full screen; larger text scrolls inside it.
         .scrollBouncesOnlyWhenNeeded()
         .background(Color.backgroundScreen.ignoresSafeArea())
-        .sheetCloseOverlay()
+        // No close button in the corner: the big Got It button closes the sheet.
         .modifier(InfoSheetPresentation(height: contentHeight))
         .presentationDragIndicator(.visible)
         // The first run waits a moment; a replay starts at once.
@@ -291,7 +291,7 @@ struct SettingsInfoSheet: View {
             .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
         }
         .padding(.horizontal, 24)
-        .padding(.top, 68)
+        .padding(.top, 32)
         .padding(.bottom, 16)
         // The sheet is as tall as its text, so no empty room opens under the button (a preference key did not report here).
         .background(GeometryReader { proxy in
