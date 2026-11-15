@@ -464,24 +464,26 @@ private struct PulseDot: View {
     }
 }
 
-// A phone that turns over and then buzzes: what "face down" looks like. It goes round and round while the sheet is open.
+// A phone seen from the side: upright, with its screen facing forward, it tips forward until the screen faces down, and then it
+// buzzes. That is what "face down" looks like. It goes round and round while the sheet is open.
 private struct FaceDownExample: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    // 0 is the screen toward you, 180 the phone turned over (the screen faces down), 360 the front again.
+    // 0 is upright (the screen faces forward), 90 is tipped forward (the screen faces down).
     @State private var angle: Double = 0
     @State private var isBuzzing = false
     @State private var shake = false
 
     var body: some View {
-        HStack(spacing: 18) {
+        HStack(spacing: 8) {
             waves("wave.3.left")
-            TurningPhone(angle: angle)
-                .offset(x: isBuzzing && !reduceMotion ? (shake ? 1.5 : -1.5) : 0)
+            SidePhone()
+                .rotationEffect(.degrees(angle))
+                .offset(y: isBuzzing && !reduceMotion ? (shake ? 1.5 : -1.5) : 0)
             waves("wave.3.right")
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 100)
+        .frame(height: 104)
         .cardSurface(cornerRadius: 16)
         .accessibilityHidden(true)
         .animation(.linear(duration: 0.06), value: shake)
@@ -496,18 +498,18 @@ private struct FaceDownExample: View {
     }
 
     private func play() async {
-        // Without motion the phone stays turned over and buzzing.
+        // Without motion the phone stays tipped forward and buzzing.
         guard !reduceMotion else {
-            angle = 180
+            angle = 90
             shake = true
             isBuzzing = true
             return
         }
         while !Task.isCancelled {
-            try? await Task.sleep(seconds: 1.1)
+            try? await Task.sleep(seconds: 1.2)
             guard !Task.isCancelled else { return }
-            withAnimation(.easeInOut(duration: 0.7)) { angle = 180 }
-            try? await Task.sleep(seconds: 0.9)
+            withAnimation(.easeInOut(duration: 0.8)) { angle = 90 }
+            try? await Task.sleep(seconds: 1.0)
             isBuzzing = true
             for _ in 0..<16 {
                 guard !Task.isCancelled else { return }
@@ -515,78 +517,47 @@ private struct FaceDownExample: View {
                 try? await Task.sleep(seconds: 0.07)
             }
             isBuzzing = false
-            try? await Task.sleep(seconds: 0.6)
+            try? await Task.sleep(seconds: 0.5)
             guard !Task.isCancelled else { return }
-            withAnimation(.easeInOut(duration: 0.7)) { angle = 360 }
+            withAnimation(.easeInOut(duration: 0.8)) { angle = 0 }
             try? await Task.sleep(seconds: 0.9)
-            // 360 looks the same as 0, so the next round starts from 0 without a visible jump.
-            var jump = Transaction()
-            jump.disablesAnimations = true
-            withTransaction(jump) { angle = 0 }
         }
     }
 }
 
-// The phone itself, drawn in two faces. As an Animatable view it sees every angle of the turn, so the back
-// replaces the front exactly when the phone is edge-on.
-private struct TurningPhone: View, Animatable {
+// The phone in profile, drawn upright. The blue edge is the screen and the short lines are the light it gives, so they point where the
+// screen faces. The camera bump is on the back. The square frame keeps the middle of the phone as the point it turns around.
+private struct SidePhone: View {
 
-    var angle: Double
-
-    var animatableData: Double {
-        get { angle }
-        set { angle = newValue }
-    }
-
-    private var showsBack: Bool {
-        let turn = angle.truncatingRemainder(dividingBy: 360)
-        return turn > 90 && turn < 270
-    }
-
+    private let length: CGFloat = 68
+    private let thickness: CGFloat = 12
     private var outline: Color { Color.textPrimary.opacity(0.8) }
 
     var body: some View {
         ZStack {
-            if showsBack {
-                back.rotation3DEffect(.degrees(180), axis: (x: 1, y: 0, z: 0))
-            } else {
-                front
+            RoundedRectangle(cornerRadius: 2, style: .continuous)
+                .fill(outline)
+                .frame(width: 4, height: 12)
+                .offset(x: -(thickness / 2 + 1), y: -length / 2 + 15)
+
+            RoundedRectangle(cornerRadius: 5, style: .continuous)
+                .fill(Color.textPrimary.opacity(0.14))
+                .overlay(RoundedRectangle(cornerRadius: 5, style: .continuous).stroke(outline, lineWidth: 2.5))
+                .frame(width: thickness, height: length)
+
+            Capsule()
+                .fill(TrickPalette.Collection.timeControl)
+                .frame(width: 3, height: length - 16)
+                .offset(x: thickness / 2 - 3.5)
+
+            ForEach([(-15.0, 6.0), (0.0, 10.0), (15.0, 6.0)], id: \.0) { y, width in
+                Capsule()
+                    .fill(TrickPalette.Collection.timeControl)
+                    .frame(width: width, height: 2.5)
+                    .offset(x: thickness / 2 + 5 + width / 2, y: y)
             }
         }
-        .frame(width: 40, height: 70)
-        .rotation3DEffect(.degrees(angle), axis: (x: 1, y: 0, z: 0), perspective: 0.5)
-    }
-
-    private var bodyShape: some Shape { RoundedRectangle(cornerRadius: 10, style: .continuous) }
-
-    private var front: some View {
-        bodyShape.fill(Color.backgroundScreen)
-            .overlay(bodyShape.stroke(outline, lineWidth: 2.5))
-            .overlay(
-                RoundedRectangle(cornerRadius: 6, style: .continuous)
-                    .fill(TrickPalette.Collection.timeControl.opacity(0.25))
-                    .padding(5)
-            )
-            .overlay(alignment: .top) {
-                Capsule().fill(outline).frame(width: 12, height: 4).padding(.top, 8)
-            }
-    }
-
-    private var back: some View {
-        bodyShape.fill(Color.textPrimary.opacity(0.14))
-            .overlay(bodyShape.stroke(outline, lineWidth: 2.5))
-            .overlay(alignment: .topLeading) {
-                RoundedRectangle(cornerRadius: 5, style: .continuous)
-                    .fill(outline.opacity(0.3))
-                    .frame(width: 18, height: 18)
-                    .overlay {
-                        HStack(spacing: 2) {
-                            Circle().fill(outline).frame(width: 6, height: 6)
-                            Circle().fill(outline).frame(width: 6, height: 6)
-                        }
-                    }
-                    .padding(6)
-            }
+        .frame(width: 84, height: 84)
     }
 }
 
