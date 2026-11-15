@@ -274,6 +274,14 @@ final class InfoSheetTextsTests: XCTestCase {
         }
     }
 
+    func test_theShuffleButtonText_existsInBothLanguages() throws {
+        let english = try bundle("en").localizedString(forKey: "common.shuffle", value: "MISSING", table: nil)
+        let spanish = try bundle("es").localizedString(forKey: "common.shuffle", value: "MISSING", table: nil)
+
+        XCTAssertEqual(english, "Shuffle")
+        XCTAssertEqual(spanish, "Mezclar")
+    }
+
     func test_theNotDetectedText_keepsTheNumberOfSecondsItWaited() throws {
         for language in ["en", "es"] {
             let text = try bundle(language).localizedString(forKey: "settings.info.faceDownMissed.message", value: nil, table: nil)

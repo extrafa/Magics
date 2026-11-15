@@ -2209,7 +2209,8 @@
         }
       }
     },
-    "geo.shuffle" : {
+    "common.shuffle" : {
+      "comment" : "The Shuffle button of the tricks whose items can be shuffled (Geo Mentalism and Color Sense).",
       "localizations" : {
         "en" : {
           "stringUnit" : {

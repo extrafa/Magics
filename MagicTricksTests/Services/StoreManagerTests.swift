@@ -254,6 +254,25 @@ final class StoreManagerTests: XCTestCase {
         XCTAssertTrue(manager.isWatermarkSuppressed)
     }
 
+    // Color Sense keeps a band free at the top for the watermark, so closing it moves nothing: the band exists exactly when it can show.
+    func test_watermarkCanShow_onTheFreeTier_unlessTheTesterHidesIt() {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: true)
+
+        XCTAssertTrue(WatermarkView.canShow(on: manager))
+
+        manager.isWatermarkHidden = true
+
+        XCTAssertFalse(WatermarkView.canShow(on: manager))
+    }
+
+    func test_watermarkCanShow_isFalseForSomeoneWhoPaid() {
+        let manager = StoreManager(productIDs: ["magic_lifetime"], service: MockStoreService(), defaults: MockPreferenceStore(), isInternalBuild: true)
+
+        manager.isProOverride = true
+
+        XCTAssertFalse(WatermarkView.canShow(on: manager))
+    }
+
     func test_restore_runsWhileProductsAreStillLoading() async {
         let service = MockStoreService(entitlementProductIDs: ["magic_lifetime"])
         service.loadProductsNeverReturns = true

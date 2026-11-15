@@ -14,7 +14,7 @@ final class ColorSenseViewModel: ObservableObject {
     @Published private(set) var canTap = true
     @Published private(set) var activeTapCardID: UUID?
 
-    let cards: [ColorCard] = [
+    @Published private(set) var cards: [ColorCard] = [
         .init(colorType: .red,    title: String(localized: key("tap")),      height: 150, rotation: -2),
         .init(colorType: .yellow, title: String(localized: key("trust")),    height: 180, rotation:  2),
         .init(colorType: .green,  title: String(localized: key("pickOne")),  height: 165, rotation: -1),
@@ -29,12 +29,12 @@ final class ColorSenseViewModel: ObservableObject {
     static let gridSpacing: CGFloat = 14
     private static let columnCount = 2
 
-    // The cards' natural height: each row is as tall as its tallest card.
+    // The most height the grid can take, in whatever order the cards lie: each row is as tall as its tallest card, so the worst case is
+    // the tallest cards each in a row of their own. The scale follows this, so the cards keep their size when they are shuffled.
     var gridHeight: CGFloat {
-        let rows = stride(from: 0, to: cards.count, by: Self.columnCount).map { start in
-            cards[start..<min(start + Self.columnCount, cards.count)].map(\.height).max() ?? 0
-        }
-        return rows.reduce(0, +) + CGFloat(max(rows.count - 1, 0)) * Self.gridSpacing
+        let rowCount = (cards.count + Self.columnCount - 1) / Self.columnCount
+        let tallest = cards.map(\.height).sorted(by: >).prefix(rowCount).reduce(0, +)
+        return tallest + CGFloat(max(rowCount - 1, 0)) * Self.gridSpacing
     }
 
     // Shrinks the cards on a short screen (SE, mini) so the whole grid is on it; never grows them.
@@ -55,6 +55,10 @@ final class ColorSenseViewModel: ObservableObject {
         guard canTap else { return }
         animateTap(for: card.id)
         playSignal(for: card.colorType)
+    }
+
+    func shuffleCards() {
+        cards.shuffle()
     }
 
     func cancel() {

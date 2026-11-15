@@ -56,3 +56,27 @@ struct SecondaryTrickButtonStyle: ButtonStyle {
         }
     }
 }
+
+// The Shuffle button of the tricks whose items can be shuffled: wide, at the bottom of the screen.
+struct ShuffleButton: View {
+    let action: () -> Void
+
+    var body: some View {
+        Button(action: action) {
+            HStack(spacing: 8) {
+                Image(systemName: "shuffle")
+                    .font(.system(size: 17, weight: .semibold))
+                    .accessibilityHidden(true)
+                Text(String(localized: "common.shuffle"))
+                    .font(.system(size: 17, weight: .semibold, design: .rounded))
+            }
+            .frame(maxWidth: .infinity)
+            .padding(.vertical, 16)
+        }
+        .buttonStyle(PrimaryTrickButtonStyle(color: .buttonPrimary))
+        .padding(.horizontal, 20)
+        .padding(.top, 8)
+        .padding(.bottom, 32)
+    }
+}
+
