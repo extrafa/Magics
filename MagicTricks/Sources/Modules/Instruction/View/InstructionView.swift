@@ -48,6 +48,7 @@ struct InstructionView: View {
         .sheet(item: $presentedSheet) { sheet in
             NavigationStack {
                 InstructionActionSheetDestination(sheet: sheet)
+                    .sheetCloseToolbar()
             }
             .presentationDragIndicator(.visible)
         }
