@@ -228,7 +228,7 @@ struct SettingsInfoSheet: View {
         .scrollBouncesOnlyWhenNeeded()
         .background(Color.backgroundScreen.ignoresSafeArea())
         // No close button in the corner: the big Got It button closes the sheet.
-        .modifier(InfoSheetPresentation(height: contentHeight))
+        .fittedSheet(height: contentHeight)
         .presentationDragIndicator(.visible)
         // The first run waits a moment; a replay starts at once.
         .task(id: replayCount) { await playGroupingDemo(startDelay: replayCount == 0 ? Self.demoStartDelay : 0) }
@@ -297,12 +297,7 @@ struct SettingsInfoSheet: View {
         .padding(.horizontal, 24)
         .padding(.top, 32)
         .padding(.bottom, 16)
-        // The sheet is as tall as its text, so no empty room opens under the button (a preference key did not report here).
-        .background(GeometryReader { proxy in
-            Color.clear
-                .onAppear { contentHeight = proxy.size.height }
-                .onChange(of: proxy.size.height) { contentHeight = $0 }
-        })
+        .readHeight(into: $contentHeight)
         .frame(maxWidth: .infinity, alignment: .leading)
     }
 
@@ -360,28 +355,6 @@ struct PulseDotMemory {
 enum GroupingDemoClock {
     static func firedPulses(pulseTimes: [TimeInterval], elapsed: TimeInterval) -> Int {
         pulseTimes.filter { $0 <= elapsed }.count
-    }
-}
-
-// The sheet itself takes the screen colour, so no strip of the system sheet shows around the content.
-private struct InfoSheetPresentation: ViewModifier {
-    // The measured height of the content; 0 until it is known.
-    let height: CGFloat
-
-    private var detents: Set<PresentationDetent> {
-        height > 0 ? [.height(height)] : [.medium]
-    }
-
-    func body(content: Content) -> some View {
-        if #available(iOS 16.4, *) {
-            content
-                .presentationDetents(detents)
-                .presentationBackground(Color.backgroundScreen)
-                .presentationCornerRadius(28)
-        } else {
-            content
-                .presentationDetents(detents)
-        }
     }
 }
 

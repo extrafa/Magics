@@ -86,4 +86,40 @@ extension View {
     func sheetCloseOverlay() -> some View {
         modifier(SheetCloseOverlay())
     }
+
+    // The height of this view as it lays out, for a sheet that is as tall as its content. A preference key did not report it inside a sheet.
+    func readHeight(into height: Binding<CGFloat>) -> some View {
+        background(GeometryReader { proxy in
+            Color.clear
+                .onAppear { height.wrappedValue = proxy.size.height }
+                .onChange(of: proxy.size.height) { height.wrappedValue = $0 }
+        })
+    }
+
+    // A sheet as tall as its content: no empty room under the last element, and it cannot be pulled up to full screen. Content taller
+    // than the screen scrolls inside it. Pass the height from readHeight; until it is known the sheet is half height.
+    func fittedSheet(height: CGFloat) -> some View {
+        modifier(FittedSheetPresentation(height: height))
+    }
+}
+
+// The sheet itself takes the screen colour, so no strip of the system sheet shows around the content.
+private struct FittedSheetPresentation: ViewModifier {
+    let height: CGFloat
+
+    private var detents: Set<PresentationDetent> {
+        height > 0 ? [.height(height)] : [.medium]
+    }
+
+    func body(content: Content) -> some View {
+        if #available(iOS 16.4, *) {
+            content
+                .presentationDetents(detents)
+                .presentationBackground(Color.backgroundScreen)
+                .presentationCornerRadius(28)
+        } else {
+            content
+                .presentationDetents(detents)
+        }
+    }
 }
