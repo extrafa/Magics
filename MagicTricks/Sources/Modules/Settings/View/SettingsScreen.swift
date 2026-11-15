@@ -76,8 +76,7 @@ private extension SettingsScreen {
         let info = Bundle.main.infoDictionary
         let version = info?["CFBundleShortVersionString"] as? String ?? "?"
         let build = info?["CFBundleVersion"] as? String ?? "?"
-        let access = storeManager.showsFreeTier ? "Free" : "Pro"
-        return "\(version) (\(build)) · \(AppBuildEnvironment.configurationName)\n\(Bundle.main.bundleIdentifier ?? "?")\nAccess: \(access)"
+        return "\(version) (\(build)) · \(AppBuildEnvironment.configurationName)"
     }
 
     var testFlightSection: some View {
