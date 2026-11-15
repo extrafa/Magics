@@ -4989,13 +4989,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Time Control sends the time only when the phone is face down."
+            "value" : "Vibrations start when the phone is face down. Works only in Time Control."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "Control del Tiempo envía el tiempo solo cuando el teléfono está boca abajo."
+            "value" : "Las vibraciones empiezan con el teléfono boca abajo. Solo en Control del Tiempo."
           }
         }
       }
@@ -5324,13 +5324,13 @@
         "en" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "In Time Control, the phone sends you the time as vibrations: first the seconds, then the hundredths. Normally they start by themselves. With Face Down on, each part starts when the phone is turned face down, with the screen toward the floor or a table. So you choose the moment."
+            "value" : "With this setting, you choose when the vibrations start. They start when the phone is face down. That means the phone is flat and its screen faces the floor. You can hold it in your hand or put it on a table. This setting works only in the Time Control trick."
           }
         },
         "es" : {
           "stringUnit" : {
             "state" : "translated",
-            "value" : "En Control del Tiempo, el teléfono te envía el tiempo con vibraciones: primero los segundos y luego las centésimas. Normalmente empiezan solas. Con Boca Abajo activado, cada parte empieza cuando el teléfono se pone boca abajo, con la pantalla hacia el suelo o hacia una mesa. Así eliges tú el momento."
+            "value" : "Con este ajuste, tú eliges cuándo empiezan las vibraciones. Empiezan cuando el teléfono está boca abajo. Eso significa que el teléfono está plano y su pantalla mira hacia el suelo. Puedes sostenerlo en la mano o ponerlo sobre una mesa. Este ajuste funciona solo en el truco Control del Tiempo."
           }
         }
       }
