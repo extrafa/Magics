@@ -11,7 +11,7 @@ final class OnboardingViewModelTests: XCTestCase {
 
     func test_skip_fromAnySkippableStep_jumpsToThePaywall() {
         for step in OnboardingStep.allCases where step.isSkippable {
-            let viewModel = OnboardingViewModel(preferences: MockOnboardingPreferences(), onComplete: {})
+            let viewModel = OnboardingViewModel(preferences: MockOnboardingPreferences(), skipsPaywall: { false }, onComplete: {})
             viewModel.step = step
 
             viewModel.skip()
@@ -57,7 +57,7 @@ final class OnboardingViewModelTests: XCTestCase {
     func test_skip_doesNotCompleteOnboardingByItself() {
         let preferences = MockOnboardingPreferences()
         var completed = false
-        let viewModel = OnboardingViewModel(preferences: preferences, onComplete: { completed = true })
+        let viewModel = OnboardingViewModel(preferences: preferences, skipsPaywall: { false }, onComplete: { completed = true })
 
         viewModel.skip()
 
@@ -67,7 +67,7 @@ final class OnboardingViewModelTests: XCTestCase {
 
     func test_skip_fromTheLoadingScreenOrThePaywall_doesNothing() {
         for step in [OnboardingStep.processing, .paywall] {
-            let viewModel = OnboardingViewModel(preferences: MockOnboardingPreferences(), onComplete: {})
+            let viewModel = OnboardingViewModel(preferences: MockOnboardingPreferences(), skipsPaywall: { false }, onComplete: {})
             viewModel.step = step
 
             viewModel.skip()
@@ -112,7 +112,7 @@ final class OnboardingViewModelTests: XCTestCase {
 
     func test_complete_calledTwice_finishesOnlyOnce() {
         var completions = 0
-        let viewModel = OnboardingViewModel(preferences: MockOnboardingPreferences(), onComplete: { completions += 1 })
+        let viewModel = OnboardingViewModel(preferences: MockOnboardingPreferences(), skipsPaywall: { false }, onComplete: { completions += 1 })
 
         viewModel.complete()
         viewModel.complete()
@@ -123,7 +123,7 @@ final class OnboardingViewModelTests: XCTestCase {
     func test_complete_marksOnboardingAsCompleted() {
         let preferences = MockOnboardingPreferences()
         var completed = false
-        let viewModel = OnboardingViewModel(preferences: preferences, onComplete: { completed = true })
+        let viewModel = OnboardingViewModel(preferences: preferences, skipsPaywall: { false }, onComplete: { completed = true })
 
         viewModel.complete()
 

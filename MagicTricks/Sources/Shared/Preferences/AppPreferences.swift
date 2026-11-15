@@ -132,7 +132,8 @@ struct AppPreferences: AppPreferencesProviding {
     }
 
     enum Range {
-        static let hapticSpeedMultiplier = 1.0...2.5
+        // The default (1.5) sits in the middle: two steps slower, two steps faster, shown as 0.50x to 1.50x.
+        static let hapticSpeedMultiplier = 0.75...2.25
         static let screenDownHoldDuration = 0.10...1.50
     }
 
