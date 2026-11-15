@@ -464,26 +464,26 @@ private struct PulseDot: View {
     }
 }
 
-// A phone seen from the side: upright, with its screen facing forward, it tips forward until the screen faces down, and then it
-// buzzes. That is what "face down" looks like. It goes round and round while the sheet is open.
+// A phone seen from the front, a little from above: first with its screen toward you, then it tips forward (its top edge comes toward
+// you) until it lies in the plane with the screen facing down, so you see its back. Then it buzzes. It goes round and round while the
+// sheet is open.
 private struct FaceDownExample: View {
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    // 0 is upright (the screen faces forward), 90 is tipped forward (the screen faces down).
+    // 0 is upright with the screen toward you, 90 is tipped forward with the screen facing down.
     @State private var angle: Double = 0
     @State private var isBuzzing = false
     @State private var shake = false
 
     var body: some View {
-        HStack(spacing: 8) {
+        HStack(spacing: 6) {
             waves("wave.3.left")
-            SidePhone()
-                .rotationEffect(.degrees(angle))
+            TippingPhone(angle: angle)
                 .offset(y: isBuzzing && !reduceMotion ? (shake ? 1.5 : -1.5) : 0)
             waves("wave.3.right")
         }
         .frame(maxWidth: .infinity)
-        .frame(height: 104)
+        .frame(height: 120)
         .cardSurface(cornerRadius: 16)
         .accessibilityHidden(true)
         .animation(.linear(duration: 0.06), value: shake)
@@ -506,10 +506,10 @@ private struct FaceDownExample: View {
             return
         }
         while !Task.isCancelled {
-            try? await Task.sleep(seconds: 1.2)
+            try? await Task.sleep(seconds: 1.3)
             guard !Task.isCancelled else { return }
-            withAnimation(.easeInOut(duration: 0.8)) { angle = 90 }
-            try? await Task.sleep(seconds: 1.0)
+            withAnimation(.easeInOut(duration: 0.9)) { angle = 90 }
+            try? await Task.sleep(seconds: 1.1)
             isBuzzing = true
             for _ in 0..<16 {
                 guard !Task.isCancelled else { return }
@@ -519,45 +519,128 @@ private struct FaceDownExample: View {
             isBuzzing = false
             try? await Task.sleep(seconds: 0.5)
             guard !Task.isCancelled else { return }
-            withAnimation(.easeInOut(duration: 0.8)) { angle = 0 }
-            try? await Task.sleep(seconds: 0.9)
+            withAnimation(.easeInOut(duration: 0.9)) { angle = 0 }
+            try? await Task.sleep(seconds: 1.0)
         }
     }
 }
 
-// The phone in profile, drawn upright. The blue edge is the screen and the short lines are the light it gives, so they point where the
-// screen faces. The camera bump is on the back. The square frame keeps the middle of the phone as the point it turns around.
-private struct SidePhone: View {
+// The phone is a flat sheet in 3D. It turns about its horizontal middle line and is seen by a camera a little above it. As an Animatable
+// view it is drawn again for every angle of the turn, and the screen gives way to the back when the sheet is edge-on to the camera.
+private struct TippingPhone: View, Animatable {
 
-    private let length: CGFloat = 68
-    private let thickness: CGFloat = 12
-    private var outline: Color { Color.textPrimary.opacity(0.8) }
+    // In degrees: 0 is upright with the screen toward you, 90 is lying in the plane with the screen facing down.
+    var angle: Double
+
+    var animatableData: Double {
+        get { angle }
+        set { angle = newValue }
+    }
+
+    // Sizes are in points at the phone's own distance; the camera is far enough away for a gentle perspective.
+    private let phoneWidth: CGFloat = 46
+    private let phoneHeight: CGFloat = 80
+    private let cameraDistance: Double = 300
+    private let cameraElevation: Double = 30
+
+    private var showsScreen: Bool {
+        cos((angle + cameraElevation) * .pi / 180) > 0
+    }
+
+    private var ink: Color { Color.textPrimary.opacity(0.8) }
 
     var body: some View {
-        ZStack {
-            RoundedRectangle(cornerRadius: 2, style: .continuous)
-                .fill(outline)
-                .frame(width: 4, height: 12)
-                .offset(x: -(thickness / 2 + 1), y: -length / 2 + 15)
+        Canvas { context, size in
+            let bodyPath = path(outline(width: phoneWidth, height: phoneHeight, radius: 10), in: size)
+            if showsScreen {
+                context.fill(bodyPath, with: .color(Color.backgroundScreen))
+                context.fill(
+                    path(outline(width: phoneWidth - 11, height: phoneHeight - 11, radius: 7), in: size),
+                    with: .color(TrickPalette.Collection.timeControl.opacity(0.25))
+                )
+                context.fill(
+                    path(outline(width: 14, height: 4.5, radius: 2.25, centerY: phoneHeight / 2 - 9), in: size),
+                    with: .color(ink)
+                )
+            } else {
+                context.fill(bodyPath, with: .color(Color.textPrimary.opacity(0.14)))
+                // The camera sits in one corner of the back.
+                let cameraX = phoneWidth / 2 - 15
+                let cameraY = phoneHeight / 2 - 15
+                context.fill(
+                    path(outline(width: 18, height: 18, radius: 5.5, centerX: cameraX, centerY: cameraY), in: size),
+                    with: .color(ink.opacity(0.35))
+                )
+                for lensX in [cameraX - 4, cameraX + 4] {
+                    context.fill(
+                        path(outline(width: 7, height: 7, radius: 3.5, centerX: lensX, centerY: cameraY), in: size),
+                        with: .color(ink)
+                    )
+                }
+            }
+            context.stroke(bodyPath, with: .color(ink), style: StrokeStyle(lineWidth: 2.5, lineJoin: .round))
+        }
+        .frame(width: 110, height: 110)
+    }
 
-            RoundedRectangle(cornerRadius: 5, style: .continuous)
-                .fill(Color.textPrimary.opacity(0.14))
-                .overlay(RoundedRectangle(cornerRadius: 5, style: .continuous).stroke(outline, lineWidth: 2.5))
-                .frame(width: thickness, height: length)
-
-            Capsule()
-                .fill(TrickPalette.Collection.timeControl)
-                .frame(width: 3, height: length - 16)
-                .offset(x: thickness / 2 - 3.5)
-
-            ForEach([(-15.0, 6.0), (0.0, 10.0), (15.0, 6.0)], id: \.0) { y, width in
-                Capsule()
-                    .fill(TrickPalette.Collection.timeControl)
-                    .frame(width: width, height: 2.5)
-                    .offset(x: thickness / 2 + 5 + width / 2, y: y)
+    // A rounded rectangle as the points of its edge, in the phone's own plane (x to the right, y up).
+    private func outline(
+        width: CGFloat,
+        height: CGFloat,
+        radius: CGFloat,
+        centerX: CGFloat = 0,
+        centerY: CGFloat = 0
+    ) -> [CGPoint] {
+        let halfWidth = width / 2 - radius
+        let halfHeight = height / 2 - radius
+        // The middle of each corner arc, and the angle where the arc starts.
+        let corners: [(x: CGFloat, y: CGFloat, start: Double)] = [
+            (halfWidth, halfHeight, 0),
+            (-halfWidth, halfHeight, 90),
+            (-halfWidth, -halfHeight, 180),
+            (halfWidth, -halfHeight, 270)
+        ]
+        var points: [CGPoint] = []
+        for corner in corners {
+            for step in 0...5 {
+                let arc = (corner.start + Double(step) * 90 / 5) * .pi / 180
+                points.append(CGPoint(
+                    x: centerX + corner.x + radius * CGFloat(cos(arc)),
+                    y: centerY + corner.y + radius * CGFloat(sin(arc))
+                ))
             }
         }
-        .frame(width: 84, height: 84)
+        return points
+    }
+
+    private func path(_ points: [CGPoint], in size: CGSize) -> Path {
+        var path = Path()
+        for (index, point) in points.enumerated() {
+            let spot = project(point, in: size)
+            if index == 0 {
+                path.move(to: spot)
+            } else {
+                path.addLine(to: spot)
+            }
+        }
+        path.closeSubpath()
+        return path
+    }
+
+    // One point of the sheet: first the turn (the top edge comes toward you), then the view from the camera above.
+    private func project(_ point: CGPoint, in size: CGSize) -> CGPoint {
+        let turn = angle * .pi / 180
+        let tilt = cameraElevation * .pi / 180
+        let y = Double(point.y)
+        let height = y * cos(turn)
+        let toward = y * sin(turn)
+        let seenHeight = height * cos(tilt) - toward * sin(tilt)
+        let depth = cameraDistance - height * sin(tilt) - toward * cos(tilt)
+        let scale = cameraDistance / depth
+        return CGPoint(
+            x: size.width / 2 + point.x * CGFloat(scale),
+            y: size.height / 2 - CGFloat(seenHeight * scale)
+        )
     }
 }
 
