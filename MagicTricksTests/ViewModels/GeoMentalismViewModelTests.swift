@@ -141,3 +141,42 @@ final class DeviceShakeNotificationTests: XCTestCase {
     }
 }
 
+final class ShakeShuffleGateTests: XCTestCase {
+
+    func test_aShakeShufflesAtOnce_whenItBegins() {
+        var gate = ShakeShuffleGate()
+
+        XCTAssertTrue(gate.began())
+    }
+
+    func test_theEndOfAShakeThatWasHandled_doesNotShuffleAgain() {
+        var gate = ShakeShuffleGate()
+        _ = gate.began()
+
+        XCTAssertFalse(gate.ended())
+    }
+
+    func test_theEndOfAShakeWhoseBeginningWasMissed_shufflesThen() {
+        var gate = ShakeShuffleGate()
+
+        XCTAssertTrue(gate.ended())
+    }
+
+    func test_eachShakeStartsFresh() {
+        var gate = ShakeShuffleGate()
+        _ = gate.began()
+        _ = gate.ended()
+
+        XCTAssertTrue(gate.began())
+        XCTAssertFalse(gate.ended())
+    }
+
+    func test_aCancelledShake_doesNotLeaveTheNextOneHandled() {
+        var gate = ShakeShuffleGate()
+        _ = gate.began()
+        gate.cancelled()
+
+        XCTAssertTrue(gate.ended())
+    }
+}
+
