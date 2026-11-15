@@ -60,7 +60,7 @@ struct HapticSettingsScreen: View {
         .navigationTitle(String(localized: "settings.haptics.title"))
         .navigationBarTitleDisplayMode(.inline)
         .sheet(item: $infoTopic) { topic in
-            SettingsInfoSheet(topic: topic, faceDownTimeout: Int(Self.faceDownTimeout))
+            SettingsInfoSheet(topic: topic, faceDownTimeout: Int(Self.faceDownTimeout), haptics: haptics)
         }
         .onChange(of: settings.isSecretGestureEnabled) { enabled in
             guard !enabled, isWaitingForGesture else { return }

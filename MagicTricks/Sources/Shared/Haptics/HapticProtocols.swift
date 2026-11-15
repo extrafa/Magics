@@ -61,6 +61,8 @@ protocol CountHapticPlaying {
     func playCount(_ count: Int, completion: Completion?)
     // Always in groups of three, whatever the setting says: it lets the settings screen show what grouping feels like.
     func playGroupedCount(_ count: Int, completion: Completion?)
+    // When each pulse of playGroupedCount fires, counted from its start, so the screen can move with the pulses.
+    func groupedPulseTimes(_ count: Int) -> [TimeInterval]
     func cancelPendingHaptics()
 }
 

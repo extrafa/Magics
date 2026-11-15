@@ -54,6 +54,12 @@ final class MockCountHaptics: CountHapticPlaying {
         self.completion = completion
     }
 
+    var groupedPulseTimesToReturn: [TimeInterval] = []
+
+    func groupedPulseTimes(_ count: Int) -> [TimeInterval] {
+        groupedPulseTimesToReturn
+    }
+
     func cancelPendingHaptics() {
         cancelCount += 1
     }

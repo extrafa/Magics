@@ -168,9 +168,17 @@ struct SettingsInfoSheet: View {
     let topic: SettingsInfoTopic
     // Seconds the Face Down test waits, for the text that says it gave up.
     var faceDownTimeout: Int = 10
+    // Plays the example on the grouping sheet; nil where nothing should be felt.
+    var haptics: CountHapticPlaying?
 
     @Environment(\.dismiss) private var dismiss
     @State private var contentHeight: CGFloat = 0
+    // The dot of the example that is moving with the pulse right now.
+    @State private var activeDot: Int?
+
+    // A short wait after the sheet opens, so the person is looking at the dots when they start to move.
+    private static let demoStartDelay: TimeInterval = 0.8
+    private static let exampleGroups = [3, 3, 1]
 
     private var icon: String {
         switch topic {
@@ -220,7 +228,7 @@ struct SettingsInfoSheet: View {
                 .fixedSize(horizontal: false, vertical: true)
 
             if topic == .grouping {
-                GroupingExample(groups: [3, 3, 1])
+                GroupingExample(groups: Self.exampleGroups, activeDot: activeDot)
             }
 
             Button {
@@ -248,6 +256,53 @@ struct SettingsInfoSheet: View {
         .sheetCloseOverlay()
         .modifier(InfoSheetPresentation(height: contentHeight))
         .presentationDragIndicator(.visible)
+        .task { await playGroupingDemo() }
+        .onDisappear {
+            guard topic == .grouping else { return }
+            haptics?.cancelPendingHaptics()
+        }
+    }
+
+    // The example of the text, felt and seen: the phone pulses 3, 3 and 1 while the dots jump with each pulse.
+    private func playGroupingDemo() async {
+        guard topic == .grouping, let haptics else { return }
+        try? await Task.sleep(seconds: Self.demoStartDelay)
+        guard !Task.isCancelled else { return }
+
+        let count = Self.exampleGroups.reduce(0, +)
+        let steps = GroupingDemoTimeline.steps(pulseTimes: haptics.groupedPulseTimes(count))
+        haptics.playGroupedCount(count, completion: nil)
+
+        let start = Date()
+        for step in steps {
+            let wait = step.time - Date().timeIntervalSince(start)
+            if wait > 0 { try? await Task.sleep(seconds: wait) }
+            guard !Task.isCancelled else {
+                activeDot = nil
+                return
+            }
+            activeDot = step.activeDot
+        }
+    }
+}
+
+// Which dot of the example is lit at which moment while it plays, so the dots move with the pulses.
+enum GroupingDemoTimeline {
+
+    struct Step: Equatable {
+        let time: TimeInterval
+        let activeDot: Int?
+    }
+
+    static func steps(pulseTimes: [TimeInterval], holdDuration: TimeInterval = 0.09) -> [Step] {
+        var steps: [Step] = []
+        for (index, time) in pulseTimes.enumerated() {
+            steps.append(Step(time: time, activeDot: index))
+            // The dot is back down before the next pulse, even at the fastest speed.
+            let nextTime = index + 1 < pulseTimes.count ? pulseTimes[index + 1] : .infinity
+            steps.append(Step(time: min(time + holdDuration, time + (nextTime - time) * 0.6), activeDot: nil))
+        }
+        return steps
     }
 }
 
@@ -273,19 +328,20 @@ private struct InfoSheetPresentation: ViewModifier {
     }
 }
 
-// Dots in groups: the number 7 as 3 + 3 + 1.
+// Dots in groups: the number 7 as 3 + 3 + 1. The active dot jumps while its pulse is felt.
 private struct GroupingExample: View {
 
     let groups: [Int]
+    var activeDot: Int?
+
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
 
     var body: some View {
         HStack(spacing: 18) {
-            ForEach(Array(groups.enumerated()), id: \.offset) { _, count in
+            ForEach(Array(groups.enumerated()), id: \.offset) { groupIndex, count in
                 HStack(spacing: 5) {
-                    ForEach(0..<count, id: \.self) { _ in
-                        Circle()
-                            .fill(TrickPalette.Collection.timeControl)
-                            .frame(width: 12, height: 12)
+                    ForEach(0..<count, id: \.self) { dot in
+                        dotView(index: groups.prefix(groupIndex).reduce(0, +) + dot)
                     }
                 }
             }
@@ -297,6 +353,18 @@ private struct GroupingExample: View {
         .frame(maxWidth: .infinity)
         .cardSurface(cornerRadius: 16)
         .accessibilityHidden(true)
+    }
+
+    // With Reduce Motion the dots stay in place and only the one that pulses stays bright.
+    private func dotView(index: Int) -> some View {
+        let isActive = activeDot == index
+        return Circle()
+            .fill(TrickPalette.Collection.timeControl)
+            .frame(width: 12, height: 12)
+            .scaleEffect(isActive && !reduceMotion ? 1.5 : 1)
+            .offset(y: isActive && !reduceMotion ? -7 : 0)
+            .opacity(reduceMotion && activeDot != nil && !isActive ? 0.45 : 1)
+            .animation(reduceMotion ? nil : .spring(response: 0.2, dampingFraction: 0.45), value: activeDot)
     }
 }
 
