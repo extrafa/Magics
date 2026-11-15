@@ -8,12 +8,15 @@
 import SwiftUI
 
 struct WatermarkView: View {
+    // In the navigation bar the system draws the capsule on iOS 26; floating over a screen, the view draws it itself.
+    var isFloating = false
+
     @EnvironmentObject private var store: StoreManager
     @EnvironmentObject private var flow: AppFlowCoordinator
     @State private var isDismissed = false
 
     var body: some View {
-        if store.showsFreeTier && !isDismissed && !store.isWatermarkSuppressed {
+        if Self.canShow(on: store) && !isDismissed {
             HStack(spacing: 0) {
                 Button { flow.presentPaywallOverlay() } label: {
                     HStack(spacing: 6) {
@@ -51,15 +54,27 @@ struct WatermarkView: View {
                 .buttonStyle(.plain)
                 .accessibilityLabel(String(localized: "common.close"))
             }
-            .background {
-                if #available(iOS 26, *) {
-                    Color.clear
-                } else {
-                    Capsule()
-                        .fill(.ultraThinMaterial)
-                        .overlay(Capsule().stroke(Color.cardBorder, lineWidth: 1))
-                }
-            }
+            .background { capsuleBackground }
         }
+    }
+
+    @ViewBuilder
+    private var capsuleBackground: some View {
+        if #available(iOS 26, *) {
+            if isFloating {
+                Color.clear.glassEffect(.regular, in: Capsule())
+            } else {
+                Color.clear
+            }
+        } else {
+            Capsule()
+                .fill(.ultraThinMaterial)
+                .overlay(Capsule().stroke(Color.cardBorder, lineWidth: 1))
+        }
+    }
+
+    // Whether the watermark can show at all, whatever the person did with it: the screens that float it keep its place free.
+    static func canShow(on store: StoreManager) -> Bool {
+        store.showsFreeTier && !store.isWatermarkSuppressed
     }
 }

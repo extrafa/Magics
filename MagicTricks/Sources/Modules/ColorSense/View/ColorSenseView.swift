@@ -11,6 +11,7 @@ struct ColorSenseView: View {
 
     @StateObject private var viewModel: ColorSenseViewModel
     @StateObject private var flight = ShuffleFlight<UUID>()
+    @EnvironmentObject private var store: StoreManager
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
     @State private var shakeGate = ShakeShuffleGate()
 
@@ -20,6 +21,8 @@ struct ColorSenseView: View {
     ]
     // Room for the cards' floating motion, so the moving grid never touches the screen edge.
     private static let motionMargin: CGFloat = 24
+    // The band at the top for the watermark: as tall as the navigation bar was, so the cards sit where they always did.
+    private static let watermarkBand: CGFloat = 44
 
     init(haptics: CountHapticPlaying? = nil) {
         _viewModel = StateObject(wrappedValue: ColorSenseViewModel(haptics: haptics ?? HapticManager.shared))
@@ -44,10 +47,15 @@ struct ColorSenseView: View {
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        // Below the watermark band, so the notice never lies over the watermark.
+        .hapticsUnavailableNoticeOverlay()
+        .safeAreaInset(edge: .top, spacing: 0) {
+            watermarkBand
+        }
         .safeAreaInset(edge: .bottom, spacing: 0) {
-            // Dimmed while a signal is on its way: the cards ignore taps then, and the shuffle waits too.
+            // While a signal is on its way the cards ignore taps, and so does this button: it just does not react, it does not change.
             ShuffleButton(action: shuffle)
-                .disabled(!viewModel.canTap)
+                .allowsHitTesting(viewModel.canTap)
         }
         // A shake shuffles at once, like the button. There is no buzz for it: here the vibrations are the secret signal.
         .onShake(
@@ -59,18 +67,25 @@ struct ColorSenseView: View {
             },
             cancelled: { shakeGate.cancelled() }
         )
+        // The exit hint comes after, so it lies above the watermark; it keeps to the corner of the screen like in the other tricks.
         .exitHint()
         .keepsScreenAwake()
-        .hapticsUnavailableNoticeOverlay()
-        .toolbar {
-            ToolbarItem(placement: .topBarTrailing) {
-                // On the spectator's screen like in Geo Mentalism: it marks the free tier and paying removes it.
-                WatermarkView()
-            }
-        }
+        // No navigation bar: the watermark used to sit in it, and closing the watermark made the bar collapse and everything jump up.
+        .toolbar(.hidden, for: .navigationBar)
         .onDisappear {
             viewModel.cancel()
         }
+    }
+
+    // On the spectator's screen like in Geo Mentalism: it marks the free tier and paying removes it. Its place stays free after it is closed,
+    // so closing it moves nothing.
+    private var watermarkBand: some View {
+        HStack {
+            Spacer()
+            WatermarkView(isFloating: true)
+        }
+        .padding(.horizontal, 16)
+        .frame(height: WatermarkView.canShow(on: store) ? Self.watermarkBand : 0)
     }
 
     private func shuffle() {
@@ -121,5 +136,8 @@ private extension ColorCardType {
 }
 
 #Preview {
-    ColorSenseView()
+    let store = StoreManager()
+    return ColorSenseView()
+        .environmentObject(store)
+        .environmentObject(AppFlowCoordinator(store: store))
 }
