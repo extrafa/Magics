@@ -21,8 +21,8 @@ struct ColorSenseView: View {
     ]
     // Room for the cards' floating motion, so the moving grid never touches the screen edge.
     private static let motionMargin: CGFloat = 24
-    // The band at the top for the watermark: as tall as the navigation bar was, so the cards sit where they always did.
-    private static let watermarkBand: CGFloat = 44
+    // The band at the top for the watermark: as tall as the watermark and the navigation bar it was in, so the cards sit where they always did.
+    private static let watermarkBand = WatermarkView.floatingHeight
 
     init(haptics: CountHapticPlaying? = nil) {
         _viewModel = StateObject(wrappedValue: ColorSenseViewModel(haptics: haptics ?? HapticManager.shared))

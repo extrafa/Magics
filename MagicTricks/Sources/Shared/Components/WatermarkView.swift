@@ -21,7 +21,7 @@ struct WatermarkView: View {
                 Button { flow.presentPaywallOverlay() } label: {
                     HStack(spacing: 6) {
                         Image(systemName: "sparkles")
-                            .font(.system(size: 11, weight: .semibold))
+                            .font(.system(size: isFloating ? 14 : 11, weight: .semibold))
                             .accessibilityHidden(true)
                         // "Free Trial" names the free tier, there is no trial period; kept on purpose (monetisation decision).
                         Text(String(localized: "watermark.freeTrialBadge"))
@@ -31,6 +31,8 @@ struct WatermarkView: View {
                     .padding(.leading, 10)
                     .padding(.trailing, 8)
                     .padding(.vertical, 6)
+                    .frame(minHeight: isFloating ? Self.floatingHeight : nil)
+                    .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
 
@@ -44,19 +46,26 @@ struct WatermarkView: View {
                     }
                 } label: {
                     Image(systemName: "xmark")
-                        .font(.system(size: 9, weight: .bold))
+                        .font(.system(size: isFloating ? 11.5 : 9, weight: .bold))
                         .foregroundStyle(Color.textPrimary.opacity(0.4))
                         .padding(.leading, 8)
                         .padding(.trailing, 10)
                         .padding(.vertical, 6)
+                        .frame(minHeight: isFloating ? Self.floatingHeight : nil)
                         .contentShape(Rectangle())
                 }
                 .buttonStyle(.plain)
                 .accessibilityLabel(String(localized: "common.close"))
             }
+            // In the navigation bar the system makes the capsule 44 pt tall with room around the content; floating, it is sized the same,
+            // and both buttons reach the full height.
+            .padding(.horizontal, isFloating ? 4 : 0)
             .background { capsuleBackground }
         }
     }
+
+    // As tall as the system's capsule in the navigation bar: the watermark has always been this size.
+    static let floatingHeight: CGFloat = 44
 
     @ViewBuilder
     private var capsuleBackground: some View {
