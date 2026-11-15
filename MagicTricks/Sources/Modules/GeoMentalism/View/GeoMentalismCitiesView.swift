@@ -13,20 +13,9 @@ struct GeoMentalismCitiesView: View {
     @Binding var isExitHintVisible: Bool
 
     @Environment(\.accessibilityReduceMotion) private var reduceMotion
-    // How far each city is tipped while it flies: thrown with a tilt, it lands straight.
-    @State private var tilt: [String: Double] = [:]
-    @State private var lastShuffle = Date.distantPast
+    @StateObject private var flight = ShuffleFlight<String>()
     @State private var shakeGate = ShakeShuffleGate()
     @State private var feedback = UIImpactFeedbackGenerator(style: .soft)
-
-    // The cities fly to their new places one after another, like a wave over the grid, and land with a little bounce.
-    private static let settle = Animation.spring(response: 0.55, dampingFraction: 0.66)
-    private static let landing = Animation.spring(response: 0.45, dampingFraction: 0.55)
-    private static let waveDelay = 0.03
-    private static let maxTilt = 9.0
-    private static let flightBeforeLanding: TimeInterval = 0.15
-    // A shuffle that is still settling does not start another one.
-    private static let shuffleCooldown: TimeInterval = 0.9
 
     private static let columns = [
         GridItem(.flexible()),
@@ -50,11 +39,8 @@ struct GeoMentalismCitiesView: View {
                     LazyVGrid(columns: Self.columns, spacing: 12) {
                         ForEach(Array(viewModel.displayedCities.enumerated()), id: \.element) { index, displayedCity in
                             CityCapsule(city: displayedCity)
-                                .rotationEffect(.degrees(tilt[displayedCity] ?? 0))
-                                .animation(
-                                    reduceMotion ? nil : Self.settle.delay(Double(index) * Self.waveDelay),
-                                    value: viewModel.displayedCities
-                                )
+                                .rotationEffect(.degrees(flight.tilt[displayedCity] ?? 0))
+                                .animation(reduceMotion ? nil : ShuffleFlight<String>.wave(at: index), value: viewModel.displayedCities)
                         }
                     }
                 }
@@ -94,69 +80,18 @@ struct GeoMentalismCitiesView: View {
         .onAppear { feedback.prepare() }
     }
 
-    // The same shuffle for the button, the shake and the first moment: the cities are thrown with a tilt, fly to their places in a wave
-    // and land straight with a little bounce.
+    // The same shuffle for the button, the shake and the first moment.
     private func shuffle(withFeedback: Bool) {
-        guard Date().timeIntervalSince(lastShuffle) > Self.shuffleCooldown else { return }
-        lastShuffle = Date()
-        guard !reduceMotion else {
-            viewModel.shuffleList()
-            if withFeedback { feedback.impactOccurred() }
-            return
-        }
-        withAnimation(Self.settle) {
-            viewModel.shuffleList()
-            tilt = Dictionary(uniqueKeysWithValues: viewModel.displayedCities.map { ($0, Double.random(in: -Self.maxTilt...Self.maxTilt)) })
-        }
-        if withFeedback { feedback.impactOccurred() }
-        Task {
-            try? await Task.sleep(seconds: Self.flightBeforeLanding)
-            withAnimation(Self.landing) { tilt = [:] }
-        }
+        let didShuffle = flight.run(
+            reduceMotion: reduceMotion,
+            reorder: viewModel.shuffleList,
+            ids: { viewModel.displayedCities }
+        )
+        if didShuffle && withFeedback { feedback.impactOccurred() }
     }
 
     private var shuffleButton: some View {
-        Button {
-            shuffle(withFeedback: true)
-        } label: {
-            HStack(spacing: 8) {
-                Image(systemName: "shuffle")
-                    .font(.system(size: 17, weight: .semibold))
-                    .accessibilityHidden(true)
-                Text(String(localized: "geo.shuffle"))
-                    .font(.system(size: 17, weight: .semibold, design: .rounded))
-            }
-            .foregroundStyle(Color.backgroundScreen)
-            .frame(maxWidth: .infinity)
-            .padding(.vertical, 16)
-            .background {
-                RoundedRectangle(cornerRadius: 16, style: .continuous)
-                    .fill(Color.buttonPrimary)
-            }
-        }
-        .padding(.horizontal, 20)
-        .padding(.top, 8)
-        .padding(.bottom, 32)
-    }
-}
-
-// When a shake shuffles the cities: at once when it begins, and when it ends only if its beginning was missed. So a long shake
-// shuffles once, and the cities do not wait for the shaking to stop.
-struct ShakeShuffleGate {
-    private var isHandled = false
-
-    mutating func began() -> Bool {
-        isHandled = true
-        return true
-    }
-
-    mutating func ended() -> Bool {
-        defer { isHandled = false }
-        return !isHandled
-    }
-
-    mutating func cancelled() {
-        isHandled = false
+        ShuffleButton { shuffle(withFeedback: true) }
     }
 }
 

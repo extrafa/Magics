@@ -178,3 +178,76 @@ extension View {
             .onReceive(NotificationCenter.default.publisher(for: .deviceShakeCancelled).receive(on: DispatchQueue.main)) { _ in cancelled() }
     }
 }
+
+// MARK: - Shuffle after a shake
+
+// When a shake shuffles: at once when it begins, and when it ends only if its beginning was missed. So a long shake shuffles once,
+// and the items do not wait for the shaking to stop.
+struct ShakeShuffleGate {
+    private var isHandled = false
+
+    mutating func began() -> Bool {
+        isHandled = true
+        return true
+    }
+
+    mutating func ended() -> Bool {
+        defer { isHandled = false }
+        return !isHandled
+    }
+
+    mutating func cancelled() {
+        isHandled = false
+    }
+}
+
+// What a shuffle looks like, for the tricks that can shuffle their items: they are thrown with a small random tilt, fly to their new
+// places in a wave (each a little after the one before, on a spring) and land straight with a little bounce.
+@MainActor
+final class ShuffleFlight<ID: Hashable>: ObservableObject {
+
+    // How far each item is tipped while it flies; empty when they lie still.
+    @Published private(set) var tilt: [ID: Double] = [:]
+
+    // A shuffle that is still settling does not start another one.
+    static var cooldown: TimeInterval { 0.9 }
+    private static var settle: Animation { .spring(response: 0.55, dampingFraction: 0.66) }
+    private static var landing: Animation { .spring(response: 0.45, dampingFraction: 0.55) }
+    private static var waveDelay: Double { 0.03 }
+    private static var maxTilt: Double { 9 }
+    private static var flightBeforeLanding: TimeInterval { 0.15 }
+
+    private let now: () -> Date
+    private var lastShuffle = Date.distantPast
+
+    init(now: @escaping () -> Date = Date.init) {
+        self.now = now
+    }
+
+    // The animation of the item at `index`: the later it is in the grid, the later it sets off.
+    static func wave(at index: Int) -> Animation {
+        settle.delay(Double(index) * waveDelay)
+    }
+
+    // Runs `reorder`, which must change the order of the items, unless the last shuffle is still settling. `ids` lists the items after
+    // the reorder. Returns whether it shuffled.
+    @discardableResult
+    func run(reduceMotion: Bool, reorder: () -> Void, ids: () -> [ID]) -> Bool {
+        guard now().timeIntervalSince(lastShuffle) > Self.cooldown else { return false }
+        lastShuffle = now()
+        guard !reduceMotion else {
+            reorder()
+            return true
+        }
+        withAnimation(Self.settle) {
+            reorder()
+            tilt = Dictionary(ids().map { ($0, Double.random(in: -Self.maxTilt...Self.maxTilt)) }, uniquingKeysWith: { first, _ in first })
+        }
+        Task {
+            try? await Task.sleep(seconds: Self.flightBeforeLanding)
+            withAnimation(Self.landing) { tilt = [:] }
+        }
+        return true
+    }
+}
+

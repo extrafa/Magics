@@ -10,6 +10,9 @@ import SwiftUI
 struct ColorSenseView: View {
 
     @StateObject private var viewModel: ColorSenseViewModel
+    @StateObject private var flight = ShuffleFlight<UUID>()
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    @State private var shakeGate = ShakeShuffleGate()
 
     private static let columns = [
         GridItem(.flexible(), spacing: ColorSenseViewModel.gridSpacing),
@@ -31,15 +34,31 @@ struct ColorSenseView: View {
                 LazyVGrid(columns: Self.columns, spacing: ColorSenseViewModel.gridSpacing) {
                     ForEach(Array(viewModel.cards.enumerated()), id: \.element.id) { index, card in
                         cardView(card, heightScale: heightScale)
-                            .rotationEffect(.degrees(card.rotation))
+                            .rotationEffect(.degrees(card.rotation + (flight.tilt[card.id] ?? 0)))
                             .modifier(floatingMotionSettings(for: index))
                             .onTapGesture { viewModel.handleTap(on: card) }
+                            .animation(reduceMotion ? nil : ShuffleFlight<UUID>.wave(at: index), value: viewModel.cards.map(\.id))
                     }
                 }
                 .padding(.horizontal, 20)
                 .frame(maxWidth: .infinity, maxHeight: .infinity)
             }
         }
+        .safeAreaInset(edge: .bottom, spacing: 0) {
+            // Dimmed while a signal is on its way: the cards ignore taps then, and the shuffle waits too.
+            ShuffleButton(action: shuffle)
+                .disabled(!viewModel.canTap)
+        }
+        // A shake shuffles at once, like the button. There is no buzz for it: here the vibrations are the secret signal.
+        .onShake(
+            began: {
+                if shakeGate.began() { shuffle() }
+            },
+            ended: {
+                if shakeGate.ended() { shuffle() }
+            },
+            cancelled: { shakeGate.cancelled() }
+        )
         .exitHint()
         .keepsScreenAwake()
         .hapticsUnavailableNoticeOverlay()
@@ -52,6 +71,11 @@ struct ColorSenseView: View {
         .onDisappear {
             viewModel.cancel()
         }
+    }
+
+    private func shuffle() {
+        guard viewModel.canTap else { return }
+        flight.run(reduceMotion: reduceMotion, reorder: viewModel.shuffleCards, ids: { viewModel.cards.map(\.id) })
     }
 
     private func cardView(_ card: ColorCard, heightScale: CGFloat) -> some View {
