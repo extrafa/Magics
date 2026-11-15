@@ -27,6 +27,13 @@ struct TrickCardView: View {
                 .grayscale(isLocked ? 1.0 : 0)
                 .opacity(isLocked ? 0.52 : 1.0)
                 .animation(.easeInOut(duration: 0.2), value: isLocked)
+                // The whole card starts the trick, the same way Start does (the instruction first, the first time). Learn and Start keep
+                // their own taps. A locked card has the button below instead.
+                .contentShape(RoundedRectangle(cornerRadius: 22, style: .continuous))
+                .onTapGesture {
+                    guard !isLocked else { return }
+                    onStartTap()
+                }
                 .overlay {
                     if isLocked {
                         // A real Button, not a bare tap gesture, so VoiceOver gets one whole-card activation target.
