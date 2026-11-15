@@ -125,6 +125,7 @@ extension SettingsToggleRow where Accessories == EmptyView {
 // MARK: - Info button
 
 // A small "i" next to a setting's title, the size of the title text; it opens the sheet that explains the setting.
+// The blue of the other tappable controls (the speed buttons) shows it can be pressed, and it dims while pressed.
 struct SettingsInfoButton: View {
 
     let label: String
@@ -134,14 +135,20 @@ struct SettingsInfoButton: View {
         Button(action: action) {
             Image(systemName: "info.circle")
                 .font(.system(.body, design: .rounded, weight: .semibold))
-                .foregroundStyle(Color.textSecondary)
-                // 44 pt is the minimum touch target; the icon itself stays the size of the title.
+                .foregroundStyle(TrickPalette.Collection.timeControl)
+                // 44 pt is the minimum hit region; the icon itself stays the size of the title.
                 .padding(11)
                 .contentShape(Rectangle())
         }
-        .buttonStyle(.plain)
+        .buttonStyle(InfoButtonStyle())
         .padding(-11)
         .accessibilityLabel(label)
+    }
+}
+
+private struct InfoButtonStyle: ButtonStyle {
+    func makeBody(configuration: Configuration) -> some View {
+        configuration.label.opacity(configuration.isPressed ? 0.4 : 1)
     }
 }
 
@@ -229,7 +236,7 @@ struct SettingsInfoSheet: View {
         }
         .padding(.horizontal, 24)
         .padding(.top, 68)
-        .padding(.bottom, 24)
+        .padding(.bottom, 16)
         // The sheet is as tall as its text, so no empty room opens under the button (a preference key did not report here).
         .background(GeometryReader { proxy in
             Color.clear
