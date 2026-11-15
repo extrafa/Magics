@@ -12,6 +12,21 @@ struct GeoMentalismCitiesView: View {
     let city: String
     @Binding var isExitHintVisible: Bool
 
+    @Environment(\.accessibilityReduceMotion) private var reduceMotion
+    // While the phone is shaken the cities tremble; `wobble` flips fast to drive it.
+    @State private var isShaking = false
+    @State private var wobble = false
+    @State private var trembleTask: Task<Void, Never>?
+    @State private var lastShuffle = Date.distantPast
+    @State private var feedback = UIImpactFeedbackGenerator(style: .soft)
+
+    // The cities settle into their new places one after another, like a wave over the grid.
+    private static let settle = Animation.spring(response: 0.6, dampingFraction: 0.68)
+    private static let waveDelay = 0.035
+    // A shuffle that is still settling does not start another one.
+    private static let shuffleCooldown: TimeInterval = 0.9
+    private static let maxTrembleDuration: TimeInterval = 1.6
+
     private static let columns = [
         GridItem(.flexible()),
         GridItem(.flexible())
@@ -32,8 +47,14 @@ struct GeoMentalismCitiesView: View {
                     ReadAloudReminder(citiesCount: GeoMentalismViewModel.listSize)
 
                     LazyVGrid(columns: Self.columns, spacing: 12) {
-                        ForEach(viewModel.displayedCities, id: \.self) { displayedCity in
+                        ForEach(Array(viewModel.displayedCities.enumerated()), id: \.element) { index, displayedCity in
                             CityCapsule(city: displayedCity)
+                                .rotationEffect(.degrees(isShaking ? tremble(at: index) : 0))
+                                .animation(.linear(duration: 0.06), value: wobble)
+                                .animation(
+                                    reduceMotion ? nil : Self.settle.delay(Double(index) * Self.waveDelay),
+                                    value: viewModel.displayedCities
+                                )
                         }
                     }
                 }
@@ -58,17 +79,66 @@ struct GeoMentalismCitiesView: View {
         }
         .task {
             try? await Task.sleep(milliseconds: 550)
-            withAnimation(.easeInOut) {
-                viewModel.shuffleList()
-            }
+            shuffle(withFeedback: false)
         }
+        .onShake(
+            began: startTrembling,
+            ended: {
+                trembleTask?.cancel()
+                trembleTask = nil
+                shuffle(withFeedback: true)
+            },
+            cancelled: stopTrembling
+        )
+        .onDisappear(perform: stopTrembling)
+    }
+
+    // The cities shake like pieces in a box: each one tips a little, the neighbours the other way.
+    private func tremble(at index: Int) -> Double {
+        let size = 2.2 + Double(index % 3) * 0.7
+        return (index % 2 == 0) == wobble ? size : -size
+    }
+
+    private func startTrembling() {
+        guard !reduceMotion, !isShaking, Date().timeIntervalSince(lastShuffle) > Self.shuffleCooldown else { return }
+        feedback.prepare()
+        isShaking = true
+        trembleTask = Task {
+            var elapsed: TimeInterval = 0
+            while !Task.isCancelled, elapsed < Self.maxTrembleDuration {
+                wobble.toggle()
+                try? await Task.sleep(seconds: 0.07)
+                elapsed += 0.07
+            }
+            // A shake that never reports its end still ends in a shuffle.
+            guard !Task.isCancelled else { return }
+            trembleTask = nil
+            shuffle(withFeedback: true)
+        }
+    }
+
+    private func stopTrembling() {
+        trembleTask?.cancel()
+        trembleTask = nil
+        isShaking = false
+    }
+
+    // The same shuffle for the button, the shake and the first moment: the cities untwist and fly to their places in a wave.
+    private func shuffle(withFeedback: Bool) {
+        let isCoolingDown = Date().timeIntervalSince(lastShuffle) <= Self.shuffleCooldown
+        // The tremble stops inside the same animation, so the cities straighten on their way instead of snapping.
+        withAnimation(reduceMotion ? nil : Self.settle) {
+            isShaking = false
+            if !isCoolingDown { viewModel.shuffleList() }
+        }
+        guard !isCoolingDown else { return }
+        lastShuffle = Date()
+        if withFeedback { feedback.impactOccurred() }
     }
 
     private var shuffleButton: some View {
         Button {
-            withAnimation(.easeInOut) {
-                viewModel.shuffleList()
-            }
+            shuffle(withFeedback: true)
         } label: {
             HStack(spacing: 8) {
                 Image(systemName: "shuffle")
